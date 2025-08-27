@@ -22,6 +22,7 @@ import Home from './Pages/Home';
 
 
 
+
 // Importing necessary components and pages
 
 
@@ -38,6 +39,11 @@ const router = createBrowserRouter(
     {
       path: '/Specialannouncements',
       element: <div>Specialannouncements</div>
+
+    },
+    {
+      path: '/TempleRegistration',
+      element: <div>TempleRegistration</div>
 
     },
   ]

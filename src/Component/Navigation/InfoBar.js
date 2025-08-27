@@ -28,9 +28,10 @@ const InfoBar = () => {
                                     <span className="top-icon"><IoKeySharp /></span> Login
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                    <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                                    <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                                    <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                                    <Dropdown.Item href="#/action-1">Admin</Dropdown.Item>
+                                    <Dropdown.Item href="#/action-2">Temple Authority</Dropdown.Item>
+                                    <Dropdown.Item href="#/action-3">Pandit ji </Dropdown.Item>
+                                    <Dropdown.Item href="#/action-3">Devotee</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
 
@@ -39,9 +40,9 @@ const InfoBar = () => {
                                     <span className="top-icon"><FaUserGroup /></span> Register
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                    <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                                    <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                                    <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                                    <Dropdown.Item href="#/action-2">Temple Authority</Dropdown.Item>
+                                    <Dropdown.Item href="#/action-3">Pandit ji </Dropdown.Item>
+                                    <Dropdown.Item href="#/action-3">Devotee</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
 
