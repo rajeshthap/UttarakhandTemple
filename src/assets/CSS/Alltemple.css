@@ -1,0 +1,70 @@
+.carousel-container {
+    width: 80%;
+    margin: auto;
+
+}
+
+.card-item {
+    padding: var(--temp-space-250);
+    text-align: center;
+    text-align: center !important;
+    transition: transform 0.3s ease-in-out;
+}
+
+.card-item:hover {
+    transform: translateY(-5px);
+}
+
+.card-image-wrapper {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 50% !important;
+    /* border-radius: 12px 12px 0 0; */
+    margin: auto;
+    border: var(--temp-space-200) solid var(--temp-boader-gary);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.card-text h5 {
+    color: var(--temp-org);
+    margin-bottom: var(--temp-space-0);
+}
+
+.card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-text {
+    padding: 15px;
+}
+
+.card-text h4 {
+    margin-bottom: 8px;
+    font-size: 18px;
+    color: #333;
+}
+
+.about-wrapper .card-text p {
+    text-align: center !important;
+}
+
+.card-text p {
+    font-size: var(--temp-space-300);
+    color: var(--temp-black);
+}
+
+
+.Alltemple-wrapper {
+    padding-top: var(--temp-space-600);
+    padding-bottom: var(--temp-space-600);
+    background-color: var(--temp-boader-gary);
+}
+
+.slick-prev:before,
+.slick-next:before {
+    color: var(--temp-primary);
+    font-size: var(--temp-space-900);
+}

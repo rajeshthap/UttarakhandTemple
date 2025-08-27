@@ -1,0 +1,74 @@
+.online-booking-wrapper {
+    background-color: var(--temp-off-gary);
+    padding: var(--temp-space-300);
+    width: 100% !important;
+}
+
+.online-booking-wrapper h2 {
+    font-size: var(--temp-space-700);
+    color: var(--temp-primary);
+    text-align: center;
+    margin-bottom: var(--temp-space-200);
+    padding-top: var(--temp-space-200);
+
+}
+
+/* h2:before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 140px;
+    height: 1px;
+    background: #ec9f04;
+    margin-left: -70px;
+} */
+ .heading-line{
+       position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 140px;
+    height: 1px;
+    background: #ec9f04;
+    margin-left: -70px;
+ }
+.booking-info {
+    background-color: var(--temp-org);
+    width: 150px;
+    height: 150px;
+    text-align: center;
+    margin: 0 auto;
+    border-radius: 50% !important;
+    border: var(--temp-space-200) solid var(--temp-boader-gary);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.booking-icon {
+    font-size: var(--temp-space-1400);
+    color: var(--temp-white);
+    margin-top: var(--temp-space-100) !important;
+
+}
+
+h3 {
+    font-size: var(--temp-space-400);
+}
+
+.click-btn {
+    background-color: var(--temp-primary);
+    color: var(--temp-white);
+    padding: var(--temp-space-200) var(--temp-space-400);
+    border-radius: var(--temp-space-100);
+    font-size: var(--temp-space-300);
+    margin-top: var(--temp-space-300);
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.click-btn:hover {
+    background-color: var(--temp-org) !important;
+    color: var(--temp-white) !important;
+    text-decoration: none;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}

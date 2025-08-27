@@ -1,0 +1,41 @@
+.about-wrapper {
+    padding-top: var(--temp-space-600);
+}
+
+.about-wrapper h1 {
+    font-size: var(--temp-space-900);
+    color: var(--temp-primary);
+    text-align: center;
+    margin-bottom: var(--temp-space-200);
+    text-align: start;
+    padding-left: var(--temp-space-300);
+    border-left: var(--temp-org) solid var(--temp-space-100);
+}
+
+.about-wrapper h4 {
+
+    font-size: var(--temp-space-400);
+    color: var(--temp-primary);
+    text-align: center;
+    margin-bottom: var(--temp-space-200);
+    padding-top: var(--temp-space-200);
+    text-align: start;
+}
+
+.about-wrapper p {
+    font-size: var(--temp-space-300);
+    text-align: center;
+    margin-bottom: var(--temp-space-200);
+    padding-top: var(--temp-space-200);
+    text-align: start;
+    line-height: 1.6;
+}
+
+.about-wrapper ul li {
+    font-size: var(--temp-space-300);
+    text-align: center;
+    margin-bottom: var(--temp-space-200);
+    padding-top: var(--temp-space-200);
+    text-align: start;
+    line-height: 1.2;
+}

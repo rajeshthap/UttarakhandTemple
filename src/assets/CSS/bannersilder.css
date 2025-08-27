@@ -1,0 +1,200 @@
+.Carousel-img {
+    background-image: url(../images/banner-bg.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.resprce-main-title {
+    display: flex;
+    justify-content: space-around;
+}
+
+.resorce-sub-title {
+
+    text-align: center;
+}
+
+.resorce-sub-title h1 {
+    font-size: var(--temp-space-1100);
+    color: var(--temp-white);
+}
+
+.resorce-sub-title p {
+    font-size: var(--temp-space-800);
+    color: var(--temp-white);
+    text-align: left;
+    border-left: var(--temp-space-50) solid var(--temp-org);
+}
+
+.resorce-sub-list h1 {
+    font-size: var(--awc-space-500);
+    color: var(--awc-black);
+    font-weight: 700;
+}
+
+.resorce-sub-list ol li {
+    font-size: var(--awc-space-400);
+    line-height: 34px;
+    color: #000000;
+    font-weight: 500;
+    text-align: justify;
+}
+
+.table-tab {
+    background-color: #F6B325;
+}
+
+.nav-fill .nav-item,
+.nav-fill>.nav-link {
+    margin: var(--awc-space-0) var(--awc-space-50) var(--awc-space-0) var(--awc-space-0);
+    border-radius: var(--awc-space-200);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* background-color: var(--awc-white); */
+}
+
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+    background-color: #F6B325;
+    color: var(--awc-white);
+}
+
+.nav-tabs .nav-link {
+    border: 0px !important;
+}
+
+.nav-fill .nav-item .nav-link,
+.nav-justified .nav-item .nav-link {
+
+    box-shadow: 0px 1px 6px 2px rgba(0, 0, 0, 0.1);
+}
+
+.resorce-tabs {
+    background-color: var(--awc-white);
+    border-radius: var(--awc-space-200) var(--awc-space-200) var(--awc-space-0) var(--awc-space-0) !important;
+}
+
+.table-tab {
+    border-radius: var(--awc-space-200) var(--awc-space-200) var(--awc-space-0) var(--awc-space-0) !important;
+}
+
+.child-thead {
+    border: var(--awc-space-25) #F6B325 solid;
+}
+
+.recorce-accordion {
+    display: none;
+}
+
+.accordion-button {
+    background-color: #F6B325;
+    color: var(--awc-white);
+    margin-top: var(--awc-space-200);
+    box-shadow: 0px 1px 6px 2px rgba(0, 0, 0, 0.1);
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #eef4ed;
+    box-shadow: 0px 1px 6px 2px rgba(0, 0, 0, 0.1);
+    border: var(--awc-space-25) #eef4ed solid;
+}
+
+.accordion-button::after {
+    background-image: url("../images/arrow_icon.svg") !important;
+}
+
+.carousel-control-next-icon {
+
+    border: 1px var(--awc-black) solid;
+    border-radius: 24px;
+    background-color: hwb(0 0% 100%);
+}
+
+.carousel-control-prev-icon {
+    border: var(--awc-space-25) hwb(0 0% 100%) solid;
+    border-radius: var(--awc-space-550);
+    background-color: hwb(0 0% 100%);
+}
+
+.carousel-indicators [data-bs-target]::before {
+    width: 50px;
+    height: auto;
+    border-radius: 1px solid red;
+}
+
+.carousel-indicators [data-bs-target] {
+    background-color: hwb(0 0% 100%) !important;
+    border-radius: 12px !important;
+    border: 1px solid hwb(0 0% 100%);
+}
+
+.carousel-indicators .active {
+    border: 1px solid hwb(0 0% 100%);
+
+}
+
+.carousel-indicators>button {
+    border-radius: 12px !important;
+    width: 12px !important;
+    height: 12px !important;
+}
+
+
+
+@media (max-width: 1180px) {
+    .recorce-accordion {
+        display: block;
+    }
+
+    .table-tab {
+        background-color: snow;
+    }
+
+    .resorce-tabs1 {
+        display: none;
+    }
+
+    button.accordion-button.collapsed {
+        border-radius: var(--awc-space-200) !important;
+        background-color: var(--awc-blue);
+        color: var(--awc-white);
+        margin-bottom: var(--awc-space-300);
+    }
+}
+
+@media (max-width: 844px) {
+    .recorce-accordion {
+        display: block;
+    }
+
+    .table-tab {
+        background-color: snow;
+    }
+
+    .resorce-tabs1 {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 568px) {
+    .resorce-sub-title {
+        margin-top: var(--awc-space-0);
+    }
+
+    .resorce-tabs1 {
+        display: none;
+    }
+
+    .recorce-accordion {
+        display: table;
+    }
+
+    .table-tab {
+        background: border-box;
+    }
+
+    .resorce-sub-list h1 {
+        margin-top: var(--awc-space-500);
+    }
+
+}
