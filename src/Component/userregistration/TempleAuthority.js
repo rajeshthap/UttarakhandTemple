@@ -28,6 +28,132 @@ function TempleAuthority() {
                       />
                     </Form.Group>
                   </Col>
+                  <Col lg={4} md={4} sm={4}>
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
+                      <Form.Label className="temp-label">
+                        Temple Type <span className="temp-span-star">*</span>
+                      </Form.Label>
+                      <Form.Select className="temp-form-control-option">
+                        <option value="Select an option">
+                          Select an Temple
+                        </option>
+                        <option value="option1">Option 1</option>
+                        <option value="option2">Option 2</option>
+                        <option value="option3">Option 3</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                  <Col lg={4} md={4} sm={4}>
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
+                      <Form.Label className="temp-label">
+                        Temple Facility{" "}
+                        <span className="temp-span-star">*</span>
+                      </Form.Label>
+                      <Form.Select className="temp-form-control-option">
+                        <option value="Select an option">
+                          Select an Facility
+                        </option>
+                        <option value="option1">Option 1</option>
+                        <option value="option2">Option 2</option>
+                        <option value="option3">Option 3</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                  <Col lg={4} md={4} sm={4}>
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
+                      <Form.Label className="temp-label">
+                        Temple Address <span className="temp-span-star">*</span>
+                      </Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        rows={3}
+                        placeholder=""
+                        className="temp-form-control"
+                      />
+                    </Form.Group>
+                  </Col>
+                   <Col lg={4} md={4} sm={4}>
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
+                      <Form.Label className="temp-label">
+                        Country <span className="temp-span-star">*</span>
+                      </Form.Label>
+                      <Form.Select className="temp-form-control-option">
+                        <option value="Select an option">
+                          Select an Country
+                        </option>
+                        <option value="option1">Option 1</option>
+                        <option value="option2">Option 2</option>
+                        <option value="option3">Option 3</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                     <Col lg={4} md={4} sm={4}>
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
+                      <Form.Label className="temp-label">
+                        State <span className="temp-span-star">*</span>
+                      </Form.Label>
+                      <Form.Select className="temp-form-control-option">
+                        <option value="Select an option">
+                          Select an State
+                        </option>
+                        <option value="option1">Option 1</option>
+                        <option value="option2">Option 2</option>
+                        <option value="option3">Option 3</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                     <Col lg={4} md={4} sm={4}>
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
+                      <Form.Label className="temp-label">
+                        City <span className="temp-span-star">*</span>
+                      </Form.Label>
+                      <Form.Select className="temp-form-control-option">
+                        <option value="Select an option">
+                          Select an City
+                        </option>
+                        <option value="option1">Option 1</option>
+                        <option value="option2">Option 2</option>
+                        <option value="option3">Option 3</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                  <Col lg={4} md={4} sm={4}>
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
+                      <Form.Label className="temp-label">
+                        ZipCode <span className="temp-span-star">*</span>
+                      </Form.Label>
+                      <Form.Select className="temp-form-control-option">
+                        <option value="Select an option">
+                          Select an ZipCode
+                        </option>
+                        <option value="option1">Option 1</option>
+                        <option value="option2">Option 2</option>
+                        <option value="option3">Option 3</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+
                 </Row>
               </Form>
             </div>
