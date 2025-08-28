@@ -17,8 +17,7 @@ const Home = () => {
     return (
         <div>
             <div className='fluid'>
-                <InfoBar />
-                <TopNavBar />
+             
                 <CarouselSlider />
                 <OnlineBooking />
                 <Aboutus />

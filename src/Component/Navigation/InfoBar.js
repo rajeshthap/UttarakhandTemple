@@ -40,7 +40,7 @@ const InfoBar = () => {
                                     <span className="top-icon"><FaUserGroup /></span> Register
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                    <Dropdown.Item href="#/action-2">Temple Authority</Dropdown.Item>
+                                    <Dropdown.Item href="/TempleAuthority">Temple Authority</Dropdown.Item>
                                     <Dropdown.Item href="#/action-3">Pandit ji </Dropdown.Item>
                                     <Dropdown.Item href="#/action-3">Devotee</Dropdown.Item>
                                 </Dropdown.Menu>
