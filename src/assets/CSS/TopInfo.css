@@ -1,13 +1,11 @@
 .header-top {
     background-color: var(--temp-primary);
-    padding-top: var(--temp-space-300);
+    padding-top: var(--temp-space-400);
     padding-bottom: var(--temp-space-900);
     color: var(--temp-white);
 }
 
-.menubar {
-    background-color: var(--temp-primary);
-}
+
 
 .infoicon {
     color: var(--temp-org);
@@ -18,7 +16,7 @@
 }
 
 .bg-body-tertiary {
-    margin-top: -10px;
+    margin-top: -20px;
     z-index: 999;
 }
 
@@ -68,6 +66,7 @@
 
 .nav-temp {
     border-radius: var(--temp-space-200);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .search {
@@ -117,4 +116,9 @@
     margin-bottom: 0;
     color: var(--temp-black);
     background: transparent;
+}
+
+.menu-wrapper {
+    margin-left: 4%;
+    margin-right: 4%;
 }

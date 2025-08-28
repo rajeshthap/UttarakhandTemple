@@ -146,6 +146,14 @@
         display: block;
     }
 
+    .resorce-sub-title p {
+        font-size: var(--awc-space-400);
+    }
+
+    .resorce-sub-title h1 {
+        font-size: var(--temp-space-800);
+    }
+
     .table-tab {
         background-color: snow;
     }
@@ -162,9 +170,30 @@
     }
 }
 
+@media (max-width: 1024px) {
+
+    .resorce-sub-title p {
+        font-size: var(--awc-space-400);
+    }
+
+    .resorce-sub-title h1 {
+        font-size: var(--temp-space-800);
+    }
+
+  
+}
+
 @media (max-width: 844px) {
     .recorce-accordion {
         display: block;
+    }
+
+    .resorce-sub-title p {
+        font-size: var(--awc-space-400);
+    }
+
+    .resorce-sub-title h1 {
+        font-size: var(--temp-space-800);
     }
 
     .table-tab {
