@@ -1,30 +1,106 @@
-.temple-registration-heading h1{
-font-size: var(--temp-space-750);
-color: var(--temp-org);
-}
-span.temp-span-star{
+.temple-registration-heading h1 {
+    font-size: var(--temp-space-550);
     color: var(--temp-org);
 }
-.temp-label{
+
+span.temp-span-star {
+    color: var(--temp-org);
+}
+
+.temp-label {
     font-size: var(--temp-space-400);
     font-weight: 500;
     color: var(--temp-light-white);
 
-   
+
 }
-.temp-form-control{
+
+.temp-form-control {
     height: 48px;
-    
+
     border: 1px solid var(--temp-search-border);
 
 }
-.temp-form-control-option{
+
+.temp-form-control-option {
     height: 48px;
     font-size: var(--temp-space-300);
     border: 1px solid var(--temp-search-border)
 }
-.temp-container{
-   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-   border-radius: var(--temp-space-400);
-   background-color: var(--temp-white);
+
+.temp-container {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: var(--temp-space-400);
+    background-color: var(--temp-white);
+}
+
+.temp-stepform-box {
+    background-color: var(--temp-light-gray);
+    padding: var(--temp-space-300);
+    border-radius: var(--temp-space-200);
+    border: 1px solid #00000012 !important;
+    margin-bottom: var(--temp-space-400);
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.upload_dropZone {
+    color: #0f3c4b;
+    outline: 2px dashed var(--colorPrimaryHalf, #c1ddef);
+    outline-offset: -12px;
+    transition: 
+  outline-offset 0.2s ease-out, 
+  outline-color 0.3s ease-in-out, 
+  background-color 0.2s ease-out;
+    background-color: var(--temp-white);
+    border-radius: var(--temp-space-200);
+    padding-top: var(--temp-space-500) !important;
+}
+
+.temp-drop-txt {
+    font-size: var(--temp-space-300);
+}
+
+.temp-primary-btn {
+    background-color: var(--temp-org);
+    border: 1px solid var(--temp-primary-hover) !important;
+    font-size: var(--temp-space-300);
+    color: var(--temp-white);
+    padding-bottom: var(--temp-space-200);
+   
+}
+
+.temp-upload-file {
+    font-size: var(--temp-space-200);
+    padding: var(--temp-space-0) var(--temp-space-600) var(--temp-space-0) var(--temp-space-600);
+    font-weight: 650;
+}
+
+.temp-stepform-box h3 {
+    font-size: var(--temp-space-350);
+    font-weight: 600;
+    line-height: var(--temp-space-600);
+}
+
+.temp-doc-info {
+    font-size: var(--temp-space-300);
+    margin-bottom: 10%;
+}
+
+.temp-delete-icon h3 {
+    font-size: var(--temp-space-300);
+    color: var(--temp-red);
+}
+.temp-primary-btn:hover{
+    background-color: var(--temp-org);
+    color: var(--temp-white);
+}
+.temp-success-doc{
+    color: var(--temp-light-green);
+}
+.Temp-btn-submit{
+    text-align: center;
+}
+.temp-submit-btn{
+    margin-right: var(--temp-space-200);
 }

@@ -6,7 +6,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
 import "react-bootstrap/esm/Form.js";
 import "react-bootstrap/esm/Button.js";
 import "react-bootstrap/esm/Container.js";
@@ -14,7 +13,7 @@ import "react-bootstrap/esm/Offcanvas.js";
 import "react-bootstrap/esm/Dropdown.js";
 import "react-bootstrap/esm/DropdownButton.js";
 import "./CustomCss/custom.css";
-
+import "@fontsource/poppins"; 
 import TempleAuthority from "./Component/userregistration/TempleAuthority";
 import {
   Route,
