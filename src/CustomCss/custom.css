@@ -1,10 +1,16 @@
 /* svg {
     fill: #0d77cb;
   } */
-body {
-    background-color: #E9ECEF;
+
+:root {
+    
+    --temp-font-family: 'Poppins';
 }
 
+body {
+    background-color: #E9ECEF;
+    font-family: var(--temp-font-family);
+}
 :root {
     --temp-breakpoint-xs: 0;
     --temp-breakpoint-sm: 576px;
@@ -31,6 +37,7 @@ body {
     --temp-light-green: #0C7125;
     --temp-light-gray: #B8B8B840;
     --temp-red: #ED3338;
+    --temp-gray: #7B7A7A;
 
 
 

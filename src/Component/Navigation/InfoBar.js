@@ -41,7 +41,7 @@ const InfoBar = () => {
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <Dropdown.Item href="#/action-1">Admin</Dropdown.Item>
-                  <Dropdown.Item href="#/action-2">
+                  <Dropdown.Item href="/AuthorityLogin">
                     Temple Authority
                   </Dropdown.Item>
                   <Dropdown.Item href="#/action-3">Pandit ji </Dropdown.Item>

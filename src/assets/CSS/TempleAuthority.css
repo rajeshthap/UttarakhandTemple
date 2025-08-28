@@ -102,5 +102,36 @@ span.temp-span-star {
     text-align: center;
 }
 .temp-submit-btn{
-    margin-right: var(--temp-space-200);
+    margin-right: var(--temp-space-1000);
+    background-color: var(--temp-org);
+    border: 1px var(--temp-org) solid;
+    border-radius: var(--temp-space-200);
+ font-size: var(--temp-space-400);
+ padding-left: var(--temp-space-600);
+ padding-right: var(--temp-space-600);
+ padding-top: var(--temp-space-200);
+ padding-bottom: var(--temp-space-200);
+ 
+}
+
+.temp-submit-btn:hover{
+    background-color: var(--temp-org) !important;
+       border: 1px var(--temp-org) solid;
+      
+        border-radius: var(--temp-space-200);
+}
+.temp-cancle-btn{
+ background-color: var(--temp-gray);
+    border: 1px var(--temp-gray) solid;
+    border-radius: var(--temp-space-200);
+    font-size: var(--temp-space-400);
+     padding-left: var(--temp-space-600);
+ padding-right: var(--temp-space-600);
+ padding-top: var(--temp-space-200);
+ padding-bottom: var(--temp-space-200);
+}
+.temp-cancle-btn:hover{
+ background-color: var(--temp-gray) !important;
+    border: 1px var(--temp-gray) solid;
+     border-radius: var(--temp-space-200);
 }

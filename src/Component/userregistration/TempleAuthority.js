@@ -358,7 +358,7 @@ function TempleAuthority() {
                 </div>
 
                 <Row>
-                  <Col lg={6} md={12} sm={12} className="temp-p-12">
+                  <Col lg={6} md={12} sm={12}>
                     <Row className="temp-stepform-box">
                       <Col lg={5} md={5} sm={5}>
                         <form>
@@ -379,7 +379,7 @@ function TempleAuthority() {
                               id="upload_image_logo"
                               data-post-name="image_logo"
                               data-post-url="https://someplace.com/image/uploads/logos/"
-                              class="position-absolute invisible"
+                              class=" invisible"
                               type="file"
                               multiple
                               accept="image/jpeg, image/png, image/svg+xml"
@@ -432,7 +432,7 @@ function TempleAuthority() {
                       </Col>
                     </Row>
                   </Col>
-                  <Col lg={6} md={12} sm={12} className="temp-p-12">
+                  <Col lg={6} md={12} sm={12}>
                     <Row className="temp-stepform-box">
                       <Col lg={5} md={5} sm={5}>
                         <form>
@@ -453,7 +453,7 @@ function TempleAuthority() {
                               id="upload_image_logo"
                               data-post-name="image_logo"
                               data-post-url="https://someplace.com/image/uploads/logos/"
-                              class="position-absolute invisible"
+                              class=" invisible"
                               type="file"
                               multiple
                               accept="image/jpeg, image/png, image/svg+xml"
@@ -506,7 +506,7 @@ function TempleAuthority() {
                       </Col>
                     </Row>
                   </Col>
-                  <Col lg={6} md={12} sm={12} className="temp-p-12">
+                  <Col lg={6} md={12} sm={12}>
                     <Row className="temp-stepform-box">
                       <Col lg={5} md={5} sm={5}>
                         <form>
@@ -527,7 +527,7 @@ function TempleAuthority() {
                               id="upload_image_logo"
                               data-post-name="image_logo"
                               data-post-url="https://someplace.com/image/uploads/logos/"
-                              class="position-absolute invisible"
+                              class="invisible"
                               type="file"
                               multiple
                               accept="image/jpeg, image/png, image/svg+xml"
@@ -580,7 +580,7 @@ function TempleAuthority() {
                       </Col>
                     </Row>
                   </Col>
-                  <Col lg={6} md={12} sm={12} className="temp-p-12">
+                  <Col lg={6} md={12} sm={12}>
                     <Row className="temp-stepform-box">
                       <Col lg={5} md={5} sm={5}>
                         <form>
@@ -601,7 +601,7 @@ function TempleAuthority() {
                               id="upload_image_logo"
                               data-post-name="image_logo"
                               data-post-url="https://someplace.com/image/uploads/logos/"
-                              class="position-absolute invisible"
+                              class=" invisible"
                               type="file"
                               multiple
                               accept="image/jpeg, image/png, image/svg+xml"
@@ -662,7 +662,7 @@ function TempleAuthority() {
                     className="temp-submit-btn"
                     type="submit"
                   >
-                    Submit
+                    Registration Now
                   </Button>
                   <Button
                     variant="secondary"

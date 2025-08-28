@@ -22,6 +22,7 @@ import {
 import Home from "./Pages/Home";
 import InfoBar from "./Component/Navigation/InfoBar";
 import TopNavBar from "./Component/Navigation/TopNavBar";
+import AuthorityLogin from "./Component/userregistration/AuthorityLogin";
 import NotFound from "./Component/notfound/NotFound";
 
 // Importing necessary components and pages
@@ -34,6 +35,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/TempleAuthority" element={<TempleAuthority />} />
+        <Route path="/AuthorityLogin" element={<AuthorityLogin />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

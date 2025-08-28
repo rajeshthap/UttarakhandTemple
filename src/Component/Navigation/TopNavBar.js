@@ -111,7 +111,7 @@ const TopNavBar = () => {
                     </NavDropdown.Item>
                   </NavDropdown>
                 </Nav>
-                <Form className="d-flex">
+                {/* <Form className="d-flex">
                   <div className="search">
                     <form id="searchFormTop" action="" method="get">
                       <input
@@ -128,14 +128,8 @@ const TopNavBar = () => {
                       </span>
                     </form>
                   </div>
-                  {/* <Form.Control
-                                        type="search"
-                                        placeholder="Search"
-                                        className="me-2"
-                                        aria-label="Search"
-                                    />
-                                    <Button variant="outline-success">Search</Button> */}
-                </Form>
+                  
+                </Form> */}
               </Navbar.Collapse>
             </Container>
           </Navbar>
