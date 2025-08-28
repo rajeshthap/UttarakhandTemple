@@ -1,0 +1,25 @@
+.temple-registration-heading h1{
+font-size: var(--temp-space-750);
+color: var(--temp-org);
+}
+span.temp-span-star{
+    color: var(--temp-org);
+}
+.temp-label{
+    font-size: var(--temp-space-400);
+    font-weight: 500;
+    color: var(--temp-light-white);
+
+   
+}
+.temp-form-control{
+    height: 48px;
+    color: var(--temp-search-border);
+    border: 1px solid var(--temp-search-border);
+
+}
+.temp-container{
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   border-radius: var(--temp-space-400);
+   background-color: var(--temp-white);
+}

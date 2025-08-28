@@ -2,8 +2,6 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import "../CustomCss/custom.css";
-import TopNavBar from '../Component/Navigation/TopNavBar';
-import InfoBar from '../Component/Navigation/InfoBar';
 import CarouselSlider from '../Component/CarouselSlider';
 import OnlineBooking from '../Component/OnlineBooking';
 import Aboutus from '../Component/Aboutus';
@@ -17,8 +15,7 @@ const Home = () => {
     return (
         <div>
             <div className='fluid'>
-                <InfoBar />
-                <TopNavBar />
+             
                 <CarouselSlider />
                 <OnlineBooking />
                 <Aboutus />
