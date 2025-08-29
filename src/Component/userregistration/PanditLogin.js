@@ -10,13 +10,13 @@ function PanditLogin() {
       <Container className="temp-container">
         <div>
           <div className="mt-3 temple-registration-heading p-3">
-            <h1>Temple Login</h1>
+            <h1>Pandit Login</h1>
             <div>
               <Form>
                 <Row className="mt-3">
                   <Col lg={6} md={6}>
                     <Row>
-                      <Col lg={12} md={12} sm={12}>
+                      <Col lg={12} md={12} sm={12} className="mt-4">
                         <Form.Group
                           className="mb-3"
                           controlId="exampleForm.ControlInput1"
@@ -76,9 +76,9 @@ function PanditLogin() {
                       </div>
                     </Row>
                   </Col>
-                  <Col lg={6} md={6} sm={12}>
-                  <div> 
-                    <img src={Regimg1} className="img-fluid" alt="images"></img>
+                  <Col lg={6} md={6} sm={12} className="d-flex justify-content-center align-items-center">
+                    <div>
+                      <img src={Regimg1} className="img-fluid" alt="images"></img>
                     </div>
                   </Col>
                 </Row>

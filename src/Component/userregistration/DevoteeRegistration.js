@@ -10,7 +10,7 @@ function DevoteeRegistration() {
     <div>
       <Container className="temp-container">
         <div>
-          <div className="mt-3 temple-registration-heading p-3">
+          <div className="mt-3 temple-registration-heading p-3 ">
             <h1>User Registration</h1>
             <div>
               <Form>

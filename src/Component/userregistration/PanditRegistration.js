@@ -12,7 +12,7 @@ function PanditRegistration() {
     <div>
       <Container className="temp-container">
         <div>
-          <div className="mt-3 temple-registration-heading p-3">
+          <div className="mt-3 temple-registration-heading p-3 ">
             <h1>Pandit Registration</h1>
             <div>
               <Form>
@@ -33,7 +33,7 @@ function PanditRegistration() {
                     </Form.Group>
                   </Col>
 
-                     <Col lg={4} md={4} sm={12}>
+                  <Col lg={4} md={4} sm={12}>
                     <Form.Group
                       className="mb-3"
                       controlId="exampleForm.ControlInput1"
@@ -54,7 +54,7 @@ function PanditRegistration() {
                       controlId="exampleForm.ControlInput1"
                     >
                       <Form.Label className="temp-label">
-                       Father's Name <span className="temp-span-star">*</span>
+                        Father's Name <span className="temp-span-star">*</span>
                       </Form.Label>
                       <Form.Control
                         type="text"
@@ -64,7 +64,7 @@ function PanditRegistration() {
                     </Form.Group>
                   </Col>
 
-                   <Col lg={4} md={4} sm={12}>
+                  <Col lg={4} md={4} sm={12}>
                     <Form.Group
                       className="mb-3"
                       controlId="exampleForm.ControlInput1"
@@ -80,7 +80,7 @@ function PanditRegistration() {
                     </Form.Group>
                   </Col>
 
-                    <Col lg={4} md={4} sm={12}>
+                  <Col lg={4} md={4} sm={12}>
                     <Form.Group
                       className="mb-3"
                       controlId="exampleForm.ControlInput1"
@@ -96,7 +96,7 @@ function PanditRegistration() {
                     </Form.Group>
                   </Col>
 
-                      <Col lg={4} md={4} sm={12}>
+                  <Col lg={4} md={4} sm={12}>
                     <Form.Group
                       className="mb-3"
                       controlId="exampleForm.ControlInput1"
@@ -112,7 +112,7 @@ function PanditRegistration() {
                     </Form.Group>
                   </Col>
 
-  <Col lg={4} md={4} sm={12}>
+                  <Col lg={4} md={4} sm={12}>
                     <Form.Group
                       className="mb-3"
                       controlId="exampleForm.ControlInput1"
@@ -129,7 +129,7 @@ function PanditRegistration() {
                     </Form.Group>
                   </Col>
 
-                   <Col lg={4} md={4} sm={12}>
+                  <Col lg={4} md={4} sm={12}>
                     <Form.Group
                       className="mb-3"
                       controlId="exampleForm.ControlInput1"
@@ -181,7 +181,7 @@ function PanditRegistration() {
                       </Form.Select>
                     </Form.Group>
                   </Col>
-                    <Col lg={4} md={4} sm={12}>
+                  <Col lg={4} md={4} sm={12}>
                     <Form.Group
                       className="mb-3"
                       controlId="exampleForm.ControlInput1"
@@ -197,14 +197,14 @@ function PanditRegistration() {
                     </Form.Group>
                   </Col>
 
-                  
-                    <Col lg={4} md={4} sm={12}>
+
+                  <Col lg={4} md={4} sm={12}>
                     <Form.Group
                       className="mb-3"
                       controlId="exampleForm.ControlInput1"
                     >
                       <Form.Label className="temp-label">
-                         Temple Association <span className="temp-span-star">*</span>
+                        Temple Association <span className="temp-span-star">*</span>
                       </Form.Label>
                       <Form.Select className="temp-form-control-option">
                         <option value="Select a option">Select a Temple Association</option>
@@ -215,11 +215,11 @@ function PanditRegistration() {
                       </Form.Select>
                     </Form.Group>
                   </Col>
-                 
+
                 </Row>
-              
-               
-                <div className="mt-3 temple-registration-heading p-3">
+
+
+                <div className="mt-3 temple-registration-heading ">
                   <h1>Supporting Documents</h1>
                 </div>
 
@@ -372,7 +372,7 @@ function PanditRegistration() {
                       </Col>
                     </Row>
                   </Col>
-                 
+
                 </Row>
 
                 <div className="gap-3 mt-3 Temp-btn-submit">
