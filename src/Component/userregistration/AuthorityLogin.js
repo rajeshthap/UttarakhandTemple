@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import "../../assets/CSS/TempleAuthority.css";
-import Regimg1 from "../../assets/images/userimg-two.jpg"
+import Regimg1 from "../../assets/images/temple-img.jpg"
 
 function AuthorityLogin() {
   return (

@@ -44,8 +44,8 @@ const InfoBar = () => {
                   <Dropdown.Item href="/AuthorityLogin">
                     Temple Authority
                   </Dropdown.Item>
-                  <Dropdown.Item href="#/action-3">Pandit ji </Dropdown.Item>
-                  <Dropdown.Item href="#/action-3">Devotee</Dropdown.Item>
+                  <Dropdown.Item href="/PanditLogin">Pandit ji </Dropdown.Item>
+                  <Dropdown.Item href="/DevoteeLogin">Devotee</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
 

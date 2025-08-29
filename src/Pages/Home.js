@@ -10,7 +10,6 @@ import Testimonials from '../Component/Testimonials';
 import Footer from '../Component/Footer';
 
 
-
 const Home = () => {
     return (
         <div>

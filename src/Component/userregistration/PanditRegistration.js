@@ -197,22 +197,24 @@ function PanditRegistration() {
                     </Form.Group>
                   </Col>
 
-                   <Col lg={4} md={4} sm={12}>
+                  
+                    <Col lg={4} md={4} sm={12}>
                     <Form.Group
                       className="mb-3"
                       controlId="exampleForm.ControlInput1"
                     >
                       <Form.Label className="temp-label">
-                        Temple Association <span className="temp-span-star">*</span>
+                         Temple Association <span className="temp-span-star">*</span>
                       </Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="choose from registered temples"
-                        className="temp-form-control"
-                      />
+                      <Form.Select className="temp-form-control-option">
+                        <option value="Select a option">Select a Temple Association</option>
+                        <option value="option1">Local Temple Association</option>
+                        <option value="option2">State Temple Association</option>
+                        <option value="option3">National Temple Association</option>
+                        <option value="option3">Independent</option>
+                      </Form.Select>
                     </Form.Group>
                   </Col>
-                 
                  
                 </Row>
               

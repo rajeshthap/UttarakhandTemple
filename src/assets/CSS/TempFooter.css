@@ -1,0 +1,14 @@
+.temp-footer-title{
+    display: flex;
+    justify-content: space-between;
+}
+.footer-span{
+    color: var(--temp-org);
+}
+.footer-icon{
+    color: var(--temp-gray-dark-blue);
+    font-size: var(--temp-space-700);
+}
+.temp-footer-title p{
+    font-size: var(--temp-space-350);
+}

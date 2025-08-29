@@ -26,6 +26,10 @@ import AuthorityLogin from "./Component/userregistration/AuthorityLogin";
 import PanditRegistration from "./Component/userregistration/PanditRegistration";
 import DevoteeRegistration from "./Component/userregistration/DevoteeRegistration";
 import NotFound from "./Component/notfound/NotFound";
+import PanditLogin from "./Component/userregistration/PanditLogin";
+import DevoteeLogin from "./Component/userregistration/DevoteeLogin";
+import TempleFooter from "./Component/temple_footer/TempleFooter";
+
 import { BASE_URLL } from "./Component/BaseURL";
 
 
@@ -42,9 +46,13 @@ function App() {
         <Route path="/AuthorityLogin" element={<AuthorityLogin />} />
         <Route path="/PanditRegistration" element={<PanditRegistration />} />
         <Route path="/DevoteeRegistration" element={<DevoteeRegistration />} />
+        <Route path="/PanditLogin" element={<PanditLogin />} />
+        <Route path="/DevoteeLogin" element={<DevoteeLogin />} />
+       
         <Route path="/BaseURL" element={<BASE_URLL />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <TempleFooter />
     </div>
   );
 }
