@@ -5,7 +5,6 @@ import "../../assets/CSS/TempleAuthority.css";
 import { FaCheckCircle } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import UploadFile from "../../assets/images/upload-icon.png";
-import LocationState from "./LocationState";
 
 function TempleAuthority() {
   return (
@@ -41,12 +40,13 @@ function TempleAuthority() {
                         Temple Type <span className="temp-span-star">*</span>
                       </Form.Label>
                       <Form.Select className="temp-form-control-option">
-                        <option value="Select an option">
-                          Select an Temple
-                        </option>
-                        <option value="option1">Option 1</option>
-                        <option value="option2">Option 2</option>
-                        <option value="option3">Option 3</option>
+                        <option value="">Select Temple Type</option>
+                        <option value="shiv">Shiv Temple</option>
+                        <option value="vishnu">Vishnu Temple</option>
+                        <option value="durga">Durga Temple</option>
+                        <option value="ganesh">Ganesh Temple</option>
+                        <option value="hanuman">Hanuman Temple</option>
+                        <option value="other">Other</option>
                       </Form.Select>
                     </Form.Group>
                   </Col>
@@ -60,12 +60,15 @@ function TempleAuthority() {
                         <span className="temp-span-star">*</span>
                       </Form.Label>
                       <Form.Select className="temp-form-control-option">
-                        <option value="Select an option">
-                          Select an Facility
+                        <option value="">Select Facility</option>
+                        <option value="parking">Parking</option>
+                        <option value="restrooms">Restrooms</option>
+                        <option value="drinkingWater">Drinking Water</option>
+                        <option value="prasadCounter">Prasad Counter</option>
+                        <option value="accommodation">Accommodation</option>
+                        <option value="wheelchairAccess">
+                          Wheelchair Access
                         </option>
-                        <option value="option1">Option 1</option>
-                        <option value="option2">Option 2</option>
-                        <option value="option3">Option 3</option>
                       </Form.Select>
                     </Form.Group>
                   </Col>
@@ -85,7 +88,7 @@ function TempleAuthority() {
                       />
                     </Form.Group>
                   </Col>
-                  
+
                   <Col lg={4} md={4} sm={12}>
                     <Form.Group
                       className="mb-3"
@@ -166,12 +169,47 @@ function TempleAuthority() {
                         <option value="Select an option">
                           Select an Establishment
                         </option>
-                        <option value="option1">Option 1</option>
-                        <option value="option2">Option 2</option>
-                        <option value="option3">Option 3</option>
+                        <option value="">Select Year</option>
+                        <option value="2035">2035</option>
+                        <option value="2034">2034</option>
+                        <option value="2033">2033</option>
+                        <option value="2032">2032</option>
+                        <option value="2031">2031</option>
+                        <option value="2030">2030</option>
+                        <option value="2029">2029</option>
+                        <option value="2028">2028</option>
+                        <option value="2027">2027</option>
+                        <option value="2026">2026</option>
+                        <option value="2025">2025</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                        <option value="2016">2016</option>
+                        <option value="2015">2015</option>
+                        <option value="2014">2014</option>
+                        <option value="2013">2013</option>
+                        <option value="2012">2012</option>
+                        <option value="2011">2011</option>
+                        <option value="2010">2010</option>
+                        <option value="2009">2009</option>
+                        <option value="2008">2008</option>
+                        <option value="2007">2007</option>
+                        <option value="2006">2006</option>
+                        <option value="2005">2005</option>
+                        <option value="2004">2004</option>
+                        <option value="2003">2003</option>
+                        <option value="2002">2002</option>
+                        <option value="2001">2001</option>
+                        <option value="2000">2000</option>
                       </Form.Select>
                     </Form.Group>
                   </Col>
+
                   <Col lg={4} md={4} sm={12}>
                     <Form.Group
                       className="mb-3"
@@ -180,13 +218,22 @@ function TempleAuthority() {
                       <Form.Label className="temp-label">
                         Temple Events <span className="temp-span-star">*</span>
                       </Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder=""
-                        className="temp-form-control"
-                      />
+                      <Form.Select className="temp-form-control-option">
+                        <option value="">Select Event</option>
+                        <option value="dailyPuja">Daily Puja</option>
+                        <option value="aarti">Morning/Evening Aarti</option>
+                        <option value="festivals">
+                          Festivals (Diwali, Navratri, etc.)
+                        </option>
+                        <option value="specialPuja">Special Puja</option>
+                        <option value="annadhanam">
+                          Annadhanam (Food Offering)
+                        </option>
+                        <option value="yatra">Annual Yatra/Pilgrimage</option>
+                      </Form.Select>
                     </Form.Group>
                   </Col>
+
                   <Col lg={4} md={4} sm={12}>
                     <Form.Group
                       className="mb-3"
@@ -197,12 +244,12 @@ function TempleAuthority() {
                         <span className="temp-span-star">*</span>
                       </Form.Label>
                       <Form.Select className="temp-form-control-option">
-                        <option value="Select an option">
-                          Select an Temple Ownership
-                        </option>
-                        <option value="option1">Option 1</option>
-                        <option value="option2">Option 2</option>
-                        <option value="option3">Option 3</option>
+                        <option value="">Select Ownership Type</option>
+                        <option value="government">Government Owned</option>
+                        <option value="trust">Trust / Committee Managed</option>
+                        <option value="private">Private Ownership</option>
+                        <option value="community">Community Managed</option>
+                        <option value="other">Other</option>
                       </Form.Select>
                     </Form.Group>
                   </Col>
@@ -236,6 +283,7 @@ function TempleAuthority() {
                       />
                     </Form.Group>
                   </Col>
+
                   <Col lg={4} md={4} sm={12}>
                     <Form.Group
                       className="mb-3"
@@ -245,10 +293,24 @@ function TempleAuthority() {
                         Trust/Managing Committee Details{" "}
                         <span className="temp-span-star">*</span>
                       </Form.Label>
+                      <Form.Select className="temp-form-control-option">
+                        <option value="public">Public Trust</option>
+                        <option value="private">Private Trust</option>
+                        <option value="committee">Managing Committee</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg={4} md={4} sm={12}>
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
                       <Form.Control
-                        type="text"
-                        placeholder=""
-                        className="temp-form-control"
+                        as="textarea"
+                        rows={4}
+                        placeholder="Enter additional details"
+                        className="temp-form-control mt-regi-top"
                       />
                     </Form.Group>
                   </Col>
@@ -315,12 +377,11 @@ function TempleAuthority() {
                         Account Type <span className="temp-span-star">*</span>
                       </Form.Label>
                       <Form.Select className="temp-form-control-option">
-                        <option value="Select an option">
-                          Select an Account Type
-                        </option>
-                        <option value="option1">Option 1</option>
-                        <option value="option2">Option 2</option>
-                        <option value="option3">Option 3</option>
+                        <option value="">Select Account Type</option>
+                        <option value="">Select Account Type</option>
+                        <option value="savings">Savings Account</option>
+                        <option value="current">Current Account</option>
+                        <option value="other">Other</option>
                       </Form.Select>
                     </Form.Group>
                   </Col>

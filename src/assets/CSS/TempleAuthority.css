@@ -14,20 +14,45 @@ span.temp-span-star {
 
 
 }
+.temp-label-lg-bg {
+    font-size: var(--temp-space-400);
+    font-weight: 500;
+    color: var(--temp-light-white) !important;
+    font-family: var(--temp-font-family);
+
+
+}
 
 .temp-form-control {
     height: 48px;
-
+border-radius: var(--temp-space-200);
     border: 1px solid var(--temp-search-border);
+
+}
+
+.temp-form-control-bg {
+    height: 48px;
+    background-color: var(--temp-gray-light);
+    border: 1px solid var(--temp-search-border);
+    border-radius: var(--temp-space-200);
+    font-size: var(--temp-space-300);
 
 }
 
 .temp-form-control-option {
     height: 48px;
-    font-size: var(--temp-space-300);
+    font-size: var(--temp-space-350);
     border: 1px solid var(--temp-search-border)
 }
+.temp-form-control-option-bg {
+    height: 48px;
+    font-size: var(--temp-space-300);
+    border: 1px solid var(--temp-search-border);
+    background-color: var(--temp-gray-light);
+    
 
+
+}
 .temp-container {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: var(--temp-space-400);
@@ -113,7 +138,25 @@ span.temp-span-star {
  padding-bottom: var(--temp-space-200);
  
 }
-
+.temp-submit-btn-login{
+    margin-right: var(--temp-space-1000);
+    background-color: var(--temp-white);
+    border: 1px var(--temp-white) solid;
+    border-radius: var(--temp-space-200);
+ font-size: var(--temp-space-400);
+ padding-left: var(--temp-space-600);
+ padding-right: var(--temp-space-600);
+ padding-top: var(--temp-space-200);
+ padding-bottom: var(--temp-space-200);
+ color: var(--temp-black);
+ 
+}
+.temp-submit-btn-login:hover{
+ background-color: var(--temp-light-green) !important;
+       border: 1px var(--temp-light-green) solid;
+      
+        border-radius: var(--temp-space-200);
+}
 .temp-submit-btn:hover{
     background-color: var(--temp-org) !important;
        border: 1px var(--temp-org) solid;
@@ -134,4 +177,34 @@ span.temp-span-star {
  background-color: var(--temp-gray) !important;
     border: 1px var(--temp-gray) solid;
      border-radius: var(--temp-space-200);
+}
+.mt-regi-top{
+    margin-top: var(--temp-space-750);
+}
+
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+
+.password-wrapper .temp-form-control-bg {
+  padding-right: 40px; 
+}
+
+
+.password-wrapper .toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--temp-gray);
+  font-size: var(--temp-space-400);
+}
+
+
+.password-wrapper .toggle-password:hover {
+  color: var(--temp-black);
 }

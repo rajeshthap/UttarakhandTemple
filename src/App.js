@@ -23,6 +23,8 @@ import Home from "./Pages/Home";
 import InfoBar from "./Component/Navigation/InfoBar";
 import TopNavBar from "./Component/Navigation/TopNavBar";
 import AuthorityLogin from "./Component/userregistration/AuthorityLogin";
+import PanditRegistration from "./Component/userregistration/PanditRegistration";
+import DevoteeRegistration from "./Component/userregistration/DevoteeRegistration";
 import NotFound from "./Component/notfound/NotFound";
 import { BASE_URLL } from "./Component/BaseURL";
 
@@ -38,6 +40,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/TempleAuthority" element={<TempleAuthority />} />
         <Route path="/AuthorityLogin" element={<AuthorityLogin />} />
+        <Route path="/PanditRegistration" element={<PanditRegistration />} />
+        <Route path="/DevoteeRegistration" element={<DevoteeRegistration />} />
         <Route path="/BaseURL" element={<BASE_URLL />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
