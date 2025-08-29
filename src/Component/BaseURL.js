@@ -1,0 +1,1 @@
+export const BASE_URLL = "https://brjobsedu.com/Brjobsedu/";

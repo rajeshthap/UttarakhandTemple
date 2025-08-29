@@ -24,6 +24,8 @@ import InfoBar from "./Component/Navigation/InfoBar";
 import TopNavBar from "./Component/Navigation/TopNavBar";
 import AuthorityLogin from "./Component/userregistration/AuthorityLogin";
 import NotFound from "./Component/notfound/NotFound";
+import { BASE_URLL } from "./Component/BaseURL";
+
 
 // Importing necessary components and pages
 
@@ -36,6 +38,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/TempleAuthority" element={<TempleAuthority />} />
         <Route path="/AuthorityLogin" element={<AuthorityLogin />} />
+        <Route path="/BaseURL" element={<BASE_URLL />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

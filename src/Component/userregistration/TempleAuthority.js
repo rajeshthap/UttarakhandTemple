@@ -5,6 +5,7 @@ import "../../assets/CSS/TempleAuthority.css";
 import { FaCheckCircle } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import UploadFile from "../../assets/images/upload-icon.png";
+import LocationState from "./LocationState";
 
 function TempleAuthority() {
   return (
@@ -84,6 +85,7 @@ function TempleAuthority() {
                       />
                     </Form.Group>
                   </Col>
+                  
                   <Col lg={4} md={4} sm={12}>
                     <Form.Group
                       className="mb-3"
@@ -656,7 +658,7 @@ function TempleAuthority() {
                   </Col>
                 </Row>
 
-                <div className="gap-3 Temp-btn-submit">
+                <div className="gap-3 mt-3 Temp-btn-submit">
                   <Button
                     variant="primary"
                     className="temp-submit-btn"
