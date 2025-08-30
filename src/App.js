@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 
 import "bootstrap-icons/font/bootstrap-icons.css";
+import "./CustomCss/custom.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "slick-carousel/slick/slick.css";
@@ -13,7 +14,7 @@ import "react-bootstrap/esm/Offcanvas.js";
 import "react-bootstrap/esm/Dropdown.js";
 import "react-bootstrap/esm/DropdownButton.js";
 import "./CustomCss/custom.css";
-import "@fontsource/poppins"; 
+import "@fontsource/poppins";
 import TempleAuthority from "./Component/userregistration/TempleAuthority";
 import {
   Route,
@@ -29,9 +30,11 @@ import NotFound from "./Component/notfound/NotFound";
 import PanditLogin from "./Component/userregistration/PanditLogin";
 import DevoteeLogin from "./Component/userregistration/DevoteeLogin";
 import TempleFooter from "./Component/temple_footer/TempleFooter";
-
+import DonateTemples from "./Component/DonateToTemples/DonateTemples";
+import ExtendYourDivine from "./Component/DonateToTemples/ExtendYourDivine"
 import { BASE_URLL } from "./Component/BaseURL";
-
+import OTPModel from "./Component/OTPModel/OTPModel";
+import PaymentConfirmation from "./Component/DonateToTemples/PaymentConfirmation"
 
 // Importing necessary components and pages
 
@@ -48,7 +51,10 @@ function App() {
         <Route path="/DevoteeRegistration" element={<DevoteeRegistration />} />
         <Route path="/PanditLogin" element={<PanditLogin />} />
         <Route path="/DevoteeLogin" element={<DevoteeLogin />} />
-       
+        <Route path="/DonateTemples" element={<DonateTemples />} />
+        <Route path="/ExtendYourDivine" element={<ExtendYourDivine />} />
+        <Route path="/PaymentConfirmation" element={<PaymentConfirmation />} />
+        <Route path="/OTPModel" element={<OTPModel />} />
         <Route path="/BaseURL" element={<BASE_URLL />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

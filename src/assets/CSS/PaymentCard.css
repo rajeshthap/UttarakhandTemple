@@ -1,0 +1,40 @@
+.temp-payment-card {
+    background-color: var(--temp-gray-light);
+    padding: var(--temp-space-400);
+    border-radius: var(--temp-space-200);
+    margin: auto;
+    text-align: center;
+
+}
+
+.payment-type {
+    margin-top: var(--temp-space-200);
+    font-size: var(--temp-space-300);
+    line-height: 1.6;
+    text-align: left;
+}
+
+
+.payment-type h3 {
+    margin-top: var(--temp-space-350);
+    margin-bottom: var(--temp-space-0);
+}
+
+.payment-type p {
+    margin-top: var(--temp-space-50);
+    color: var(--temp-gray);
+    font-weight: 500;
+    padding-bottom: var(--temp-space-200);
+    border-bottom: var(--temp-space-25) solid var(--temp-gray);
+}
+
+.divder {
+    border-bottom: var(--temp-space-25) solid var(--temp-gray);
+    padding-bottom: var(--temp-space-250);
+}
+
+.payment-info h2 {
+    color: var(--temp-black) !important;
+    font-size: var(--temp-space-350);
+    font-weight: 500;
+}

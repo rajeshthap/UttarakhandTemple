@@ -9,7 +9,7 @@ function PanditLogin() {
     <div>
       <Container className="temp-container">
         <div>
-          <div className="mt-3 temple-registration-heading p-3">
+          <div className=" temple-registration-heading ">
             <h1>Pandit Login</h1>
             <div>
               <Form>

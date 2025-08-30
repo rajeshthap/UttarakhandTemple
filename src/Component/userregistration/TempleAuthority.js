@@ -11,7 +11,7 @@ function TempleAuthority() {
     <div>
       <Container className="temp-container">
         <div>
-          <div className="mt-3 temple-registration-heading p-3 ">
+          <div className="mt-3 temple-registration-heading ">
             <h1>Temple Registration</h1>
             <div>
               <Form>
@@ -416,7 +416,7 @@ function TempleAuthority() {
                     </Form.Group>
                   </Col>
                 </Row>
-                <div className="mt-3 temple-registration-heading">
+                <div className=" temple-registration-heading">
                   <h1>Supporting Documents</h1>
                 </div>
 
@@ -721,8 +721,8 @@ function TempleAuthority() {
 
                 <div className="gap-3 mt-3 Temp-btn-submit">
                   <Button
-                    variant="primary"
-                    className="temp-submit-btn"
+                    variant="temp-submit-btn"
+                    className="temp-submit-btn mx-3"
                     type="submit"
                   >
                     Registration Now

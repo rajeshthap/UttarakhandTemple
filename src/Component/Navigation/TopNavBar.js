@@ -42,7 +42,7 @@ const TopNavBar = () => {
                       Special announcements / Upcoming Events
                     </NavDropdown.Item>
                   </NavDropdown>
-                  <Nav.Link href="#home">Donate to Temples</Nav.Link>
+                  <Nav.Link href="/DonateTemples">Donate to Temples</Nav.Link>
 
                   <NavDropdown
                     title="Mandir Booking"
