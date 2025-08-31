@@ -86,7 +86,10 @@ span.temp-span-star {
 }
 
 .temp-drop-txt {
-    font-size: var(--temp-space-300);
+    font-size: var(--temp-space-300) !important;
+    margin-bottom: var(--temp-space-0) !important;
+    font-weight: 500;
+
 }
 
 .temp-primary-btn {
@@ -99,10 +102,11 @@ span.temp-span-star {
 }
 
 .temp-upload-file {
-    font-size: var(--temp-space-200);
+    font-size: var(--temp-space-200) !important;
     padding: var(--temp-space-0) var(--temp-space-600) var(--temp-space-0) var(--temp-space-600);
     font-weight: 650;
 }
+
 
 .temp-stepform-box h3 {
     font-size: var(--temp-space-350);

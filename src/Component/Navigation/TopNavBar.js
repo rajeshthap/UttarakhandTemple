@@ -12,7 +12,7 @@ const TopNavBar = () => {
         <div>
           <Navbar expand="lg" className="bg-body-tertiary nav-temp">
             <Container fluid>
-              <Navbar.Brand href="#">
+              <Navbar.Brand href="/">
                 <img src={logo} alt="Company Logo" className="img-fluid"></img>
               </Navbar.Brand>
               <Navbar.Toggle aria-controls="navbarScroll" />
@@ -49,7 +49,7 @@ const TopNavBar = () => {
                     id="navbarScrollingDropdown"
                   >
                     <NavDropdown.Item href="#action3">
-                      Mandir Registration{" "}
+                      Mandir Booking{" "}
                     </NavDropdown.Item>
                     <NavDropdown.Item href="#action4">
                       Darshan Booking

@@ -25,11 +25,11 @@ const DonateTemples = () => {
                         <p>You can support our temple through direct bank deposit. Please use the details below to make your contribution:</p>
                         <span><b>Bank Account Details:</b></span>
                         <ul>
-                            <li>Account Name: Uttarakhand Temple Trust</li>
-                            <li>Bank Name: Devbhumi National Bank</li>
-                            <li>Account Number: 123456789012</li>
-                            <li>IFSC Code: DEVN0001234</li>
-                            <li>Branch: Haridwar Main Branch</li>
+                            <li><b>Account Name:</b> Uttarakhand Temple Trust</li>
+                            <li><b>Bank Name:</b> Devbhumi National Bank</li>
+                            <li><b>Account Number:</b> 123456789012</li>
+                            <li><b>IFSC Code:</b> DEVN0001234</li>
+                            <li><b>Branch:</b> Haridwar Main Branch</li>
                         </ul>
                     </Col>
 
