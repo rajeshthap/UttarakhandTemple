@@ -13,6 +13,10 @@
 
 }
 
+.features-icons-item {
+    text-align: center;
+}
+
 /* h2:before {
     content: "";
     position: absolute;
@@ -23,15 +27,16 @@
     background: #ec9f04;
     margin-left: -70px;
 } */
- .heading-line{
-       position: absolute;
+.heading-line {
+    position: absolute;
     left: 50%;
     bottom: 0;
     width: 140px;
     height: 1px;
     background: #ec9f04;
     margin-left: -70px;
- }
+}
+
 .booking-info {
     background-color: var(--temp-org);
     width: 150px;
