@@ -35,7 +35,10 @@ import ExtendYourDivine from "./Component/DonateToTemples/ExtendYourDivine"
 import { BASE_URLL } from "./Component/BaseURL";
 import OTPModel from "./Component/OTPModel/OTPModel";
 import PaymentConfirmation from "./Component/DonateToTemples/PaymentConfirmation"
-
+import LocationState from "./Component/userregistration/LocationState";
+import MandirBooking from "./Component/Mandir_booking/MandirBooking";
+import DarshanBooking from "./Component/Mandir_booking/DarshanBooking";
+import TempleFacilityBooking from "./Component/userregistration/TempleFacilityBooking";
 // Importing necessary components and pages
 
 function App() {
@@ -54,7 +57,12 @@ function App() {
         <Route path="/DonateTemples" element={<DonateTemples />} />
         <Route path="/ExtendYourDivine" element={<ExtendYourDivine />} />
         <Route path="/PaymentConfirmation" element={<PaymentConfirmation />} />
+        <Route path="/DarshanBooking" element={<DarshanBooking />} />
+        <Route path="/MandirBooking" element={<MandirBooking />} />
+        <Route path="/LocationState" element={<LocationState />} />
+        <Route path="/TempleFacilityBooking" element={<TempleFacilityBooking />} />
         <Route path="/OTPModel" element={<OTPModel />} />
+        
         <Route path="/BaseURL" element={<BASE_URLL />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

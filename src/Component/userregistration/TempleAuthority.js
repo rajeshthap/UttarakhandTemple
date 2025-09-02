@@ -1,12 +1,78 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import "../../assets/CSS/TempleAuthority.css";
 import { FaCheckCircle } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import UploadFile from "../../assets/images/upload-icon.png";
+import LocationState from "./LocationState";
+import { Globaleapi } from "../GlobleAuth/Globleapi";
 
 function TempleAuthority() {
+  
+    const [formErrors, setFormErrors] = useState({});
+  const [formData, setFormData] = useState({
+    state: "",
+    district: "",
+    city: "",
+    pincode: "",
+     temple_name: "",
+     password:"",
+    temple_type: "",
+    temple_facility: "",
+    temple_address: "",
+  
+    year_of_establishment: "",
+    temple_events: "",
+    temple_ownership_type: "",
+    phone: "",
+    email: "",
+    trust_committee_details: "",
+    additional_details: "",
+    bank_name: "",
+    
+    account_number: "",
+    confirm_account_number: "",
+    account_type: "",
+    account_name: "",
+    ifsc_code: "",
+  });
+const handleInputChange = (name, value) => {
+  setFormData((prev) => ({ ...prev, [name]: value }));
+};
+
+ 
+
+  const [documents, setDocuments] = useState({
+    temple_image: null,
+    land_doc: null,
+    noc_doc: null,
+    trust_cert: null,
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleFileChange = (e, field) => {
+    setDocuments({ ...documents, [field]: e.target.files[0] });
+  };
+
+  const removeFile = (field) => {
+    setDocuments({ ...documents, [field]: null });
+  };
+ 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const result = await Globaleapi(formData, documents);
+    if (result.error) {
+      alert("Registration failed!");
+      console.error(result.error);
+    } else {
+      alert("Temple registered successfully!");
+      console.log(result);
+    }
+  }
   return (
     <div>
       <Container className="temp-container">
@@ -14,7 +80,7 @@ function TempleAuthority() {
           <div className="mt-3 temple-registration-heading ">
             <h1>Temple Registration</h1>
             <div>
-              <Form>
+              <Form Form onSubmit={handleSubmit}>
                 <Row className="mt-4">
                   <Col lg={4} md={4} sm={12}>
                     <Form.Group
@@ -26,6 +92,39 @@ function TempleAuthority() {
                       </Form.Label>
                       <Form.Control
                         type="text"
+                        placeholder="" name="temple_name" value={formData.temple_name}
+                        onChange={handleChange}
+                        className="temp-form-control"
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col lg={4} md={4} sm={12}>
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
+                      <Form.Label className="temp-label">
+                        Password <span className="temp-span-star">*</span>
+                      </Form.Label>
+                      <Form.Control
+                        type="password" name="password" value={formData.password}
+                        onChange={handleChange}
+                        placeholder=""
+                        className="temp-form-control"
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col lg={4} md={4} sm={12}>
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
+                      <Form.Label className="temp-label">
+                        Confirm Password <span className="temp-span-star">*</span>
+                      </Form.Label>
+                      <Form.Control
+                        type="password" name="confrm_password" value={formData.confrm_password}
+                        onChange={handleChange}
                         placeholder=""
                         className="temp-form-control"
                       />
@@ -39,7 +138,8 @@ function TempleAuthority() {
                       <Form.Label className="temp-label">
                         Temple Type <span className="temp-span-star">*</span>
                       </Form.Label>
-                      <Form.Select className="temp-form-control-option">
+                      <Form.Select className="temp-form-control-option" name="temple_type" value={formData.temple_type}
+                        onChange={handleChange}>
                         <option value="">Select Temple Type</option>
                         <option value="shiv">Shiv Temple</option>
                         <option value="vishnu">Vishnu Temple</option>
@@ -59,7 +159,8 @@ function TempleAuthority() {
                         Temple Facility{" "}
                         <span className="temp-span-star">*</span>
                       </Form.Label>
-                      <Form.Select className="temp-form-control-option">
+                      <Form.Select className="temp-form-control-option" name="temple_facility" value={formData.temple_facility}
+                        onChange={handleChange}>
                         <option value="">Select Facility</option>
                         <option value="parking">Parking</option>
                         <option value="restrooms">Restrooms</option>
@@ -81,7 +182,8 @@ function TempleAuthority() {
                         Temple Address <span className="temp-span-star">*</span>
                       </Form.Label>
                       <Form.Control
-                        as="textarea"
+                        as="textarea"name="temple_address" value={formData.temple_address}
+                        onChange={handleChange}
                         rows={3}
                         placeholder=""
                         className="temp-form-control"
@@ -89,58 +191,12 @@ function TempleAuthority() {
                     </Form.Group>
                   </Col>
 
-                  <Col lg={4} md={4} sm={12}>
-                    <Form.Group
-                      className="mb-3"
-                      controlId="exampleForm.ControlInput1"
-                    >
-                      <Form.Label className="temp-label">
-                        Country <span className="temp-span-star">*</span>
-                      </Form.Label>
-                      <Form.Select className="temp-form-control-option">
-                        <option value="Select an option">
-                          Select an Country
-                        </option>
-                        <option value="option1">Option 1</option>
-                        <option value="option2">Option 2</option>
-                        <option value="option3">Option 3</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                  <Col lg={4} md={4} sm={12}>
-                    <Form.Group
-                      className="mb-3"
-                      controlId="exampleForm.ControlInput1"
-                    >
-                      <Form.Label className="temp-label">
-                        State <span className="temp-span-star">*</span>
-                      </Form.Label>
-                      <Form.Select className="temp-form-control-option">
-                        <option value="Select an option">
-                          Select an State
-                        </option>
-                        <option value="option1">Option 1</option>
-                        <option value="option2">Option 2</option>
-                        <option value="option3">Option 3</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                  <Col lg={4} md={4} sm={12}>
-                    <Form.Group
-                      className="mb-3"
-                      controlId="exampleForm.ControlInput1"
-                    >
-                      <Form.Label className="temp-label">
-                        City <span className="temp-span-star">*</span>
-                      </Form.Label>
-                      <Form.Select className="temp-form-control-option">
-                        <option value="Select an option">Select an City</option>
-                        <option value="option1">Option 1</option>
-                        <option value="option2">Option 2</option>
-                        <option value="option3">Option 3</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
+                   <LocationState
+              formData={formData}
+              handleInputChange={handleInputChange}
+              formErrors={formErrors}
+            />
+
                   <Col lg={4} md={4} sm={12}>
                     <Form.Group
                       className="mb-3"
@@ -150,7 +206,8 @@ function TempleAuthority() {
                         ZipCode <span className="temp-span-star">*</span>
                       </Form.Label>
                       <Form.Control
-                        type="number"
+                        type="number"name="zip_code" value={formData.zip_code}
+                        onChange={handleChange}
                         placeholder=""
                         className="temp-form-control"
                       />
@@ -165,7 +222,8 @@ function TempleAuthority() {
                         Year of Establishment{" "}
                         <span className="temp-span-star">*</span>
                       </Form.Label>
-                      <Form.Select className="temp-form-control-option">
+                      <Form.Select className="temp-form-control-option"name="year_of_establishment" value={formData.year_of_establishment}
+                        onChange={handleChange}>
                         <option value="Select an option">
                           Select an Establishment
                         </option>
@@ -218,7 +276,8 @@ function TempleAuthority() {
                       <Form.Label className="temp-label">
                         Temple Events <span className="temp-span-star">*</span>
                       </Form.Label>
-                      <Form.Select className="temp-form-control-option">
+                      <Form.Select className="temp-form-control-option" name="temple_events" value={formData.temple_events}
+                        onChange={handleChange}>
                         <option value="">Select Event</option>
                         <option value="dailyPuja">Daily Puja</option>
                         <option value="aarti">Morning/Evening Aarti</option>
@@ -243,7 +302,8 @@ function TempleAuthority() {
                         Temple Ownership Type{" "}
                         <span className="temp-span-star">*</span>
                       </Form.Label>
-                      <Form.Select className="temp-form-control-option">
+                      <Form.Select className="temp-form-control-option" name="temple_ownership_type" value={formData.temple_ownership_type}
+                        onChange={handleChange}>
                         <option value="">Select Ownership Type</option>
                         <option value="government">Government Owned</option>
                         <option value="trust">Trust / Committee Managed</option>
@@ -259,11 +319,12 @@ function TempleAuthority() {
                       controlId="exampleForm.ControlInput1"
                     >
                       <Form.Label className="temp-label">
-                        Mobile Number <span className="temp-span-star">*</span>
+                        phone Number <span className="temp-span-star">*</span>
                       </Form.Label>
                       <Form.Control
                         type="number"
-                        placeholder=""
+                        placeholder="" name="phone" value={formData.phone}
+                        onChange={handleChange}
                         className="temp-form-control"
                       />
                     </Form.Group>
@@ -278,7 +339,8 @@ function TempleAuthority() {
                       </Form.Label>
                       <Form.Control
                         type="email"
-                        placeholder=""
+                        placeholder="" name="email" value={formData.email}
+                        onChange={handleChange}
                         className="temp-form-control"
                       />
                     </Form.Group>
@@ -293,7 +355,8 @@ function TempleAuthority() {
                         Trust/Managing Committee Details{" "}
                         <span className="temp-span-star">*</span>
                       </Form.Label>
-                      <Form.Select className="temp-form-control-option">
+                      <Form.Select className="temp-form-control-option" name="trust_committee_details" value={formData.trust_committee_details}
+                        onChange={handleChange}>
                         <option value="public">Public Trust</option>
                         <option value="private">Private Trust</option>
                         <option value="committee">Managing Committee</option>
@@ -307,7 +370,8 @@ function TempleAuthority() {
                       controlId="exampleForm.ControlInput1"
                     >
                       <Form.Control
-                        as="textarea"
+                        as="textarea" name="trust_committee_details" value={formData.trust_committee_details}
+                        onChange={handleChange}
                         rows={4}
                         placeholder="Enter additional details"
                         className="temp-form-control mt-regi-top"
@@ -327,7 +391,8 @@ function TempleAuthority() {
                       <Form.Label className="temp-label">
                         Bank Name <span className="temp-span-star">*</span>
                       </Form.Label>
-                      <Form.Select className="temp-form-control-option">
+                      <Form.Select className="temp-form-control-option" name="bank_name" value={formData.bank_name}
+                        onChange={handleChange}>
                         <option value="Select an option">
                           Select an Bank Name
                         </option>
@@ -347,7 +412,8 @@ function TempleAuthority() {
                       </Form.Label>
                       <Form.Control
                         type="number"
-                        placeholder=""
+                        placeholder="" name="account_number" value={formData.account_number}
+                        onChange={handleChange}
                         className="temp-form-control"
                       />
                     </Form.Group>
@@ -363,7 +429,8 @@ function TempleAuthority() {
                       </Form.Label>
                       <Form.Control
                         type="number"
-                        placeholder=""
+                        placeholder="" name="confirm_account_number" value={formData.confirm_account_number}
+                        onChange={handleChange}
                         className="temp-form-control"
                       />
                     </Form.Group>
@@ -376,7 +443,8 @@ function TempleAuthority() {
                       <Form.Label className="temp-label">
                         Account Type <span className="temp-span-star">*</span>
                       </Form.Label>
-                      <Form.Select className="temp-form-control-option">
+                      <Form.Select className="temp-form-control-option" name="account_type" value={formData.account_type}
+                        onChange={handleChange}>
                         <option value="">Select Account Type</option>
                         <option value="">Select Account Type</option>
                         <option value="savings">Savings Account</option>
@@ -394,7 +462,8 @@ function TempleAuthority() {
                         Account Name <span className="temp-span-star">*</span>
                       </Form.Label>
                       <Form.Control
-                        type="text"
+                        type="text"  name="account_name" value={formData.account_name}
+                        onChange={handleChange}
                         placeholder=""
                         className="temp-form-control"
                       />
@@ -409,7 +478,8 @@ function TempleAuthority() {
                         IFSC Code <span className="temp-span-star">*</span>
                       </Form.Label>
                       <Form.Control
-                        type="text"
+                        type="text" name="ifsc_code" value={formData.ifsc_code}
+                        onChange={handleChange}
                         placeholder=""
                         className="temp-form-control"
                       />
@@ -419,8 +489,73 @@ function TempleAuthority() {
                 <div className=" temple-registration-heading">
                   <h1>Supporting Documents</h1>
                 </div>
-
                 <Row>
+  {[
+    { key: "temple_image", label: "Temple Image Upload" },
+    { key: "land_doc", label: "Land Ownership Documents" },
+    { key: "noc_doc", label: "NOC Certificate" },
+    { key: "trust_cert", label: "Trust Registration Certificate" },
+  ].map((doc) => (
+    <Col lg={6} md={12} sm={12} key={doc.key}>
+      <Row className="temp-stepform-box">
+        <Col lg={5} md={5} sm={5}>
+          <fieldset className="upload_dropZone text-center">
+            <legend className="visually-hidden">{doc.label}</legend>
+            <img src={UploadFile} alt="upload-file" />
+            <p className="temp-drop-txt my-2">
+              Drag &amp; drop files
+              <br />
+              <i>or</i>
+            </p>
+            <input
+              id={`${doc.key}_upload`}   // <-- FIXED
+              className="invisible"
+              type="file"
+              accept="image/jpeg, image/png, image/svg+xml"
+              onChange={(e) => handleFileChange(e, doc.key)}
+            />
+            <label
+              className="btn temp-primary-btn mb-1"
+              htmlFor={`${doc.key}_upload`}  // <-- FIXED
+            >
+              Choose file(s)
+            </label>
+            <p className="temp-upload-file">
+              Upload size up to 10KB to 100KB (jpg, png)
+            </p>
+          </fieldset>
+        </Col>
+        <Col lg={7} md={7} sm={7} className="temp-doc-subinfo mt-2">
+          <h3>
+            {doc.label} <span className="temp-span-star">*</span>
+          </h3>
+          {documents[doc.key] && (
+            <>
+              <div className="d-flex temp-doc-info">
+                <Col lg={3} md={3} sm={3}>03.01.2025</Col>
+                <Col lg={9} md={9} sm={9} className="px-4 temp-success-doc">
+                  <FaCheckCircle /> Uploaded Successfully
+                </Col>
+              </div>
+              <div
+                className="col temp-delete-icon"
+                onClick={() => removeFile(doc.key)}
+              >
+                <h3>
+                  <RiDeleteBin6Line className="mx-1" />
+                  Click here to Remove
+                </h3>
+              </div>
+            </>
+          )}
+        </Col>
+      </Row>
+    </Col>
+  ))}
+</Row>
+
+
+                {/* <Row>
                   <Col lg={6} md={12} sm={12}>
                     <Row className="temp-stepform-box">
                       <Col lg={5} md={5} sm={5}>
@@ -717,11 +852,11 @@ function TempleAuthority() {
                       </Col>
                     </Row>
                   </Col>
-                </Row>
+                </Row> */}
 
-                <div className="gap-3 mt-3 Temp-btn-submit">
+               <div className="gap-3 mt-3 Temp-btn-submit">
                   <Button
-                    variant="temp-submit-btn"
+                    variant="primary"
                     className="temp-submit-btn mx-3"
                     type="submit"
                   >

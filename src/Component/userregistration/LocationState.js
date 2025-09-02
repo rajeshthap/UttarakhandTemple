@@ -3,8 +3,11 @@ import { Form, Col } from "react-bootstrap";
 import axios from "axios";
 import { BASE_URLL } from "../BaseURL";
 
-
-const LocationState = ({ formData = {}, handleInputChange, formErrors = {} }) => {
+const LocationState = ({
+  formData = {},
+  handleInputChange,
+  formErrors = {},
+}) => {
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
@@ -25,7 +28,7 @@ const LocationState = ({ formData = {}, handleInputChange, formErrors = {} }) =>
   // Fetch states when country changes
   useEffect(() => {
     if (!formData.country) return;
-    const selectedCountry = countries.find(c => c.name === formData.country);
+    const selectedCountry = countries.find((c) => c.name === formData.country);
     if (!selectedCountry) return;
 
     const fetchStates = async () => {
@@ -44,7 +47,7 @@ const LocationState = ({ formData = {}, handleInputChange, formErrors = {} }) =>
   // Fetch cities when state changes
   useEffect(() => {
     if (!formData.state) return;
-    const selectedState = states.find(s => s.name === formData.state);
+    const selectedState = states.find((s) => s.name === formData.state);
     if (!selectedState) return;
 
     const fetchCities = async () => {
@@ -61,55 +64,67 @@ const LocationState = ({ formData = {}, handleInputChange, formErrors = {} }) =>
   }, [formData.state, states]);
 
   // Stable handler to prevent unnecessary renders
-  const onChange = useCallback((field, value) => {
-    handleInputChange(field, value);
-  }, [handleInputChange]);
+  const onChange = useCallback(
+    (field, value) => {
+      handleInputChange(field, value);
+    },
+    [handleInputChange]
+  );
 
   return (
     <>
-      <Col md={6}>
-        <Form.Group>
-          <Form.Label>Country</Form.Label>
+      <Col md={4}>
+        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+          <Form.Label className="temp-label"><span className="temp-span-star">*</span>Country</Form.Label>
           <Form.Select
+            className="temp-form-control-option"
             value={formData.country || ""}
             onChange={(e) => onChange("country", e.target.value)}
             isInvalid={!!formErrors.country}
           >
             <option value="">Select Country</option>
             {countries.map((c) => (
-              <option key={c.id} value={c.name}>{c.name}</option>
+              <option key={c.id} value={c.name}>
+                {c.name}
+              </option>
             ))}
           </Form.Select>
         </Form.Group>
       </Col>
 
-      <Col md={6}>
-        <Form.Group>
-          <Form.Label>State</Form.Label>
+      <Col md={4}>
+        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+          <Form.Label className="temp-label"><span className="temp-span-star">*</span>State</Form.Label>
           <Form.Select
+            className="temp-form-control-option"
             value={formData.state || ""}
             onChange={(e) => onChange("state", e.target.value)}
             isInvalid={!!formErrors.state}
           >
             <option value="">Select State</option>
             {states.map((s) => (
-              <option key={s.id} value={s.name}>{s.name}</option>
+              <option key={s.id} value={s.name}>
+                {s.name}
+              </option>
             ))}
           </Form.Select>
         </Form.Group>
       </Col>
 
-      <Col md={6}>
-        <Form.Group>
-          <Form.Label>City</Form.Label>
+      <Col md={4}>
+        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+          <Form.Label className="temp-label"><span className="temp-span-star">*</span>City</Form.Label>
           <Form.Select
+            className="temp-form-control-option"
             value={formData.city || ""}
             onChange={(e) => onChange("city", e.target.value)}
             isInvalid={!!formErrors.city}
           >
             <option value="">Select City</option>
             {cities.map((ct) => (
-              <option key={ct.id} value={ct.name}>{ct.name}</option>
+              <option key={ct.id} value={ct.name}>
+                {ct.name}
+              </option>
             ))}
           </Form.Select>
         </Form.Group>

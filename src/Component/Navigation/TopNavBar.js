@@ -48,15 +48,13 @@ const TopNavBar = () => {
                     title="Mandir Booking"
                     id="navbarScrollingDropdown"
                   >
-                    <NavDropdown.Item href="#action3">
+                    <NavDropdown.Item href="/MandirBooking">
                       Mandir Booking{" "}
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="#action4">
+                    <NavDropdown.Item href="/DarshanBooking">
                       Darshan Booking
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="#action4">
-                      Special Darshan / VIP Pass
-                    </NavDropdown.Item>
+                    
                   </NavDropdown>
 
                   <NavDropdown
@@ -86,7 +84,9 @@ const TopNavBar = () => {
                     </NavDropdown.Item>
                   </NavDropdown>
 
-                  <NavDropdown title="Facilities" id="navbarScrollingDropdown">
+     <Nav.Link href="/TempleFacilityBooking">Donate to Temples</Nav.Link>
+
+                  {/* <NavDropdown title="Temple Facilities" id="navbarScrollingDropdown">
                     <NavDropdown.Item href="#action3">
                       Room Booking{" "}
                     </NavDropdown.Item>
@@ -99,7 +99,7 @@ const TopNavBar = () => {
                     <NavDropdown.Item href="#action4">
                       Other Services
                     </NavDropdown.Item>
-                  </NavDropdown>
+                  </NavDropdown> */}
 
                   <NavDropdown title="Events" id="navbarScrollingDropdown">
                     <NavDropdown.Item href="#action3">
