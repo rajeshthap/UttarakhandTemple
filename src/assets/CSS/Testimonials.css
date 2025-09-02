@@ -8,6 +8,18 @@
     overflow: hidden;
 }
 
+.Testimonials-wrapper h2 {
+    text-align: center !important;
+    font-size: var(--temp-space-800);
+    margin-bottom: var(--temp-space-250);
+}
+
+.Testimonials-wrapper h3 {
+    text-align: center !important;
+    font-size: var(--temp-space-600);
+    color: var(--temp-org);
+}
+
 
 .testimonial-container {
     width: 80%;

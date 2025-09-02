@@ -63,6 +63,16 @@
     background-color: var(--temp-boader-gary);
 }
 
+.Alltemple-wrapper h2 {
+    text-align: center !important;
+}
+
+.Alltemple-wrapper h3 {
+    text-align: center !important;
+    font-size: var(--temp-space-600);
+    color: var(--temp-org);
+}
+
 .slick-prev:before,
 .slick-next:before {
     color: var(--temp-primary);

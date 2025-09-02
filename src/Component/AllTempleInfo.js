@@ -39,7 +39,9 @@ const AllTempleInfo = () => {
         <div className="container-fluid p-0">
             <div className="Alltemple-wrapper">
                 <div className="container">
-                    <div><h2>Temple Info</h2></div>
+                    <div><h2>Temple Info</h2>
+                    <h3>Explore Temple History, Facilities & Services</h3>
+                    </div>
                     <div className="carousel-container">
                         <Slider {...settings}>
                             {cardData.map((item, index) => (
