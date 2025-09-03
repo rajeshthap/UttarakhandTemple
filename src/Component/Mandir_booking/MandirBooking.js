@@ -3,12 +3,24 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import { useState } from "react";
 import Form from "react-bootstrap/Form";
 import OTPModel from "../OTPModel/OTPModel";
+
 const MandirBooking = () => {
   const [show, setShow] = useState(false);
+  const [donationAmount, setDonationAmount] = useState(""); 
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
+  const handleBookingTypeChange = (e) => {
+    const value = e.target.value;
+    if (value === "Darshan") {
+      setDonationAmount(100); 
+    } else if (value === "Puja") {
+      setDonationAmount(500); 
+    } else {
+      setDonationAmount("");
+    }
+  };
   return (
     <div>
       <Container className="temp-container">
@@ -62,10 +74,10 @@ const MandirBooking = () => {
                     Gender <span className="temp-span-star">*</span>
                   </Form.Label>
                   <Form.Select className="temp-form-control-option">
-                    <option value="">Select Temple Type</option>
-                    <option value="shiv">Male </option>
-                    <option value="vishnu">Female </option>
-                    
+                    <option value="">Select Gender Type</option>
+                    <option value="Male">Male </option>
+                    <option value="Female">Female </option>
+                    <option value="Other">Other </option>
                   </Form.Select>
                 </Form.Group>
               </Col>
@@ -102,8 +114,6 @@ const MandirBooking = () => {
                 </Form.Group>
               </Col>
 
-             
-
               <Col lg={6} md={6} sm={12}>
                 <Form.Group
                   className="mb-3"
@@ -137,73 +147,8 @@ const MandirBooking = () => {
                 </Form.Group>
               </Col>
 
-              <h2>Booking Details</h2>
-              {/* Booking Details */}
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label">
-                    Temple Name <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Select className="temp-form-control-option">
-                    <option value="">Select Temple Type</option>
-                    <option value="shiv">shiv </option>
-                    <option value="vishnu">vishnu </option>
-                    <option value="vishnu"> vishnu </option>
-                    <option value="durga"> durga </option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-
-               <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label">
-                    Type of Booking <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Select className="temp-form-control-option">
-                    <option value="">Select Temple Type</option>
-                    <option value="shiv">Darshan</option>
-                    <option value="vishnu">Puja </option>
-                   
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label">
-                    Preferred Date <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    type="Date"
-                    placeholder=""
-                    className="temp-form-control"
-                  />
-                </Form.Group>
-              </Col>
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group controlId="donationFor">
-                  <Form.Label>
-                    Preferred Time Slot <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Select aria-label="Select donation purpose">
-                    <option>Select Purpose</option>
-                    <option value="temple">Morning</option>
-                    <option value="festivals">Afternoon </option>
-                    <option value="charity">Evening</option>
-                
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-
-              <h2 className="pt-4">Address Details</h2>
+              {/* Address Detail */}
+              <h2>Address Details</h2>
               <Col lg={6} md={6} sm={12}>
                 <Form.Group
                   className="mb-3"
@@ -252,7 +197,7 @@ const MandirBooking = () => {
                   </Form.Select>
                 </Form.Group>
               </Col>
-           
+
               <Col lg={6} md={6} sm={12}>
                 <Form.Group
                   className="mb-3"
@@ -269,20 +214,18 @@ const MandirBooking = () => {
                 </Form.Group>
               </Col>
 
-
- <Col lg={6} md={6} sm={12}>
+              <Col lg={6} md={6} sm={12}>
                 <Form.Group
                   className="mb-3"
                   controlId="exampleForm.ControlInput1"
                 >
                   <Form.Label className="temp-label">
-                   Prasad Delivery <span className="temp-span-star">*</span>
+                    Prasad Delivery <span className="temp-span-star">*</span>
                   </Form.Label>
                   <Form.Select className="temp-form-control-option">
                     <option value="Select a option">Select an City</option>
                     <option value="option1">Yes</option>
                     <option value="option2">No</option>
-                   
                   </Form.Select>
                 </Form.Group>
               </Col>
@@ -293,22 +236,18 @@ const MandirBooking = () => {
                   controlId="exampleForm.ControlInput1"
                 >
                   <Form.Label className="temp-label">
-                   Accommodation Required <span className="temp-span-star">*</span>
+                    Accommodation Required{" "}
+                    <span className="temp-span-star">*</span>
                   </Form.Label>
                   <Form.Select className="temp-form-control-option">
                     <option value="Select a option">Select an City</option>
                     <option value="option1">Yes</option>
                     <option value="option2">No</option>
-                   
                   </Form.Select>
                 </Form.Group>
               </Col>
 
-
-
-
-
-                 <Col lg={6} md={6} sm={12}>
+              <Col lg={6} md={6} sm={12}>
                 <Form.Group
                   className="mb-3"
                   controlId="exampleForm.ControlInput1"
@@ -317,48 +256,99 @@ const MandirBooking = () => {
                     Special Requests <span className="temp-span-star">*</span>
                   </Form.Label>
                   <Form.Control
-                     as="textarea"
-      rows={4} 
+                    as="textarea"
+                    rows={4}
                     placeholder=""
                     className="temp-form-control"
                   />
                 </Form.Group>
               </Col>
 
-              {/* Payment Details */}
-              <h2>Payment Details</h2>
+              <h2 >Booking Details</h2>
+              {/* Booking Details */}
               <Col lg={6} md={6} sm={12}>
                 <Form.Group
                   className="mb-3"
                   controlId="exampleForm.ControlInput1"
                 >
                   <Form.Label className="temp-label">
-                   Donation Amount (Rs.)<span className="temp-span-star">*</span>
+                    Temple Name <span className="temp-span-star">*</span>
                   </Form.Label>
-                  <Form.Control
-                    type="number"
-                    placeholder=""
-                    className="temp-form-control"
-                  />
+                  <Form.Select className="temp-form-control-option">
+                    <option value="">Select Temple Type</option>
+                    <option value="shiv">shiv </option>
+                    <option value="vishnu">vishnu </option>
+                    <option value="vishnu"> vishnu </option>
+                    <option value="durga"> durga </option>
+                  </Form.Select>
                 </Form.Group>
               </Col>
-                <Col lg={6} md={6} sm={12}>
+              <Col lg={6} md={6} sm={12}>
                 <Form.Group
                   className="mb-3"
                   controlId="exampleForm.ControlInput1"
                 >
                   <Form.Label className="temp-label">
-                   Payment Mode <span className="temp-span-star">*</span>
+                    Preferred Date <span className="temp-span-star">*</span>
                   </Form.Label>
-                  <Form.Select className="temp-form-control-option">
-                    <option value="Select a option">Select an City</option>
-                    <option value="Net Banking">Net Banking</option>
-                    <option value="Debit Card">Debit Card</option>
-                    <option value="Credit Card ">Credit Card </option>
-                    <option value="UPI ">UPI </option>
-                    <option value="UPI ">Bharat QR </option>
-                   
+                  <Form.Control
+                    type="Date"
+                    placeholder=""
+                    className="temp-form-control"
+                  />
+                </Form.Group>
+              </Col>
+              <Col lg={6} md={6} sm={12}>
+                <Form.Group controlId="donationFor">
+                  <Form.Label>
+                    Preferred Time Slot{" "}
+                    <span className="temp-span-star">*</span>
+                  </Form.Label>
+                  <Form.Select aria-label="Select donation purpose">
+                    <option>Select Purpose</option>
+                    <option value="temple">Morning</option>
+                    <option value="festivals">Afternoon </option>
+                    <option value="charity">Evening</option>
                   </Form.Select>
+                </Form.Group>
+              </Col>
+
+              {/* Payment Details */}
+              <h2 className="mt-3">Payment Details</h2>
+              <Col lg={6} md={6} sm={12}>
+                <Form.Group
+                  className="mb-3"
+                  controlId="exampleForm.ControlInput1"
+                >
+                  <Form.Label className="temp-label">
+                    Type of Booking <span className="temp-span-star">*</span>
+                  </Form.Label>
+                  <Form.Select
+                    className="temp-form-control-option"
+                    onChange={handleBookingTypeChange}
+                  >
+                    <option value="">Select Temple Type</option>
+                    <option value="Darshan">Darshan</option>
+                    <option value="Puja">Puja</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+              <Col lg={6} md={6} sm={12}>
+                <Form.Group
+                  className="mb-3"
+                  controlId="exampleForm.ControlInput1"
+                >
+                  <Form.Label className="temp-label">
+                    Donation Amount (Rs.)
+                    <span className="temp-span-star">*</span>
+                  </Form.Label>
+                  <Form.Control
+                    type="number"
+                    placeholder=""
+                    className="temp-form-control"
+                    value={donationAmount} 
+                    readOnly 
+                  />
                 </Form.Group>
               </Col>
             </Row>

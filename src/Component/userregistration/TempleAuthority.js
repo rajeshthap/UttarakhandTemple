@@ -11,37 +11,36 @@ import { Globaleapi } from "../GlobleAuth/Globleapi";
 function TempleAuthority() {
   
     const [formErrors, setFormErrors] = useState({});
-  const [formData, setFormData] = useState({
-    state: "",
-    district: "",
-    city: "",
-    pincode: "",
-     temple_name: "",
-     password:"",
-    temple_type: "",
-    temple_facility: "",
-    temple_address: "",
-  
-    year_of_establishment: "",
-    temple_events: "",
-    temple_ownership_type: "",
-    phone: "",
-    email: "",
-    trust_committee_details: "",
-    additional_details: "",
-    bank_name: "",
-    
-    account_number: "",
-    confirm_account_number: "",
-    account_type: "",
-    account_name: "",
-    ifsc_code: "",
-  });
+ const [formData, setFormData] = useState({
+  state: "",
+  district: "",
+  city: "",
+  zip_code: "",
+  temple_name: "",
+  password: "",
+  confirm_password: "",
+  temple_type: "",
+  temple_facility: "",
+  temple_address: "",
+  year_of_establishment: "",
+  temple_events: "",
+  temple_ownership_type: "",
+  phone: "",
+  email: "",
+  trust_committee_type: "",      // dropdown
+  trust_committee_details: "",   // textarea
+  additional_details: "",
+  bank_name: "",
+  account_number: "",
+  confirm_account_number: "",
+  account_type: "",
+  account_name: "",
+  ifsc_code: "",
+});
+console.log("form data",formData)
 const handleInputChange = (name, value) => {
   setFormData((prev) => ({ ...prev, [name]: value }));
 };
-
- 
 
   const [documents, setDocuments] = useState({
     temple_image: null,
@@ -62,9 +61,28 @@ const handleInputChange = (name, value) => {
     setDocuments({ ...documents, [field]: null });
   };
  
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const result = await Globaleapi(formData, documents);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  // Create FormData for both text and files
+  const payload = new FormData();
+
+  // Append all text fields
+  Object.entries(formData).forEach(([key, value]) => {
+    payload.append(key, value);
+  });
+
+  // Append all file fields
+  Object.entries(documents).forEach(([key, file]) => {
+    if (file) {
+      payload.append(key, file);
+    }
+  });
+
+  try {
+    const result = await Globaleapi(payload); // Assuming API accepts FormData
+    console.log("API Response:", result.data);
+
     if (result.error) {
       alert("Registration failed!");
       console.error(result.error);
@@ -72,7 +90,12 @@ const handleInputChange = (name, value) => {
       alert("Temple registered successfully!");
       console.log(result);
     }
+  } catch (err) {
+    console.error("Error during API call:", err);
+    alert("Something went wrong!");
   }
+};
+
   return (
     <div>
       <Container className="temp-container">
@@ -123,7 +146,7 @@ const handleInputChange = (name, value) => {
                         Confirm Password <span className="temp-span-star">*</span>
                       </Form.Label>
                       <Form.Control
-                        type="password" name="confrm_password" value={formData.confrm_password}
+                        type="password" name="confirm_password" value={formData.confirm_password}
                         onChange={handleChange}
                         placeholder=""
                         className="temp-form-control"
