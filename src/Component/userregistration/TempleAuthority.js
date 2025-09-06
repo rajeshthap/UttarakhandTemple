@@ -6,14 +6,14 @@ import { FaCheckCircle } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import UploadFile from "../../assets/images/upload-icon.png";
 import LocationState from "./LocationState";
-import { Globaleapi } from "../GlobleAuth/Globleapi";
+import { Globaleapi, SendOtp } from "../GlobleAuth/Globleapi";
 import OTPModel from "../OTPModel/OTPModel";
 
 function TempleAuthority() {
    const [show, setShow] = useState(false);
     const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
-  const [formErrors, setFormErrors] = useState({});
+  const [formErrors,] = useState({});
   const [formData, setFormData] = useState({
     state: "",
     country: "",
@@ -106,18 +106,33 @@ console.log("temple_email being sent:", formData.temple_email);
 
   
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const payload = buildPayload();
+  e.preventDefault();
+  const payload = buildPayload(); // Your FormData payload
 
-    try {
-      const result = await Globaleapi(payload); // Ensure Globaleapi handles FormData
-      console.log("API Response:", result.data);
-      alert("Temple registered successfully!");
-    } catch (err) {
-      console.error("Error during API call:", err.response?.data || err);
-      alert("Something went wrong!");
-    }
-  };
+  try {
+    // Step 1: Register temple
+    const registerResult = await Globaleapi(payload); // Ensure Globaleapi handles FormData
+    console.log("Registration Response:", registerResult.data);
+
+    // Step 2: Prepare OTP payload
+    const otpPayload = new FormData();
+    otpPayload.append("phone", payload.get("phone")); // or email if needed
+
+    // Step 3: Send OTP
+    const otpResult = await SendOtp(otpPayload);
+    console.log("OTP Response:", otpResult.data);
+
+    // Step 4: Only if BOTH succeed
+    alert("Temple registered and OTP sent successfully!");
+    setShow(true); 
+
+  } catch (err) {
+    console.error("Error during API call or OTP sending:", err.response?.data || err);
+    alert("Registration or OTP sending failed! Please try again.");
+    // OTP modal will NOT be shown if anything fails
+  }
+};
+
 
   console.log("form data", formData);
 

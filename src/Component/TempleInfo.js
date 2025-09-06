@@ -4,8 +4,6 @@ import Select from "react-select";
 import { FaCheck, FaUsersLine } from "react-icons/fa6";
 import { MdOutlineDateRange, MdStarRate } from "react-icons/md";
 import { Link } from "react-router-dom";
-
-import Badrinath from "../assets/images/Badrinath-Temple.png";
 import Kedarnath from "../assets/images/Kedarnath-Temple.png";
 import Gangotri from "../assets/images/Gangotri-Temple.png";
 import Yamunotri from "../assets/images/yamunotri-temple.jpg";
@@ -71,7 +69,7 @@ const TempleInfo = () => {
     today.getMonth() + 1
   ).padStart(2, "0")}/${today.getFullYear()}`;
 
-  const [show, setShow] = useState(false);
+  const [, setShow] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
 
