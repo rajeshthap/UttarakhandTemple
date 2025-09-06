@@ -43,6 +43,7 @@ import PoojaBooking from "./Component/Mandir_booking/PoojaBooking/PoojaBooking";
 import SevaRegistration from "./Component/Mandir_booking/SevaRegistration/SevaRegistration";
 import EventParticipation from "./Component/Mandir_booking/EventParticipation/EventParticipation";
 import OnlineHirePandit from "./Component/Mandir_booking/OnlineHirePandit";
+import TempleInfo from "./Component/TempleInfo";
 // Importing necessary components and pages
 
 function App() {
@@ -69,6 +70,7 @@ function App() {
         <Route path="/SevaRegistration" element={<SevaRegistration/>} />
         <Route path="/EventParticipation" element={<EventParticipation/>} />
         <Route path="/OnlineHirePandit" element={<OnlineHirePandit />} />
+        <Route path="/TempleInfo" element={<TempleInfo />} />
         
         <Route path="/BaseURL" element={<BASE_URLL />} />
         <Route path="*" element={<NotFound />} />

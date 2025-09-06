@@ -48,7 +48,7 @@ const TopNavBar = () => {
                     title="Mandir Booking"
                     id="navbarScrollingDropdown"
                   >
-                    <NavDropdown.Item href="/MandirBooking">
+                    <NavDropdown.Item href="/TempleInfo">
                       Mandir Booking{" "}
                     </NavDropdown.Item>
                     <NavDropdown.Item href="/DarshanBooking">

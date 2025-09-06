@@ -75,7 +75,7 @@ const LocationState = ({
     <>
       <Col md={4}>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Label className="temp-label"><span className="temp-span-star">*</span>Country</Form.Label>
+          <Form.Label className="temp-label">Country <span className="temp-span-star">*</span></Form.Label>
           <Form.Select
             className="temp-form-control-option"
             value={formData.country || ""}
@@ -94,7 +94,7 @@ const LocationState = ({
 
       <Col md={4}>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Label className="temp-label"><span className="temp-span-star">*</span>State</Form.Label>
+          <Form.Label className="temp-label">State<span className="temp-span-star">*</span></Form.Label>
           <Form.Select
             className="temp-form-control-option"
             value={formData.state || ""}
@@ -113,7 +113,7 @@ const LocationState = ({
 
       <Col md={4}>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Label className="temp-label"><span className="temp-span-star">*</span>City</Form.Label>
+          <Form.Label className="temp-label">City<span className="temp-span-star">*</span></Form.Label>
           <Form.Select
             className="temp-form-control-option"
             value={formData.city || ""}
