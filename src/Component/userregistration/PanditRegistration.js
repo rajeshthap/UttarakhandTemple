@@ -31,10 +31,11 @@ function PanditRegistration() {
     aadhar_document: "",
   });
 
-  const [, setPreview] = useState({
-    pandit_image: null,
-    aadhar_document: null,
-  });
+ 
+  const [preview, setPreview] = useState({
+  pandit_image: null,
+  aadhar_document: null,
+});
 
 
   const [errorReason_querys, setErrorReason_querys] = useState({});
@@ -74,23 +75,20 @@ function PanditRegistration() {
     ...prev,
     [name]: newValue,
   }));
-
+  
   //  Real-time validation
   const errorMsg = validateField(name, newValue);
   setErrorReason_querys((prev) => ({
     ...prev,
     [name]: errorMsg,
   }));
-
+  
   //  File preview
   if (type === "file" && files?.length > 0) {
     setPreview((prev) => ({
       ...prev,
       [name]: URL.createObjectURL(files[0]),
     }));
-  }
-};
-
 
   //  New function
   const validateField = (name, value) => {
@@ -157,10 +155,10 @@ function PanditRegistration() {
     return error;
   };
 
+    // First Name, Last Name, Father's Name
   const validateForm = () => {
     let errors = {};
 
-    // First Name, Last Name, Father's Name
     if (!formData.first_name) errors.first_name = "First name is required";
     if (!formData.last_name) errors.last_name = "Last name is required";
     if (!formData.father_name) errors.father_name = "Father's name is required";
@@ -208,6 +206,14 @@ function PanditRegistration() {
     // Address fields
     if (!formData.permanent_address)
       errors.permanent_address = "Address is required";
+    if (!formData.password) errors.password = "Password is required";
+    if (formData.password !== formData.confirmPassword) {
+      errors.confirmPassword = "Passwords do not match";
+    }
+
+    if (!formData.phone) errors.phone = "Mobile number is required";
+    if (!formData.aadhar_number) errors.aadhar_number = "Aadhar number is required";
+    if (!formData.permanent_address) errors.permanent_address = "Address is required";
     if (!formData.country) errors.country = "Country is required";
     if (!formData.state) errors.state = "State is required";
     if (!formData.city) errors.city = "City is required";
@@ -220,6 +226,10 @@ function PanditRegistration() {
       errors.pandit_image = "Pandit image is required";
     if (!formData.aadhar_document)
       errors.aadhar_document = "Aadhar document is required";
+    if (!formData.temple_association) errors.temple_association = "Temple association is required";
+
+    if (!formData.pandit_image) errors.pandit_image = "Pandit image is required";
+    if (!formData.aadhar_document) errors.aadhar_document = "Aadhar document is required";
 
     setErrorReason_querys(errors);
 
@@ -235,64 +245,61 @@ function PanditRegistration() {
     setLoading(true);
     try {
 
+   const formDataToSend = new FormData();
+formDataToSend.append("first_name", formData.first_name);
+formDataToSend.append("last_name", formData.last_name);
+formDataToSend.append("father_name", formData.father_name);
+formDataToSend.append("email", formData.email);
+formDataToSend.append("password", formData.password);
+formDataToSend.append("phone", formData.phone);
+formDataToSend.append("aadhar_number", formData.aadhar_number);
+formDataToSend.append("permanent_address", formData.permanent_address);
+formDataToSend.append("country", formData.country);
+formDataToSend.append("state", formData.state);
+formDataToSend.append("city", formData.city);
+formDataToSend.append("zipcode", formData.zipcode);
+formDataToSend.append("temple_association", formData.temple_association);
+formDataToSend.append("pandit_image", formData.pandit_image);
+formDataToSend.append("aadhar_document", formData.aadhar_document);
 
 
-
-      const formDataToSend = new FormData();
-      formDataToSend.append("first_name", formData.first_name);
-      formDataToSend.append("last_name", formData.last_name);
-      formDataToSend.append("father_name", formData.father_name);
-      formDataToSend.append("email", formData.email);
-      formDataToSend.append("password", formData.password);
-      formDataToSend.append("phone", formData.phone);
-      formDataToSend.append("aadhar_number", formData.aadhar_number);
-      formDataToSend.append("permanent_address", formData.permanent_address);
-      formDataToSend.append("country", formData.country);
-      formDataToSend.append("state", formData.state);
-      formDataToSend.append("city", formData.city);
-      formDataToSend.append("zipcode", formData.zipcode);
-      formDataToSend.append("temple_association", formData.temple_association);
-      formDataToSend.append("pandit_image", formData.pandit_image);
-      formDataToSend.append("aadhar_document", formData.aadhar_document);
-
-
-      for (let [key, value] of formDataToSend.entries()) {
-        console.log(`${key}:`, value);
-      }
+  for (let [key, value] of formDataToSend.entries()) {
+  console.log(`${key}:`, value);
+}
 
       // Axios POST request
       const response = await axios.post(
         "https://brjobsedu.com/Temple_portal/api/pandit/",
         formDataToSend,
-        {
-          headers: {
+
+         {
+           headers: {
             "Content-Type": "multipart/form-data",
           },
         }
-
+        
       );
 
       console.log(" API response:", response.data);
+    
 
+       //  Send OTP
+      const res=await axios.post(
+      "https://brjobsedu.com/Temple_portal/api/Sentotp/",
+      { phone: formData.phone }
+     );
+       console.log("Api response:",res);
+       
+     localStorage.setItem('phone',formData.phone)
+     //localStorage.setItem('otp',res.data.otp)
 
+       alert(" Registered successfully! OTP sent to your phone.");
 
-      //  Send OTP
-      const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/Sentotp/",
-        { phone: formData.phone }
-      );
-      console.log("Api response:", res);
-
-      localStorage.setItem('phone', formData.phone)
-      //localStorage.setItem('otp',res.data.otp)
-
-      alert(" Registered successfully! OTP sent to your phone.");
-
-      //   Navigate to OTP Verification page
-      navigate("/UserVerifyOtp", {
-        state: { phone: formData.phone },
+       //   Navigate to OTP Verification page
+     navigate("/UserVerifyOtp", {
+      state: { phone: formData.phone},
       });
-
+      
 
       if (response.status === 200) {
         alert("Registration successful!");
@@ -316,7 +323,8 @@ function PanditRegistration() {
         });
       }
     } catch (error) {
-      console.log(error.response.data)
+
+        console.log(error.response.data)
       if (error.response.data) {
         // server responded with error
         alert("Error: " + (error.response.data.message || "Something went wrong"));
@@ -328,8 +336,6 @@ function PanditRegistration() {
       setLoading(false);
     }
   };
-
-
 
 
   return (
@@ -527,7 +533,75 @@ function PanditRegistration() {
                     formData={formData}
                     handleInputChange={handleInputChange}
                   />                 
-                   <Col lg={4} md={4} sm={12}>
+                  <Col lg={4} md={4} sm={12}>
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
+                      <Form.Label className="temp-label">
+                        Country <span className="temp-span-star">*</span>
+                      </Form.Label>
+                      <Form.Select className="temp-form-control-option"
+                        name="country"
+                        value={formData.country}
+                        onChange={handleInputChange}
+                        placeholder="">
+
+                        <option value="Select an option">
+                          Select an Country
+                        </option>
+                        <option value="option1">Option 1</option>
+                        <option value="option2">Option 2</option>
+                        <option value="option3">Option 3</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+
+                  <Col lg={4} md={4} sm={12}>
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
+                      <Form.Label className="temp-label">
+                        State <span className="temp-span-star">*</span>
+                      </Form.Label>
+                      <Form.Select className="temp-form-control-option"
+                        name="state"
+                        value={formData.state}
+                        onChange={handleInputChange}
+                        placeholder=""
+                      >
+                        <option value="Select an option">
+                          Select an State
+                        </option>
+                        <option value="option1">Option 1</option>
+                        <option value="option2">Option 2</option>
+                        <option value="option3">Option 3</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                  <Col lg={4} md={4} sm={12}>
+                    <Form.Group
+                      className="mb-3"
+                      controlId="exampleForm.ControlInput1"
+                    >
+                      <Form.Label className="temp-label">
+                        City <span className="temp-span-star">*</span>
+                      </Form.Label>
+                      <Form.Select className="temp-form-control-option"
+                        name="city"
+                        value={formData.city}
+                        onChange={handleInputChange}
+                        placeholder=""
+                      >
+                        <option value="Select an option">Select an City</option>
+                        <option value="option1">Option 1</option>
+                        <option value="option2">Option 2</option>
+                        <option value="option3">Option 3</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                  <Col lg={4} md={4} sm={12}>
                     <Form.Group
                       className="mb-3"
                       controlId="exampleForm.ControlInput1"
@@ -731,6 +805,18 @@ function PanditRegistration() {
                     )}
 
 
+                     disabled={loading}
+                  
+                    {loading ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Registering...
+                </>
+              ) : (
+                "Register Now"
+                  )}
+
+                    
                   </Button>
                   <Button
                     variant="secondary"
@@ -748,5 +834,4 @@ function PanditRegistration() {
     </div>
   );
 }
-
 export default PanditRegistration;

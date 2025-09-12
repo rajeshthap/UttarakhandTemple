@@ -43,10 +43,7 @@ body {
     --temp-gray-light: #EFF0F2;
     --temp-gray-light-black: #4D5959;
     --temp-gray-dark-blue: #032F64;
-
-
-
-
+    --temp-gray-dark-gray: #59595A;
 
 
 
@@ -89,7 +86,8 @@ body {
 .temp-container h1 {
     font-size: var(--temp-space-550);
     color: var(--temp-org);
-    text-align: left    ;
+    text-align: left;
+    padding: 8px;
 }
 
 .temp-container h2 {
@@ -98,7 +96,7 @@ body {
 }
 
 .temp-container p {
-    font-size: var(--temp-space-350);
+    font-size: var(--temp-space-300);
     color: var(--temp-blacky);
     line-height: 1.6;
 }
@@ -175,6 +173,13 @@ body {
     font-size: var(--temp-space-300);
     border-radius: var(--temp-space-100);
     transition: background-color 0.3s ease;
+
+
+
+}
+.temp-page-heading{
+    display: flex;
+    justify-content: space-between;
 }
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {

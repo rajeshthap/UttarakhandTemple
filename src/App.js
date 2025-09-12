@@ -43,6 +43,9 @@ import PoojaBooking from "./Component/Mandir_booking/PoojaBooking/PoojaBooking";
 import SevaRegistration from "./Component/Mandir_booking/SevaRegistration/SevaRegistration";
 import EventParticipation from "./Component/Mandir_booking/EventParticipation/EventParticipation";
 import OnlineHirePandit from "./Component/Mandir_booking/OnlineHirePandit";
+import TempleInfo from "./Component/TempleInfo";
+import UserVerifyOtp from "./Component/userregistration/UserVerifyOtp";
+import ForgetPassword from "./Component/userregistration/ForgetPassword";
 // Importing necessary components and pages
 
 function App() {
@@ -63,13 +66,16 @@ function App() {
         <Route path="/PaymentConfirmation" element={<PaymentConfirmation />} />
         <Route path="/DarshanBooking" element={<DarshanBooking />} />
         <Route path="/MandirBooking" element={<MandirBooking />} />
-        <Route path="/PoojaBooking" element={<PoojaBooking/>} />
+        <Route path="/PoojaBooking" element={<PoojaBooking />} />
         <Route path="/LocationState" element={<LocationState />} />
         <Route path="/TempleFacilityBooking" element={<TempleFacilityBooking />} />
-        <Route path="/SevaRegistration" element={<SevaRegistration/>} />
-        <Route path="/EventParticipation" element={<EventParticipation/>} />
+        <Route path="/SevaRegistration" element={<SevaRegistration />} />
+        <Route path="/EventParticipation" element={<EventParticipation />} />
         <Route path="/OnlineHirePandit" element={<OnlineHirePandit />} />
-        
+        <Route path="/TempleInfo" element={<TempleInfo />} />
+        <Route path="/UserVerifyOtp" element={<UserVerifyOtp />} />
+        <Route path="/ForgetPassword" element={<ForgetPassword />} />
+
         <Route path="/BaseURL" element={<BASE_URLL />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

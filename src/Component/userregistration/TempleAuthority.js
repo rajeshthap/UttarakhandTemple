@@ -6,41 +6,40 @@ import { FaCheckCircle } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import UploadFile from "../../assets/images/upload-icon.png";
 import LocationState from "./LocationState";
-import { Globaleapi } from "../GlobleAuth/Globleapi";
+import { Globaleapi, SendOtp } from "../GlobleAuth/Globleapi";
+import OTPModel from "../OTPModel/OTPModel";
 
 function TempleAuthority() {
-  
-    const [formErrors, setFormErrors] = useState({});
- const [formData, setFormData] = useState({
-  state: "",
-  district: "",
-  city: "",
-  zip_code: "",
-  temple_name: "",
-  password: "",
-  confirm_password: "",
-  temple_type: "",
-  temple_facility: "",
-  temple_address: "",
-  year_of_establishment: "",
-  temple_events: "",
-  temple_ownership_type: "",
-  phone: "",
-  email: "",
-  trust_committee_type: "",      // dropdown
-  trust_committee_details: "",   // textarea
-  additional_details: "",
-  bank_name: "",
-  account_number: "",
-  confirm_account_number: "",
-  account_type: "",
-  account_name: "",
-  ifsc_code: "",
-});
-console.log("form data",formData)
-const handleInputChange = (name, value) => {
-  setFormData((prev) => ({ ...prev, [name]: value }));
-};
+   const [show, setShow] = useState(false);
+    const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+  const [formErrors,] = useState({});
+  const [formData, setFormData] = useState({
+    state: "",
+    country: "",
+    city: "",
+    zip_code: "",
+    temple_name: "",
+    password: "",
+    confirm_password: "",
+    temple_type: "",
+    temple_facility: "",
+    temple_address: "",
+    year_of_establishment: "",
+    temple_events: "",
+    temple_ownership_type: "",
+    phone: "",
+    temple_email: "",
+    trust_committee_type: "",
+    trust_committee_details: "",
+    additional_details: "",
+    bank_name: "",
+    account_number: "",
+    confirm_account_number: "",
+    account_type: "",
+    account_name: "",
+    ifsc_code: "",
+  });
 
   const [documents, setDocuments] = useState({
     temple_image: null,
@@ -48,6 +47,10 @@ const handleInputChange = (name, value) => {
     noc_doc: null,
     trust_cert: null,
   });
+
+  const handleInputChange = (name, value) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -60,41 +63,79 @@ const handleInputChange = (name, value) => {
   const removeFile = (field) => {
     setDocuments({ ...documents, [field]: null });
   };
- 
-const handleSubmit = async (e) => {
+
+  const buildPayload = () => {
+    const payload = new FormData();
+
+    // All text inputs
+    payload.append("state", formData.state || "");
+    payload.append("country", formData.country || "");
+    payload.append("city", formData.city || "");
+    payload.append("zip_code", formData.zip_code || "");
+    payload.append("temple_name", formData.temple_name || "");
+    payload.append("password", formData.password || "");
+    payload.append("confirm_password", formData.confirm_password || "");
+    payload.append("temple_type", formData.temple_type || "");
+    payload.append("temple_facility", formData.temple_facility || "");
+    payload.append("temple_address", formData.temple_address || "");
+    payload.append("year_of_establishment", formData.year_of_establishment || "");
+    payload.append("temple_events", formData.temple_events || "");
+    payload.append("temple_ownership_type", formData.temple_ownership_type || "");
+    payload.append("phone", formData.phone || "");
+ payload.append("temple_email", formData.temple_email || "");
+
+    payload.append("trust_committee_type", formData.trust_committee_type || "");
+    payload.append("trust_committee_details", formData.trust_committee_details || "");
+    payload.append("additional_details", formData.additional_details || "");
+    payload.append("bank_name", formData.bank_name || "");
+    payload.append("account_number", formData.account_number || "");
+    payload.append("confirm_account_number", formData.confirm_account_number || "");
+    payload.append("account_type", formData.account_type || "");
+    payload.append("account_name", formData.account_name || "");
+    payload.append("ifsc_code", formData.ifsc_code || "");
+console.log("temple_email being sent:", formData.temple_email);
+
+    // All file uploads
+    if (documents.temple_image) payload.append("temple_image", documents.temple_image);
+    if (documents.land_doc) payload.append("land_doc", documents.land_doc);
+    if (documents.noc_doc) payload.append("noc_doc", documents.noc_doc);
+    if (documents.trust_cert) payload.append("trust_cert", documents.trust_cert);
+
+    return payload;
+  };
+
+  
+  const handleSubmit = async (e) => {
   e.preventDefault();
-
-  // Create FormData for both text and files
-  const payload = new FormData();
-
-  // Append all text fields
-  Object.entries(formData).forEach(([key, value]) => {
-    payload.append(key, value);
-  });
-
-  // Append all file fields
-  Object.entries(documents).forEach(([key, file]) => {
-    if (file) {
-      payload.append(key, file);
-    }
-  });
+  const payload = buildPayload(); // Your FormData payload
 
   try {
-    const result = await Globaleapi(payload); // Assuming API accepts FormData
-    console.log("API Response:", result.data);
+    // Step 1: Register temple
+    const registerResult = await Globaleapi(payload); // Ensure Globaleapi handles FormData
+    console.log("Registration Response:", registerResult.data);
 
-    if (result.error) {
-      alert("Registration failed!");
-      console.error(result.error);
-    } else {
-      alert("Temple registered successfully!");
-      console.log(result);
-    }
+    // Step 2: Prepare OTP payload
+    const otpPayload = new FormData();
+    otpPayload.append("phone", payload.get("phone")); // or email if needed
+
+    // Step 3: Send OTP
+    const otpResult = await SendOtp(otpPayload);
+    console.log("OTP Response:", otpResult.data);
+
+    // Step 4: Only if BOTH succeed
+    alert("Temple registered and OTP sent successfully!");
+    setShow(true); 
+
   } catch (err) {
-    console.error("Error during API call:", err);
-    alert("Something went wrong!");
+    console.error("Error during API call or OTP sending:", err.response?.data || err);
+    alert("Registration or OTP sending failed! Please try again.");
+    // OTP modal will NOT be shown if anything fails
   }
 };
+
+
+  console.log("form data", formData);
+
 
   return (
     <div>
@@ -358,14 +399,17 @@ const handleSubmit = async (e) => {
                       controlId="exampleForm.ControlInput1"
                     >
                       <Form.Label className="temp-label">
-                        Email ID <span className="temp-span-star">*</span>
+                        temple_email ID <span className="temp-span-star">*</span>
                       </Form.Label>
-                      <Form.Control
-                        type="email"
-                        placeholder="" name="email" value={formData.email}
-                        onChange={handleChange}
-                        className="temp-form-control"
-                      />
+               <Form.Control
+  type="temple_email"
+  name="temple_email"
+  value={formData.temple_email || ""}
+  onChange={(e) =>
+    setFormData({ ...formData, temple_email: e.target.value })
+  }
+/>
+
                     </Form.Group>
                   </Col>
 
@@ -509,10 +553,10 @@ const handleSubmit = async (e) => {
                     </Form.Group>
                   </Col>
                 </Row>
-                <div className=" temple-registration-heading">
-                  <h1>Supporting Documents</h1>
-                </div>
-                <Row>
+            <div className="temple-registration-heading">
+  <h1>Supporting Documents</h1>
+</div>
+<Row>
   {[
     { key: "temple_image", label: "Temple Image Upload" },
     { key: "land_doc", label: "Land Ownership Documents" },
@@ -522,7 +566,15 @@ const handleSubmit = async (e) => {
     <Col lg={6} md={12} sm={12} key={doc.key}>
       <Row className="temp-stepform-box">
         <Col lg={5} md={5} sm={5}>
-          <fieldset className="upload_dropZone text-center">
+          <fieldset
+            className="upload_dropZone text-center"
+            onDragOver={(e) => e.preventDefault()} // allow drop
+            onDrop={(e) => {
+              e.preventDefault();
+              const file = e.dataTransfer.files[0];
+              if (file) handleFileChange({ target: { files: [file] } }, doc.key);
+            }}
+          >
             <legend className="visually-hidden">{doc.label}</legend>
             <img src={UploadFile} alt="upload-file" />
             <p className="temp-drop-txt my-2">
@@ -530,8 +582,10 @@ const handleSubmit = async (e) => {
               <br />
               <i>or</i>
             </p>
+
+            {/* Hidden File Input */}
             <input
-              id={`${doc.key}_upload`}   // <-- FIXED
+              id={`${doc.key}_upload`}
               className="invisible"
               type="file"
               accept="image/jpeg, image/png, image/svg+xml"
@@ -539,25 +593,31 @@ const handleSubmit = async (e) => {
             />
             <label
               className="btn temp-primary-btn mb-1"
-              htmlFor={`${doc.key}_upload`}  // <-- FIXED
+              htmlFor={`${doc.key}_upload`}
             >
               Choose file(s)
             </label>
+
             <p className="temp-upload-file">
               Upload size up to 10KB to 100KB (jpg, png)
             </p>
           </fieldset>
         </Col>
+
+        {/* Uploaded File Info */}
         <Col lg={7} md={7} sm={7} className="temp-doc-subinfo mt-2">
           <h3>
             {doc.label} <span className="temp-span-star">*</span>
           </h3>
+
           {documents[doc.key] && (
             <>
               <div className="d-flex temp-doc-info">
-                <Col lg={3} md={3} sm={3}>03.01.2025</Col>
+                <Col lg={3} md={3} sm={3}>
+                  {new Date().toLocaleDateString()} {/* upload date */}
+                </Col>
                 <Col lg={9} md={9} sm={9} className="px-4 temp-success-doc">
-                  <FaCheckCircle /> Uploaded Successfully
+                  <FaCheckCircle /> {documents[doc.key].name} Uploaded
                 </Col>
               </div>
               <div
@@ -578,6 +638,7 @@ const handleSubmit = async (e) => {
 </Row>
 
 
+<OTPModel show={show} handleClose={handleClose} />
                 {/* <Row>
                   <Col lg={6} md={12} sm={12}>
                     <Row className="temp-stepform-box">

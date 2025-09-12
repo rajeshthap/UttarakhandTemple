@@ -104,172 +104,169 @@ const OnlineHirePandit = () => {
                   />
                 </Form.Group>
               </Col>
-              
-<Row className="mt-2">
-              <h2 className="mb-4">Pooja / Ceremony Details</h2>
 
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                 
-                  controlId="exampleForm.ControlInput1 mb-3"
-                >
-                  <Form.Label className="temp-label mb-3 ">
-                    Type of Pooja / Ritual{" "}
-                    <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Select className="temp-form-control-option">
-                    <option value="">Select ID Proof Type</option>
-                    <option value="Aadhar">Griha Pravesh </option>
-                    <option value="PAN ">Satyanarayan Katha </option>
-                    <option value="PAN ">Marriage </option>
-                    <option value="PAN ">Havan </option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
+              <Row className="mt-2">
+                <h2 className="mb-4">Pooja / Ceremony Details</h2>
 
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label mb-3">
-                    Language Preference{" "}
-                    <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Select className="temp-form-control-option">
-                    <option value="">Select Temple Name</option>
-                    <option value="Kedarnath Temple">Sanskrit </option>
-                    <option value="Somnath Temple">Hindi </option>
-                    <option value="Badrinath Temple"> Marathi </option>
-                    <option value="Jagannath Temple">Tamil </option>
-                    <option value="Jagannath Temple">Telugu </option>
-                    <option value="Jagannath Temple">Other </option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group controlId="exampleForm.ControlInput1 mb-3">
+                    <Form.Label className="temp-label mb-3 ">
+                      Type of Pooja / Ritual{" "}
+                      <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Select className="temp-form-control-option">
+                      <option value="">Select ID Proof Type</option>
+                      <option value="Aadhar">Griha Pravesh </option>
+                      <option value="PAN ">Satyanarayan Katha </option>
+                      <option value="PAN ">Marriage </option>
+                      <option value="PAN ">Havan </option>
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
 
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label mb-3">
-                    Date of Ceremony <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    type="date"
-                    placeholder=""
-                    className="temp-form-control"
-                  />
-                </Form.Group>
-              </Col>
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label className="temp-label mb-3">
+                      Language Preference{" "}
+                      <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Select className="temp-form-control-option">
+                      <option value="">Select Temple Name</option>
+                      <option value="Kedarnath Temple">Sanskrit </option>
+                      <option value="Somnath Temple">Hindi </option>
+                      <option value="Badrinath Temple"> Marathi </option>
+                      <option value="Jagannath Temple">Tamil </option>
+                      <option value="Jagannath Temple">Telugu </option>
+                      <option value="Jagannath Temple">Other </option>
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
 
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label mb-3">
-                    Preferred Time Slot{" "}
-                    <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Select className="temp-form-control-option">
-                    <option value="">Select Time Slot</option>
-                    <option value="Morning ">Morning </option>
-                    <option value="Afternoon ">Afternoon </option>
-                    <option value="Evening">Evening </option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label mb-3">
-                    Location <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Select className="temp-form-control-option">
-                    <option value="">Select Time Slot</option>
-                    <option value="Morning ">Home </option>
-                    <option value="Afternoon ">Temple </option>
-                    <option value="Evening">Other Venue </option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-</Row>
-<Row className="mt-2">
-              <h2> Pandit Requirements</h2>
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label className="temp-label mb-3">
+                      Date of Ceremony <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="date"
+                      placeholder=""
+                      className="temp-form-control"
+                    />
+                  </Form.Group>
+                </Col>
 
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label mb-3">
-                    Number of Pandits Required{" "}
-                    <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Select className="temp-form-control-option">
-                    <option value="">Select Time Slot</option>
-                    <option value="Single ">Single </option>
-                    <option value="Multiple ">Multiple </option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label className="temp-label mb-3">
+                      Preferred Time Slot{" "}
+                      <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Select className="temp-form-control-option">
+                      <option value="">Select Time Slot</option>
+                      <option value="Morning ">Morning </option>
+                      <option value="Afternoon ">Afternoon </option>
+                      <option value="Evening">Evening </option>
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label className="temp-label mb-3">
+                      Location <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Select className="temp-form-control-option">
+                      <option value="">Select Time Slot</option>
+                      <option value="Morning ">Home </option>
+                      <option value="Afternoon ">Temple </option>
+                      <option value="Evening">Other Venue </option>
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row className="mt-2">
+                <h2> Pandit Requirements</h2>
 
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label mb-3">
-                    Special Requirements{" "}
-                    <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Select className="temp-form-control-option">
-                    <option value="">Select Time Slot</option>
-                    <option value="Single ">Samagri arrangement </option>
-                    <option value="Multiple ">musical bhajan team </option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label className="temp-label mb-3">
+                      Number of Pandits Required{" "}
+                      <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Select className="temp-form-control-option">
+                      <option value="">Select Time Slot</option>
+                      <option value="Single ">Single </option>
+                      <option value="Multiple ">Multiple </option>
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
 
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label">
-                    Payment & Confirmation{" "}
-                    <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Select className="temp-form-control-option">
-                    <option value="">Select Time Slot</option>
-                    <option value="Single ">Samagri arrangement </option>
-                    <option value="Multiple ">musical bhajan team </option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label className="temp-label mb-3">
+                      Special Requirements{" "}
+                      <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Select className="temp-form-control-option">
+                      <option value="">Select Time Slot</option>
+                      <option value="Single ">Samagri arrangement </option>
+                      <option value="Multiple ">musical bhajan team </option>
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
 
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label">
-                    Payment Mode <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Select className="temp-form-control-option">
-                    <option value="">Select Time Slot</option>
-                    <option value="UPI ">UPI </option>
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label className="temp-label">
+                      Payment & Confirmation{" "}
+                      <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Select className="temp-form-control-option">
+                      <option value="">Select Time Slot</option>
+                      <option value="Single ">Samagri arrangement </option>
+                      <option value="Multiple ">musical bhajan team </option>
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
 
-                    <option value="NetBanking "> NetBanking </option>
-                    <option value="Card  "> Card </option>
-                    <option value="Cash at Temple  "> Cash at Temple </option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label className="temp-label">
+                      Payment Mode <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Select className="temp-form-control-option">
+                      <option value="">Select Time Slot</option>
+                      <option value="UPI ">UPI </option>
+
+                      <option value="NetBanking "> NetBanking </option>
+                      <option value="Card  "> Card </option>
+                      <option value="Cash at Temple  "> Cash at Temple </option>
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
               </Row>
             </Row>
             <div>
