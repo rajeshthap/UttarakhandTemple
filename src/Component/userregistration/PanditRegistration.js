@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import SendOtp from "../SendOtp/SendOtp";
 import VerifyOtp from "../VerifyOtp/VerifyOtp";
 import LocationState from "../userregistration/LocationState";
+import Regimg from "../../assets/images/User-regi-img.png";
 
 
 function PanditRegistration() {
@@ -356,27 +357,47 @@ function PanditRegistration() {
             <div>
               <Form onSubmit={handleSubmit}>
                 <Row>
-                  {!otpSent && !otpVerified && (
-                    <Col lg={12} md={12} sm={12}>
-                      <SendOtp
-                        phone={phone}
-                        setPhone={setPhone}
-                        onOtpSent={() => setOtpSent(true)}
-                      />
-                    </Col>
-                  )}
+                  <Row>
+                    {!otpSent && !otpVerified && (
+                      <>
+                        <Col lg={6} md={6} sm={12}>
+                          <SendOtp
+                            phone={phone}
+                            setPhone={setPhone}
+                            onOtpSent={() => setOtpSent(true)}
+                          />
+                        </Col>
+                        <Col lg={6} md={6} sm={12}>
+                          <img
+                            src={Regimg}
+                            className="img-fluid"
+                            alt="User Registration"
+                          />
+                        </Col>
+                      </>
+                    )}
 
-                  {otpSent && !otpVerified && (
-                    <Col lg={12} md={12} sm={12}>
-                      <VerifyOtp
-                        phone={phone}
-                        onVerified={() => {
-                          setOtpVerified(true);
-                          setOtpSent(false);
-                        }}
-                      />
-                    </Col>
-                  )}
+                    {otpSent && !otpVerified && (
+                      <>
+                        <Col lg={6} md={6} sm={12}>
+                          <VerifyOtp
+                            phone={phone}
+                            onVerified={() => {
+                              setOtpVerified(true);
+                              setOtpSent(false);
+                            }}
+                          />
+                        </Col>
+                        <Col lg={6} md={6} sm={12}>
+                          <img
+                            src={Regimg}
+                            className="img-fluid"
+                            alt="User Registration"
+                          />
+                        </Col>
+                      </>
+                    )}
+                  </Row>
                   {otpVerified && (
                     <>
                       <Row className="mt-4">
