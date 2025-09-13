@@ -177,9 +177,15 @@ body {
 
 
 }
-.temp-page-heading{
+
+.temp-page-heading {
     display: flex;
     justify-content: space-between;
+}
+
+.alert-txt {
+    font-size: 10px;
+    color: var(--temp-red);
 }
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
