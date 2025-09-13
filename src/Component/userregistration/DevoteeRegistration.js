@@ -11,7 +11,7 @@ function DevoteeRegistration() {
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [, setMessage] = useState("");
 
   const handleRegister = async (e) => {
   e.preventDefault();
