@@ -1,7 +1,6 @@
 import React from 'react'
 import Regimg from "../../assets/images/User-regi-img.png";
 import { Row, Col } from 'react-bootstrap';
-import { Justify } from 'react-bootstrap-icons';
 function AboutUs() {
   return (
     <div className='p-4' style={{textAlign:"Justify"}}>
