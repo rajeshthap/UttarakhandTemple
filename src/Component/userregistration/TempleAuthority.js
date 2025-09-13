@@ -399,6 +399,11 @@ function TempleAuthority() {
                               <option value="wheelchairAccess">
                                 Wheelchair Access
                               </option>
+                              {formErrors.temple_facility && (
+                              <p className="text-danger">
+                                {formErrors.temple_facility}
+                              </p>
+                            )}
                             </Form.Select>
                           </Form.Group>
                         </Col>
@@ -420,6 +425,11 @@ function TempleAuthority() {
                               placeholder=""
                               className="temp-form-control"
                             />
+                            {formErrors.temple_address && (
+                              <p className="text-danger">
+                                {formErrors.temple_address}
+                              </p>
+                            )}
                           </Form.Group>
                         </Col>
 
@@ -445,6 +455,11 @@ function TempleAuthority() {
                               placeholder=""
                               className="temp-form-control"
                             />
+                            {formErrors.zip_code && (
+                              <p className="text-danger">
+                                {formErrors.zip_code}
+                              </p>
+                            )}
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
@@ -502,6 +517,12 @@ function TempleAuthority() {
                               <option value="2002">2002</option>
                               <option value="2001">2001</option>
                               <option value="2000">2000</option>
+
+                              {formErrors.year_of_establishment && (
+                              <p className="text-danger">
+                                {formErrors.year_of_establishment}
+                              </p>
+                            )}
                             </Form.Select>
                           </Form.Group>
                         </Col>
@@ -536,6 +557,12 @@ function TempleAuthority() {
                               <option value="yatra">
                                 Annual Yatra/Pilgrimage
                               </option>
+
+                              {formErrors.temple_events && (
+                              <p className="text-danger">
+                                {formErrors.temple_events}
+                              </p>
+                            )}
                             </Form.Select>
                           </Form.Group>
                         </Col>
@@ -567,6 +594,12 @@ function TempleAuthority() {
                                 Community Managed
                               </option>
                               <option value="other">Other</option>
+
+                              {formErrors.temple_ownership_type && (
+                              <p className="text-danger">
+                                {formErrors.temple_ownership_type}
+                              </p>
+                            )}
                             </Form.Select>
                           </Form.Group>
                         </Col>
@@ -587,6 +620,12 @@ function TempleAuthority() {
                               onChange={handleChange}
                               className="temp-form-control"
                             />
+
+                            {formErrors.phone && (
+                              <p className="text-danger">
+                                {formErrors.phone}
+                              </p>
+                            )}
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
@@ -609,6 +648,12 @@ function TempleAuthority() {
                                 })
                               }
                             />
+
+                            {formErrors.temple_email && (
+                              <p className="text-danger">
+                                {formErrors.temple_email}
+                              </p>
+                            )}
                           </Form.Group>
                         </Col>
 
@@ -632,6 +677,12 @@ function TempleAuthority() {
                               <option value="committee">
                                 Managing Committee
                               </option>
+
+                               {formErrors.trust_committee_details && (
+                              <p className="text-danger">
+                                {formErrors.trust_committee_details}
+                              </p>
+                            )}
                             </Form.Select>
                           </Form.Group>
                         </Col>
@@ -678,6 +729,12 @@ function TempleAuthority() {
                               <option value="option1">Option 1</option>
                               <option value="option2">Option 2</option>
                               <option value="option3">Option 3</option>
+
+                              {formErrors.bank_name && (
+                              <p className="text-danger">
+                                {formErrors.bank_name}
+                              </p>
+                            )}
                             </Form.Select>
                           </Form.Group>
                         </Col>
@@ -698,6 +755,12 @@ function TempleAuthority() {
                               onChange={handleChange}
                               className="temp-form-control"
                             />
+
+                            {formErrors.account_number && (
+                              <p className="text-danger">
+                                {formErrors.account_number}
+                              </p>
+                            )}
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
@@ -717,6 +780,11 @@ function TempleAuthority() {
                               onChange={handleChange}
                               className="temp-form-control"
                             />
+                            {formErrors.confirm_account_number && (
+                              <p className="text-danger">
+                                {formErrors.confirm_account_number}
+                              </p>
+                            )}
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
@@ -739,6 +807,12 @@ function TempleAuthority() {
                               <option value="savings">Savings Account</option>
                               <option value="current">Current Account</option>
                               <option value="other">Other</option>
+
+                              {formErrors.account_type && (
+                              <p className="text-danger">
+                                {formErrors.account_type}
+                              </p>
+                            )}
                             </Form.Select>
                           </Form.Group>
                         </Col>
@@ -759,6 +833,12 @@ function TempleAuthority() {
                               placeholder=""
                               className="temp-form-control"
                             />
+
+                            {formErrors.account_name && (
+                              <p className="text-danger">
+                                {formErrors.account_name}
+                              </p>
+                            )}
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
@@ -778,6 +858,12 @@ function TempleAuthority() {
                               placeholder=""
                               className="temp-form-control"
                             />
+
+                            {formErrors.ifsc_code && (
+                              <p className="text-danger">
+                                {formErrors.ifsc_code}
+                              </p>
+                            )}
                           </Form.Group>
                         </Col>
                       </Row>
