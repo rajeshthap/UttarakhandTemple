@@ -8,8 +8,4 @@ export const Globaleapi = (payload) => {
   });
 };
 
-export const SendOtp = (payload) => {
-  return axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", payload, {
-    headers: { "Content-Type": "multipart/form-data" }
-  });
-};
+

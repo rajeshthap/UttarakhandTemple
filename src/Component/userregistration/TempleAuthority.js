@@ -194,25 +194,29 @@ function TempleAuthority() {
     return payload;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!validateForm()) {
-      alert("Please fix validation errors before submitting");
-      return;
-    }
+  if (!validateForm()) {
+    alert("Please fix validation errors before submitting");
+    return;
+  }
 
-    const payload = buildPayload();
+  const payload = buildPayload();
 
-    try {
-      const registerResult = await Globaleapi(payload);
+  try {
+    const registerResult = await Globaleapi(payload);
+
+    if (registerResult?.data) {
       console.log("Registration Response:", registerResult.data);
-      alert("Temple registered ");
+      alert("Temple registered successfully!");
       setShow(true);
-    } catch (err) {
-      alert("Registration or OTP sending failed! Please try again.");
     }
-  };
+  } catch (err) {
+    console.error("Error during registration:", err);
+  }
+};
+
 
   return (
     <div>
