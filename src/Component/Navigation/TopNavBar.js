@@ -23,22 +23,22 @@ const TopNavBar = () => {
                   navbarScroll
                 >
                   <NavDropdown title="Home" id="navbarScrollingDropdown">
-                    <NavDropdown.Item href="#action3">
+                    <NavDropdown.Item href="/AboutUs">
                       About Us
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="#action3">
+                    <NavDropdown.Item href="/PlatFormInfo">
                       Platform info
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="#action4">
+                    <NavDropdown.Item href="/MissionVision">
                       Mission & Vision
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="#action4">
+                    <NavDropdown.Item href="/ContactUs">
                       Contact Info
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="#action3">
+                    <NavDropdown.Item href="/MandirMahadevaya">
                       Mandir aur platform ka overview
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="#action4">
+                    <NavDropdown.Item href="/SpecialAnnouncements">
                       Special announcements / Upcoming Events
                     </NavDropdown.Item>
                   </NavDropdown>

@@ -46,6 +46,13 @@ import OnlineHirePandit from "./Component/Mandir_booking/OnlineHirePandit";
 import TempleInfo from "./Component/TempleInfo";
 import UserVerifyOtp from "./Component/userregistration/UserVerifyOtp";
 import ForgetPassword from "./Component/userregistration/ForgetPassword";
+import MandirMahadevaya from "./Component/Home/MandirMahadevaya";
+import ContactUs from "./Component/Home/ContactUs";
+import SpecialAnnouncements from "./Component/Home/SpecialAnnouncements";
+import MissionVision from "./Component/Home/MissionVision";
+import AboutUs from "./Component/Home/AboutUs";
+import PlatFormInfo from "./Component/Home/PlatFormInfo";
+
 // Importing necessary components and pages
 
 function App() {
@@ -75,6 +82,12 @@ function App() {
         <Route path="/TempleInfo" element={<TempleInfo />} />
         <Route path="/UserVerifyOtp" element={<UserVerifyOtp />} />
         <Route path="/ForgetPassword" element={<ForgetPassword />} />
+        <Route path="/MandirMahadevaya" element={<MandirMahadevaya />} />
+        <Route path="/ContactUs" element={<ContactUs />} />
+        <Route path="/SpecialAnnouncements" element={<SpecialAnnouncements />} />
+        <Route path="/MissionVision" element={<MissionVision />} />
+        <Route path="/AboutUs" element={<AboutUs />} />
+        <Route path="/PlatFormInfo" element={<PlatFormInfo />} />
 
         <Route path="/BaseURL" element={<BASE_URLL />} />
         <Route path="*" element={<NotFound />} />
