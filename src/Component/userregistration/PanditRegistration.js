@@ -10,12 +10,14 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SendOtp from "../SendOtp/SendOtp";
 import VerifyOtp from "../VerifyOtp/VerifyOtp";
+import LocationState from "../userregistration/LocationState";
+
 
 function PanditRegistration() {
   const [phone, setPhone] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
-  const [message, setMessage] = useState("");
+  //const [message, setMessage] = useState("");
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -44,49 +46,211 @@ function PanditRegistration() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [formErrors, setFormErrors] = useState({});
 
   const navigate = useNavigate();
 
-  const handleInputChange = (e) => {
-    const { name, value, type, files } = e.target;
+ 
 
-    if (type === "file" && files.length > 0) {
-      const file = files[0];
 
-      setFormData({ ...formData, [name]: file });
-
-      // create preview safely
-      setPreview({
-        ...preview,
-        [name]: URL.createObjectURL(file),
-      });
-    } else {
-      // for text/number/email/etc.
-      setFormData({ ...formData, [name]: value });
-    }
+const handleInputChangeCity = (name, value) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    validateField(name, value); // live validation on custom handler
   };
+
+   
+  // Validate individual fields
+  const validateField = (name, value) => {
+    let error = "";
+
+    switch (name) {
+     case "first_name":
+  if (!value) error = "First name is required";
+  else if (!/^[A-Z][a-zA-Z]*$/.test(value))
+    error = "First name must start with a capital letter and contain only alphabets";
+  break;
+
+case "last_name":
+  if (!value) error = "Last name is required";
+  else if (!/^[A-Z][a-zA-Z]*$/.test(value))
+    error = "Last name must start with a capital letter and contain only alphabets";
+  break;
+
+// case "father_name":
+//   if (!value) {
+//     error = "Father's name is required";
+//   } else if (!/^([A-Z][a-z]+)(\s[A-Z][a-z]+)*$/.test(value)) {
+//     error = "Each word in father's name must start with a capital letter and contain only alphabets";
+//   }
+//   break;
+
+
+
+      case "email":
+        if (!value) {
+          error = "Email is required";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          error = "Invalid email format";
+        }
+        break;
+
+      case "phone":
+        if (!value) {
+          error = "Mobile number is required";
+        } else if (!/^\d{10}$/.test(value)) {
+          error = "Mobile number must be exactly 10 digits";
+        }
+        break;
+
+      case "aadhar_number":
+        if (!value) {
+          error = "Aadhar number is required";
+        } else if (!/^\d{12}$/.test(value)) {
+          error = "Aadhar number must be exactly 12 digits";
+        }
+        break;
+
+      case "password":
+        if (!value) {
+          error = "Password is required";
+        } else if (
+          !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+            value
+          )
+        ) {
+          error =
+            "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character";
+        }
+        break;
+
+      case "confirmPassword":
+        if (value !== formData.password) {
+          error = "Passwords do not match";
+        }
+        break;
+
+      default:
+        break;
+    }
+
+    setErrorReason_querys((prev) => ({ ...prev, [name]: error }));
+  };
+
+
+  const handleInputChange = (e) => {
+  const { name, value, type, files } = e.target;
+
+  if (type === "file" && files.length > 0) {
+    const file = files[0];
+    setFormData({ ...formData, [name]: file });
+    setPreview({ ...preview, [name]: URL.createObjectURL(file) });
+    validateField(name, file);
+  } else {
+    let newValue = value;
+
+    // First Name & Last Name: No spaces + capitalize first letter
+    if (name === "first_name" || name === "last_name") {
+      newValue = newValue.replace(/\s/g, ""); 
+      if (newValue.length > 0) {
+        newValue =
+          newValue.charAt(0).toUpperCase() + newValue.slice(1).toLowerCase();
+      }
+    }
+
+    // //  Father Name: Allow spaces + capitalize each word
+    // if (name === "father_name") {
+    //   newValue = newValue
+    //     .split(" ")
+    //     .filter(Boolean) // remove extra spaces
+    //     .map(
+    //       (word) =>
+    //         word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+    //     )
+    //     .join(" ");
+    // }
+
+    // Phone: only digits, max 10
+    if (name === "phone") {
+      newValue = newValue.replace(/\D/g, "");
+      if (newValue.length > 10) newValue = newValue.slice(0, 10);
+    }
+
+    // Aadhaar: only digits, max 12
+    if (name === "aadhar_number") {
+      newValue = newValue.replace(/\D/g, "");
+      if (newValue.length > 12) newValue = newValue.slice(0, 12);
+    }
+
+    setFormData({ ...formData, [name]: newValue });
+    validateField(name, newValue);
+  }
+};
+
 
   const validateForm = () => {
     let errors = {};
 
-    if (!formData.first_name) errors.first_name = "First name is required";
-    if (!formData.last_name) errors.last_name = "Last name is required";
-    if (!formData.father_name) errors.father_name = "Father's name is required";
+    //  First Name
+    if (!formData.first_name) {
+      errors.first_name = "First name is required";
+    } else if (!/^[A-Z][a-zA-Z]*$/.test(formData.first_name)) {
+      errors.first_name = "First name must start with a capital letter and contain only alphabets";
+    }
 
+    //  Last Name
+    if (!formData.last_name) {
+      errors.last_name = "Last name is required";
+    } else if (!/^[A-Z][a-zA-Z]*$/.test(formData.last_name)) {
+      errors.last_name = "Last name must start with a capital letter and contain only alphabets";
+    }
+
+//     //  Father's Name (optional rule - just required)
+//    if (!formData.father_name) {
+//   errors.father_name = "Father's name is required";
+// } else if (!/^([A-Z][a-z]+)(\s[A-Z][a-z]+)*$/.test(formData.father_name)) {
+//   errors.father_name =
+//     "Father's name must start with a capital letter and contain only alphabets";
+// }
+
+    //  Email validation
     if (!formData.email) {
       errors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       errors.email = "Invalid email format";
     }
 
-    if (!formData.password) errors.password = "Password is required";
+    //  Mobile number (10 digits only)
+    if (!formData.phone) {
+      errors.phone = "Mobile number is required";
+    } else if (!/^\d{10}$/.test(formData.phone)) {
+      errors.phone = "Mobile number must be exactly 10 digits";
+    }
+
+    //  Aadhaar (12 digits only)
+    if (!formData.aadhar_number) {
+      errors.aadhar_number = "Aadhar number is required";
+    } else if (!/^\d{12}$/.test(formData.aadhar_number)) {
+      errors.aadhar_number = "Aadhar number must be exactly 12 digits";
+    }
+
+    //  Password strength
+    if (!formData.password) {
+      errors.password = "Password is required";
+    } else if (
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+        formData.password
+      )
+    ) {
+      errors.password =
+        "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character";
+    }
+
+    //  Confirm Password
     if (formData.password !== formData.confirmPassword) {
       errors.confirmPassword = "Passwords do not match";
     }
 
-    if (!formData.phone) errors.phone = "Mobile number is required";
-    if (!formData.aadhar_number)
-      errors.aadhar_number = "Aadhar number is required";
+    //  Address validations
     if (!formData.permanent_address)
       errors.permanent_address = "Address is required";
     if (!formData.country) errors.country = "Country is required";
@@ -96,13 +260,12 @@ function PanditRegistration() {
     if (!formData.temple_association)
       errors.temple_association = "Temple association is required";
 
-    if (!formData.pandit_image)
-      errors.pandit_image = "Pandit image is required";
+    //  File validations
+    if (!formData.pandit_image) errors.pandit_image = "Pandit image is required";
     if (!formData.aadhar_document)
       errors.aadhar_document = "Aadhar document is required";
 
     setErrorReason_querys(errors);
-
     return Object.keys(errors).length === 0;
   };
 
@@ -234,6 +397,9 @@ function PanditRegistration() {
                               value={formData.first_name}
                               onChange={handleInputChange}
                             />
+                            {errorReason_querys.first_name && (
+                              <div className="text-danger">{errorReason_querys.first_name}</div>
+                            )}
                           </Form.Group>
                         </Col>
 
@@ -254,6 +420,9 @@ function PanditRegistration() {
                               value={formData.last_name}
                               onChange={handleInputChange}
                             />
+                            {errorReason_querys.last_name && (
+                              <div className="text-danger">{errorReason_querys.last_name}</div>
+                            )}
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
@@ -273,6 +442,9 @@ function PanditRegistration() {
                               value={formData.father_name}
                               onChange={handleInputChange}
                             />
+                            {errorReason_querys.father_name && (
+                              <div className="text-danger">{errorReason_querys.father_name}</div>
+                            )}
                           </Form.Group>
                         </Col>
 
@@ -292,6 +464,9 @@ function PanditRegistration() {
                               value={formData.email}
                               onChange={handleInputChange}
                             />
+                            {errorReason_querys.email && (
+                              <div className="text-danger">{errorReason_querys.email}</div>
+                            )}
                           </Form.Group>
                         </Col>
 
@@ -312,6 +487,9 @@ function PanditRegistration() {
                               value={formData.phone}
                               onChange={handleInputChange}
                             />
+                            {errorReason_querys.phone && (
+                              <div className="text-danger">{errorReason_querys.phone}</div>
+                            )}
                           </Form.Group>
                         </Col>
 
@@ -393,6 +571,9 @@ function PanditRegistration() {
                               value={formData.aadhar_number}
                               onChange={handleInputChange}
                             />
+                            {errorReason_querys.aadhar_number && (
+                              <div className="text-danger">{errorReason_querys.aadhar_number}</div>
+                            )}
                           </Form.Group>
                         </Col>
 
@@ -417,7 +598,7 @@ function PanditRegistration() {
                           </Form.Group>
                         </Col>
 
-                        <Col lg={4} md={4} sm={12}>
+                        {/* <Col lg={4} md={4} sm={12}>
                           <Form.Group
                             className="mb-3"
                             controlId="exampleForm.ControlInput1"
@@ -489,7 +670,16 @@ function PanditRegistration() {
                               <option value="option3">Option 3</option>
                             </Form.Select>
                           </Form.Group>
-                        </Col>
+                        </Col> */}
+
+
+                        <LocationState
+                         formData={formData}
+                    handleInputChange={handleInputChangeCity}
+                    formErrors={formErrors} 
+                        />
+
+
                         <Col lg={4} md={4} sm={12}>
                           <Form.Group
                             className="mb-3"
