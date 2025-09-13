@@ -50,39 +50,39 @@ function PanditRegistration() {
 
   const navigate = useNavigate();
 
- 
 
 
-const handleInputChangeCity = (name, value) => {
+
+  const handleInputChangeCity = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
     validateField(name, value); // live validation on custom handler
   };
 
-   
+
   // Validate individual fields
   const validateField = (name, value) => {
     let error = "";
 
     switch (name) {
-     case "first_name":
-  if (!value) error = "First name is required";
-  else if (!/^[A-Z][a-zA-Z]*$/.test(value))
-    error = "First name must start with a capital letter and contain only alphabets";
-  break;
+      case "first_name":
+        if (!value) error = "First name is required";
+        else if (!/^[A-Z][a-zA-Z]*$/.test(value))
+          error = "First name must start with a capital letter and contain only alphabets";
+        break;
 
-case "last_name":
-  if (!value) error = "Last name is required";
-  else if (!/^[A-Z][a-zA-Z]*$/.test(value))
-    error = "Last name must start with a capital letter and contain only alphabets";
-  break;
+      case "last_name":
+        if (!value) error = "Last name is required";
+        else if (!/^[A-Z][a-zA-Z]*$/.test(value))
+          error = "Last name must start with a capital letter and contain only alphabets";
+        break;
 
-// case "father_name":
-//   if (!value) {
-//     error = "Father's name is required";
-//   } else if (!/^([A-Z][a-z]+)(\s[A-Z][a-z]+)*$/.test(value)) {
-//     error = "Each word in father's name must start with a capital letter and contain only alphabets";
-//   }
-//   break;
+      // case "father_name":
+      //   if (!value) {
+      //     error = "Father's name is required";
+      //   } else if (!/^([A-Z][a-z]+)(\s[A-Z][a-z]+)*$/.test(value)) {
+      //     error = "Each word in father's name must start with a capital letter and contain only alphabets";
+      //   }
+      //   break;
 
 
 
@@ -138,53 +138,53 @@ case "last_name":
 
 
   const handleInputChange = (e) => {
-  const { name, value, type, files } = e.target;
+    const { name, value, type, files } = e.target;
 
-  if (type === "file" && files.length > 0) {
-    const file = files[0];
-    setFormData({ ...formData, [name]: file });
-    setPreview({ ...preview, [name]: URL.createObjectURL(file) });
-    validateField(name, file);
-  } else {
-    let newValue = value;
+    if (type === "file" && files.length > 0) {
+      const file = files[0];
+      setFormData({ ...formData, [name]: file });
+      setPreview({ ...preview, [name]: URL.createObjectURL(file) });
+      validateField(name, file);
+    } else {
+      let newValue = value;
 
-    // First Name & Last Name: No spaces + capitalize first letter
-    if (name === "first_name" || name === "last_name") {
-      newValue = newValue.replace(/\s/g, ""); 
-      if (newValue.length > 0) {
-        newValue =
-          newValue.charAt(0).toUpperCase() + newValue.slice(1).toLowerCase();
+      // First Name & Last Name: No spaces + capitalize first letter
+      if (name === "first_name" || name === "last_name") {
+        newValue = newValue.replace(/\s/g, "");
+        if (newValue.length > 0) {
+          newValue =
+            newValue.charAt(0).toUpperCase() + newValue.slice(1).toLowerCase();
+        }
       }
+
+      // //  Father Name: Allow spaces + capitalize each word
+      // if (name === "father_name") {
+      //   newValue = newValue
+      //     .split(" ")
+      //     .filter(Boolean) // remove extra spaces
+      //     .map(
+      //       (word) =>
+      //         word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+      //     )
+      //     .join(" ");
+      // }
+
+      // Phone: only digits, max 10
+      if (name === "phone") {
+        newValue = newValue.replace(/\D/g, "");
+        if (newValue.length > 10) newValue = newValue.slice(0, 10);
+      }
+
+      // Aadhaar: only digits, max 12
+      if (name === "aadhar_number") {
+        newValue = newValue.replace(/\D/g, "");
+        if (newValue.length > 12) newValue = newValue.slice(0, 12);
+      }
+
+      setFormData({ ...formData, [name]: newValue });
+      validateField(name, newValue);
     }
-
-    // //  Father Name: Allow spaces + capitalize each word
-    // if (name === "father_name") {
-    //   newValue = newValue
-    //     .split(" ")
-    //     .filter(Boolean) // remove extra spaces
-    //     .map(
-    //       (word) =>
-    //         word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-    //     )
-    //     .join(" ");
-    // }
-
-    // Phone: only digits, max 10
-    if (name === "phone") {
-      newValue = newValue.replace(/\D/g, "");
-      if (newValue.length > 10) newValue = newValue.slice(0, 10);
-    }
-
-    // Aadhaar: only digits, max 12
-    if (name === "aadhar_number") {
-      newValue = newValue.replace(/\D/g, "");
-      if (newValue.length > 12) newValue = newValue.slice(0, 12);
-    }
-
-    setFormData({ ...formData, [name]: newValue });
-    validateField(name, newValue);
-  }
-};
+  };
 
 
   const validateForm = () => {
@@ -204,13 +204,13 @@ case "last_name":
       errors.last_name = "Last name must start with a capital letter and contain only alphabets";
     }
 
-//     //  Father's Name (optional rule - just required)
-//    if (!formData.father_name) {
-//   errors.father_name = "Father's name is required";
-// } else if (!/^([A-Z][a-z]+)(\s[A-Z][a-z]+)*$/.test(formData.father_name)) {
-//   errors.father_name =
-//     "Father's name must start with a capital letter and contain only alphabets";
-// }
+    //     //  Father's Name (optional rule - just required)
+    //    if (!formData.father_name) {
+    //   errors.father_name = "Father's name is required";
+    // } else if (!/^([A-Z][a-z]+)(\s[A-Z][a-z]+)*$/.test(formData.father_name)) {
+    //   errors.father_name =
+    //     "Father's name must start with a capital letter and contain only alphabets";
+    // }
 
     //  Email validation
     if (!formData.email) {
@@ -398,7 +398,7 @@ case "last_name":
                               onChange={handleInputChange}
                             />
                             {errorReason_querys.first_name && (
-                              <div className="text-danger">{errorReason_querys.first_name}</div>
+                              <div className="alert-txt">{errorReason_querys.first_name}</div>
                             )}
                           </Form.Group>
                         </Col>
@@ -421,7 +421,7 @@ case "last_name":
                               onChange={handleInputChange}
                             />
                             {errorReason_querys.last_name && (
-                              <div className="text-danger">{errorReason_querys.last_name}</div>
+                              <div className="alert-txt">{errorReason_querys.last_name}</div>
                             )}
                           </Form.Group>
                         </Col>
@@ -443,7 +443,7 @@ case "last_name":
                               onChange={handleInputChange}
                             />
                             {errorReason_querys.father_name && (
-                              <div className="text-danger">{errorReason_querys.father_name}</div>
+                              <div className="alert-txt">{errorReason_querys.father_name}</div>
                             )}
                           </Form.Group>
                         </Col>
@@ -465,7 +465,7 @@ case "last_name":
                               onChange={handleInputChange}
                             />
                             {errorReason_querys.email && (
-                              <div className="text-danger">{errorReason_querys.email}</div>
+                              <div className="alert-txt">{errorReason_querys.email}</div>
                             )}
                           </Form.Group>
                         </Col>
@@ -488,7 +488,7 @@ case "last_name":
                               onChange={handleInputChange}
                             />
                             {errorReason_querys.phone && (
-                              <div className="text-danger">{errorReason_querys.phone}</div>
+                              <div className="alert-txt">{errorReason_querys.phone}</div>
                             )}
                           </Form.Group>
                         </Col>
@@ -496,7 +496,7 @@ case "last_name":
                         <Col md={4} lg={4} sm={12}>
                           <Form.Group className="mb-3">
                             <Form.Label>
-                              Password<span className="text-danger">*</span>
+                              Password <span className="alert-txt">*</span>
                             </Form.Label>
                             <InputGroup>
                               <Form.Control
@@ -504,6 +504,7 @@ case "last_name":
                                 name="password"
                                 value={formData.password}
                                 onChange={handleInputChange}
+                                className="temp-form-control"
                               />
                               <InputGroup.Text
                                 onClick={() => setShowPassword(!showPassword)}
@@ -513,7 +514,7 @@ case "last_name":
                               </InputGroup.Text>
                             </InputGroup>
                             {errorReason_querys.password && (
-                              <div className="text-danger">
+                              <div className="alert-txt">
                                 {errorReason_querys.password}
                               </div>
                             )}
@@ -524,7 +525,7 @@ case "last_name":
                           <Form.Group className="mb-3">
                             <Form.Label>
                               Confirm Password
-                              <span className="text-danger">*</span>
+                              <span className="alert-txt"> *</span>
                             </Form.Label>
                             <InputGroup>
                               <Form.Control
@@ -532,6 +533,7 @@ case "last_name":
                                 name="confirmPassword"
                                 value={formData.confirmPassword}
                                 onChange={handleInputChange}
+                                className="temp-form-control"
                               />
                               <InputGroup.Text
                                 onClick={() =>
@@ -547,7 +549,7 @@ case "last_name":
                               </InputGroup.Text>
                             </InputGroup>
                             {errorReason_querys.confirmPassword && (
-                              <div className="text-danger">
+                              <div className="alert-txt">
                                 {errorReason_querys.confirmPassword}
                               </div>
                             )}
@@ -572,7 +574,7 @@ case "last_name":
                               onChange={handleInputChange}
                             />
                             {errorReason_querys.aadhar_number && (
-                              <div className="text-danger">{errorReason_querys.aadhar_number}</div>
+                              <div className="alert-txt">{errorReason_querys.aadhar_number}</div>
                             )}
                           </Form.Group>
                         </Col>
@@ -674,9 +676,9 @@ case "last_name":
 
 
                         <LocationState
-                         formData={formData}
-                    handleInputChange={handleInputChangeCity}
-                    formErrors={formErrors} 
+                          formData={formData}
+                          handleInputChange={handleInputChangeCity}
+                          formErrors={formErrors}
                         />
 
 
