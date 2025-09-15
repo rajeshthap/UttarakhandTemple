@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Button, Col, Container, Row, Form, InputGroup, Alert } from "react-bootstrap";
+import {Button,Col,Container,Row,Form,InputGroup,Alert} from "react-bootstrap";
 import axios from "axios";
 import "../../assets/CSS/TempleAuthority.css";
 import Regimg from "../../assets/images/User-regi-img.png";
 import SendOtp from "../SendOtp/SendOtp";
 import VerifyOtp from "../VerifyOtp/VerifyOtp";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function DevoteeRegistration() {
   const [phone, setPhone] = useState("");
@@ -14,6 +15,7 @@ function DevoteeRegistration() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   // Input states
   const [devoteeName, setDevoteeName] = useState("");
@@ -57,81 +59,72 @@ function DevoteeRegistration() {
   };
 
   const handleRegister = async (e) => {
-    e.preventDefault();
-    setMessage("");
+  e.preventDefault();
+  setMessage("");
 
-    // Validate all before submit
-    validateField("devoteeName", devoteeName);
-    validateField("gender", gender);
-    validateField("email", email);
-    validateField("password", password);
+  // Validate all before submit
+  validateField("devoteeName", devoteeName);
+  validateField("gender", gender);
+  validateField("email", email);
+  validateField("password", password);
 
-    // If any errors, stop
-    if (
-      !phone ||
-      errors.devoteeName ||
-      errors.gender ||
-      errors.email ||
-      errors.password
-    ) {
-      setMessage("Please fix the errors above");
-      return;
-    }
-
-    setLoading(true);
-
-    const formData = new FormData();
-    formData.append("phone", phone);
-    formData.append("devotee_name", devoteeName);
-    formData.append("gender", gender);
-    formData.append("email", email);
-    formData.append("password", password);
-
-    try {
-      const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/Userregistration/",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      if (res.data.success) {
-        setMessage("Registration Successful!");
-        setDevoteeName("");
-        setGender("");
-        setEmail("");
-        setPassword("");
-      } else {
-        setMessage(res.data.message || "Registration Failed");
-      }
-   } catch (err) {
-  console.error(err);
-  if (err.response && err.response.data) {
-    let apiMsg = "";
-
-    if (typeof err.response.data === "string") {
-      apiMsg = err.response.data;
-    } else if (err.response.data.error) {
-      apiMsg = err.response.data.error; 
-    } else if (err.response.data.message) {
-      apiMsg = err.response.data.message;
-    } else {
-      apiMsg = "Something went wrong. Please try again.";
-    }
-
-    setMessage(apiMsg);
-  } else {
-    setMessage("Error while registering");
+  // If any errors, stop
+  if (
+    !phone ||
+    errors.devoteeName ||
+    errors.gender ||
+    errors.email ||
+    errors.password
+  ) {
+    setMessage("Please fix the errors above");
+    return;
   }
 
+  setLoading(true);
 
-    } finally {
-      setLoading(false);
+  const formData = new FormData();
+  formData.append("phone", phone);
+  formData.append("devotee_name", devoteeName);
+  formData.append("gender", gender);
+  formData.append("email", email);
+  formData.append("password", password);
+
+  try {
+    const res = await axios.post(
+      "https://brjobsedu.com/Temple_portal/api/Userregistration/",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    console.log("API Response:", res.data);
+
+    // Directly redirect after API response
+    setDevoteeName("");
+    setGender("");
+    setEmail("");
+    setPassword("");
+    alert("User Registered Successfully!");
+    navigate("/DevoteeLogin");
+
+  } catch (err) {
+    console.error(err);
+    if (err.response && err.response.data) {
+      let apiMsg =
+        err.response.data.error ||
+        err.response.data.message ||
+        JSON.stringify(err.response.data);
+      setMessage(apiMsg);
+    } else {
+      setMessage("Error while registering");
     }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <Container className="temp-container">
@@ -281,22 +274,23 @@ function DevoteeRegistration() {
                       </Form.Group>
                     </Col>
 
-                   {/* General Error/Success Message */}
-{message && (
-  <Col lg={12}>
-    <Alert
-      variant={
-        message.toLowerCase().includes("success") ? "success" : "danger"
-      }
-      dismissible
-      onClose={() => setMessage("")}
-      className="mt-2"
-    >
-      {message}
-    </Alert>
-  </Col>
-)}
-
+                    {/* General Error/Success Message */}
+                    {message && (
+                      <Col lg={12}>
+                        <Alert
+                          variant={
+                            message.toLowerCase().includes("success")
+                              ? "success"
+                              : "danger"
+                          }
+                          dismissible
+                          onClose={() => setMessage("")}
+                          className="mt-2"
+                        >
+                          {message}
+                        </Alert>
+                      </Col>
+                    )}
 
                     {/* Submit */}
                     <div className="d-grid gap-3 text-center mt-3">

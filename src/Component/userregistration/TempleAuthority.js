@@ -10,8 +10,10 @@ import { Globaleapi } from "../GlobleAuth/Globleapi";
 import SendOtp from "../SendOtp/SendOtp";
 import VerifyOtp from "../VerifyOtp/VerifyOtp";
 import Regimg from "../../assets/images/User-regi-img.png";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function TempleAuthority() {
+  const navigate =useNavigate();
   const [, setShow] = useState(false);
   const [phone, setPhone] = useState("");
   const [otpSent, setOtpSent] = useState(false);
@@ -267,7 +269,8 @@ function TempleAuthority() {
 
       if (registerResult?.data) {
         console.log("Registration Response:", registerResult.data);
-        alert("Temple registered successfully!");
+        alert("Temple Registered Successfully!");
+        navigate("/AuthorityLogin");
         setShow(true);
       }
     } catch (error) {
