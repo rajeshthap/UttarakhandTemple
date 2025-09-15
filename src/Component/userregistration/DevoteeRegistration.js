@@ -102,11 +102,12 @@ function DevoteeRegistration() {
 
     console.log("API Response:", res.data);
 
-    // ✅ Directly redirect after API response
+    // Directly redirect after API response
     setDevoteeName("");
     setGender("");
     setEmail("");
     setPassword("");
+    alert("User Registered Successfully!");
     navigate("/DevoteeLogin");
 
   } catch (err) {

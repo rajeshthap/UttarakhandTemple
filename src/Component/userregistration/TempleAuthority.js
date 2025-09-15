@@ -269,7 +269,7 @@ function TempleAuthority() {
 
       if (registerResult?.data) {
         console.log("Registration Response:", registerResult.data);
-        alert("Temple registered successfully!");
+        alert("Temple Registered Successfully!");
         navigate("/AuthorityLogin");
         setShow(true);
       }

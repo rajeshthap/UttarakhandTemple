@@ -307,6 +307,7 @@ function PanditRegistration() {
     );
 
     console.log("API Response:", res.data);
+    alert("Pandit Registered Successfully!");
     navigate("/PanditLogin");
 
     if (res.data.success === true || res.data.success === "true") {
