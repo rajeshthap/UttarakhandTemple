@@ -132,7 +132,7 @@ const handleSubmit = async (e) => {
                           variant="danger"
                           className="temp-submit-btn-login"
                           type="button"
-                          onClick={() => (window.location.href = "/forgot-password")}
+                          onClick={() => (window.location.href = "/ForgotPassword")}
                         >
                           Forget Password ?
                         </Button>

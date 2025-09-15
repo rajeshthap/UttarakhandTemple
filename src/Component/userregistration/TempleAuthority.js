@@ -32,7 +32,7 @@ function TempleAuthority() {
     temple_events: "",
     temple_ownership_type: "",
     phone: "",
-    temple_email: "",
+    email: "",
     trust_committee_type: "",
     trust_committee_details: "",
     additional_details: "",
@@ -51,25 +51,37 @@ function TempleAuthority() {
     trust_cert: null,
   });
 
+  //  Full form validation
   const validateForm = () => {
     let errors = {};
+
 
     if (!formData.state) errors.state = "State is required";
     if (!formData.country) errors.country = "Country is required";
     if (!formData.city) errors.city = "City is required";
 
+    // Zip Code
     if (!formData.zip_code) {
       errors.zip_code = "Zip code is required";
     } else if (!/^\d{6}$/.test(formData.zip_code)) {
       errors.zip_code = "Zip code must be 6 digits";
     }
 
-    if (!formData.temple_name) errors.temple_name = "Temple name is required";
+    // Temple Name
+    if (!formData.temple_name) {
+      errors.temple_name = "Temple name is required";
+    }
 
+    // Password (strong validation)
     if (!formData.password) {
       errors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      errors.password = "Password must be at least 6 characters";
+    } else if (
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+        formData.password
+      )
+    ) {
+      errors.password =
+        "Password must be at least 8 characters, include uppercase, lowercase, number, and special character";
     }
 
     if (!formData.confirm_password) {
@@ -78,35 +90,42 @@ function TempleAuthority() {
       errors.confirm_password = "Passwords do not match";
     }
 
+    // Phone Number
     if (!formData.phone) {
       errors.phone = "Phone is required";
     } else if (!/^\d{10}$/.test(formData.phone)) {
-      errors.phone = "Phone must be 10 digits";
+      errors.phone = "Phone must be exactly 10 digits";
     }
 
-    if (!formData.temple_email) {
-      errors.temple_email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.temple_email)) {
-      errors.temple_email = "Invalid email format";
-    }
-
+    // Temple Email
+   if (!formData.email) {
+  errors.email = "Email is required";
+} else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+  errors.email = "Invalid email format";
+}
+    // Account Number
     if (!formData.account_number) {
       errors.account_number = "Account number is required";
+    } else if (!/^\d{9,16}$/.test(formData.account_number)) {
+      errors.account_number = "Account number must be between 9 and 16 digits";
     }
+
     if (formData.account_number !== formData.confirm_account_number) {
       errors.confirm_account_number = "Account numbers do not match";
     }
 
-    if (!formData.ifsc_code) {
-      errors.ifsc_code = "IFSC Code is required";
-    } else if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(formData.ifsc_code)) {
-      errors.ifsc_code = "Invalid IFSC code";
-    }
+    // IFSC
+    // if (!formData.ifsc_code) {
+    //   errors.ifsc_code = "IFSC Code is required";
+    // } else if (!/^[A-Z]{4}[A-Z0-9]{6}$/.test(formData.ifsc_code)) {
+    //   errors.ifsc_code = "Invalid IFSC code";
+    // }
 
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
+  //  Single field validation (real-time)
   const validateField = (name, value) => {
     let error = "";
 
@@ -127,7 +146,14 @@ function TempleAuthority() {
         break;
 
       case "password":
-        if (value.length < 6) error = "Password must be at least 6 characters";
+        if (
+          !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+            value
+          )
+        ) {
+          error =
+            "Password must be at least 8 characters, include uppercase, lowercase, number, and special character";
+        }
         break;
 
       case "confirm_password":
@@ -135,15 +161,29 @@ function TempleAuthority() {
         break;
 
       case "phone":
-        if (!/^\d{10}$/.test(value)) error = "Phone must be 10 digits";
+        if (!value) {
+          error = "Mobile number is required";
+        } else if (!/^\d{10}$/.test(value)) {
+          error = "Mobile number must be exactly 10 digits";
+        }
         break;
 
-      case "temple_email":
-        if (!/\S+@\S+\.\S+/.test(value)) error = "Invalid email format";
+      case "email":
+        if (!value) {
+          error = "Email is required";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          error = "Invalid email format";
+        }
         break;
 
-      case "ifsc_code":
-        if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(value)) error = "Invalid IFSC code";
+      // case "ifsc_code":
+      //   if (!/^[A-Z]{4}[A-Z0-9]{6}$/.test(value)) error = "Invalid IFSC code";
+      //   break;
+
+      case "account_number":
+        if (!/^\d{9,16}$/.test(value)) {
+          error = "Account number must be between 9 and 16 digits";
+        }
         break;
 
       case "confirm_account_number":
@@ -160,13 +200,33 @@ function TempleAuthority() {
   const handleInputChange = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
     validateField(name, value); // live validation on custom handler
+
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    validateField(name, value); // live validation on normal handler
+    let newValue = value;
+
+    // Only allow digits and enforce max length
+    if (name === "phone") {
+      newValue = newValue.replace(/\D/g, ""); // remove non-digits
+      if (newValue.length > 10) newValue = newValue.slice(0, 10);
+    }
+
+    if (name === "account_number" || name === "confirm_account_number") {
+      newValue = newValue.replace(/\D/g, ""); // remove non-digits
+      if (newValue.length > 16) newValue = newValue.slice(0, 16);
+    }
+
+    if (name === "email") {
+  newValue = newValue.trim(); // remove leading/trailing spaces
+}
+
+    setFormData({ ...formData, [name]: newValue });
+    validateField(name, newValue); // live validation
   };
+
+
   const handleFileChange = (e, field) => {
     setDocuments({ ...documents, [field]: e.target.files[0] });
   };
@@ -210,8 +270,17 @@ function TempleAuthority() {
         alert("Temple registered successfully!");
         setShow(true);
       }
-    } catch (err) {
-      console.error("Error during registration:", err);
+    } catch (error) {
+      console.log(error.response.data);
+      if (error.response.data) {
+        // server responded with error
+        alert(
+          "Error: " + (error.response.data.message || "Something went wrong")
+        );
+      } else {
+        // network or unexpected error
+        alert("Error: " + error.message);
+      }
     }
   };
 
@@ -284,6 +353,7 @@ function TempleAuthority() {
                               value={formData.temple_name}
                               onChange={handleChange}
                               placeholder="Temple Name"
+                               className="temp-form-control"
                             />
                             {formErrors.temple_name && (
                               <p className="text-danger">
@@ -400,10 +470,10 @@ function TempleAuthority() {
                                 Wheelchair Access
                               </option>
                               {formErrors.temple_facility && (
-                              <p className="text-danger">
-                                {formErrors.temple_facility}
-                              </p>
-                            )}
+                                <p className="text-danger">
+                                  {formErrors.temple_facility}
+                                </p>
+                              )}
                             </Form.Select>
                           </Form.Group>
                         </Col>
@@ -519,10 +589,10 @@ function TempleAuthority() {
                               <option value="2000">2000</option>
 
                               {formErrors.year_of_establishment && (
-                              <p className="text-danger">
-                                {formErrors.year_of_establishment}
-                              </p>
-                            )}
+                                <p className="text-danger">
+                                  {formErrors.year_of_establishment}
+                                </p>
+                              )}
                             </Form.Select>
                           </Form.Group>
                         </Col>
@@ -559,10 +629,10 @@ function TempleAuthority() {
                               </option>
 
                               {formErrors.temple_events && (
-                              <p className="text-danger">
-                                {formErrors.temple_events}
-                              </p>
-                            )}
+                                <p className="text-danger">
+                                  {formErrors.temple_events}
+                                </p>
+                              )}
                             </Form.Select>
                           </Form.Group>
                         </Col>
@@ -596,10 +666,10 @@ function TempleAuthority() {
                               <option value="other">Other</option>
 
                               {formErrors.temple_ownership_type && (
-                              <p className="text-danger">
-                                {formErrors.temple_ownership_type}
-                              </p>
-                            )}
+                                <p className="text-danger">
+                                  {formErrors.temple_ownership_type}
+                                </p>
+                              )}
                             </Form.Select>
                           </Form.Group>
                         </Col>
@@ -609,7 +679,7 @@ function TempleAuthority() {
                             controlId="exampleForm.ControlInput1"
                           >
                             <Form.Label className="temp-label">
-                              phone Number{" "}
+                              Phone Number{" "}
                               <span className="temp-span-star">*</span>
                             </Form.Label>
                             <Form.Control
@@ -618,6 +688,7 @@ function TempleAuthority() {
                               name="phone"
                               value={formData.phone}
                               onChange={handleChange}
+                              maxLength={10}
                               className="temp-form-control"
                             />
 
@@ -634,24 +705,20 @@ function TempleAuthority() {
                             controlId="exampleForm.ControlInput1"
                           >
                             <Form.Label className="temp-label">
-                              temple_email ID{" "}
+                              Email {" "}
                               <span className="temp-span-star">*</span>
                             </Form.Label>
                             <Form.Control
-                              type="temple_email"
-                              name="temple_email"
-                              value={formData.temple_email || ""}
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  temple_email: e.target.value,
-                                })
-                              }
+                              type="email"
+                              name="email"
+                              value={formData.email || ""}
+                              onChange={handleChange}
+                              onBlur={(e) => validateField("email", e.target.value)}
                             />
 
-                            {formErrors.temple_email && (
+                            {formErrors.email && (
                               <p className="text-danger">
-                                {formErrors.temple_email}
+                                {formErrors.email}
                               </p>
                             )}
                           </Form.Group>
@@ -678,11 +745,11 @@ function TempleAuthority() {
                                 Managing Committee
                               </option>
 
-                               {formErrors.trust_committee_details && (
-                              <p className="text-danger">
-                                {formErrors.trust_committee_details}
-                              </p>
-                            )}
+                              {formErrors.trust_committee_details && (
+                                <p className="text-danger">
+                                  {formErrors.trust_committee_details}
+                                </p>
+                              )}
                             </Form.Select>
                           </Form.Group>
                         </Col>
@@ -726,15 +793,34 @@ function TempleAuthority() {
                               <option value="Select an option">
                                 Select an Bank Name
                               </option>
-                              <option value="option1">Option 1</option>
-                              <option value="option2">Option 2</option>
-                              <option value="option3">Option 3</option>
+
+                              <option value="">-- Select Bank --</option>
+                              <option value="SBI">State Bank of India (SBI)</option>
+                              <option value="HDFC">HDFC Bank</option>
+                              <option value="ICICI">ICICI Bank</option>
+                              <option value="AXIS">Axis Bank</option>
+                              <option value="PNB">Punjab National Bank</option>
+                              <option value="BOB">Bank of Baroda</option>
+                              <option value="Canara">Canara Bank</option>
+                              <option value="Union">Union Bank of India</option>
+                              <option value="IDBI">IDBI Bank</option>
+                              <option value="Yes">Yes Bank</option>
+                              <option value="Kotak">Kotak Mahindra Bank</option>
+                              <option value="IndusInd">IndusInd Bank</option>
+                              <option value="Central">Central Bank of India</option>
+                              <option value="Indian">Indian Bank</option>
+                              <option value="UCO">UCO Bank</option>
+                              <option value="BankOfIndia">Bank of India</option>
+                              <option value="SouthIndian">South Indian Bank</option>
+                              <option value="Federal">Federal Bank</option>
+                              <option value="RBL">RBL Bank</option>
+                              <option value="J&K">Jammu & Kashmir Bank</option>
 
                               {formErrors.bank_name && (
-                              <p className="text-danger">
-                                {formErrors.bank_name}
-                              </p>
-                            )}
+                                <p className="text-danger">
+                                  {formErrors.bank_name}
+                                </p>
+                              )}
                             </Form.Select>
                           </Form.Group>
                         </Col>
@@ -753,6 +839,7 @@ function TempleAuthority() {
                               name="account_number"
                               value={formData.account_number}
                               onChange={handleChange}
+                              maxLength={16}
                               className="temp-form-control"
                             />
 
@@ -803,16 +890,15 @@ function TempleAuthority() {
                               onChange={handleChange}
                             >
                               <option value="">Select Account Type</option>
-                              <option value="">Select Account Type</option>
                               <option value="savings">Savings Account</option>
                               <option value="current">Current Account</option>
-                              <option value="other">Other</option>
+
 
                               {formErrors.account_type && (
-                              <p className="text-danger">
-                                {formErrors.account_type}
-                              </p>
-                            )}
+                                <p className="text-danger">
+                                  {formErrors.account_type}
+                                </p>
+                              )}
                             </Form.Select>
                           </Form.Group>
                         </Col>

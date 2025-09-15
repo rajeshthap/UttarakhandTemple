@@ -141,20 +141,20 @@ const ForgotPassword = () => {
   };
 
   return (
-    <Container className="mt-4">
-      <div className="forgot-container">
+    <Container className="temp-container">
+      <div className="temple-registration-heading">
         <h2>Forgot Password</h2>
         <Row>
-          <Col lg={6} md={6} sm={12}>
+          <Col lg={6} md={6} sm={12} className="mt-4">
             {step === 1 && (
               <>
                 <Form.Group className="mb-3">
-                  <Form.Label>User Type *</Form.Label>
+                  <Form.Label className="temp-label-lg-bg">User Type <span className="temp-span-star">*</span></Form.Label>
                   <Form.Select
                     value={userType}
                     onChange={(e) => setUserType(e.target.value)}
                   >
-                    <option value="">Select type</option>
+                    <option value="">Select type </option>
                     <option value="Temple">Temple</option>
                     <option value="Pandit">Pandit</option>
                     <option value="Devotee">Devotee</option>
@@ -162,7 +162,7 @@ const ForgotPassword = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                  <Form.Label>Email or Phone Number *</Form.Label>
+                  <Form.Label className="temp-label-lg-bg">Email or Phone Number <span className="temp-span-star">*</span></Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Enter your email or phone"

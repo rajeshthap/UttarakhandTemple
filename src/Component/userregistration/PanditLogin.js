@@ -153,7 +153,7 @@ const handleSubmit = async (e) => {
                               variant="danger"
                               className="temp-submit-btn-login"
                               type="button"
-                              onClick={() => navigate("/ForgetPassword")}
+                              onClick={() => navigate("/ForgotPassword")}
                             >
                               Forget Password ?
                             </Button>

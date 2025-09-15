@@ -47,6 +47,7 @@ import OnlineHirePandit from "./Component/Mandir_booking/OnlineHirePandit";
 import TempleInfo from "./Component/TempleInfo";
 import UserVerifyOtp from "./Component/userregistration/UserVerifyOtp";
 import ForgetPassword from "./Component/userregistration/ForgetPassword";
+import ForgotPassword from "./Component/SendOtp/ForgotPassword";
 import MandirMahadevaya from "./Component/Home/MandirMahadevaya";
 import ContactUs from "./Component/Home/ContactUs";
 import SpecialAnnouncements from "./Component/Home/SpecialAnnouncements";
@@ -77,6 +78,7 @@ function App() {
         <Route path="/DevoteeRegistration" element={<DevoteeRegistration />} />
         <Route path="/PanditLogin" element={<PanditLogin />} />
         <Route path="/DevoteeLogin" element={<DevoteeLogin />} />
+        <Route path="/ForgotPassword" element={<ForgotPassword />} />
         <Route path="/DonateTemples" element={<DonateTemples />} />
         <Route path="/ExtendYourDivine" element={<ExtendYourDivine />} />
         <Route path="/PaymentConfirmation" element={<PaymentConfirmation />} />
