@@ -56,6 +56,10 @@ import AboutUs from "./Component/Home/AboutUs";
 import PlatFormInfo from "./Component/Home/PlatFormInfo";
 import DashBoard from "./Component/dashboard/DashBoard";
 import LeftNav from "./Component/dashboard/LeftNav";
+import MainDashBoard from "./Component/dashboard/innerpage_dashboard/MainDashBoard";
+import DonateDashBoard from "./Component/dashboard/innerpage_dashboard/DonateDashBoard";
+// import DashBoard from "./Component/dashboard/DashBoard";
+// import LeftNav from "./Component/dashboard/LeftNav";
 
 // Importing necessary components and pages
 
@@ -63,7 +67,7 @@ function App() {
 
   const location = useLocation
     ();
-  const hiddenPaths = new Set(["/DashBoard"]);
+  const hiddenPaths = new Set(["/DashBoard","/MainDashBoard","/DonateDashboard","/LeftNav"]);
   const shouldHideBars = hiddenPaths.has(location.pathname);
   const hideFooter = location.pathname === "/";
   return (
@@ -103,6 +107,9 @@ function App() {
         <Route path="/BaseURL" element={<BASE_URLL />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/DashBoard" element={<DashBoard />} />
+        <Route path="/MainDashBoard" element={<MainDashBoard />} />
+        <Route path="/DonateDashBoard" element={<DonateDashBoard />} />
+        
         <Route path="/LeftNav" element={<LeftNav />} />
 
       </Routes>
