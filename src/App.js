@@ -1,8 +1,8 @@
 import React from "react";
 import "./App.css";
-
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./CustomCss/custom.css"
+import "./CustomCss/style.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "slick-carousel/slick/slick.css";
@@ -19,6 +19,7 @@ import TempleAuthority from "./Component/userregistration/TempleAuthority";
 import {
   Route,
   Routes,
+  useLocation,
 } from "react-router-dom";
 import Home from "./Pages/Home";
 import InfoBar from "./Component/Navigation/InfoBar";
@@ -52,14 +53,21 @@ import SpecialAnnouncements from "./Component/Home/SpecialAnnouncements";
 import MissionVision from "./Component/Home/MissionVision";
 import AboutUs from "./Component/Home/AboutUs";
 import PlatFormInfo from "./Component/Home/PlatFormInfo";
+import DashBoard from "./Component/dashboard/DashBoard";
+import LeftNav from "./Component/dashboard/LeftNav";
 
 // Importing necessary components and pages
 
 function App() {
+
+  const location = useLocation
+    ();
+  const hiddenPaths = new Set(["/DashBoard"]);
+  const shouldHideBars = hiddenPaths.has(location.pathname);
   return (
     <div className="App">
-      <InfoBar />
-      <TopNavBar />
+      {!shouldHideBars && <InfoBar />}
+      {!shouldHideBars && <TopNavBar />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/TempleAuthority" element={<TempleAuthority />} />
@@ -91,6 +99,9 @@ function App() {
 
         <Route path="/BaseURL" element={<BASE_URLL />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/DashBoard" element={<DashBoard />} />
+        <Route path="/LeftNav" element={<LeftNav />} /> 
+        
       </Routes>
       <TempleFooter />
     </div>
