@@ -280,87 +280,72 @@ function PanditRegistration() {
     setErrorReason_querys(errors);
     return Object.keys(errors).length === 0;
   };
+  
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!validateForm()) return;
+  if (!validateForm()) return;
 
-    setLoading(true);
+  setLoading(true);
 
-    try {
-      const formDataToSend = new FormData();
+  try {
+    const formDataToSend = new FormData();
 
-      formDataToSend.append("first_name", formData.first_name);
-      formDataToSend.append("last_name", formData.last_name);
-      formDataToSend.append("father_name", formData.father_name);
-      formDataToSend.append("email", formData.email);
-      formDataToSend.append("password", formData.password);
-      formDataToSend.append("phone", formData.phone);
-      formDataToSend.append("aadhar_number", formData.aadhar_number);
-      formDataToSend.append("permanent_address", formData.permanent_address);
-      formDataToSend.append("country", formData.country);
-      formDataToSend.append("state", formData.state);
-      formDataToSend.append("city", formData.city);
-      formDataToSend.append("zipcode", formData.zipcode);
-      formDataToSend.append("temple_association", formData.temple_association);
-      formDataToSend.append("temple_image", formData.temple_image);
-      formDataToSend.append("aadhar_document", formData.aadhar_document);
-      if (formData.pandit_role && formData.pandit_role.length > 0) {
-        formData.pandit_role.forEach((role) => {
-          formDataToSend.append("pandit_role", role);
-        });
+    // Append all fields
+    for (let key in formData) {
+      if (key === "pandit_role" && formData[key].length > 0) {
+        formData[key].forEach((role) => formDataToSend.append("pandit_role", role));
+      } else {
+        formDataToSend.append(key, formData[key]);
       }
-
-      for (let [key, value] of formDataToSend.entries()) {
-        console.log(`${key}:`, value);
-      }
-
-      // Axios POST request
-      const response = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/pandit/",
-        formDataToSend,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      console.log("API response:", response.data);
-      if (response.status === 200) {
-        alert("Registration successful!");
-        setFormData({
-          first_name: "",
-          last_name: "",
-          father_name: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-          phone: "",
-          aadhar_number: "",
-          permanent_address: "",
-          country: "",
-          state: "",
-          city: "",
-          zipcode: "",
-          temple_association: "",
-          temple_image: "",
-          aadhar_document: "",
-          pandit_role: [],
-        });
-      }
-    } catch (error) {
-      console.log(error.response?.data || error.message);
-      alert(
-        "Error: " +
-          (error.response?.data?.message ||
-            error.response?.data ||
-            error.message)
-      );
-    } finally {
-      setLoading(false);
     }
-  };
+
+    const res = await axios.post(
+      "https://brjobsedu.com/Temple_portal/api/pandit/",
+      formDataToSend,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+
+    console.log("API Response:", res.data);
+    navigate("/PanditLogin");
+
+    if (res.data.success === true || res.data.success === "true") {
+      alert("Registration successful!");
+
+      // Clear form
+      setFormData({
+        first_name: "",
+        last_name: "",
+        father_name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        phone: "",
+        aadhar_number: "",
+        permanent_address: "",
+        country: "",
+        state: "",
+        city: "",
+        zipcode: "",
+        temple_association: "",
+        temple_image: "",
+        aadhar_document: "",
+        pandit_role: [],
+      });
+
+      
+      navigate("/PanditLogin");
+    } else {
+      alert(res.data.message || "Registration failed");
+    }
+  } catch (err) {
+    console.error(err);
+    alert(err.response?.data?.message || err.message || "Something went wrong");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div>
