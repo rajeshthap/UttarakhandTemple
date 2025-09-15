@@ -86,10 +86,10 @@ body {
 
 
 .temp-container h1 {
-    font-size: var(--temp-space-550);
+    font-size: var(--temp-space-600);
     color: var(--temp-org);
     text-align: left;
-    padding: 8px;
+    font-weight: 500;
 }
 
 .temp-container h2 {
