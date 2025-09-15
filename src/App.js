@@ -64,6 +64,7 @@ function App() {
     ();
   const hiddenPaths = new Set(["/DashBoard"]);
   const shouldHideBars = hiddenPaths.has(location.pathname);
+  const hideFooter = location.pathname === "/";
   return (
     <div className="App">
       {!shouldHideBars && <InfoBar />}
@@ -100,10 +101,10 @@ function App() {
         <Route path="/BaseURL" element={<BASE_URLL />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/DashBoard" element={<DashBoard />} />
-        <Route path="/LeftNav" element={<LeftNav />} /> 
-        
+        <Route path="/LeftNav" element={<LeftNav />} />
+
       </Routes>
-      <TempleFooter />
+      {!hideFooter && <TempleFooter />}
     </div>
   );
 }
