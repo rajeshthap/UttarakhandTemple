@@ -122,8 +122,8 @@ const LocationState = ({
           >
             <option value="">Select City</option>
             {cities.map((ct) => (
-              <option key={ct.id} value={ct.name}>
-                {ct.name}
+              <option key={ct.id} value={ct.name_ascii}>
+                {ct.name_ascii}
               </option>
             ))}
           </Form.Select>

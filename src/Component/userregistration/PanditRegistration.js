@@ -12,20 +12,18 @@ import SendOtp from "../SendOtp/SendOtp";
 import VerifyOtp from "../VerifyOtp/VerifyOtp";
 import LocationState from "../userregistration/LocationState";
 import Regimg from "../../assets/images/User-regi-img.png";
-
+import Select from "react-select";
 
 function PanditRegistration() {
   const [phone, setPhone] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
-  //const [message, setMessage] = useState("");
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
     father_name: "",
     email: "",
     password: "",
-    //confirmPassword: "",
     phone: "",
     aadhar_number: "",
     permanent_address: "",
@@ -33,13 +31,29 @@ function PanditRegistration() {
     state: "",
     city: "",
     zipcode: "",
+    pandit_role: "",
     temple_association: "",
-    pandit_image: "",
+    temple_image: "",
     aadhar_document: "",
   });
 
+  const roleOptions = [
+    { value: "pooja", label: "विवाह समारोह पंडित" },
+    { value: "vedic_chanting", label: "मुंडन संस्कार पंडित" },
+    // { value: "grihPravesh", label: "गृह प्रवेश पंडित" },
+    // { value: "namkaran", label: "नामकरण संस्कार पंडित" },
+    // { value: "vastu", label: "वास्तु पूजा पंडित" },
+    // { value: "havan", label: "हवन / यज्ञ पंडित" },
+    // { value: "antim", label: "अंतिम संस्कार पंडित" },
+    // { value: "janmpatri", label: "जन्मपत्री बनाने वाले पंडित" },
+    // { value: "dasha", label: "दशा-फल बताने वाले पंडित" },
+    // { value: "kulachar", label: "कुलाचार / गोत्र पूजा पंडित" },
+    // { value: "pujapath", label: "पूजा-पाठ विशेषज्ञ" },
+    // { value: "tarpan", label: "तर्पण / श्राद्ध पंडित" },
+  ];
+
   const [preview, setPreview] = useState({
-    pandit_image: null,
+    temple_image: null,
     aadhar_document: null,
   });
 
@@ -51,14 +65,10 @@ function PanditRegistration() {
 
   const navigate = useNavigate();
 
-
-
-
   const handleInputChangeCity = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
     validateField(name, value); // live validation on custom handler
   };
-
 
   // Validate individual fields
   const validateField = (name, value) => {
@@ -68,24 +78,25 @@ function PanditRegistration() {
       case "first_name":
         if (!value) error = "First name is required";
         else if (!/^[A-Z][a-zA-Z]*$/.test(value))
-          error = "First name must start with a capital letter and contain only alphabets";
+          error =
+            "First name must start with a capital letter and contain only alphabets";
         break;
 
       case "last_name":
         if (!value) error = "Last name is required";
         else if (!/^[A-Z][a-zA-Z]*$/.test(value))
-          error = "Last name must start with a capital letter and contain only alphabets";
+          error =
+            "Last name must start with a capital letter and contain only alphabets";
         break;
 
-      // case "father_name":
-      //   if (!value) {
-      //     error = "Father's name is required";
-      //   } else if (!/^([A-Z][a-z]+)(\s[A-Z][a-z]+)*$/.test(value)) {
-      //     error = "Each word in father's name must start with a capital letter and contain only alphabets";
-      //   }
-      //   break;
-
-
+      case "father_name":
+        if (!value) {
+          error = "Father's name is required";
+        } else if (!/^([A-Z][a-z]+)(\s[A-Z][a-z]+)*$/.test(value)) {
+          error =
+            "Each word in father's name must start with a capital letter and contain only alphabets";
+        }
+        break;
 
       case "email":
         if (!value) {
@@ -137,7 +148,6 @@ function PanditRegistration() {
     setErrorReason_querys((prev) => ({ ...prev, [name]: error }));
   };
 
-
   const handleInputChange = (e) => {
     const { name, value, type, files } = e.target;
 
@@ -158,17 +168,16 @@ function PanditRegistration() {
         }
       }
 
-      // //  Father Name: Allow spaces + capitalize each word
-      // if (name === "father_name") {
-      //   newValue = newValue
-      //     .split(" ")
-      //     .filter(Boolean) // remove extra spaces
-      //     .map(
-      //       (word) =>
-      //         word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-      //     )
-      //     .join(" ");
-      // }
+      if (name === "father_name") {
+        newValue = newValue
+          .split(" ")
+          .map((word) =>
+            word
+              ? word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+              : ""
+          )
+          .join(" ");
+      }
 
       // Phone: only digits, max 10
       if (name === "phone") {
@@ -187,7 +196,6 @@ function PanditRegistration() {
     }
   };
 
-
   const validateForm = () => {
     let errors = {};
 
@@ -195,14 +203,16 @@ function PanditRegistration() {
     if (!formData.first_name) {
       errors.first_name = "First name is required";
     } else if (!/^[A-Z][a-zA-Z]*$/.test(formData.first_name)) {
-      errors.first_name = "First name must start with a capital letter and contain only alphabets";
+      errors.first_name =
+        "First name must start with a capital letter and contain only alphabets";
     }
 
     //  Last Name
     if (!formData.last_name) {
       errors.last_name = "Last name is required";
     } else if (!/^[A-Z][a-zA-Z]*$/.test(formData.last_name)) {
-      errors.last_name = "Last name must start with a capital letter and contain only alphabets";
+      errors.last_name =
+        "Last name must start with a capital letter and contain only alphabets";
     }
 
     //     //  Father's Name (optional rule - just required)
@@ -262,23 +272,24 @@ function PanditRegistration() {
       errors.temple_association = "Temple association is required";
 
     //  File validations
-    if (!formData.pandit_image) errors.pandit_image = "Pandit image is required";
+    if (!formData.temple_image)
+      errors.temple_image = "Pandit image is required";
     if (!formData.aadhar_document)
       errors.aadhar_document = "Aadhar document is required";
 
     setErrorReason_querys(errors);
     return Object.keys(errors).length === 0;
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
+
     setLoading(true);
+
     try {
       const formDataToSend = new FormData();
+
       formDataToSend.append("first_name", formData.first_name);
       formDataToSend.append("last_name", formData.last_name);
       formDataToSend.append("father_name", formData.father_name);
@@ -292,8 +303,13 @@ function PanditRegistration() {
       formDataToSend.append("city", formData.city);
       formDataToSend.append("zipcode", formData.zipcode);
       formDataToSend.append("temple_association", formData.temple_association);
-      formDataToSend.append("pandit_image", formData.pandit_image);
+      formDataToSend.append("temple_image", formData.temple_image);
       formDataToSend.append("aadhar_document", formData.aadhar_document);
+      if (formData.pandit_role && formData.pandit_role.length > 0) {
+        formData.pandit_role.forEach((role) => {
+          formDataToSend.append("pandit_role", role);
+        });
+      }
 
       for (let [key, value] of formDataToSend.entries()) {
         console.log(`${key}:`, value);
@@ -310,7 +326,7 @@ function PanditRegistration() {
         }
       );
 
-      console.log(" API response:", response.data);
+      console.log("API response:", response.data);
       if (response.status === 200) {
         alert("Registration successful!");
         setFormData({
@@ -319,7 +335,7 @@ function PanditRegistration() {
           father_name: "",
           email: "",
           password: "",
-          //confirmPassword: "",
+          confirmPassword: "",
           phone: "",
           aadhar_number: "",
           permanent_address: "",
@@ -328,21 +344,19 @@ function PanditRegistration() {
           city: "",
           zipcode: "",
           temple_association: "",
-          pandit_image: "",
+          temple_image: "",
           aadhar_document: "",
+          pandit_role: [],
         });
       }
     } catch (error) {
-      console.log(error.response.data);
-      if (error.response.data) {
-        // server responded with error
-        alert(
-          "Error: " + (error.response.data.message || "Something went wrong")
-        );
-      } else {
-        // network or unexpected error
-        alert("Error: " + error.message);
-      }
+      console.log(error.response?.data || error.message);
+      alert(
+        "Error: " +
+          (error.response?.data?.message ||
+            error.response?.data ||
+            error.message)
+      );
     } finally {
       setLoading(false);
     }
@@ -419,7 +433,9 @@ function PanditRegistration() {
                               onChange={handleInputChange}
                             />
                             {errorReason_querys.first_name && (
-                              <div className="alert-txt">{errorReason_querys.first_name}</div>
+                              <div className="alert-txt">
+                                {errorReason_querys.first_name}
+                              </div>
                             )}
                           </Form.Group>
                         </Col>
@@ -442,7 +458,9 @@ function PanditRegistration() {
                               onChange={handleInputChange}
                             />
                             {errorReason_querys.last_name && (
-                              <div className="alert-txt">{errorReason_querys.last_name}</div>
+                              <div className="alert-txt">
+                                {errorReason_querys.last_name}
+                              </div>
                             )}
                           </Form.Group>
                         </Col>
@@ -464,7 +482,9 @@ function PanditRegistration() {
                               onChange={handleInputChange}
                             />
                             {errorReason_querys.father_name && (
-                              <div className="alert-txt">{errorReason_querys.father_name}</div>
+                              <div className="alert-txt">
+                                {errorReason_querys.father_name}
+                              </div>
                             )}
                           </Form.Group>
                         </Col>
@@ -486,7 +506,9 @@ function PanditRegistration() {
                               onChange={handleInputChange}
                             />
                             {errorReason_querys.email && (
-                              <div className="alert-txt">{errorReason_querys.email}</div>
+                              <div className="alert-txt">
+                                {errorReason_querys.email}
+                              </div>
                             )}
                           </Form.Group>
                         </Col>
@@ -509,7 +531,9 @@ function PanditRegistration() {
                               onChange={handleInputChange}
                             />
                             {errorReason_querys.phone && (
-                              <div className="alert-txt">{errorReason_querys.phone}</div>
+                              <div className="alert-txt">
+                                {errorReason_querys.phone}
+                              </div>
                             )}
                           </Form.Group>
                         </Col>
@@ -595,7 +619,49 @@ function PanditRegistration() {
                               onChange={handleInputChange}
                             />
                             {errorReason_querys.aadhar_number && (
-                              <div className="alert-txt">{errorReason_querys.aadhar_number}</div>
+                              <div className="alert-txt">
+                                {errorReason_querys.aadhar_number}
+                              </div>
+                            )}
+                          </Form.Group>
+                        </Col>
+
+                        <Col lg={4} md={4} sm={12}>
+                          <Form.Group className="mb-3">
+                            <Form.Label className="temp-label">
+                              Pandit Role
+                              <span className="temp-span-star">*</span>
+                            </Form.Label>
+                            <Select
+                              isMulti
+                              options={roleOptions}
+                              placeholder="Select multiple"
+                              closeMenuOnSelect={false}
+                              className="temp-form-control-input"
+                              value={roleOptions.filter((option) =>
+                                formData.pandit_role?.includes(option.value)
+                              )}
+                              onChange={(selected) => {
+                                const values = selected
+                                  ? selected.map((opt) => opt.value)
+                                  : [];
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  pandit_role: values,
+                                }));
+                              }}
+                              styles={{
+                                valueContainer: (provided) => ({
+                                  ...provided,
+                                  maxHeight: "38px",
+                                  overflowY: "auto",
+                                }),
+                              }}
+                            />
+                            {errorReason_querys.pandit_role && (
+                              <div className="alert-txt">
+                                {errorReason_querys.pandit_role}
+                              </div>
                             )}
                           </Form.Group>
                         </Col>
@@ -621,87 +687,11 @@ function PanditRegistration() {
                           </Form.Group>
                         </Col>
 
-                        {/* <Col lg={4} md={4} sm={12}>
-                          <Form.Group
-                            className="mb-3"
-                            controlId="exampleForm.ControlInput1"
-                          >
-                            <Form.Label className="temp-label">
-                              Country <span className="temp-span-star">*</span>
-                            </Form.Label>
-                            <Form.Select
-                              className="temp-form-control-option"
-                              name="country"
-                              value={formData.country}
-                              onChange={handleInputChange}
-                              placeholder=""
-                            >
-                              <option value="Select an option">
-                                Select an Country
-                              </option>
-                              <option value="option1">Option 1</option>
-                              <option value="option2">Option 2</option>
-                              <option value="option3">Option 3</option>
-                            </Form.Select>
-                          </Form.Group>
-                        </Col>
-
-                        <Col lg={4} md={4} sm={12}>
-                          <Form.Group
-                            className="mb-3"
-                            controlId="exampleForm.ControlInput1"
-                          >
-                            <Form.Label className="temp-label">
-                              State <span className="temp-span-star">*</span>
-                            </Form.Label>
-                            <Form.Select
-                              className="temp-form-control-option"
-                              name="state"
-                              value={formData.state}
-                              onChange={handleInputChange}
-                              placeholder=""
-                            >
-                              <option value="Select an option">
-                                Select an State
-                              </option>
-                              <option value="option1">Option 1</option>
-                              <option value="option2">Option 2</option>
-                              <option value="option3">Option 3</option>
-                            </Form.Select>
-                          </Form.Group>
-                        </Col>
-                        <Col lg={4} md={4} sm={12}>
-                          <Form.Group
-                            className="mb-3"
-                            controlId="exampleForm.ControlInput1"
-                          >
-                            <Form.Label className="temp-label">
-                              City <span className="temp-span-star">*</span>
-                            </Form.Label>
-                            <Form.Select
-                              className="temp-form-control-option"
-                              name="city"
-                              value={formData.city}
-                              onChange={handleInputChange}
-                              placeholder=""
-                            >
-                              <option value="Select an option">
-                                Select an City
-                              </option>
-                              <option value="option1">Option 1</option>
-                              <option value="option2">Option 2</option>
-                              <option value="option3">Option 3</option>
-                            </Form.Select>
-                          </Form.Group>
-                        </Col> */}
-
-
                         <LocationState
                           formData={formData}
                           handleInputChange={handleInputChangeCity}
                           formErrors={formErrors}
                         />
-
 
                         <Col lg={4} md={4} sm={12}>
                           <Form.Group
@@ -779,8 +769,8 @@ function PanditRegistration() {
                                 </p>
 
                                 <input
-                                  id="pandit_image"
-                                  name="pandit_image"
+                                  id="temple_image"
+                                  name="temple_image"
                                   type="file"
                                   accept="image/jpeg, image/png"
                                   className="invisible"
@@ -789,7 +779,7 @@ function PanditRegistration() {
 
                                 <label
                                   className="btn temp-primary-btn mb-1"
-                                  htmlFor="pandit_image"
+                                  htmlFor="temple_image"
                                 >
                                   Choose file
                                 </label>
@@ -809,7 +799,7 @@ function PanditRegistration() {
                                 Pandit Image Upload{" "}
                                 <span className="temp-span-star">*</span>
                               </h3>
-                              {formData.pandit_image && (
+                              {formData.temple_image && (
                                 <>
                                   <div className="d-flex temp-doc-info">
                                     <Col lg={3} md={3} sm={3}>
@@ -829,7 +819,7 @@ function PanditRegistration() {
                                     onClick={() =>
                                       setFormData({
                                         ...formData,
-                                        pandit_image: "",
+                                        temple_image: "",
                                       })
                                     }
                                   >
