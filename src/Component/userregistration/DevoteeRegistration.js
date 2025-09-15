@@ -1,72 +1,137 @@
 import React, { useState } from "react";
-import { Button, Col, Container, Row, Form } from "react-bootstrap";
+import { Button, Col, Container, Row, Form, InputGroup, Alert } from "react-bootstrap";
 import axios from "axios";
 import "../../assets/CSS/TempleAuthority.css";
 import Regimg from "../../assets/images/User-regi-img.png";
 import SendOtp from "../SendOtp/SendOtp";
 import VerifyOtp from "../VerifyOtp/VerifyOtp";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function DevoteeRegistration() {
-  const [phone, setPhone] = useState(""); 
+  const [phone, setPhone] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [, setMessage] = useState("");
+  const [message, setMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Input states
+  const [devoteeName, setDevoteeName] = useState("");
+  const [gender, setGender] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  // Error states
+  const [errors, setErrors] = useState({});
+
+  // Regex
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?#&])[A-Za-z\d@$!%*?#&]{8,}$/;
+
+  const validateField = (name, value) => {
+    let error = "";
+
+    switch (name) {
+      case "devoteeName":
+        if (!value.trim()) error = "Name is required";
+        break;
+      case "gender":
+        if (!value) error = "Gender is required";
+        break;
+      case "email":
+        if (!value.trim()) error = "Email is required";
+        else if (!emailRegex.test(value)) error = "Invalid email format";
+        break;
+      case "password":
+        if (!value.trim()) error = "Password is required";
+        else if (!passwordRegex.test(value))
+          error =
+            "Password must be 8+ chars, include uppercase, lowercase, number & special char";
+        break;
+      default:
+        break;
+    }
+
+    setErrors((prev) => ({ ...prev, [name]: error }));
+  };
 
   const handleRegister = async (e) => {
-  e.preventDefault();
-  setMessage("");
+    e.preventDefault();
+    setMessage("");
 
-  const form = e.target;
-  const devotee_name = form.devotee_name.value.trim();
-  const gender = form.gender.value;
-  const email = form.email.value.trim();
-  const password =form.password.value.trim();
+    // Validate all before submit
+    validateField("devoteeName", devoteeName);
+    validateField("gender", gender);
+    validateField("email", email);
+    validateField("password", password);
 
-  if (!phone || !devotee_name || !gender || !email || !password) {
-    setMessage("Please fill all fields");
-    return;
-  }
+    // If any errors, stop
+    if (
+      !phone ||
+      errors.devoteeName ||
+      errors.gender ||
+      errors.email ||
+      errors.password
+    ) {
+      setMessage("Please fix the errors above");
+      return;
+    }
 
-  setLoading(true);
+    setLoading(true);
 
-  const formData = new FormData();
-  formData.append("phone", phone);
-  formData.append("devotee_name", devotee_name);
-  formData.append("gender", gender);
-  formData.append("email", email);
-  formData.append("password", password);
+    const formData = new FormData();
+    formData.append("phone", phone);
+    formData.append("devotee_name", devoteeName);
+    formData.append("gender", gender);
+    formData.append("email", email);
+    formData.append("password", password);
 
-  try {
-    const res = await axios.post(
-      "https://brjobsedu.com/Temple_portal/api/Userregistration/",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+    try {
+      const res = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/Userregistration/",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (res.data.success) {
+        setMessage("Registration Successful!");
+        setDevoteeName("");
+        setGender("");
+        setEmail("");
+        setPassword("");
+      } else {
+        setMessage(res.data.message || "Registration Failed");
       }
-    );
+   } catch (err) {
+  console.error(err);
+  if (err.response && err.response.data) {
+    let apiMsg = "";
 
-    if (res.data.success) {
-      setMessage("Registration successful!");
-      form.reset();
+    if (typeof err.response.data === "string") {
+      apiMsg = err.response.data;
+    } else if (err.response.data.error) {
+      apiMsg = err.response.data.error; 
+    } else if (err.response.data.message) {
+      apiMsg = err.response.data.message;
     } else {
-      setMessage(res.data.message || "Registration failed");
+      apiMsg = "Something went wrong. Please try again.";
     }
-  } catch (err) {
-    console.error(err);
-    if (err.response && err.response.data) {
-      setMessage(err.response.data.message || JSON.stringify(err.response.data));
-    } else {
-      setMessage("Error while registering");
-    }
-  } finally {
-    setLoading(false);
+
+    setMessage(apiMsg);
+  } else {
+    setMessage("Error while registering");
   }
-};
 
 
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Container className="temp-container">
@@ -76,9 +141,8 @@ function DevoteeRegistration() {
           <Row>
             <Col lg={6} md={6}>
               <Row>
-                
                 {!otpSent && !otpVerified && (
-                  <Col lg={12} md={12} sm={12}>
+                  <Col lg={12}>
                     <SendOtp
                       phone={phone}
                       setPhone={setPhone}
@@ -88,7 +152,7 @@ function DevoteeRegistration() {
                 )}
 
                 {otpSent && !otpVerified && (
-                  <Col lg={12} md={12} sm={12}>
+                  <Col lg={12}>
                     <VerifyOtp
                       phone={phone}
                       onVerified={() => {
@@ -101,7 +165,8 @@ function DevoteeRegistration() {
 
                 {otpVerified && (
                   <>
-                    <Col lg={12} md={12} sm={12}>
+                    {/* Phone */}
+                    <Col lg={12}>
                       <Form.Group className="mb-3">
                         <Form.Label>
                           Phone Number <span className="temp-span-star">*</span>
@@ -115,67 +180,128 @@ function DevoteeRegistration() {
                       </Form.Group>
                     </Col>
 
-                    <Col lg={12} md={12} sm={12}>
+                    {/* Name */}
+                    <Col lg={12}>
                       <Form.Group className="mb-3">
                         <Form.Label>
                           Devotee Name <span className="temp-span-star">*</span>
                         </Form.Label>
                         <Form.Control
                           type="text"
-                          name="devotee_name"
+                          value={devoteeName}
+                          onChange={(e) => {
+                            setDevoteeName(e.target.value);
+                            validateField("devoteeName", e.target.value);
+                          }}
                           placeholder="Enter Name"
                           className="temp-form-control-bg"
                         />
+                        {errors.devoteeName && (
+                          <small className="alert-txt">
+                            {errors.devoteeName}
+                          </small>
+                        )}
                       </Form.Group>
                     </Col>
 
-                    <Col lg={12} md={12} sm={12}>
+                    {/* Gender */}
+                    <Col lg={12}>
                       <Form.Group className="mb-3">
                         <Form.Label>
                           Gender <span className="temp-span-star">*</span>
                         </Form.Label>
-                        <Form.Select name="gender" className="temp-form-control-option-bg">
+                        <Form.Select
+                          value={gender}
+                          onChange={(e) => {
+                            setGender(e.target.value);
+                            validateField("gender", e.target.value);
+                          }}
+                          className="temp-form-control-option-bg"
+                        >
                           <option value="">Please Select</option>
                           <option value="Male">Male</option>
                           <option value="Female">Female</option>
                           <option value="Others">Others</option>
                         </Form.Select>
+                        {errors.gender && (
+                          <small className="alert-txt">{errors.gender}</small>
+                        )}
                       </Form.Group>
                     </Col>
 
-                    <Col lg={12} md={12} sm={12}>
+                    {/* Email */}
+                    <Col lg={12}>
                       <Form.Group className="mb-3">
                         <Form.Label>
                           Email <span className="temp-span-star">*</span>
                         </Form.Label>
                         <Form.Control
                           type="email"
-                          name="email"
+                          value={email}
+                          onChange={(e) => {
+                            setEmail(e.target.value);
+                            validateField("email", e.target.value);
+                          }}
                           placeholder="Enter Email"
                           className="temp-form-control-bg"
                         />
+                        {errors.email && (
+                          <small className="alert-txt">{errors.email}</small>
+                        )}
                       </Form.Group>
                     </Col>
 
-                    <Col lg={12} md={12} sm={12}>
+                    {/* Password */}
+                    <Col lg={12}>
                       <Form.Group className="mb-3">
                         <Form.Label>
                           Password <span className="temp-span-star">*</span>
                         </Form.Label>
-                        <Form.Control
-                          type="password"
-                          name="password"
-                          placeholder="Enter Password"
-                          className="temp-form-control-bg"
-                        />
+                        <InputGroup>
+                          <Form.Control
+                            type={showPassword ? "text" : "password"}
+                            value={password}
+                            onChange={(e) => {
+                              setPassword(e.target.value);
+                              validateField("password", e.target.value);
+                            }}
+                            placeholder="Enter Password"
+                            className="temp-form-control-bg"
+                          />
+                          <Button
+                            variant="outline-secondary"
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                          </Button>
+                        </InputGroup>
+                        {errors.password && (
+                          <small className="alert-txt">{errors.password}</small>
+                        )}
                       </Form.Group>
                     </Col>
 
-                    {/* {message && <p>{message}</p>} */}
+                   {/* General Error/Success Message */}
+{message && (
+  <Col lg={12}>
+    <Alert
+      variant={
+        message.toLowerCase().includes("success") ? "success" : "danger"
+      }
+      dismissible
+      onClose={() => setMessage("")}
+      className="mt-2"
+    >
+      {message}
+    </Alert>
+  </Col>
+)}
 
+
+                    {/* Submit */}
                     <div className="d-grid gap-3 text-center mt-3">
                       <Row>
-                        <Col lg={12} md={12} sm={12}>
+                        <Col lg={12}>
                           <Button
                             variant="danger"
                             type="submit"
@@ -192,6 +318,7 @@ function DevoteeRegistration() {
               </Row>
             </Col>
 
+            {/* Right Image */}
             <Col lg={6} md={6} sm={12}>
               <img src={Regimg} className="img-fluid" alt="User Registration" />
             </Col>
