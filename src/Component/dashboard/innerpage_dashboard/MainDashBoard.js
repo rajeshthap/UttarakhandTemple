@@ -1,9 +1,9 @@
 import React from "react";
-import "../../assets/CSS/LeftNav.css";
-import LeftNav from "./LeftNav";
+import "../../../assets/CSS/LeftNav.css";
+import LeftNav from "../LeftNav";
 
 
-const DashBoard = () => {
+const MainDashBoard = () => {
   return (
     <>
       {/* Main Wrapper */}
@@ -25,4 +25,4 @@ const DashBoard = () => {
   );
 };
 
-export default DashBoard;
+export default MainDashBoard;

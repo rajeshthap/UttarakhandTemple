@@ -9,9 +9,15 @@ import {
 import { ImFilePdf } from "react-icons/im";
 import { FaRegFileAlt, FaChalkboardTeacher, FaAlignLeft } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
-import UKLogon from "../../assets/images/UKLogo.png";
+import CompanyLogo from "../../assets/images/company-logo.png";
 import MenuIcon from "../../assets/images/menu_icon.png";
 import "../../assets/CSS/LeftNav.css";
+import { BiDonateHeart } from "react-icons/bi";
+import { GiByzantinTemple } from "react-icons/gi";
+import { LiaCalendarCheck } from "react-icons/lia";
+import { FaRegFileLines } from "react-icons/fa6";
+import { TbPasswordUser } from "react-icons/tb";
+import { IoCalendarClear } from "react-icons/io5";
 
 function LeftNav() {
   const [isNavClosed, setIsNavClosed] = useState(false);
@@ -65,32 +71,32 @@ function LeftNav() {
   };
 
   const navigationOptions = [
-    { icon: <RiDashboard3Line />, label: "Dashboard", path: "/UserDashboard" },
-    { icon: <MdOutlinePublishedWithChanges />, label: "Change Password", path: "/Change" },
-    { icon: <FaRegFileAlt />, label: "Request Query", path: "/SubmitRequest" },
-    { icon: <MdOutlineFormatAlignRight />, label: "Form Status", path: "/FormStatus" },
+    { icon: <RiDashboard3Line />, label: "Dashboard", path: "/MainDashBoard" },
+    { icon: <BiDonateHeart />, label: "Donate to Temples", path: "/DonateDashboard" },
+    { icon: <LiaCalendarCheck />, label: "Pandit Booking", path: "#" },
+    { icon: <IoCalendarClear />, label: "Pooja Booking", path: "#" },
     {
-      icon: <ImFilePdf />,
-      label: "नंदा गौरा योजना शासनादेश",
+      icon: <GiByzantinTemple />,
+      label: "Mandir Booking",
       download: true,
-      fileUrl: "/praroop1_tutorial.pdf",
+      fileUrl: "#",
       fileName: "praroop1_tutorial.pdf",
     },
     {
       icon: <MdLibraryBooks />,
-      label: "Girl Child Form Tutorial",
+      label: "Darshan Booking",
       download: true,
-      fileUrl: "/shashandesh_new.pdf",
+      fileUrl: "#",
       fileName: "shashandesh_new.pdf",
     },
     {
-      icon: <FaChalkboardTeacher />,
-      label: "12th Form Tutorial",
+      icon: <FaRegFileLines />,
+      label: "Seva Registration",
       download: true,
       fileUrl: "/praroop2_tutorial.pdf",
       fileName: "praroop2_tutorial.pdf",
     },
-    { icon: <FaRegFileAlt />, label: "Contact Us", path: "/DepartmentContact" },
+    { icon: <TbPasswordUser />, label: "Change Password", path: "#" },
   ];
 
   return (
@@ -104,18 +110,21 @@ function LeftNav() {
             alt="menu-icon"
             onClick={toggleNav}
           />
-          <Link to="#" className="logo-page">
-            <img src={UKLogon} alt="logo" className="logo" />
-          </Link>
-          <div className="nd-title">
+      <Link to="#" className="logo-page">
+  <img src={CompanyLogo} alt="Manadavaaya" title="MAHADAVAAYA" className="logo" />
+</Link>
+
+
+          {/* <div className="nd-title">
             <span className="nd-subtitle">उत्तराखंड सरकार | Gov.t of Uttarakhand</span>
             <span className="subtitle">
               महिला सशक्तिकरण एवं बाल विकास विभाग उत्तराखंड
             </span>
-          </div>
+          </div> */}
         </div>
 
         <div className="message">
+          
           <div className="nd-msg">User: {userName}</div>
           <div className="dp" title="Click to logout" onClick={logout}>
             <div className="nd-log-icon">
@@ -129,6 +138,7 @@ function LeftNav() {
       <div className={`navcontainer ${isNavClosed ? "navclose" : ""}`}>
         <nav className="nav">
           <div className="nav-upper-options">
+            
             <div className="nd-menu">
               <FaAlignLeft className="icn menuicn" onClick={toggleNav} />
               <div className="nd-user">User: {userName}</div>

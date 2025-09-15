@@ -37,6 +37,7 @@
   flex: 1;
   padding: 20px;
   background: #f4f6f8;
+  margin: 68px 0px 0px 0px;
 }
 
 /* Box inside main content */
@@ -69,7 +70,7 @@
 }
 
 .logo {
-  width: 66px;
+  width: 200px;
 }
 
 .icn {
@@ -138,8 +139,7 @@
 
 .dp {
   font-size: var(--nd-space-500);
-  background-color: var(--nd-blue-hover);
-
+  background-color: var(--temp-org);
   border-radius: 50%;
   color: var(--nd-white);
 
@@ -221,8 +221,8 @@
 }
 
 .nav-option:hover {
-  border-left: 5px solid var(--nd-Primary);
-  background-color: var(--nd-blue-hover);
+  border-left: 2px solid var(--nd-white);
+  background-color: var(--temp-org);
   cursor: pointer;
 }
 

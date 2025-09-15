@@ -1,9 +1,9 @@
 import React from "react";
-import "../../assets/CSS/LeftNav.css";
-import LeftNav from "./LeftNav";
+import "../../../assets/CSS/LeftNav.css";
+import LeftNav from "../LeftNav";
+import MandirBooking from "../../Mandir_booking/MandirBooking";
 
-
-const DashBoard = () => {
+const DonateDashBoard = () => {
   return (
     <>
       {/* Main Wrapper */}
@@ -14,15 +14,14 @@ const DashBoard = () => {
         </aside>
 
         {/* Right-hand Main Container */}
+        
         <main className="main-container">
-          <div className="content-box">
-            <h2>Dashboard Content</h2>
-            <p>This is the right-hand side container box.</p>
-          </div>
+               <MandirBooking />
         </main>
+     
       </div>
     </>
   );
 };
 
-export default DashBoard;
+export default DonateDashBoard;

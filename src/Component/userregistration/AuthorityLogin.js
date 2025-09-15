@@ -133,7 +133,7 @@ function AuthorityLogin() {
                               className="temp-submit-btn-login"
                               type="button"
                               onClick={() =>
-                                (window.location.href = "/ForgotPassword")
+                                (window.location.href = "/forgot-password")
                               }
                             >
                               Forgot Password ?
