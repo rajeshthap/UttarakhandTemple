@@ -9,7 +9,7 @@ body {
   background-color: var(--bs-body-bg);
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
-  background-color: var(--nd-blue-light-bg);
+
 }
 
 
@@ -90,5 +90,4 @@ body {
 /* ----------------Drag & drop files Start ---------------------------  */
 
 
-@media (max-width: 575.98px) {
-}
+@media (max-width: 575.98px) {}

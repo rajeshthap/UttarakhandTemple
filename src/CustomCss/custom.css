@@ -8,7 +8,7 @@
 }
 
 body {
-    background-color: #E9ECEF;
+    background-color: #E9ECEF !important;
     font-family: var(--temp-font-family);
 }
 

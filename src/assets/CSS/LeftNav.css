@@ -21,11 +21,7 @@
   --two-use-color: #5500cb;
 }
 
-body {
-  background-color: var(--background-color4);
-  max-width: 100%;
-  overflow-x: hidden;
-}
+
 
 /* Main wrapper with sidebar + content */
 .dashboard-wrapper {
@@ -48,15 +44,16 @@ body {
   background: #fff;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
   margin-top: 64px;
 }
 
 .active-nav {
-background-color: var(--nd-blue-hover);
+  background-color: var(--nd-blue-hover);
   color: #fff !important;
-  border-left: 4px solid white; 
+  border-left: 4px solid white;
 }
+
 .user-nd-header {
   height: 70px;
   width: 100vw;
@@ -179,7 +176,7 @@ background-color: var(--nd-blue-hover);
 .nav {
   min-height: 100vh;
   width: 250px;
-  background-color:var(--temp-primary);
+  background-color: var(--temp-primary);
   position: absolute;
   top: 0px;
   left: 00;
@@ -216,7 +213,7 @@ background-color: var(--nd-blue-hover);
 .nav-option {
   width: 250px;
   height: 60px;
-  
+
   align-items: center;
   padding: 12px 30px 0 20px;
   gap: 20px;
@@ -294,7 +291,7 @@ span.nav-label {
 /* Responsive CSS Here */
 @media only screen and (min-width: 992px) {
 
-  
+
 
   .nd-user {
     display: none;
@@ -302,10 +299,7 @@ span.nav-label {
 
 
 
-  @media only screen and (max-width: 600px) {
-  
-
-  }
+  @media only screen and (max-width: 600px) {}
 
 
 }
@@ -331,13 +325,10 @@ span.nav-label {
 
 }
 
-@media (min-width: 850px) and (max-width: 991px) {
-
-
-}
+@media (min-width: 850px) and (max-width: 991px) {}
 
 @media screen and (max-width: 850px) {
- 
+
 
   .nd-log-icon-mob {
     background-color: var(--nd-blue-hover);
@@ -397,9 +388,7 @@ span.nav-label {
 
 }
 
-@media screen and (max-width: 568px) {
-
-}
+@media screen and (max-width: 568px) {}
 
 @media screen and (max-width: 490px) {
 
@@ -473,24 +462,12 @@ span.nav-label {
 
 
 
-  
-}
-
-
-
-
-@media screen and (max-width: 400px) {
-  
-
-
- 
-
- 
-}
-
-@media screen and (max-width: 320px) {
-
-
-
 
 }
+
+
+
+
+@media screen and (max-width: 400px) {}
+
+@media screen and (max-width: 320px) {}
