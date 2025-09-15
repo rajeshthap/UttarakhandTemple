@@ -17,7 +17,7 @@ function MissionVision() {
           </Col>
           <Col lg={5} md={5} sm={12}>
             <div className="d-flex justify-content-end">
-              <img src={Missionimg} className="img-fluid" alt="Platform Information" />
+              <img src={Missionimg} className="img-fluid" alt="Mission & Vision" />
             </div>
           </Col>
         </Row>

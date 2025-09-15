@@ -33,7 +33,7 @@ function MandirMahadevaya() {
           </Col>
           <Col lg={5} md={5} sm={12}>
             <div className="d-flex justify-content-end">
-              <img src={Mandirimg} className="img-fluid" alt="Platform Information" />
+              <img src={Mandirimg} className="img-fluid" alt="Mandir & Mahadevaya Platform Overview" />
             </div>
           </Col>
         </Row>
