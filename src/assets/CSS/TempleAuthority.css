@@ -158,13 +158,13 @@ span.temp-span-star {
 }
 
 .temp-submit-btn-login {
-    margin-right: var(--temp-space-1000);
+
     background-color: var(--temp-white);
-    border: 1px var(--temp-white) solid;
+    border: 1px var(--temp-gary-light) solid;
     border-radius: var(--temp-space-200);
-    font-size: var(--temp-space-400);
-    padding-left: var(--temp-space-600);
-    padding-right: var(--temp-space-600);
+    font-size: var(--temp-space-300);
+    padding-left: var(--temp-space-400);
+    padding-right: var(--temp-space-400);
     padding-top: var(--temp-space-200);
     padding-bottom: var(--temp-space-200);
     color: var(--temp-black);
@@ -172,7 +172,7 @@ span.temp-span-star {
 }
 
 .temp-submit-btn-login:hover {
-    background-color: var(--temp-light-green) !important;
+    background-color: var(--temp-gary-light) !important;
     border: 1px var(--temp-light-green) solid;
 
     border-radius: var(--temp-space-200);
