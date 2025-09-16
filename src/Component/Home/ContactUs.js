@@ -1,5 +1,8 @@
 import React from 'react'
-import { Col, Container, Row } from 'react-bootstrap'
+import { Button, Col, Container, Row } from 'react-bootstrap'
+import Form from 'react-bootstrap/Form';
+
+
 function ContactUs() {
   return (
     <div>      <Container className='temp-container p-4'>
@@ -19,8 +22,38 @@ function ContactUs() {
           </ul>
           <p>At Mahadevaya Portal, your spiritual journey matters to us. We are committed to providing support, guidance, and information to enhance your devotion and connection with Hindu traditions.</p>
         </Col>
-        <Col lg={5} md={5} sm={12}>
+        <Col lg={5} md={5} sm={12} className='tem-rhs'>
 
+          <Form>
+            <h2 className='pb-4'>Feel free to contact us if you need any assistance, any help or another question.
+            </h2>
+            <Form.Group className="mb-3" controlId="formBasicName">
+              <Form.Label className='temp-label'>Name <span class="temp-span-star">*</span></Form.Label>
+              <Form.Control type="email"
+                placeholder="Enter Name"
+                className='temp-form-control-bg-contact'
+              />
+              {/* <Form.Text className="text-muted">
+                We'll never share your email with anyone else.
+              </Form.Text> */}
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label className='temp-label'>Email Address <span class="temp-span-star">*</span></Form.Label>
+              <Form.Control type="Test"
+                placeholder="Email address"
+                className='temp-form-control-bg-contact'
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+              <Form.Label>Message <span class="temp-span-star">*</span></Form.Label>
+              <Form.Control as="textarea" rows={3} />
+            </Form.Group>
+
+            <Button variant="" className='temp-submit-btn' type="submit">
+              Submit
+            </Button>
+          </Form>
 
         </Col>
       </Row>

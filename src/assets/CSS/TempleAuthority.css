@@ -40,6 +40,16 @@ span.temp-span-star {
 
 }
 
+.temp-form-control-bg-contact {
+    height: 48px;
+    background-color: var(--temp-white);
+    border: 1px solid var(--temp-search-border);
+    border-radius: var(--temp-space-200);
+    font-size: var(--temp-space-300);
+
+}
+
+
 .temp-form-control-option {
     height: 48px;
     font-size: var(--temp-space-350);
