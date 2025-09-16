@@ -326,7 +326,6 @@ function PanditRegistration() {
         pandit_role: [],
       });
 
-     
     } 
        else {
       alert(res.data.message || "Registration failed");
