@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { RiDashboard3Line } from "react-icons/ri";
 import {
-  MdOutlinePublishedWithChanges,
-  MdOutlineFormatAlignRight,
   MdLibraryBooks,
 } from "react-icons/md";
 import { ImFilePdf } from "react-icons/im";
-import { FaRegFileAlt, FaChalkboardTeacher, FaAlignLeft } from "react-icons/fa";
+import { FaAlignLeft } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
 import CompanyLogo from "../../assets/images/company-logo.png";
 import MenuIcon from "../../assets/images/menu_icon.png";
@@ -73,27 +71,26 @@ function LeftNav() {
   const navigationOptions = [
     { icon: <RiDashboard3Line />, label: "Dashboard", path: "/MainDashBoard" },
     { icon: <BiDonateHeart />, label: "Donate to Temples", path: "/DonateDashboard" },
-    { icon: <LiaCalendarCheck />, label: "Pandit Booking", path: "#" },
-    { icon: <IoCalendarClear />, label: "Pooja Booking", path: "#" },
+    { icon: <LiaCalendarCheck />, label: "Pandit Booking", path: "/PanditDashBoard" },
+    { icon: <IoCalendarClear />, label: "Pooja Booking", path: "/PoojaBookingDashBoard" },
     {
       icon: <GiByzantinTemple />,
       label: "Mandir Booking",
-      download: true,
-      fileUrl: "#",
+      path: "/MandirBookingDashBoard",
       fileName: "praroop1_tutorial.pdf",
     },
     {
       icon: <MdLibraryBooks />,
       label: "Darshan Booking",
-      download: true,
-      fileUrl: "#",
+      
+      path: "/DarshanBookingDashBoard",
       fileName: "shashandesh_new.pdf",
     },
     {
+       path: "/SevaRegistrationDashBoard",
+
       icon: <FaRegFileLines />,
       label: "Seva Registration",
-      download: true,
-      fileUrl: "/praroop2_tutorial.pdf",
       fileName: "praroop2_tutorial.pdf",
     },
     { icon: <TbPasswordUser />, label: "Change Password", path: "#" },

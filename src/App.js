@@ -58,6 +58,13 @@ import DashBoard from "./Component/dashboard/DashBoard";
 import LeftNav from "./Component/dashboard/LeftNav";
 import MainDashBoard from "./Component/dashboard/innerpage_dashboard/MainDashBoard";
 import DonateDashBoard from "./Component/dashboard/innerpage_dashboard/DonateDashBoard";
+import PanditDashBoard from "./Component/dashboard/innerpage_dashboard/PanditDashBoard";
+import PoojaBookingDashBoard from "./Component/dashboard/innerpage_dashboard/PoojaBookingDashBoard";
+import DarshanBookingDashBoard from "./Component/dashboard/innerpage_dashboard/DarshanBookingDashBoard";
+import MandirBookingDashBoard from "./Component/dashboard/innerpage_dashboard/MandirBookingDashBoard";
+import SevaRegistrationDashBoard from "./Component/dashboard/innerpage_dashboard/SevaRegistrationDashBoard";
+
+
 // import DashBoard from "./Component/dashboard/DashBoard";
 // import LeftNav from "./Component/dashboard/LeftNav";
 
@@ -67,7 +74,7 @@ function App() {
 
   const location = useLocation
     ();
-  const hiddenPaths = new Set(["/DashBoard","/MainDashBoard","/DonateDashboard","/LeftNav"]);
+  const hiddenPaths = new Set(["/DashBoard","/MainDashBoard","/DonateDashboard","/PanditDashBoard","/LeftNav","/PoojaBookingDashBoard","/MandirBookingDashBoard","/DarshanBookingDashBoard","/SevaRegistrationDashBoard"]);
   const shouldHideBars = hiddenPaths.has(location.pathname);
   const hideFooter = location.pathname === "/";
   return (
@@ -103,12 +110,17 @@ function App() {
         <Route path="/MissionVision" element={<MissionVision />} />
         <Route path="/AboutUs" element={<AboutUs />} />
         <Route path="/PlatFormInfo" element={<PlatFormInfo />} />
+        <Route path="/MandirBookingDashBoard" element={<MandirBookingDashBoard />} />
 
         <Route path="/BaseURL" element={<BASE_URLL />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/DashBoard" element={<DashBoard />} />
         <Route path="/MainDashBoard" element={<MainDashBoard />} />
         <Route path="/DonateDashBoard" element={<DonateDashBoard />} />
+        <Route path="/PanditDashBoard" element={<PanditDashBoard />} />
+        <Route path="/PoojaBookingDashBoard" element={<PoojaBookingDashBoard />} />
+        <Route path="/DarshanBookingDashBoard" element={<DarshanBookingDashBoard />} />
+        <Route path="/SevaRegistrationDashBoard" element={<SevaRegistrationDashBoard />} />
         
         <Route path="/LeftNav" element={<LeftNav />} />
 
