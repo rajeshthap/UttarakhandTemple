@@ -3,6 +3,28 @@
     margin: auto;
 
 }
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper .form-control {
+  padding-right: 40px; /* space for eye */
+}
+
+.toggle-eye {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: var(--temp-space-350);
+  color: #666;
+  user-select: none;
+}
+
+.toggle-eye:hover {
+  color: #000;
+}
 
 .card-item {
     padding: var(--temp-space-250);

@@ -11,9 +11,14 @@ import SendOtp from "../SendOtp/SendOtp";
 import VerifyOtp from "../VerifyOtp/VerifyOtp";
 import Regimg from "../../assets/images/User-regi-img.png";
 import { Navigate, useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function TempleAuthority() {
-  const navigate =useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  
+  const navigate = useNavigate();
   const [, setShow] = useState(false);
   const [phone, setPhone] = useState("");
   const [otpSent, setOtpSent] = useState(false);
@@ -57,7 +62,6 @@ function TempleAuthority() {
   const validateForm = () => {
     let errors = {};
 
-
     if (!formData.state) errors.state = "State is required";
     if (!formData.country) errors.country = "Country is required";
     if (!formData.city) errors.city = "City is required";
@@ -100,11 +104,11 @@ function TempleAuthority() {
     }
 
     // Temple Email
-   if (!formData.email) {
-  errors.email = "Email is required";
-} else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-  errors.email = "Invalid email format";
-}
+    if (!formData.email) {
+      errors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = "Invalid email format";
+    }
     // Account Number
     if (!formData.account_number) {
       errors.account_number = "Account number is required";
@@ -202,7 +206,6 @@ function TempleAuthority() {
   const handleInputChange = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
     validateField(name, value); // live validation on custom handler
-
   };
 
   const handleChange = (e) => {
@@ -221,13 +224,12 @@ function TempleAuthority() {
     }
 
     if (name === "email") {
-  newValue = newValue.trim(); // remove leading/trailing spaces
-}
+      newValue = newValue.trim(); // remove leading/trailing spaces
+    }
 
     setFormData({ ...formData, [name]: newValue });
     validateField(name, newValue); // live validation
   };
-
 
   const handleFileChange = (e, field) => {
     setDocuments({ ...documents, [field]: e.target.files[0] });
@@ -274,12 +276,29 @@ function TempleAuthority() {
         setShow(true);
       }
     } catch (error) {
-      console.log(error.response.data);
-      if (error.response.data) {
-        // server responded with error
-        alert(
-          "Error: " + (error.response.data.message || "Something went wrong")
-        );
+      console.log(error.response?.data);
+
+      if (error.response && error.response.data) {
+        const errorData = error.response.data;
+
+        // Handle duplicate email
+        if (
+          errorData.error &&
+          errorData.error.toLowerCase().includes("email")
+        ) {
+          setFormErrors((prev) => ({ ...prev, email: errorData.error }));
+          document.getElementsByName("email")[0]?.focus();
+        }
+        // Handle duplicate phone
+        else if (
+          errorData.error &&
+          errorData.error.toLowerCase().includes("phone")
+        ) {
+          setFormErrors((prev) => ({ ...prev, phone: errorData.error }));
+          document.getElementsByName("phone")[0]?.focus();
+        } else {
+          alert("Error: " + (errorData.message || "Something went wrong"));
+        }
       } else {
         // network or unexpected error
         alert("Error: " + error.message);
@@ -356,7 +375,7 @@ function TempleAuthority() {
                               value={formData.temple_name}
                               onChange={handleChange}
                               placeholder="Temple Name"
-                               className="temp-form-control"
+                              className="temp-form-control"
                             />
                             {formErrors.temple_name && (
                               <p className="text-danger">
@@ -368,19 +387,27 @@ function TempleAuthority() {
                         <Col lg={4} md={4} sm={12}>
                           <Form.Group
                             className="mb-3"
-                            controlId="exampleForm.ControlInput1"
+                            controlId="passwordField"
                           >
                             <Form.Label className="temp-label">
                               Password <span className="temp-span-star">*</span>
                             </Form.Label>
-                            <Form.Control
-                              type="password"
-                              name="password"
-                              value={formData.password}
-                              onChange={handleChange}
-                              placeholder=""
-                              className="temp-form-control"
-                            />
+                            <div className="password-wrapper">
+                              <Form.Control
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                placeholder=""
+                                className="temp-form-control"
+                              />
+                              <span
+                                className="toggle-eye"
+                                onClick={() => setShowPassword(!showPassword)}
+                              >
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                              </span>
+                            </div>
                             {formErrors.password && (
                               <p className="text-danger">
                                 {formErrors.password}
@@ -388,23 +415,34 @@ function TempleAuthority() {
                             )}
                           </Form.Group>
                         </Col>
+
                         <Col lg={4} md={4} sm={12}>
                           <Form.Group
                             className="mb-3"
-                            controlId="exampleForm.ControlInput1"
+                            controlId="confirmPasswordField"
                           >
                             <Form.Label className="temp-label">
                               Confirm Password{" "}
                               <span className="temp-span-star">*</span>
                             </Form.Label>
-                            <Form.Control
-                              type="password"
-                              name="confirm_password"
-                              value={formData.confirm_password}
-                              onChange={handleChange}
-                              placeholder=""
-                              className="temp-form-control"
-                            />
+                            <div className="password-wrapper">
+                              <Form.Control
+                                type={showConfirmPassword ? "text" : "password"}
+                                name="confirm_password"
+                                value={formData.confirm_password}
+                                onChange={handleChange}
+                                placeholder=""
+                                className="temp-form-control"
+                              />
+                              <span
+                                className="toggle-eye"
+                                onClick={() =>
+                                  setShowConfirmPassword(!showConfirmPassword)
+                                }
+                              >
+                                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                              </span>
+                            </div>
                             {formErrors.confirm_password && (
                               <p className="text-danger">
                                 {formErrors.confirm_password}
@@ -412,6 +450,7 @@ function TempleAuthority() {
                             )}
                           </Form.Group>
                         </Col>
+
                         <Col lg={4} md={4} sm={12}>
                           <Form.Group
                             className="mb-3"
@@ -687,7 +726,6 @@ function TempleAuthority() {
                             </Form.Label>
                             <Form.Control
                               type="number"
-                              placeholder=""
                               name="phone"
                               value={formData.phone}
                               onChange={handleChange}
@@ -696,9 +734,7 @@ function TempleAuthority() {
                             />
 
                             {formErrors.phone && (
-                              <p className="text-danger">
-                                {formErrors.phone}
-                              </p>
+                              <p className="text-danger">{formErrors.phone}</p>
                             )}
                           </Form.Group>
                         </Col>
@@ -708,21 +744,20 @@ function TempleAuthority() {
                             controlId="exampleForm.ControlInput1"
                           >
                             <Form.Label className="temp-label">
-                              Email {" "}
-                              <span className="temp-span-star">*</span>
+                              Email <span className="temp-span-star">*</span>
                             </Form.Label>
                             <Form.Control
                               type="email"
                               name="email"
                               value={formData.email || ""}
                               onChange={handleChange}
-                              onBlur={(e) => validateField("email", e.target.value)}
+                              onBlur={(e) =>
+                                validateField("email", e.target.value)
+                              }
                             />
 
                             {formErrors.email && (
-                              <p className="text-danger">
-                                {formErrors.email}
-                              </p>
+                              <p className="text-danger">{formErrors.email}</p>
                             )}
                           </Form.Group>
                         </Col>
@@ -798,7 +833,9 @@ function TempleAuthority() {
                               </option>
 
                               <option value="">-- Select Bank --</option>
-                              <option value="SBI">State Bank of India (SBI)</option>
+                              <option value="SBI">
+                                State Bank of India (SBI)
+                              </option>
                               <option value="HDFC">HDFC Bank</option>
                               <option value="ICICI">ICICI Bank</option>
                               <option value="AXIS">Axis Bank</option>
@@ -810,11 +847,15 @@ function TempleAuthority() {
                               <option value="Yes">Yes Bank</option>
                               <option value="Kotak">Kotak Mahindra Bank</option>
                               <option value="IndusInd">IndusInd Bank</option>
-                              <option value="Central">Central Bank of India</option>
+                              <option value="Central">
+                                Central Bank of India
+                              </option>
                               <option value="Indian">Indian Bank</option>
                               <option value="UCO">UCO Bank</option>
                               <option value="BankOfIndia">Bank of India</option>
-                              <option value="SouthIndian">South Indian Bank</option>
+                              <option value="SouthIndian">
+                                South Indian Bank
+                              </option>
                               <option value="Federal">Federal Bank</option>
                               <option value="RBL">RBL Bank</option>
                               <option value="J&K">Jammu & Kashmir Bank</option>
@@ -895,7 +936,6 @@ function TempleAuthority() {
                               <option value="">Select Account Type</option>
                               <option value="savings">Savings Account</option>
                               <option value="current">Current Account</option>
-
 
                               {formErrors.account_type && (
                                 <p className="text-danger">

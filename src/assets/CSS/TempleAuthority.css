@@ -49,7 +49,6 @@ span.temp-span-star {
 
 }
 
-
 .temp-form-control-option {
     height: 48px;
     font-size: var(--temp-space-350);
@@ -61,15 +60,13 @@ span.temp-span-star {
     font-size: var(--temp-space-300);
     border: 1px solid var(--temp-search-border);
     background-color: var(--temp-gray-light);
-
-
-
 }
 
 .temp-container {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: var(--temp-space-400);
     background-color: var(--temp-white);
+    padding: var(--temp-space-300);
 }
 
 .temp-stepform-box {

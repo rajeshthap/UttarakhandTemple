@@ -74,7 +74,7 @@ function App() {
 
   const location = useLocation
     ();
-  const hiddenPaths = new Set(["/DashBoard","/MainDashBoard","/DonateDashboard","/PanditDashBoard","/LeftNav","/PoojaBookingDashBoard","/MandirBookingDashBoard","/DarshanBookingDashBoard","/SevaRegistrationDashBoard"]);
+  const hiddenPaths = new Set(["/DashBoard","/MainDashboard","/DonateDashboard","/PanditDashBoard","/LeftNav","/PoojaBookingDashBoard","/MandirBookingDashBoard","/DarshanBookingDashBoard","/SevaRegistrationDashBoard"]);
   const shouldHideBars = hiddenPaths.has(location.pathname);
   const hideFooter = location.pathname === "/";
   return (
