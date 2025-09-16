@@ -15,9 +15,38 @@
     margin-bottom: var(--temp-space-200);
 }
 
-.temp-card-bg h1 {
+.content-box h1 {
     font-size: var(--temp-space-600);
     color: var(--temp-org);
     text-align: left;
     font-weight: 500;
+}
+
+.content-box h2 {
+    font-size: var(--temp-space-500);
+    color: var(--temp-Black);
+    text-align: left;
+    font-weight: 500;
+    margin-top: var(--temp-space-200);
+    margin-bottom: var(--temp-space-500);
+}
+
+.table .table-header {
+    background: #FEC107;
+    color: #333;
+}
+
+.table .table-header .cell {
+    padding: 20px;
+}
+
+@media screen and (max-width: 640px) {
+    table {
+        overflow-x: auto;
+        display: block;
+    }
+
+    .table .table-header .cell {
+        padding: 20px 5px;
+    }
 }
