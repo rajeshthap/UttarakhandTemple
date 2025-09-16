@@ -2,9 +2,10 @@ import React from "react";
 import "../../../assets/CSS/LeftNav.css";
 import LeftNav from "../LeftNav";
 import ExtendYourDivine from "../../DonateToTemples/ExtendYourDivine";
+import DarshanBooking from "../../Mandir_booking/DarshanBooking";
 
 
-const DonateDashBoard = () => {
+const DarshanBookingDashBoard = () => {
   return (
     <>
       {/* Main Wrapper */}
@@ -17,7 +18,7 @@ const DonateDashBoard = () => {
         {/* Right-hand Main Container */}
         
         <main className="main-container-box">
-               <ExtendYourDivine />
+               <DarshanBooking />
         </main>
      
       </div>
@@ -25,4 +26,4 @@ const DonateDashBoard = () => {
   );
 };
 
-export default DonateDashBoard;
+export default DarshanBookingDashBoard;

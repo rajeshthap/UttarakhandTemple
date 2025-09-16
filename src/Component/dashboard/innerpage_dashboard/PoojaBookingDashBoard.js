@@ -1,10 +1,9 @@
 import React from "react";
 import "../../../assets/CSS/LeftNav.css";
 import LeftNav from "../LeftNav";
-import ExtendYourDivine from "../../DonateToTemples/ExtendYourDivine";
+import OnlineHirePandit from "../../Mandir_booking/OnlineHirePandit";
 
-
-const DonateDashBoard = () => {
+const PoojaBookingDashBoard = () => {
   return (
     <>
       {/* Main Wrapper */}
@@ -13,11 +12,10 @@ const DonateDashBoard = () => {
         <aside className="sidebar">
           <LeftNav />
         </aside>
-
         {/* Right-hand Main Container */}
         
         <main className="main-container-box">
-               <ExtendYourDivine />
+               <OnlineHirePandit />
         </main>
      
       </div>
@@ -25,4 +23,4 @@ const DonateDashBoard = () => {
   );
 };
 
-export default DonateDashBoard;
+export default PoojaBookingDashBoard;
