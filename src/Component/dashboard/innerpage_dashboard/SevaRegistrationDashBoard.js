@@ -1,10 +1,11 @@
 import React from "react";
 import "../../../assets/CSS/LeftNav.css";
 import LeftNav from "../LeftNav";
-import ExtendYourDivine from "../../DonateToTemples/ExtendYourDivine";
+import SevaRegistration from "../../Mandir_booking/SevaRegistration/SevaRegistration";
 
 
-const DonateDashBoard = () => {
+
+const SevaRegistrationDashBoard = () => {
   return (
     <>
       {/* Main Wrapper */}
@@ -17,7 +18,7 @@ const DonateDashBoard = () => {
         {/* Right-hand Main Container */}
         
         <main className="main-container-box">
-               <ExtendYourDivine />
+               <SevaRegistration />
         </main>
      
       </div>
@@ -25,4 +26,4 @@ const DonateDashBoard = () => {
   );
 };
 
-export default DonateDashBoard;
+export default SevaRegistrationDashBoard;

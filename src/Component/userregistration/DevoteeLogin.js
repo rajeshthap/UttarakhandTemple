@@ -4,14 +4,14 @@ import Form from "react-bootstrap/Form";
 import axios from "axios";
 import "../../assets/CSS/TempleAuthority.css";
 import Regimg from "../../assets/images/User-regi-img.png";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function DevoteeLogin() {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
-
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   // handle input changes
@@ -55,10 +55,12 @@ const handleSubmit = async (e) => {
     );
 
     console.log("Login Response:", response.data);
-
+    navigate("/DashBoard"); 
     if (response.data.success) {
+      
        alert("Login successfully!");
-      Navigate("/DashBoard"); 
+       
+      
     } else {
       alert(response.data.message || "Login failed ");
     }
