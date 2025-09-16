@@ -15,7 +15,7 @@ const DonateDashBoard = () => {
 
         {/* Right-hand Main Container */}
         
-        <main className="main-container">
+        <main className="main-container-box">
                <MandirBooking />
         </main>
      

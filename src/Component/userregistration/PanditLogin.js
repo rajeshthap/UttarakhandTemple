@@ -57,13 +57,13 @@ const handleSubmit = async (e) => {
       localStorage.setItem("role", response.data.role);
     }
 
-    alert("Login successful!");
+    alert("Login successfully!");
 
     const role = response.data.role;
 
     //  Navigate only if role is "pandit"
     if (role === "Pandit") {
-      navigate("/PanditDashboard");
+      navigate("/DashBoard");
     } else {
       console.warn("User does not have 'pandit' role, staying on login page.");
       setErrorMsg("You are not authorized to access this dashboard.");

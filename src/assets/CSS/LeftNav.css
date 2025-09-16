@@ -37,7 +37,13 @@
   flex: 1;
   padding: 20px;
   background: #f4f6f8;
-  margin: 68px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
+}
+.main-container-box {
+  flex: 1;
+  padding: 20px;
+  background: #f4f6f8;
+  margin: 50px 0px 0px 0px;
 }
 
 /* Box inside main content */

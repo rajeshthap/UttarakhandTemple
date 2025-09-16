@@ -1,5 +1,7 @@
 import React from "react";
 import "../../../assets/CSS/LeftNav.css";
+import "../../../assets/CSS/DashBoard.css";
+
 import LeftNav from "../LeftNav";
 
 

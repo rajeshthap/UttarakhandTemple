@@ -59,7 +59,7 @@ function AuthorityLogin() {
         localStorage.setItem("role", response.data.role);
       }
 
-      alert("Login successful!");
+      alert("Login successfully!");
       navigate("/DashBoard"); 
     } catch (error) {
       console.error("Login Error:", error);

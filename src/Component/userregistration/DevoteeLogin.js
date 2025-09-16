@@ -4,6 +4,7 @@ import Form from "react-bootstrap/Form";
 import axios from "axios";
 import "../../assets/CSS/TempleAuthority.css";
 import Regimg from "../../assets/images/User-regi-img.png";
+import { Navigate } from "react-router-dom";
 
 function DevoteeLogin() {
   const [formData, setFormData] = useState({
@@ -56,9 +57,8 @@ const handleSubmit = async (e) => {
     console.log("Login Response:", response.data);
 
     if (response.data.success) {
-      alert("Login Successful ");
-      localStorage.setItem("token", response.data.token);
-      window.location.href = "/dashboard";
+       alert("Login successfully!");
+      Navigate("/DashBoard"); 
     } else {
       alert(response.data.message || "Login failed ");
     }
