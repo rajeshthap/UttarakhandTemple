@@ -66,7 +66,7 @@ const handleSubmit = async (e) => {
 
       navigate("/MainDashboard");
 
-      navigate("/DashBoard");
+    
 
     } else {
       console.warn("User does not have 'pandit' role, staying on login page.");
