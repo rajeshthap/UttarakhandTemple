@@ -215,14 +215,6 @@ function PanditRegistration() {
         "Last name must start with a capital letter and contain only alphabets";
     }
 
-    //     //  Father's Name (optional rule - just required)
-    //    if (!formData.father_name) {
-    //   errors.father_name = "Father's name is required";
-    // } else if (!/^([A-Z][a-z]+)(\s[A-Z][a-z]+)*$/.test(formData.father_name)) {
-    //   errors.father_name =
-    //     "Father's name must start with a capital letter and contain only alphabets";
-    // }
-
     //  Email validation
     if (!formData.email) {
       errors.email = "Email is required";
@@ -281,7 +273,7 @@ function PanditRegistration() {
     return Object.keys(errors).length === 0;
   };
   
-  const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
   e.preventDefault();
 
   if (!validateForm()) return;
@@ -291,7 +283,6 @@ function PanditRegistration() {
   try {
     const formDataToSend = new FormData();
 
-    // Append all fields
     for (let key in formData) {
       if (key === "pandit_role" && formData[key].length > 0) {
         formData[key].forEach((role) => formDataToSend.append("pandit_role", role));
@@ -299,21 +290,22 @@ function PanditRegistration() {
         formDataToSend.append(key, formData[key]);
       }
     }
-
     const res = await axios.post(
       "https://brjobsedu.com/Temple_portal/api/pandit/",
       formDataToSend,
       { headers: { "Content-Type": "multipart/form-data" } }
     );
+     console.log("Login Response:", res.data);
+    navigate("/PanditLogin"); 
+     console.log("Form submitted successfully:", res.data);
+
+
+  // redirect to login or dashboard page
 
     console.log("API Response:", res.data);
-    alert("Pandit Registered Successfully!");
-    navigate("/PanditLogin");
-
     if (res.data.success === true || res.data.success === "true") {
-      alert("Registration successful!");
-
-      // Clear form
+   
+      
       setFormData({
         first_name: "",
         last_name: "",
@@ -334,16 +326,34 @@ function PanditRegistration() {
         pandit_role: [],
       });
 
-      
-      navigate("/PanditLogin");
-    } else {
+     
+    } 
+       else {
       alert(res.data.message || "Registration failed");
     }
   } catch (err) {
     console.error(err);
-    alert(err.response?.data?.message || err.message || "Something went wrong");
+
+    if (err.response && err.response.data) {
+      const errorData = err.response.data;
+
+      if (errorData.error?.toLowerCase().includes("email")) {
+        setErrorReason_querys((prev) => ({ ...prev, email: errorData.error }));
+        document.getElementsByName("email")[0]?.focus();
+      } else if (errorData.error?.toLowerCase().includes("phone")) {
+        setErrorReason_querys((prev) => ({ ...prev, phone: errorData.error }));
+        document.getElementsByName("phone")[0]?.focus();
+      } else if (errorData.error?.toLowerCase().includes("aadhar")) {
+        setErrorReason_querys((prev) => ({ ...prev, aadhar_number: errorData.error }));
+        document.getElementsByName("aadhar_number")[0]?.focus();
+      } else {
+        alert(errorData.message || "Something went wrong");
+      }
+    } else {
+      alert(err.message || "Something went wrong");
+    }
   } finally {
-    setLoading(false);
+    setLoading(false); 
   }
 };
 
@@ -517,7 +527,7 @@ function PanditRegistration() {
                               onChange={handleInputChange}
                             />
                             {errorReason_querys.phone && (
-                              <div className="alert-txt">
+                               <div className="alert-txt">
                                 {errorReason_querys.phone}
                               </div>
                             )}
@@ -904,34 +914,28 @@ function PanditRegistration() {
                         </Col>
                       </Row>
 
-                      <div className="gap-3 mt-3 Temp-btn-submit">
-                        <Button
-                          variant="temp-submit-btn"
-                          className="temp-submit-btn mx-3"
-                          type="submit"
-                          disabled={loading}
-                        >
-                          {loading ? (
-                            <>
-                              <span
-                                className="spinner-border spinner-border-sm me-2"
-                                role="status"
-                                aria-hidden="true"
-                              ></span>
-                              Registering...
-                            </>
-                          ) : (
-                            "Register Now"
-                          )}
-                        </Button>
-                        <Button
-                          variant="secondary"
-                          className="temp-cancle-btn"
-                          type="button"
-                        >
-                          Cancel
-                        </Button>
-                      </div>
+                     <div className="gap-3 mt-3 Temp-btn-submit">
+  <Button
+    variant="temp-submit-btn"
+    className="temp-submit-btn mx-3"
+    type="submit"
+    disabled={loading}
+  >
+    {loading ? (
+      <>
+        <span
+          className="spinner-border spinner-border-sm me-2"
+          role="status"
+          aria-hidden="true"
+        ></span>
+        Submitting...
+      </>
+    ) : (
+      "Register Now"
+    )}
+  </Button>
+</div>
+
                     </>
                   )}
                 </Row>

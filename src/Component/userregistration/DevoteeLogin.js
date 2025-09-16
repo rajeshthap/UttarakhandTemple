@@ -57,7 +57,6 @@ const handleSubmit = async (e) => {
     console.log("Login Response:", response.data);
     navigate("/DashBoard"); 
     if (response.data.success) {
-      
        alert("Login successfully!");
        
       
