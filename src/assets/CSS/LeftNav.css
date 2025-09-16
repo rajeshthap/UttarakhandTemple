@@ -39,6 +39,7 @@
   background: #f4f6f8;
   margin: 0px 0px 0px 0px;
 }
+
 .main-container-box {
   flex: 1;
   padding: 20px;
@@ -56,7 +57,7 @@
 }
 
 .active-nav {
-  background-color: var(--nd-blue-hover);
+  background-color: var(--temp-org);
   color: #fff !important;
   border-left: 4px solid white;
 }

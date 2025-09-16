@@ -1,0 +1,23 @@
+.temp-card-bg {
+    background-color: var(--temp-org) !important;
+    color: var(--temp-white) !important;
+    text-align: center !important;
+}
+
+.temp-card-bg .card-subtitle {
+    color: var(--temp-white) !important;
+    font-size: var(--temp-space-500) !important;
+}
+
+.temp-dash-icon {
+    font-size: var(--temp-space-800) !important;
+    color: var(--temp-white);
+    margin-bottom: var(--temp-space-200);
+}
+
+.temp-card-bg h1 {
+    font-size: var(--temp-space-600);
+    color: var(--temp-org);
+    text-align: left;
+    font-weight: 500;
+}
