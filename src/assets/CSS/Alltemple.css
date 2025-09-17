@@ -21,7 +21,12 @@
   color: #666;
   user-select: none;
 }
+.text-danger {
+    color: var(--temp-org) !important;
+    font-size: var(--temp-space-300);
+}
 
+.t
 .toggle-eye:hover {
   color: #000;
 }
