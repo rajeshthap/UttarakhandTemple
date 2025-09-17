@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import { useState } from "react";
 import Form from "react-bootstrap/Form";
 import OTPModel from "../../OTPModel/OTPModel";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
 const EventParticipation = () => {
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
@@ -12,6 +12,7 @@ const EventParticipation = () => {
   const [show, setShow] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const [formData, setFormData] = useState({
     full_name: "",
@@ -34,95 +35,168 @@ const EventParticipation = () => {
     payment_mode: "",
   });
 
-  // Handle input changes
+  //  Validation logic
+  const validateFields = () => {
+    const newErrors = {};
+
+    if (!formData.full_name.trim())
+      newErrors.full_name = "Full Name is required";
+    if (!formData.gender) newErrors.gender = "Gender is required";
+    if (!formData.age || isNaN(formData.age))
+      newErrors.age = "Valid age is required";
+
+    if (!formData.mobile_number) {
+      newErrors.mobile_number = "Mobile number is required";
+    } else if (!/^\d{10}$/.test(formData.mobile_number)) {
+      newErrors.mobile_number = "Enter a valid 10-digit mobile number";
+    }
+
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Enter a valid email address";
+    }
+
+    if (!formData.id_proof_type)
+      newErrors.id_proof_type = "ID Proof Type is required";
+
+    if (!formData.id_proof_number) {
+      newErrors.id_proof_number = "ID Proof Number is required";
+    } else if (formData.id_proof_number.length > 16) {
+      newErrors.id_proof_number =
+        "ID Proof Number must be 16 characters or less";
+    }
+
+    if (!formData.temple_name)
+      newErrors.temple_name = "Temple Name is required";
+    if (!formData.event_name) newErrors.event_name = "Event Name is required";
+    if (!formData.participation_type)
+      newErrors.participation_type = "Participation Type is required";
+    if (
+      !formData.number_of_participants ||
+      isNaN(formData.number_of_participants)
+    )
+      newErrors.number_of_participants =
+        "Valid number of participants required";
+    if (!formData.preferred_dates)
+      newErrors.preferred_dates = "Preferred date is required";
+    if (!formData.preferred_time_slot)
+      newErrors.preferred_time_slot = "Preferred time slot is required";
+    if (!formData.gotra.trim()) newErrors.gotra = "Gotra is required";
+    if (!formData.nakshatra_rashi.trim())
+      newErrors.nakshatra_rashi = "Nakshatra/Rashi is required";
+    if (!formData.special_instructions.trim())
+      newErrors.special_instructions = "Special Instructions are required";
+    if (!formData.donation_amount || isNaN(formData.donation_amount))
+      newErrors.donation_amount = "Valid Donation Amount is required";
+    if (!formData.payment_mode)
+      newErrors.payment_mode = "Payment mode is required";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  //  Handle input
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
+    setErrors((prev) => ({ ...prev, [name]: "" })); // clear error
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  if (!otpVerified) {
-    return alert("Please verify OTP before registering.");
-  }
-
-  try {
-    const res = await axios.post(
-      "https://brjobsedu.com/Temple_portal/api/TempleEventBooking/",
-      formData
-    );
-
-    if (res.status === 200 || res.status === 201) {
-      alert("Event Registered Successfully!");
-    }
-  } catch (err) {
-    if (err.response && err.response.data) {
-      console.error("Server Error:", err.response.data);
-      alert("Please Fill Required ");
-    } else {
-      console.error("Error:", err);
-      alert("Something went wrong. Please try again.");
-    }
-  }
-};
-
+  //  Checkbox click → send OTP only if form is valid
   const handleCheckbox = async (e) => {
-  const checked = e.target.checked;
+    const checked = e.target.checked;
 
-  if (!checked) {
-    setAgreeTerms(false);
-    return;
-  }
-
-  if (otpVerified) {
-    setAgreeTerms(true);
-    return;
-  }
-
-  if (!formData.mobile_number) return alert("Enter mobile first");
-
-  try {
-    await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
-      phone: formData.mobile_number,
-    });
-    setShow(true);
-    setAgreeTerms(true);
-  } catch (err) {
-    alert("Failed to send OTP");
-    setAgreeTerms(false);
-  }
-};
-
-
- const handleVerifyOtp = async () => {
-  if (!otp) return alert("Enter OTP");
-
-  setVerifying(true);
-  try {
-    const res = await axios.post(
-      "https://brjobsedu.com/Temple_portal/api/Verify/",
-      { phone: formData.mobile_number, otp }
-    );
-
-    if (res.data.success) {
-      setOtpVerified(true); 
-      alert("OTP Verified!");
-      navigate("/PaymentConfirmation");
-      setShow(false); 
-    } else {
-      alert("Invalid OTP, try again.");
+    if (!checked) {
+      setAgreeTerms(false);
+      return;
     }
-  } catch (err) {
-    console.error(err);
-    alert("OTP verification failed");
-  } finally {
-    setVerifying(false);
-  }
-};
+
+    // validate before OTP
+    if (!validateFields()) {
+      alert("Please fill all required fields correctly before verifying OTP.");
+      setAgreeTerms(false);
+      return;
+    }
+
+    if (otpVerified) {
+      setAgreeTerms(true);
+      return;
+    }
+
+    try {
+      await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
+        phone: formData.mobile_number,
+      });
+      setShow(true);
+      setAgreeTerms(true);
+    } catch (err) {
+      alert("Failed to send OTP");
+      setAgreeTerms(false);
+    }
+  };
+
+  //  Submit only if OTP verified
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validateFields()) {
+      return alert("Please fill all required fields.");
+    }
+
+    if (!otpVerified) {
+      return alert("Please verify OTP before registering.");
+    }
+
+    try {
+      const res = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/TempleEventBooking/",
+        formData
+      );
+
+      if (res.status === 200 || res.status === 201) {
+        alert("Event Registered Successfully!");
+        navigate("/PaymentConfirmation");
+      }
+    } catch (err) {
+      if (err.response && err.response.data) {
+        console.error("Server Error:", err.response.data);
+        alert("Booking failed: " + JSON.stringify(err.response.data));
+      } else {
+        console.error("Error:", err);
+        alert("Something went wrong. Please try again.");
+      }
+    }
+  };
+
+  //  Verify OTP
+  const handleVerifyOtp = async () => {
+    if (!otp) return alert("Enter OTP");
+
+    setVerifying(true);
+    try {
+      const res = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/Verify/",
+        { phone: formData.mobile_number, otp }
+      );
+
+      if (res.data.success) {
+        setOtpVerified(true);
+        alert("OTP Verified Successfully!");
+        setShow(false);
+      } else {
+        alert("Invalid OTP, try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("OTP verification failed");
+    } finally {
+      setVerifying(false);
+    }
+  };
 
   return (
     <div>
@@ -155,6 +229,9 @@ const EventParticipation = () => {
                       value={formData.full_name}
                       onChange={handleChange}
                     />
+                    {errors.full_name && (
+                      <small className="text-danger">{errors.full_name}</small>
+                    )}
                   </Form.Group>
                 </Col>
                 <Col lg={6} md={6} sm={12}>
@@ -176,6 +253,9 @@ const EventParticipation = () => {
                       <option value="Female">Female </option>
                       <option value="Other">Other </option>
                     </Form.Select>
+                    {errors.gender && (
+                      <small className="text-danger">{errors.gender}</small>
+                    )}
                   </Form.Group>
                 </Col>
 
@@ -195,6 +275,9 @@ const EventParticipation = () => {
                       value={formData.age}
                       onChange={handleChange}
                     />
+                    {errors.age && (
+                      <small className="text-danger">{errors.age}</small>
+                    )}
                   </Form.Group>
                 </Col>
                 <Col lg={6} md={6} sm={12}>
@@ -213,6 +296,11 @@ const EventParticipation = () => {
                       value={formData.mobile_number}
                       onChange={handleChange}
                     />
+                    {errors.mobile_number && (
+                      <small className="text-danger">
+                        {errors.mobile_number}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
                 <Col lg={6} md={6} sm={12}>
@@ -231,6 +319,9 @@ const EventParticipation = () => {
                       value={formData.email}
                       onChange={handleChange}
                     />
+                    {errors.email && (
+                      <small className="text-danger">{errors.email}</small>
+                    )}
                   </Form.Group>
                 </Col>
 
@@ -254,6 +345,11 @@ const EventParticipation = () => {
                       <option value="Passport ">Passport </option>
                       <option value="Voter ID">Voter ID </option>
                     </Form.Select>
+                    {errors.id_proof_type && (
+                      <small className="text-danger">
+                        {errors.id_proof_type}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
                 <Col lg={6} md={6} sm={12}>
@@ -272,6 +368,11 @@ const EventParticipation = () => {
                       value={formData.id_proof_number}
                       onChange={handleChange}
                     />
+                    {errors.id_proof_number && (
+                      <small className="text-danger">
+                        {errors.id_proof_number}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
 
@@ -303,6 +404,11 @@ const EventParticipation = () => {
                         Shri Kashi Vishwanath Temple
                       </option>
                     </Form.Select>
+                    {errors.temple_name && (
+                      <small className="text-danger">
+                        {errors.temple_name}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
                 <Col lg={6} md={6} sm={12}>
@@ -326,6 +432,9 @@ const EventParticipation = () => {
                       <option value="Diwali ">Diwali </option>
                       <option value="Mahotsav ">Mahotsav </option>
                     </Form.Select>
+                    {errors.event_name && (
+                      <small className="text-danger">{errors.event_name}</small>
+                    )}
                   </Form.Group>
                 </Col>
 
@@ -349,6 +458,11 @@ const EventParticipation = () => {
                       <option value="offline">Offline </option>
                       <option value="both">Both </option>
                     </Form.Select>
+                    {errors.participation_type && (
+                      <small className="text-danger">
+                        {errors.participation_type}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
                 <Col lg={6} md={6} sm={12}>
@@ -368,6 +482,11 @@ const EventParticipation = () => {
                       value={formData.number_of_participants}
                       onChange={handleChange}
                     />
+                    {errors.number_of_participants && (
+                      <small className="text-danger">
+                        {errors.number_of_participants}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
 
@@ -387,6 +506,11 @@ const EventParticipation = () => {
                       value={formData.preferred_dates}
                       onChange={handleChange}
                     />
+                    {errors.preferred_dates && (
+                      <small className="text-danger">
+                        {errors.preferred_dates}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
 
@@ -410,6 +534,11 @@ const EventParticipation = () => {
                       <option value="Afternoon">Afternoon </option>
                       <option value="Evening">Evening </option>
                     </Form.Select>
+                    {errors.preferred_time_slot && (
+                      <small className="text-danger">
+                        {errors.preferred_time_slot}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
 
@@ -430,6 +559,9 @@ const EventParticipation = () => {
                       value={formData.gotra}
                       onChange={handleChange}
                     />
+                    {errors.gotra && (
+                      <small className="text-danger">{errors.gotra}</small>
+                    )}
                   </Form.Group>
                 </Col>
 
@@ -450,6 +582,11 @@ const EventParticipation = () => {
                       value={formData.nakshatra_rashi}
                       onChange={handleChange}
                     />
+                    {errors.nakshatra_rashi && (
+                      <small className="text-danger">
+                        {errors.nakshatra_rashi}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
 
@@ -471,6 +608,11 @@ const EventParticipation = () => {
                       value={formData.special_instructions}
                       onChange={handleChange}
                     />
+                    {errors.special_instructions && (
+                      <small className="text-danger">
+                        {errors.special_instructions}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
                 <h2>Payment Details</h2>
@@ -490,6 +632,11 @@ const EventParticipation = () => {
                       value={formData.donation_amount}
                       onChange={handleChange}
                     />
+                    {errors.donation_amount && (
+                      <small className="text-danger">
+                        {errors.donation_amount}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
                 <Col lg={6} md={6} sm={12}>
@@ -510,6 +657,11 @@ const EventParticipation = () => {
                       <option value="cash">Cash </option>
                       <option value="card">Card </option>
                     </Form.Select>
+                    {errors.payment_mode && (
+                      <small className="text-danger">
+                        {errors.payment_mode}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
               </Row>
