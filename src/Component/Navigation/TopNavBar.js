@@ -5,6 +5,7 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import "../../assets/CSS/TopInfo.css"; // Importing the CSS file for styling
 import logo from "../../assets/images/company-logo.png";
+import { FaRocketchat } from "react-icons/fa6";
 const TopNavBar = () => {
   return (
     <>
@@ -108,6 +109,13 @@ const TopNavBar = () => {
                     </NavDropdown.Item>
                   </NavDropdown>
                 </Nav>
+
+                <Nav.Link href="/DonateTemples">
+
+                  <button type="button" class="solution-btn " fdprocessedid="1ue26e"><FaRocketchat /> परामर्श</button>
+
+
+                </Nav.Link>
                 {/* <Form className="d-flex">
                   <div className="search">
                     <form id="searchFormTop" action="" method="get">
