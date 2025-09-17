@@ -100,7 +100,7 @@ const TempleInfo = () => {
   return (
     <div className="temple-all-info">
       <Container className="temp-container temp-container-details">
-        <h1>Online Pandit Booking for Puja Services</h1>
+        <h1>Mandir Booking With Pandit Booking</h1>
         <p>Experienced Pandit Ji for every Puja, just a click away</p>
 
         <Row>
