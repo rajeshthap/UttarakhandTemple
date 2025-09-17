@@ -4,8 +4,9 @@ import { useState } from "react";
 import Form from "react-bootstrap/Form";
 import OTPModel from "../../OTPModel/OTPModel";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 const EventParticipation = () => {
+  const navigate = useNavigate();
   const [otp, setOtp] = useState("");
   const [verifying, setVerifying] = useState(false);
   const [show, setShow] = useState(false);
@@ -61,14 +62,13 @@ const EventParticipation = () => {
   } catch (err) {
     if (err.response && err.response.data) {
       console.error("Server Error:", err.response.data);
-      alert("Booking failed: " + JSON.stringify(err.response.data));
+      alert("Please Fill Required ");
     } else {
       console.error("Error:", err);
       alert("Something went wrong. Please try again.");
     }
   }
 };
-
 
   const handleCheckbox = async (e) => {
   const checked = e.target.checked;
@@ -111,6 +111,7 @@ const EventParticipation = () => {
     if (res.data.success) {
       setOtpVerified(true); 
       alert("OTP Verified!");
+      navigate("/PaymentConfirmation");
       setShow(false); 
     } else {
       alert("Invalid OTP, try again.");
