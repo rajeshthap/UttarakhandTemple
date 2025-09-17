@@ -69,7 +69,7 @@ function LeftNav() {
 
   const navigationOptions = [
     { icon: <RiDashboard3Line />, label: "Dashboard", path: "/MainDashBoard" },
-    { icon: <BiDonateHeart />, label: "Donate to Temples", path: "/DonateDashboard" },
+    { icon: <BiDonateHeart />, label: "Donate", path: "/DonateDashboard" },
     { icon: <LiaCalendarCheck />, label: "Pandit Booking", path: "/PanditDashBoard" },
     { icon: <IoCalendarClear />, label: "Pooja Booking", path: "/PoojaBookingDashBoard" },
     {
@@ -81,12 +81,12 @@ function LeftNav() {
     {
       icon: <MdLibraryBooks />,
       label: "Darshan Booking",
-      
+
       path: "/DarshanBookingDashBoard",
       fileName: "shashandesh_new.pdf",
     },
     {
-       path: "/SevaRegistrationDashBoard",
+      path: "/SevaRegistrationDashBoard",
 
       icon: <FaRegFileLines />,
       label: "Seva Registration",
@@ -106,9 +106,9 @@ function LeftNav() {
             alt="menu-icon"
             onClick={toggleNav}
           />
-      <Link to="#" className="logo-page">
-  <img src={CompanyLogo} alt="Manadavaaya" title="MAHADAVAAYA" className="logo" />
-</Link>
+          <Link to="#" className="logo-page">
+            <img src={CompanyLogo} alt="Manadavaaya" title="MAHADAVAAYA" className="logo" />
+          </Link>
 
 
           {/* <div className="nd-title">
@@ -120,7 +120,7 @@ function LeftNav() {
         </div>
 
         <div className="message">
-          
+
           <div className="nd-msg">User: {userName}</div>
           <div className="dp" title="Click to logout" onClick={logout}>
             <div className="nd-log-icon">
@@ -134,7 +134,7 @@ function LeftNav() {
       <div className={`navcontainer ${isNavClosed ? "navclose" : ""}`}>
         <nav className="nav">
           <div className="nav-upper-options">
-            
+
             <div className="nd-menu">
               <FaAlignLeft className="icn menuicn" onClick={toggleNav} />
               <div className="nd-user">User: {userName}</div>
@@ -147,9 +147,8 @@ function LeftNav() {
               <React.Fragment key={index}>
                 {option.download ? (
                   <div
-                    className={`nav-option option${index + 1} ${
-                      activePath === option.fileUrl ? "active-nav" : ""
-                    }`}
+                    className={`nav-option option${index + 1} ${activePath === option.fileUrl ? "active-nav" : ""
+                      }`}
                     onClick={() => {
                       setActivePath(option.fileUrl);
                       handleDownload(option.fileUrl, option.fileName);
@@ -163,9 +162,8 @@ function LeftNav() {
                 ) : (
                   <Link
                     to={option.path}
-                    className={`nav-option option${index + 1} ${
-                      activePath === option.path ? "active-nav" : ""
-                    }`}
+                    className={`nav-option option${index + 1} ${activePath === option.path ? "active-nav" : ""
+                      }`}
                     onClick={() => setActivePath(option.path)}
                   >
                     <div className="nav-item d-flex">

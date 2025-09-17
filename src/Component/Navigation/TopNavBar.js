@@ -42,7 +42,7 @@ const TopNavBar = () => {
                       Special announcements / Upcoming Events
                     </NavDropdown.Item>
                   </NavDropdown>
-                  <Nav.Link href="/DonateTemples">Donate to Temples</Nav.Link>
+                  <Nav.Link href="/DonateTemples">Donate</Nav.Link>
 
                   <NavDropdown
                     title="Mandir Booking"
@@ -54,7 +54,7 @@ const TopNavBar = () => {
                     <NavDropdown.Item href="/DarshanBooking">
                       Darshan Booking
                     </NavDropdown.Item>
-                    
+
                   </NavDropdown>
 
                   <NavDropdown
@@ -76,13 +76,13 @@ const TopNavBar = () => {
                     title="Pandit Booking"
                     id="navbarScrollingDropdown"
                   >
-                   
+
                     <NavDropdown.Item href="/OnlineHirePandit">
                       Hire a Pandit
                     </NavDropdown.Item>
                   </NavDropdown>
 
-     <Nav.Link href="/TempleFacilityBooking">Temple Facility Booking</Nav.Link>
+                  <Nav.Link href="/TempleFacilityBooking">Temple Facility Booking</Nav.Link>
 
                   {/* <NavDropdown title="Temple Facilities" id="navbarScrollingDropdown">
                     <NavDropdown.Item href="#action3">
