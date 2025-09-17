@@ -299,13 +299,10 @@ function PanditRegistration() {
     navigate("/PanditLogin"); 
      console.log("Form submitted successfully:", res.data);
 
-
   // redirect to login or dashboard page
 
     console.log("API Response:", res.data);
     if (res.data.success === true || res.data.success === "true") {
-   
-      
       setFormData({
         first_name: "",
         last_name: "",

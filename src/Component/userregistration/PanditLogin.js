@@ -57,16 +57,13 @@ const handleSubmit = async (e) => {
       localStorage.setItem("role", response.data.role);
     }
 
-    alert("Login successfully!");
-
-    const role = response.data.role;
-
+   
     //  Navigate only if role is "pandit"
+      const role = response.data.role;
     if (role === "Pandit") {
-
-      navigate("/MainDashboard");
-
-    
+ alert("Login successfully!");
+  
+ navigate("/MainDashBoard");
 
     } else {
       console.warn("User does not have 'pandit' role, staying on login page.");

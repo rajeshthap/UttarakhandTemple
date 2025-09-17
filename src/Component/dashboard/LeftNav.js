@@ -4,7 +4,6 @@ import { RiDashboard3Line } from "react-icons/ri";
 import {
   MdLibraryBooks,
 } from "react-icons/md";
-import { ImFilePdf } from "react-icons/im";
 import { FaAlignLeft } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
 import CompanyLogo from "../../assets/images/company-logo.png";
@@ -93,7 +92,7 @@ function LeftNav() {
       label: "Seva Registration",
       fileName: "praroop2_tutorial.pdf",
     },
-    { icon: <TbPasswordUser />, label: "Change Password", path: "#" },
+    { icon: <TbPasswordUser />, label: "Change Password", path: "/ChangePassword" },
   ];
 
   return (

@@ -34,7 +34,7 @@ import TempleFooter from "./Component/temple_footer/TempleFooter";
 import DonateTemples from "./Component/DonateToTemples/DonateTemples";
 import ExtendYourDivine from "./Component/DonateToTemples/ExtendYourDivine"
 import { BASE_URLL } from "./Component/BaseURL";
-import OTPModel from "./Component/OTPModel/OTPModel";
+// import OTPModel from "./Component/OTPModel/OTPModel";
 import PaymentConfirmation from "./Component/DonateToTemples/PaymentConfirmation"
 import LocationState from "./Component/userregistration/LocationState";
 import MandirBooking from "./Component/Mandir_booking/MandirBooking";
@@ -63,6 +63,7 @@ import PoojaBookingDashBoard from "./Component/dashboard/innerpage_dashboard/Poo
 import DarshanBookingDashBoard from "./Component/dashboard/innerpage_dashboard/DarshanBookingDashBoard";
 import MandirBookingDashBoard from "./Component/dashboard/innerpage_dashboard/MandirBookingDashBoard";
 import SevaRegistrationDashBoard from "./Component/dashboard/innerpage_dashboard/SevaRegistrationDashBoard";
+import ChangePassword from "./Component/dashboard/innerpage_dashboard/ChangePassword";
 
 
 // import DashBoard from "./Component/dashboard/DashBoard";
@@ -74,7 +75,7 @@ function App() {
 
   const location = useLocation
     ();
-  const hiddenPaths = new Set(["/DashBoard","/MainDashBoard","/DonateDashboard","/PanditDashBoard","/LeftNav","/PoojaBookingDashBoard","/MandirBookingDashBoard","/DarshanBookingDashBoard","/SevaRegistrationDashBoard"]);
+  const hiddenPaths = new Set(["/DashBoard","/MainDashBoard","/DonateDashboard","/PanditDashBoard","/LeftNav","/PoojaBookingDashBoard","/MandirBookingDashBoard","/DarshanBookingDashBoard","/SevaRegistrationDashBoard","/ChangePassword"]);
   const shouldHideBars = hiddenPaths.has(location.pathname);
   const hideFooter = location.pathname === "/";
   return (
@@ -121,6 +122,7 @@ function App() {
         <Route path="/PoojaBookingDashBoard" element={<PoojaBookingDashBoard />} />
         <Route path="/DarshanBookingDashBoard" element={<DarshanBookingDashBoard />} />
         <Route path="/SevaRegistrationDashBoard" element={<SevaRegistrationDashBoard />} />
+        <Route path="/ChangePassword" element={<ChangePassword />} />
         
         <Route path="/LeftNav" element={<LeftNav />} />
 

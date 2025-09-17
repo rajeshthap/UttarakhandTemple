@@ -10,7 +10,7 @@ import { Globaleapi } from "../GlobleAuth/Globleapi";
 import SendOtp from "../SendOtp/SendOtp";
 import VerifyOtp from "../VerifyOtp/VerifyOtp";
 import Regimg from "../../assets/images/User-regi-img.png";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function TempleAuthority() {
@@ -755,7 +755,6 @@ function TempleAuthority() {
                                 validateField("email", e.target.value)
                               }
                             />
-
                             {formErrors.email && (
                               <p className="text-danger">{formErrors.email}</p>
                             )}
@@ -800,7 +799,7 @@ function TempleAuthority() {
                             <Form.Control
                               as="textarea"
                               name="trust_committee_details"
-                              value={formData.trust_committee_details}
+                              // value={formData.trust_committee_details}
                               onChange={handleChange}
                               rows={4}
                               placeholder="Enter additional details"
