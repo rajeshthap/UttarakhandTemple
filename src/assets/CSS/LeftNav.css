@@ -328,25 +328,35 @@ span.nav-label {
     font-size: 15px;
   }
 
-
-
 }
 
 @media (min-width: 850px) and (max-width: 991px) {}
 
 @media screen and (max-width: 850px) {
 
-
+ .nd-menu {
+    font-size: 22px;
+    padding: 18px 0px 10px 35px;
+    display: flex;
+    justify-content:space-between;
+  }
+  
   .nd-log-icon-mob {
-    background-color: var(--nd-blue-hover);
+    background-color: var(--temp-org);
     width: 30px;
     height: 30px;
     border-radius: 50%;
     padding-left: var(--nd-space-150);
-    margin-right: var(--nd-space-150);
+    margin-right: var(--nd-space-300);
+    color: var(--temp-white);
   }
-
-
+.nd-user{
+  color: var(--temp-white);
+  font-size: var(--nd-space-350);
+}
+.menuicn {
+  color: var(--temp-white);
+}
 
   .option1 {
     margin-top: 1% !important;
@@ -392,6 +402,7 @@ span.nav-label {
     padding-left: var(--nd-space-150);
     margin-right: var(--nd-space-150);
   }
+ 
 
 }
 
@@ -400,12 +411,13 @@ span.nav-label {
 @media screen and (max-width: 490px) {
 
   .nd-log-icon-mob {
-    background-color: var(--nd-blue-hover);
+    background-color: var(--temp-org);
     width: 30px;
     height: 30px;
     border-radius: 50%;
     padding-left: var(--nd-space-150);
     margin-right: var(--nd-space-400);
+    color: var(--temp-white);
   }
 
   span.nav-label {
@@ -419,13 +431,16 @@ span.nav-label {
   .nd-menu {
     font-size: 20px;
     padding: 18px 0px 10px 35px;
+    display: flex;
+    justify-content: space-between;
   }
 
   .nd-user {
     padding: 6px;
-
     text-align: right;
     font-size: 16px;
+    color: var(--temp-white);
+    
   }
 
   .message {
@@ -453,6 +468,7 @@ span.nav-label {
 
   .menuicn {
     height: 25px;
+    color: var(--temp-white);
   }
 
 

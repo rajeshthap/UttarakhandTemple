@@ -3,8 +3,6 @@ import "../../../assets/CSS/LeftNav.css";
 import LeftNav from "../LeftNav";
 import SevaRegistration from "../../Mandir_booking/SevaRegistration/SevaRegistration";
 
-
-
 const SevaRegistrationDashBoard = () => {
   return (
     <>

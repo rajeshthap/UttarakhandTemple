@@ -4,44 +4,44 @@ import Form from "react-bootstrap/Form";
 import "../../assets/CSS/TempleAuthority.css";
 import Regimg1 from "../../assets/images/temple-img.jpg";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";  
+import { useNavigate } from "react-router-dom";
 
 function AuthorityLogin() {
   const [formData, setFormData] = useState({
-    username: "",
+    identifier: "", // 👈 renamed to identifier (can be email or phone)
     password: "",
   });
-
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.username || !formData.password) {
-      alert(" Please fill in both fields");
+    if (!formData.identifier || !formData.password) {
+      alert("Please fill in both fields");
       return;
     }
 
     setLoading(true);
     try {
-      const isEmail = /\S+@\S+\.\S+/.test(formData.username);
-      const isPhone = /^[0-9]{10}$/.test(formData.username);
+      // check if it's email or phone
+      const isEmail = /\S+@\S+\.\S+/.test(formData.identifier);
+      const isPhone = /^[0-9]{10}$/.test(formData.identifier);
 
       let payload = {
         password: formData.password,
       };
 
       if (isEmail) {
-        payload.email = formData.username;
+        payload.email = formData.identifier; //  backend expects `email`
       } else if (isPhone) {
-        payload.phone = formData.username;
+        payload.phone = formData.identifier; //  backend expects `phone`
       } else {
         alert("Please enter a valid email or phone number");
         setLoading(false);
@@ -58,110 +58,121 @@ function AuthorityLogin() {
       if (response.data.role) {
         localStorage.setItem("role", response.data.role);
       }
-
+      const role=response.data.role;
+ if(role==="temple")
       alert("Login successfully!");
-      navigate("/DashBoard"); 
+     
+      navigate("/MainDashBoard");
     } catch (error) {
-      console.error("Login Error:", error);
-      alert(" Invalid username or password");
+      console.error("Login Error:", error.response?.data || error.message);
+      alert(error.response?.data?.detail || "Invalid username or password");
     }
     setLoading(false);
   };
+
   return (
     <div>
       <Container className="temp-container">
-        <div>
-          <div className="temple-registration-heading">
-            <h1>Temple Login</h1>
-            <div>
-            
-              <Form onSubmit={handleSubmit}>
-                <Row className="mt-3">
-                  <Col lg={6} md={6}>
-                    <Row>
-                      <Col lg={12} md={12} sm={12} className="mt-4">
-                        <Form.Group className="mb-3">
-                          <Form.Label className="temp-label-lg-bg">
-                            Email or Phone Number{" "}
-                            <span className="temp-span-star">*</span>
-                          </Form.Label>
-                          <Form.Control
-                            type="text"
-                            name="username"
-                            value={formData.username}
-                            onChange={handleChange}
-                            placeholder="Registered Mobile No. / Email"
-                            className="temp-form-control-bg"
-                          />
-                        </Form.Group>
-                      </Col>
-
-                      <Col lg={12} md={12} sm={12}>
-                        <Form.Group className="mb-3">
-                          <Form.Label className="temp-label">
-                            Password <span className="temp-span-star">*</span>
-                          </Form.Label>
-                          <div className="password-wrapper">
-                            <Form.Control
-                              type="password"
-                              name="password"
-                              value={formData.password}
-                              onChange={handleChange}
-                              placeholder="Your Password"
-                              className="temp-form-control-bg"
-                            />
-                            <i className="fa fa-eye toggle-password"></i>
-                          </div>
-                        </Form.Group>
-                      </Col>
-
-                      <div className="d-grid gap-3 text-center mt-3">
-                        <Row>
-                          <Col lg={12} md={12} sm={12}>
-                            <Button
-                              variant="danger"
-                              className="temp-submit-btn"
-                              type="submit"
-                              disabled={loading}
-                            >
-                              {loading ? "Logging in..." : "Login"}
-                            </Button>
-                          </Col>
-                          <Col lg={12} md={12} sm={12} className="mt-3">
-                            <Button
-                              variant="danger"
-                              className="temp-submit-btn-login"
-                              type="button"
-                              onClick={() =>
-                                (window.location.href = "/forgot-password")
-                              }
-                            >
-                              Forgot Password ?
-                            </Button>
-                          </Col>
-                        </Row>
-                      </div>
-                    </Row>
-                  </Col>
-
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={12}
-                    className="d-flex justify-content-center align-items-center"
-                  >
-                    <div>
-                      <img
-                        src={Regimg1}
-                        className="img-fluid"
-                        alt="Temple Login"
+        <div className="temple-registration-heading">
+          <h1>Temple Login</h1>
+          <Form onSubmit={handleSubmit}>
+            <Row className="mt-3">
+              <Col lg={6} md={6}>
+                <Row>
+                  <Col lg={12} md={12} sm={12} className="mt-4">
+                    <Form.Group className="mb-3">
+                      <Form.Label className="temp-label-lg-bg">
+                        Email or Phone Number{" "}
+                        <span className="temp-span-star">*</span>
+                      </Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="identifier" // 👈 updated
+                        value={formData.identifier}
+                        onChange={handleChange}
+                        placeholder="Registered Mobile No. / Email"
+                        className="temp-form-control-bg"
                       />
-                    </div>
+                    </Form.Group>
                   </Col>
+
+                  <Col lg={12} md={12} sm={12}>
+                    <Form.Group className="mb-3">
+                      <Form.Label className="temp-label">
+                        Password <span className="temp-span-star">*</span>
+                      </Form.Label>
+                      <div
+                        className="password-wrapper"
+                        style={{ position: "relative" }}
+                      >
+                        <Form.Control
+                          type={showPassword ? "text" : "password"}
+                          name="password"
+                          value={formData.password}
+                          onChange={handleChange}
+                          placeholder="Your Password"
+                          className="temp-form-control-bg"
+                        />
+                        <i
+                          className={`fa ${
+                            showPassword ? "fa-eye-slash" : "fa-eye"
+                          } toggle-password`}
+                          onClick={() => setShowPassword(!showPassword)}
+                          style={{
+                            position: "absolute",
+                            right: "10px",
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            cursor: "pointer",
+                          }}
+                        ></i>
+                      </div>
+                    </Form.Group>
+                  </Col>
+
+                  <div className="d-grid gap-3 text-center mt-3">
+                    <Row>
+                      <Col lg={12} md={12} sm={12}>
+                        <Button
+                          variant="danger"
+                          className="temp-submit-btn"
+                          type="submit"
+                          disabled={loading}
+                        >
+                          {loading ? "Logging in..." : "Login"}
+                        </Button>
+                      </Col>
+                      <Col lg={12} md={12} sm={12} className="mt-3">
+                        <Button
+                          variant="danger"
+                          className="temp-submit-btn-login"
+                          type="button"
+                         onClick={() => (window.location.href = "/ForgotPassword")}
+                        >
+                          Forgot Password ?
+                        </Button>
+                      </Col>
+                    </Row>
+                  </div>
                 </Row>
-              </Form>
-            </div>
-          </div>
+              </Col>
+
+              <Col
+                lg={6}
+                md={6}
+                sm={12}
+                className="d-flex justify-content-center align-items-center"
+              >
+                <div>
+                  <img
+                    src={Regimg1}
+                    className="img-fluid"
+                    alt="Temple Login"
+                  />
+                </div>
+              </Col>
+            </Row>
+          </Form>
         </div>
       </Container>
     </div>
