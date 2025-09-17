@@ -12,7 +12,7 @@ const TempleFacilityBooking = () => {
   return (
     <div>
       <Container className="temp-container">
-        <h1>Mandir Booking</h1>
+        <h1>Temple Facility Booking</h1>
         <p>
           <i>
             Your support helps us preserve sacred traditions, maintain temple
@@ -23,6 +23,26 @@ const TempleFacilityBooking = () => {
           <Col lg={8} md={8} sm={12} className="mt-2">
             <h2>Devotee/Guest Details</h2>
             <Row className="mt-4">
+              <Col lg={6} md={6} sm={12}>
+
+                <Form.Group
+                  className="mb-3"
+                  controlId="exampleForm.ControlInput1"
+                >
+                  <Form.Label className="temp-label">
+                    Temple Type{" "}
+                    <span className="temp-span-star">*</span>
+                  </Form.Label>
+                  <Form.Select className="temp-form-control-option">
+                    <option value="">Select Temple </option>
+                    <option value="42">Vishnu Temple</option>
+                    <option value="43">Durga Temple</option>
+                    <option value="44">Ganesh Temple</option>
+                    <option value="45">Hanuman Temple</option>
+                    <option value="46">Shiva Temple</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
               <Col lg={6} md={6} sm={12}>
                 <Form.Group
                   className="mb-3"
