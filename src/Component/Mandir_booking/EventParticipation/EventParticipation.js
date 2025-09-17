@@ -13,6 +13,7 @@ const EventParticipation = () => {
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
   const [errors, setErrors] = useState({});
+  const [sendingOtp, setSendingOtp] = useState(false);
 
   const [formData, setFormData] = useState({
     full_name: "",
@@ -96,17 +97,40 @@ const EventParticipation = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  //  Handle input
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    setErrors((prev) => ({ ...prev, [name]: "" })); // clear error
-  };
+  const { name, value } = e.target;
 
-  //  Checkbox click → send OTP only if form is valid
+  setFormData((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+
+  if (errors[name]) {
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
+  }
+
+  if (name === "mobile_number") {
+    let errorMsg = "";
+    if (!/^\d*$/.test(value)) {
+      errorMsg = "Only digits allowed";
+    } else if (value.length > 0 && !/^\d{10}$/.test(value)) {
+      errorMsg = "Enter a valid 10-digit mobile number";
+    }
+    setErrors((prev) => ({ ...prev, mobile_number: errorMsg }));
+  }
+
+  if (name === "email") {
+    let errorMsg = "";
+    if (value.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      errorMsg = "Enter a valid email address";
+    }
+    setErrors((prev) => ({ ...prev, email: errorMsg }));
+  }
+};
+
   const handleCheckbox = async (e) => {
     const checked = e.target.checked;
 
@@ -115,7 +139,6 @@ const EventParticipation = () => {
       return;
     }
 
-    // validate before OTP
     if (!validateFields()) {
       alert("Please fill all required fields correctly before verifying OTP.");
       setAgreeTerms(false);
@@ -128,6 +151,7 @@ const EventParticipation = () => {
     }
 
     try {
+      setSendingOtp(true); 
       await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
         phone: formData.mobile_number,
       });
@@ -136,6 +160,8 @@ const EventParticipation = () => {
     } catch (err) {
       alert("Failed to send OTP");
       setAgreeTerms(false);
+    } finally {
+      setSendingOtp(false);
     }
   };
 
@@ -159,7 +185,6 @@ const EventParticipation = () => {
 
       if (res.status === 200 || res.status === 201) {
         alert("Event Registered Successfully!");
-        navigate("/PaymentConfirmation");
       }
     } catch (err) {
       if (err.response && err.response.data) {
@@ -187,6 +212,7 @@ const EventParticipation = () => {
         setOtpVerified(true);
         alert("OTP Verified Successfully!");
         setShow(false);
+        navigate("/PaymentConfirmation");
       } else {
         alert("Invalid OTP, try again.");
       }
@@ -367,7 +393,9 @@ const EventParticipation = () => {
                       name="id_proof_number"
                       value={formData.id_proof_number}
                       onChange={handleChange}
+                      maxLength={16}
                     />
+
                     {errors.id_proof_number && (
                       <small className="text-danger">
                         {errors.id_proof_number}
@@ -505,6 +533,7 @@ const EventParticipation = () => {
                       name="preferred_dates"
                       value={formData.preferred_dates}
                       onChange={handleChange}
+                      min={new Date().toISOString().split("T")[0]}
                     />
                     {errors.preferred_dates && (
                       <small className="text-danger">
@@ -673,7 +702,11 @@ const EventParticipation = () => {
                     className="mx-2"
                     checked={agreeTerms}
                     onChange={handleCheckbox}
+                    disabled={sendingOtp}
                   />
+                  {sendingOtp && (
+                    <small className="text-muted">Sending...</small>
+                  )}
                   I agree to booking terms & cancellation policy
                 </label>
               </div>

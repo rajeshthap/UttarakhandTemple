@@ -123,6 +123,7 @@ const OnlineHirePandit = () => {
     });
   };
 
+
   // Final Submit
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -218,23 +219,11 @@ const OnlineHirePandit = () => {
                       type="text"
                       name="mobile_number"
                       value={formData.mobile_number}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        // Allow only digits and max 10 characters
-                        if (/^\d{0,10}$/.test(value)) {
-                          setFormData({ ...formData, mobile_number: value });
-                        }
-                      }}
+                      onChange={handleChange}
                       className="temp-form-control"
+                      required
                       placeholder="Enter 10-digit Mobile No."
-                      maxLength={10} // optional, for extra safety
                     />
-
-                    {newErrors.mobile_number && (
-                      <small className="text-danger">
-                        {newErrors.mobile_number}
-                      </small>
-                    )}
                   </Form.Group>
                 </Col>
 
@@ -271,6 +260,7 @@ const OnlineHirePandit = () => {
                       value={formData.address}
                       onChange={handleChange}
                       className="temp-form-control"
+                      required
                       placeholder="Enter Address"
                     />
                     {newErrors.address && (
@@ -323,19 +313,15 @@ const OnlineHirePandit = () => {
                       className="temp-form-control-option"
                       onChange={handleChange}
                     >
-                      <option value="">Select</option>
-                      <option value="Sanskrit">Sanskrit</option>
-                      <option value="Hindi">Hindi</option>
-                      <option value="Marathi">Marathi</option>
-                      <option value="Tamil">Tamil</option>
-                      <option value="Telugu">Telugu</option>
-                    </Form.Select>
-                    {newErrors.language_preference && (
-                      <small className="text-danger">
-                        {newErrors.language_preference}
-                      </small>
-                    )}
-                  </Form.Group>
+                      {" "}
+                      <option value="">Select</option>{" "}
+                      <option value="Sanskrit">Sanskrit</option>{" "}
+                      <option value="Hindi">Hindi</option>{" "}
+                      <option value="Marathi">Marathi</option>{" "}
+                      <option value="Tamil">Tamil</option>{" "}
+                      <option value="Telugu">Telugu</option>{" "}
+                    </Form.Select>{" "}
+                  </Form.Group>{" "}
                 </Col>
 
                 <Col lg={6}>
@@ -370,7 +356,7 @@ const OnlineHirePandit = () => {
                       onChange={handleChange}
                       className="temp-form-control-option"
                     >
-                      <option value="">Select</option>
+                      <option value="">Select Preferred a Time Slot</option>
                       <option value="Morning">Morning</option>
                       <option value="Afternoon">Afternoon</option>
                       <option value="Evening">Evening</option>
@@ -414,8 +400,9 @@ const OnlineHirePandit = () => {
                       name="duration"
                       value={formData.duration}
                       onChange={handleChange}
-                      className="temp-form-control"
                       placeholder="Enter Duration (e.g., 2 hours)"
+                      className="temp-form-control"
+                      required
                     />
                     {newErrors.duration && (
                       <small className="text-danger">

@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { Modal, Button, Col, Form } from "react-bootstrap";
 import "../../CustomCss/custom.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
-
+const navigate = useNavigate();
   const phone = localStorage.getItem("phone");
 
   const verifyOtp = async () => {
@@ -14,10 +15,12 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
       alert("Please enter the OTP");
       return;
     }
+
     if (!phone) {
       alert("No phone number found. Please restart the process.");
       return;
     }
+
     try {
       setLoading(true);
       const res = await axios.post(
@@ -28,9 +31,10 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
 
       if (res.data.success) {
         alert("OTP verified successfully");
-
+         navigate("/PaymentConfirmation");
+   
         localStorage.setItem("otpVerified", "true");
-            window.location.href = "/PaymentConfirmation"; 
+
      
         if (setIsOtpVerified) setIsOtpVerified(true);
 
