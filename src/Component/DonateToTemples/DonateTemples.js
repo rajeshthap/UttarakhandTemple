@@ -38,19 +38,6 @@ const DonateTemples = () => {
                             <h3>Support Our Sacred Mission</h3>
                             <p>Your contributions play a vital role in preserving the temple’s heritage and supporting community services. Every donation, big or small, makes a difference.</p>
 
-                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <Form.Label className="temp-label">Donation Available For Temple</Form.Label>
-                                <Form.Select className="temp-form-control-option">
-                                    <option value="">Select Temple Type</option>
-                                    <option value="shiv">Shiv Temple</option>
-                                    <option value="vishnu">Vishnu Temple</option>
-                                    <option value="durga">Durga Temple</option>
-                                    <option value="ganesh">Ganesh Temple</option>
-                                    <option value="hanuman">Hanuman Temple</option>
-                                    <option value="other">Other</option>
-                                </Form.Select>
-                            </Form.Group>
-
                             <h2>How You Can Contribute</h2>
                             <div className='px-4'>
                                 <h4 className='pt-3'>Direct Bank Deposit</h4>

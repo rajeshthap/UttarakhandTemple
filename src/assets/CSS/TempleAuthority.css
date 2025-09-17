@@ -28,6 +28,7 @@ span.temp-span-star {
     height: 48px;
     border-radius: var(--temp-space-200);
     border: 1px solid var(--temp-search-border);
+    color: #808090;
 
 }
 
@@ -52,7 +53,9 @@ span.temp-span-star {
 .temp-form-control-option {
     height: 48px;
     font-size: var(--temp-space-350);
-    border: 1px solid var(--temp-search-border)
+    border: 1px solid var(--temp-search-border);
+    font-size: var(--temp-space-400) !important;
+    color: #808090;
 }
 
 .temp-form-control-option-bg {

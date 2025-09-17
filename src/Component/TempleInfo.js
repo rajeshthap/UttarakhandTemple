@@ -106,7 +106,7 @@ const TempleInfo = () => {
         <Row>
           {/* Left Side Cards */}
           <Col lg={7} md={7} sm={12} className="mt-2">
-           
+
 
             <Row className="g-4">
               {currentCards.map((item) => (
@@ -119,9 +119,8 @@ const TempleInfo = () => {
                   style={{ cursor: "pointer" }}
                 >
                   <div
-                    className={`card-item ${
-                      selectedCard?.id === item.id ? "active-card" : ""
-                    }`}
+                    className={`card-item ${selectedCard?.id === item.id ? "active-card" : ""
+                      }`}
                   >
                     <div className="card-image-wrapper">
                       <img src={item.img} alt={item.title} className="card-image" />
@@ -165,11 +164,11 @@ const TempleInfo = () => {
                         <Select
                           isMulti
                           options={options}
-                          placeholder="Select multiple"
+                          placeholder="Select Available Pandits"
                           closeMenuOnSelect={false}
                           className="temp-form-control-input"
                           value={selectedOptions}
-                          onChange={setSelectedOptions} 
+                          onChange={setSelectedOptions}
                         />
 
                         {/* Time */}
@@ -178,8 +177,8 @@ const TempleInfo = () => {
                             Time <span className="temp-span-star">*</span>
                           </Form.Label>
                           <Form.Select className="temp-form-control-option">
-                            <option value="">Select a Time</option>
-                            <option value="Morning">Good Morning</option>
+                            <option value="">Select Your Time</option>
+                            <option value="Morning">Morning</option>
                             <option value="Evening">Evening</option>
                           </Form.Select>
                         </Form.Group>
