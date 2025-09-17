@@ -2,18 +2,25 @@ import React, { useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
-import SendOtpModal from "../OTPModel/SendOtpModal"; // modal for OTP input (optional)
+import SendOtpModal from "../OTPModel/SendOtpModal";
+
 
 const OnlineHirePandit = () => {
   const [show, setShow] = useState(false); // OTP modal
   const [loadingOtp, setLoadingOtp] = useState(false);
-
+  const [agreeTerms, setAgreeTerms] = useState(false);
   const handleShow = async () => {
     if (!formData.mobile_number) {
-      alert("Please enter your Mobile Number first.");
+      alert("Please Enter your Mobile Number.");
       return;
     }
+const handleCheckbox = async (e) => {
+  const checked = e.target.checked;
 
+  if (!checked) {
+    setAgreeTerms(false);
+    return;
+  }}
     try {
       setLoadingOtp(true);
 
@@ -37,7 +44,6 @@ const OnlineHirePandit = () => {
   const [isOtpVerified, setIsOtpVerified] = useState(
     localStorage.getItem("otpVerified") === "true"
   );
-
   // Form state
   const [formData, setFormData] = useState({
     full_name: "",
@@ -64,6 +70,7 @@ const OnlineHirePandit = () => {
       [name]: value,
     });
   };
+
 
   // Final Submit
   const handleSubmit = async (e) => {
@@ -100,6 +107,9 @@ const OnlineHirePandit = () => {
 
       // Remove OTP verification from localStorage after submit
       localStorage.removeItem("otpVerified");
+      localStorage.clear();
+setIsOtpVerified(false);
+
       setIsOtpVerified(false);
     } catch (err) {
       console.error("Error booking pandit:", err.response?.data || err.message);
@@ -126,7 +136,9 @@ const OnlineHirePandit = () => {
                 {/* Full Name */}
                 <Col lg={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label>Full Name *</Form.Label>
+                    <Form.Label>
+                      Full Name <span className="temp-span-star">*</span>
+                    </Form.Label>
                     <Form.Control
                       type="text"
                       name="full_name"
@@ -134,6 +146,7 @@ const OnlineHirePandit = () => {
                       onChange={handleChange}
                       className="temp-form-control"
                       required
+                      placeholder="Enter Name"
                     />
                   </Form.Group>
                 </Col>
@@ -141,7 +154,9 @@ const OnlineHirePandit = () => {
                 {/* Mobile */}
                 <Col lg={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label>Mobile Number *</Form.Label>
+                    <Form.Label>
+                      Mobile Number <span className="temp-span-star">*</span>{" "}
+                    </Form.Label>
                     <Form.Control
                       type="text"
                       name="mobile_number"
@@ -149,6 +164,7 @@ const OnlineHirePandit = () => {
                       onChange={handleChange}
                       className="temp-form-control"
                       required
+                      placeholder="Enter 10-digit Mobile No."
                     />
                   </Form.Group>
                 </Col>
@@ -156,7 +172,9 @@ const OnlineHirePandit = () => {
                 {/* Email */}
                 <Col lg={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label>Email *</Form.Label>
+                    <Form.Label>
+                      Email <span className="temp-span-star">*</span>
+                    </Form.Label>
                     <Form.Control
                       type="email"
                       name="email"
@@ -164,6 +182,7 @@ const OnlineHirePandit = () => {
                       onChange={handleChange}
                       className="temp-form-control"
                       required
+                      placeholder="Enter Email ID"
                     />
                   </Form.Group>
                 </Col>
@@ -171,7 +190,9 @@ const OnlineHirePandit = () => {
                 {/* Address */}
                 <Col lg={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label>Address *</Form.Label>
+                    <Form.Label>
+                      Address <span className="temp-span-star">*</span>
+                    </Form.Label>
                     <Form.Control
                       as="textarea"
                       rows={2}
@@ -180,6 +201,7 @@ const OnlineHirePandit = () => {
                       onChange={handleChange}
                       className="temp-form-control"
                       required
+                      placeholder="Enter Address"
                     />
                   </Form.Group>
                 </Col>
@@ -188,8 +210,10 @@ const OnlineHirePandit = () => {
               <h2>Pooja / Ceremony Details</h2>
               <Row>
                 <Col lg={6}>
-                  <Form.Group>
-                    <Form.Label>Type of Pooja *</Form.Label>
+                  <Form.Group className="mb-3">
+                    <Form.Label>
+                      Type of Pooja <span className="temp-span-star">*</span>
+                    </Form.Label>
                     <Form.Select
                       name="pooja_type"
                       value={formData.pooja_type}
@@ -197,7 +221,7 @@ const OnlineHirePandit = () => {
                       className="temp-form-control-option"
                       required
                     >
-                      <option value="">Select</option>
+                      <option value="">Select a Pooja</option>
                       <option value="Griha Pravesh">Griha Pravesh</option>
                       <option value="Satyanarayan Katha">
                         Satyanarayan Katha
@@ -209,8 +233,13 @@ const OnlineHirePandit = () => {
                 </Col>
 
                 <Col lg={6}>
-                  <Form.Group>
-                    <Form.Label>Language Preference *</Form.Label>
+                  {" "}
+                  <Form.Group className="mb-3">
+                    {" "}
+                    <Form.Label>
+                      Language Preference{" "}
+                      <span className="temp-span-star">*</span>
+                    </Form.Label>{" "}
                     <Form.Select
                       name="language_preference"
                       value={formData.language_preference}
@@ -218,19 +247,22 @@ const OnlineHirePandit = () => {
                       onChange={handleChange}
                       required
                     >
-                      <option value="">Select</option>
-                      <option value="Sanskrit">Sanskrit</option>
-                      <option value="Hindi">Hindi</option>
-                      <option value="Marathi">Marathi</option>
-                      <option value="Tamil">Tamil</option>
-                      <option value="Telugu">Telugu</option>
-                    </Form.Select>
-                  </Form.Group>
+                      {" "}
+                      <option value="">Select</option>{" "}
+                      <option value="Sanskrit">Sanskrit</option>{" "}
+                      <option value="Hindi">Hindi</option>{" "}
+                      <option value="Marathi">Marathi</option>{" "}
+                      <option value="Tamil">Tamil</option>{" "}
+                      <option value="Telugu">Telugu</option>{" "}
+                    </Form.Select>{" "}
+                  </Form.Group>{" "}
                 </Col>
 
                 <Col lg={6}>
-                  <Form.Group>
-                    <Form.Label>Date of Ceremony *</Form.Label>
+                  <Form.Group className="mb-3">
+                    <Form.Label>
+                      Date of Ceremony <span className="temp-span-star">*</span>
+                    </Form.Label>
                     <Form.Control
                       type="date"
                       name="date_of_ceremony"
@@ -243,8 +275,10 @@ const OnlineHirePandit = () => {
                 </Col>
 
                 <Col lg={6}>
-                  <Form.Group>
-                    <Form.Label>Preferred Time Slot *</Form.Label>
+                  <Form.Group className="mb-3">
+                    <Form.Label>
+                      Preferred Time Slot <span className="temp-span-star">*</span>
+                    </Form.Label>
                     <Form.Select
                       name="time_slot"
                       value={formData.time_slot}
@@ -261,14 +295,16 @@ const OnlineHirePandit = () => {
                 </Col>
 
                 <Col lg={6}>
-                  <Form.Group>
-                    <Form.Label>Location *</Form.Label>
+                  <Form.Group className="mb-3">
+                    <Form.Label>
+                      Location <span className="temp-span-star">*</span>
+                    </Form.Label>
                     <Form.Control
                       type="text"
                       name="location"
                       value={formData.location}
                       onChange={handleChange}
-                      placeholder="e.g., Lucknow, Uttar Pradesh"
+                      placeholder="Enter Location"
                       className="temp-form-control"
                       required
                     />
@@ -276,14 +312,16 @@ const OnlineHirePandit = () => {
                 </Col>
 
                 <Col lg={6}>
-                  <Form.Group>
-                    <Form.Label>Duration *</Form.Label>
+                  <Form.Group className="mb-3">
+                    <Form.Label>
+                      Duration <span className="temp-span-star">*</span>
+                    </Form.Label>
                     <Form.Control
                       type="text"
                       name="duration"
                       value={formData.duration}
                       onChange={handleChange}
-                      placeholder="e.g., 3 hours"
+                      placeholder="Enter Duration (e.g., 2 hours)"
                       className="temp-form-control"
                       required
                     />
@@ -294,63 +332,70 @@ const OnlineHirePandit = () => {
               <h2 className="mt-3">Pandit Requirements</h2>
               <Row>
                 <Col lg={6}>
-                  <Form.Group>
-                    <Form.Label>Number of Pandits *</Form.Label>
+                  <Form.Group className="mb-3">
+                    <Form.Label>
+                      Number of Pandits{" "}
+                      <span className="temp-span-star">*</span>
+                    </Form.Label>
                     <Form.Control
                       type="number"
                       name="number_of_pandits"
                       value={formData.number_of_pandits}
                       className="temp-form-control"
                       onChange={handleChange}
+                      placeholder="Enter Number"
                       required
                     />
                   </Form.Group>
                 </Col>
 
                 <Col lg={6}>
-                  <Form.Group>
-                    <Form.Label>Additional Assistants</Form.Label>
+                  <Form.Group className="mb-3">
+                    <Form.Label> Additional Assistants <span className="temp-span-star">*</span></Form.Label>
                     <Form.Control
                       type="number"
                       name="additional_assistants"
                       value={formData.additional_assistants}
                       onChange={handleChange}
                       className="temp-form-control"
+                      placeholder="Enter Number"
                     />
                   </Form.Group>
                 </Col>
 
                 <Col lg={6}>
-                  <Form.Group>
-                    <Form.Label>Special Requirements</Form.Label>
+                  <Form.Group className="mb-3">
+                    <Form.Label> Special Requirements <span className="temp-span-star">*</span></Form.Label>
                     <Form.Control
                       type="text"
                       name="special_requirements"
                       value={formData.special_requirements}
                       onChange={handleChange}
                       className="temp-form-control"
-                      placeholder="e.g., Need sound system"
+                      placeholder="Enter Requirements"
                     />
                   </Form.Group>
                 </Col>
 
                 <Col lg={6}>
-                  <Form.Group>
-                    <Form.Label>Estimated Fees</Form.Label>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Estimated Fees <span className="temp-span-star">*</span></Form.Label>
                     <Form.Control
                       type="number"
                       name="estimated_fees"
                       value={formData.estimated_fees}
                       onChange={handleChange}
                       className="temp-form-control"
-                      placeholder="e.g., 2500"
+                      placeholder="Enter Amount in Rs."
                     />
                   </Form.Group>
                 </Col>
 
                 <Col lg={6}>
-                  <Form.Group>
-                    <Form.Label>Payment Mode *</Form.Label>
+                  <Form.Group className="mb-3">
+                    <Form.Label>
+                      Payment Mode <span className="temp-span-star">*</span>
+                    </Form.Label>
                     <Form.Select
                       name="payment_mode"
                       value={formData.payment_mode}
@@ -358,7 +403,7 @@ const OnlineHirePandit = () => {
                       className="temp-form-control-option"
                       required
                     >
-                      <option value="">Select</option>
+                      <option value="">Select a Payment Mode</option>
                       <option value="upi">UPI</option>
                       <option value="netbanking">Net Banking</option>
                       <option value="card">Card</option>
@@ -377,7 +422,7 @@ const OnlineHirePandit = () => {
                     className="mx-2"
                     onChange={(e) => {
                       if (e.target.checked) {
-                        handleShow(); // send OTP + show modal
+                        handleShow();
                       }
                     }}
                   />
@@ -389,7 +434,7 @@ const OnlineHirePandit = () => {
               <SendOtpModal
                 show={show}
                 handleClose={handleClose}
-                setIsOtpVerified={setIsOtpVerified}
+                setIsOtpVerified={setIsOtpVerified} checked={agreeTerms}
               />
 
               {/* Buttons */}

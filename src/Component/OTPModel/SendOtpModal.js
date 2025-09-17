@@ -14,12 +14,10 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
       alert("Please enter the OTP");
       return;
     }
-
     if (!phone) {
       alert("No phone number found. Please restart the process.");
       return;
     }
-
     try {
       setLoading(true);
       const res = await axios.post(
@@ -31,9 +29,8 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
       if (res.data.success) {
         alert("OTP verified successfully");
 
-   
         localStorage.setItem("otpVerified", "true");
-
+            window.location.href = "/PaymentConfirmation"; 
      
         if (setIsOtpVerified) setIsOtpVerified(true);
 
