@@ -4,23 +4,18 @@ import Form from "react-bootstrap/Form";
 import axios from "axios";
 import SendOtpModal from "../OTPModel/SendOtpModal";
 
-
 const OnlineHirePandit = () => {
   const [show, setShow] = useState(false); // OTP modal
   const [loadingOtp, setLoadingOtp] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
+  const [newErrors, setnewErrors] = useState({});
+
   const handleShow = async () => {
     if (!formData.mobile_number) {
-      alert("Please Enter your Mobile Number.");
+      alert("all required feild fill please.");
       return;
     }
-const handleCheckbox = async (e) => {
-  const checked = e.target.checked;
 
-  if (!checked) {
-    setAgreeTerms(false);
-    return;
-  }}
     try {
       setLoadingOtp(true);
 
@@ -29,6 +24,7 @@ const handleCheckbox = async (e) => {
         { phone: formData.mobile_number },
         { headers: { "Content-Type": "application/json" } }
       );
+      setnewErrors({});
       localStorage.setItem("phone", formData.mobile_number);
       setShow(true);
       alert("OTP sent successfully!");
@@ -63,6 +59,62 @@ const handleCheckbox = async (e) => {
     payment_mode: "",
   });
 
+  const validateFields = () => {
+    let newErrors = {};
+
+    if (!formData.full_name.trim()) {
+      newErrors.full_name = "Full Name is required";
+    }
+    if (
+      !formData.mobile_number ||
+      !/^[0-9]{10}$/.test(formData.mobile_number)
+    ) {
+      newErrors.mobile_number = "Valid 10-digit Mobile Number is required";
+    }
+    if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Valid Email is required";
+    }
+    if (!formData.address.trim()) {
+      newErrors.address = "Address is required";
+    }
+    if (!formData.pooja_type) {
+      newErrors.pooja_type = "Please select Pooja type";
+    }
+    if (!formData.language_preference) {
+      newErrors.language_preference = "Please select Language";
+    }
+    if (!formData.date_of_ceremony) {
+      newErrors.date_of_ceremony = "Please select ceremony date";
+    }
+    if (!formData.time_slot) {
+      newErrors.time_slot = "Please select time slot";
+    }
+    if (!formData.location.trim()) {
+      newErrors.location = "Location is required";
+    }
+    if (!formData.duration.trim()) {
+      newErrors.duration = "Duration is required";
+    }
+    if (!formData.number_of_pandits) {
+      newErrors.number_of_pandits = "Enter number of Pandits";
+    }
+    if (!formData.additional_assistants) {
+      newErrors.additional_assistants = "Enter number of Assistants";
+    }
+    if (!formData.special_requirements.trim()) {
+      newErrors.special_requirements = "Enter Special Requirements";
+    }
+    if (!formData.estimated_fees) {
+      newErrors.estimated_fees = "Estimated Fees is required";
+    }
+    if (!formData.payment_mode) {
+      newErrors.payment_mode = "Please select Payment Mode";
+    }
+
+    setnewErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -71,10 +123,12 @@ const handleCheckbox = async (e) => {
     });
   };
 
-
   // Final Submit
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateFields()) {
+      return alert("Please fill all required fields.");
+    }
 
     try {
       const res = await axios.post(
@@ -108,7 +162,7 @@ const handleCheckbox = async (e) => {
       // Remove OTP verification from localStorage after submit
       localStorage.removeItem("otpVerified");
       localStorage.clear();
-setIsOtpVerified(false);
+      setIsOtpVerified(false);
 
       setIsOtpVerified(false);
     } catch (err) {
@@ -123,8 +177,7 @@ setIsOtpVerified(false);
         <h1>Online Hire Pandit</h1>
         <p>
           <i>
-            Your support helps us preserve sacred traditions, maintain temple
-            facilities, and serve the community with devotion and care.
+            Book experienced Pandits for Pooja, Seva, and religious rituals at your convenience.
           </i>
         </p>
         <Form onSubmit={handleSubmit}>
@@ -145,9 +198,13 @@ setIsOtpVerified(false);
                       value={formData.full_name}
                       onChange={handleChange}
                       className="temp-form-control"
-                      required
                       placeholder="Enter Name"
                     />
+                    {newErrors.full_name && (
+                      <small className="text-danger">
+                        {newErrors.full_name}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
 
@@ -155,17 +212,29 @@ setIsOtpVerified(false);
                 <Col lg={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>
-                      Mobile Number <span className="temp-span-star">*</span>{" "}
+                      Mobile Number <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
                       type="text"
                       name="mobile_number"
                       value={formData.mobile_number}
-                      onChange={handleChange}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        // Allow only digits and max 10 characters
+                        if (/^\d{0,10}$/.test(value)) {
+                          setFormData({ ...formData, mobile_number: value });
+                        }
+                      }}
                       className="temp-form-control"
-                      required
                       placeholder="Enter 10-digit Mobile No."
+                      maxLength={10} // optional, for extra safety
                     />
+
+                    {newErrors.mobile_number && (
+                      <small className="text-danger">
+                        {newErrors.mobile_number}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
 
@@ -181,9 +250,11 @@ setIsOtpVerified(false);
                       value={formData.email}
                       onChange={handleChange}
                       className="temp-form-control"
-                      required
                       placeholder="Enter Email ID"
                     />
+                    {newErrors.email && (
+                      <small className="text-danger">{newErrors.email}</small>
+                    )}
                   </Form.Group>
                 </Col>
 
@@ -200,14 +271,18 @@ setIsOtpVerified(false);
                       value={formData.address}
                       onChange={handleChange}
                       className="temp-form-control"
-                      required
                       placeholder="Enter Address"
                     />
+                    {newErrors.address && (
+                      <small className="text-danger">{newErrors.address}</small>
+                    )}
                   </Form.Group>
                 </Col>
               </Row>
 
-              <h2>Pooja / Ceremony Details</h2>
+              <h2>
+                  <h2>Pooja / Ceremony Details</h2>
+              </h2>
               <Row>
                 <Col lg={6}>
                   <Form.Group className="mb-3">
@@ -219,7 +294,6 @@ setIsOtpVerified(false);
                       value={formData.pooja_type}
                       onChange={handleChange}
                       className="temp-form-control-option"
-                      required
                     >
                       <option value="">Select a Pooja</option>
                       <option value="Griha Pravesh">Griha Pravesh</option>
@@ -229,33 +303,39 @@ setIsOtpVerified(false);
                       <option value="Marriage">Marriage</option>
                       <option value="Havan">Havan</option>
                     </Form.Select>
+                    {newErrors.pooja_type && (
+                      <small className="text-danger">
+                        {newErrors.pooja_type}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
 
                 <Col lg={6}>
-                  {" "}
                   <Form.Group className="mb-3">
-                    {" "}
                     <Form.Label>
                       Language Preference{" "}
                       <span className="temp-span-star">*</span>
-                    </Form.Label>{" "}
+                    </Form.Label>
                     <Form.Select
                       name="language_preference"
                       value={formData.language_preference}
                       className="temp-form-control-option"
                       onChange={handleChange}
-                      required
                     >
-                      {" "}
-                      <option value="">Select</option>{" "}
-                      <option value="Sanskrit">Sanskrit</option>{" "}
-                      <option value="Hindi">Hindi</option>{" "}
-                      <option value="Marathi">Marathi</option>{" "}
-                      <option value="Tamil">Tamil</option>{" "}
-                      <option value="Telugu">Telugu</option>{" "}
-                    </Form.Select>{" "}
-                  </Form.Group>{" "}
+                      <option value="">Select</option>
+                      <option value="Sanskrit">Sanskrit</option>
+                      <option value="Hindi">Hindi</option>
+                      <option value="Marathi">Marathi</option>
+                      <option value="Tamil">Tamil</option>
+                      <option value="Telugu">Telugu</option>
+                    </Form.Select>
+                    {newErrors.language_preference && (
+                      <small className="text-danger">
+                        {newErrors.language_preference}
+                      </small>
+                    )}
+                  </Form.Group>
                 </Col>
 
                 <Col lg={6}>
@@ -267,30 +347,39 @@ setIsOtpVerified(false);
                       type="date"
                       name="date_of_ceremony"
                       value={formData.date_of_ceremony}
-                      className="temp-form-control"
                       onChange={handleChange}
-                      required
+                      className="temp-form-control"
                     />
+                    {newErrors.date_of_ceremony && (
+                      <small className="text-danger">
+                        {newErrors.date_of_ceremony}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
 
                 <Col lg={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>
-                      Preferred Time Slot <span className="temp-span-star">*</span>
+                      Preferred Time Slot{" "}
+                      <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Select
                       name="time_slot"
                       value={formData.time_slot}
                       onChange={handleChange}
                       className="temp-form-control-option"
-                      required
                     >
                       <option value="">Select</option>
                       <option value="Morning">Morning</option>
                       <option value="Afternoon">Afternoon</option>
                       <option value="Evening">Evening</option>
                     </Form.Select>
+                    {newErrors.time_slot && (
+                      <small className="text-danger">
+                        {newErrors.time_slot}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
 
@@ -304,10 +393,14 @@ setIsOtpVerified(false);
                       name="location"
                       value={formData.location}
                       onChange={handleChange}
-                      placeholder="Enter Location"
                       className="temp-form-control"
-                      required
+                      placeholder="Enter Location"
                     />
+                    {newErrors.location && (
+                      <small className="text-danger">
+                        {newErrors.location}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
 
@@ -321,10 +414,14 @@ setIsOtpVerified(false);
                       name="duration"
                       value={formData.duration}
                       onChange={handleChange}
-                      placeholder="Enter Duration (e.g., 2 hours)"
                       className="temp-form-control"
-                      required
+                      placeholder="Enter Duration (e.g., 2 hours)"
                     />
+                    {newErrors.duration && (
+                      <small className="text-danger">
+                        {newErrors.duration}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
               </Row>
@@ -341,17 +438,24 @@ setIsOtpVerified(false);
                       type="number"
                       name="number_of_pandits"
                       value={formData.number_of_pandits}
-                      className="temp-form-control"
                       onChange={handleChange}
+                      className="temp-form-control"
                       placeholder="Enter Number"
-                      required
                     />
+                    {newErrors.number_of_pandits && (
+                      <small className="text-danger">
+                        {newErrors.number_of_pandits}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
 
                 <Col lg={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label> Additional Assistants <span className="temp-span-star">*</span></Form.Label>
+                    <Form.Label>
+                      Additional Assistants{" "}
+                      <span className="temp-span-star">*</span>
+                    </Form.Label>
                     <Form.Control
                       type="number"
                       name="additional_assistants"
@@ -360,12 +464,20 @@ setIsOtpVerified(false);
                       className="temp-form-control"
                       placeholder="Enter Number"
                     />
+                    {newErrors.additional_assistants && (
+                      <small className="text-danger">
+                        {newErrors.additional_assistants}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
 
                 <Col lg={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label> Special Requirements <span className="temp-span-star">*</span></Form.Label>
+                    <Form.Label>
+                      Special Requirements{" "}
+                      <span className="temp-span-star">*</span>
+                    </Form.Label>
                     <Form.Control
                       type="text"
                       name="special_requirements"
@@ -374,12 +486,19 @@ setIsOtpVerified(false);
                       className="temp-form-control"
                       placeholder="Enter Requirements"
                     />
+                    {newErrors.special_requirements && (
+                      <small className="text-danger">
+                        {newErrors.special_requirements}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
 
                 <Col lg={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label>Estimated Fees <span className="temp-span-star">*</span></Form.Label>
+                    <Form.Label>
+                      Estimated Fees <span className="temp-span-star">*</span>
+                    </Form.Label>
                     <Form.Control
                       type="number"
                       name="estimated_fees"
@@ -388,9 +507,13 @@ setIsOtpVerified(false);
                       className="temp-form-control"
                       placeholder="Enter Amount in Rs."
                     />
+                    {newErrors.estimated_fees && (
+                      <small className="text-danger">
+                        {newErrors.estimated_fees}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
-
                 <Col lg={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>
@@ -401,7 +524,6 @@ setIsOtpVerified(false);
                       value={formData.payment_mode}
                       onChange={handleChange}
                       className="temp-form-control-option"
-                      required
                     >
                       <option value="">Select a Payment Mode</option>
                       <option value="upi">UPI</option>
@@ -409,6 +531,11 @@ setIsOtpVerified(false);
                       <option value="card">Card</option>
                       <option value="cash">Cash at Temple</option>
                     </Form.Select>
+                    {newErrors.payment_mode && (
+                      <small className="text-danger">
+                        {newErrors.payment_mode}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
               </Row>
@@ -420,13 +547,26 @@ setIsOtpVerified(false);
                     type="checkbox"
                     name="agreeTerms"
                     className="mx-2"
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        handleShow();
+                    onChange={async (e) => {
+                      const checked = e.target.checked;
+
+                      if (checked) {
+                        // Validate form before sending OTP
+                        const isValid = validateFields(); // call your validation
+                        if (!isValid) {
+                          alert(
+                            "Please fill all required fields correctly before verifying OTP."
+                          );
+                          return; // stop if validation fails
+                        }
+
+                        await handleShow(); // send OTP only if form is valid
+                      } else {
+                        setAgreeTerms(false); // uncheck logic
                       }
                     }}
                   />
-                  I agree to booking terms &amp; cancellation policy
+                  I agree to booking terms & cancellation policy
                 </label>
               </div>
 
@@ -434,7 +574,8 @@ setIsOtpVerified(false);
               <SendOtpModal
                 show={show}
                 handleClose={handleClose}
-                setIsOtpVerified={setIsOtpVerified} checked={agreeTerms}
+                setIsOtpVerified={setIsOtpVerified}
+                checked={agreeTerms}
               />
 
               {/* Buttons */}
