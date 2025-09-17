@@ -157,8 +157,10 @@ const DarshanBooking = () => {
                   />
                 </Form.Group>
               </Col>
+            </Row>
+            <h2>Darshan Booking Details</h2>
+            <Row>
 
-              <h2>Darshan Booking Details</h2>
               {/* Booking Details */}
               <Col lg={6} md={6} sm={12}>
                 <Form.Group className="mb-3" controlId="templeType">
@@ -213,8 +215,10 @@ const DarshanBooking = () => {
                   </Form.Select>
                 </Form.Group>
               </Col>
+            </Row>
+            <h2 className="pt-4">Address Details</h2>
+            <Row>
 
-              <h2 className="pt-4">Address Details</h2>
               <Col lg={6} md={6} sm={12}>
                 <Form.Group
                   className="mb-3"
@@ -240,7 +244,7 @@ const DarshanBooking = () => {
                     State <span className="temp-span-star">*</span>
                   </Form.Label>
                   <Form.Select className="temp-form-control-option">
-                    <option value="Select a option">Select an State</option>
+                    <option value="Select a option">Select a State</option>
                     <option value="option1">Option 1</option>
                     <option value="option2">Option 2</option>
                     <option value="option3">Option 3</option>
@@ -256,7 +260,7 @@ const DarshanBooking = () => {
                     City <span className="temp-span-star">*</span>
                   </Form.Label>
                   <Form.Select className="temp-form-control-option">
-                    <option value="Select a option">Select an City</option>
+                    <option value="Select a option">Select a City</option>
                     <option value="option1">Option 1</option>
                     <option value="option2">Option 2</option>
                     <option value="option3">Option 3</option>
@@ -289,7 +293,7 @@ const DarshanBooking = () => {
                     Prasad Delivery <span className="temp-span-star">*</span>
                   </Form.Label>
                   <Form.Select className="temp-form-control-option">
-                    <option value="Select a option">Select an City</option>
+                    <option value="Select a option">Select a  Prasad Delivery</option>
                     <option value="option1">Yes</option>
                     <option value="option2">No</option>
                   </Form.Select>
@@ -306,7 +310,7 @@ const DarshanBooking = () => {
                     <span className="temp-span-star">*</span>
                   </Form.Label>
                   <Form.Select className="temp-form-control-option">
-                    <option value="Select a option">Select an City</option>
+                    <option value="Select a option">Select a Accommodation</option>
                     <option value="option1">Yes</option>
                     <option value="option2">No</option>
                   </Form.Select>
@@ -329,9 +333,11 @@ const DarshanBooking = () => {
                   />
                 </Form.Group>
               </Col>
-
+            </Row>
+            <h2>Payment Details</h2>
+            <Row>
               {/* Payment Details */}
-              <h2>Payment Details</h2>
+
               <Col lg={6} md={6} sm={12}>
                 <Form.Group className="mb-3" controlId="darshanType">
                   <Form.Label className="temp-label">

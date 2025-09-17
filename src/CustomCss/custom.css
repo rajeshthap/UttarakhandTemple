@@ -93,8 +93,12 @@ body {
 }
 
 .temp-container h2 {
-    font-size: var(--temp-space-400);
+    font-size: var(--temp-space-450);
     color: var(--temp-org);
+    margin-bottom: var(--temp-space-350);
+
+    border-bottom: 1px var(--temp-boader-gary) solid;
+    padding-bottom: 6px;
 }
 
 .temp-container p {

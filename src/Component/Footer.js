@@ -18,13 +18,13 @@ const Footer = () => {
                 <div className="footer-section">
                     <h3>Information</h3>
                     <ul>
-                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/about">Temples Booking</a></li>
-                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/services">Pooja & Seva</a></li>
-                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/gallery">Pandit Booking</a></li>
-                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/contact">Facilities</a></li>
-                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/contact">Facilities</a></li>
-                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/contact">About Us</a></li>
-                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/contact">Contact Us</a></li>
+                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/TempleInfo">Mandir Booking</a></li>
+                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/PoojaBooking">Pooja & Seva</a></li>
+                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/OnlineHirePandit">Pandit Booking</a></li>
+                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/TempleFacilityBooking">Temple Facility Booking</a></li>
+
+                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/AboutUs">About Us</a></li>
+                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/ContactUs">Contact Info</a></li>
                     </ul>
                 </div>
 
@@ -32,12 +32,11 @@ const Footer = () => {
                 <div className="footer-section">
                     <h3>Other Links</h3>
                     <ul>
-                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/privacy">Pooja Booking</a></li>
-                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/terms">Darshan Booking</a></li>
-                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/faqs">Seva Registration</a></li>
-                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/faqs">Room Booking</a></li>
-                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/faqs">Hall Booking</a></li>
-                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/faqs">Parking Booking</a></li>
+                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/PoojaBooking">Pooja Booking</a></li>
+                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/DarshanBooking">Darshan Booking</a></li>
+                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/SevaRegistration">Seva Registration</a></li>
+
+
 
                     </ul>
                 </div>

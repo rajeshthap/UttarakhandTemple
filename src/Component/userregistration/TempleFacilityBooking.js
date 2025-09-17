@@ -84,10 +84,12 @@ const TempleFacilityBooking = () => {
                   />
                 </Form.Group>
               </Col>
-
-              <h2>Booking Details</h2>
+            </Row>
+            <h2>Booking Details</h2>
+            <Row>
 
               <Col lg={6} md={6} sm={12}>
+
                 <Form.Group
                   className="mb-3"
                   controlId="exampleForm.ControlInput1"
@@ -177,9 +179,9 @@ const TempleFacilityBooking = () => {
                   />
                 </Form.Group>
               </Col>
-
-              <h2>Additional Services</h2>
-
+            </Row>
+            <h2>Additional Services</h2>
+            <Row>
               <Col lg={6} md={6} sm={12}>
                 <Form.Group
                   className="mb-3"
@@ -213,9 +215,11 @@ const TempleFacilityBooking = () => {
                   </Form.Select>
                 </Form.Group>
               </Col>
+            </Row>
+            {/* Payment Details */}
 
-              {/* Payment Details */}
-              <h2>Payment & Confirmation</h2>
+            <h2>Payment & Confirmation</h2>
+            <Row>
               <Col lg={6} md={6} sm={12}>
                 <Form.Group
                   className="mb-3"
@@ -252,7 +256,7 @@ const TempleFacilityBooking = () => {
             </Row>
             <div>
               <label>
-                <input type="checkbox" name="agreeTerms" className="mx-2"/>I agree to booking
+                <input type="checkbox" name="agreeTerms" className="mx-2" />I agree to booking
                 terms &amp; cancellation policy
               </label>
             </div>
@@ -339,9 +343,9 @@ const TempleFacilityBooking = () => {
             </div>
           </Col>
         </Row>
-      </Container>
+      </Container >
       <OTPModel show={show} handleClose={handleClose} />
-    </div>
+    </div >
   );
 };
 
