@@ -65,7 +65,7 @@ import MandirBookingDashBoard from "./Component/dashboard/innerpage_dashboard/Ma
 import SevaRegistrationDashBoard from "./Component/dashboard/innerpage_dashboard/SevaRegistrationDashBoard";
 import ChangePassword from "./Component/dashboard/innerpage_dashboard/ChangePassword";
 
-
+import SendOtpModal from "./Component/OTPModel/SendOtpModal";
 // import DashBoard from "./Component/dashboard/DashBoard";
 // import LeftNav from "./Component/dashboard/LeftNav";
 
@@ -75,7 +75,7 @@ function App() {
 
   const location = useLocation
     ();
-  const hiddenPaths = new Set(["/DashBoard","/MainDashBoard","/DonateDashboard","/PanditDashBoard","/LeftNav","/PoojaBookingDashBoard","/MandirBookingDashBoard","/DarshanBookingDashBoard","/SevaRegistrationDashBoard","/ChangePassword"]);
+  const hiddenPaths = new Set(["/DashBoard", "/MainDashBoard", "/DonateDashboard", "/PanditDashBoard", "/LeftNav", "/PoojaBookingDashBoard", "/MandirBookingDashBoard", "/DarshanBookingDashBoard", "/SevaRegistrationDashBoard", "/ChangePassword"]);
   const shouldHideBars = hiddenPaths.has(location.pathname);
   const hideFooter = location.pathname === "/";
   return (
@@ -123,9 +123,9 @@ function App() {
         <Route path="/DarshanBookingDashBoard" element={<DarshanBookingDashBoard />} />
         <Route path="/SevaRegistrationDashBoard" element={<SevaRegistrationDashBoard />} />
         <Route path="/ChangePassword" element={<ChangePassword />} />
-        
-        <Route path="/LeftNav" element={<LeftNav />} />
 
+        <Route path="/LeftNav" element={<LeftNav />} />
+        <Route path="/SendOtpModal" element={<SendOtpModal />} />
       </Routes>
       {!hideFooter && <TempleFooter />}
     </div>
