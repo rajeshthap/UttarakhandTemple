@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, InputGroup, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
 import "../../assets/CSS/TempleAuthority.css";
 import Regimg from "../../assets/images/User-regi-img.png";
 import { useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 
 function DevoteeLogin() {
   const [formData, setFormData] = useState({
@@ -13,7 +15,8 @@ function DevoteeLogin() {
   });
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
+  const [showPassword, setShowPassword] = useState(false);
+  
   // handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -97,24 +100,30 @@ const handleSubmit = async (e) => {
                     </Form.Group>
                   </Col>
 
-                  <Col lg={12} md={12} sm={12}>
-                    <Form.Group className="mb-3">
-                      <Form.Label className="temp-label">
-                        Password <span className="temp-span-star">*</span>
-                      </Form.Label>
-                      <div className="password-wrapper">
-                        <Form.Control
-                          type="password"
-                          name="password"
-                          value={formData.password}
-                          onChange={handleChange}
-                          placeholder="Your Password"
-                          className="temp-form-control-bg"
-                        />
-                        <i className="fa fa-eye toggle-password"></i>
-                      </div>
-                    </Form.Group>
-                  </Col>
+                  {/* Password */}
+                      <Col lg={12} md={12} sm={12}>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="temp-label">
+                            Password <span className="temp-span-star">*</span>
+                          </Form.Label>
+                          <InputGroup>
+                            <Form.Control
+                              type={showPassword ? "text" : "password"}
+                              placeholder="Your Password"
+                              className="temp-form-control-bg"
+                              name="password"
+                              value={formData.password}
+                              onChange={handleChange}
+                            />
+                            <InputGroup.Text
+                              onClick={() => setShowPassword(!showPassword)}
+                              style={{ cursor: "pointer" }}
+                            >
+                              {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </InputGroup.Text>
+                          </InputGroup>
+                        </Form.Group>
+                      </Col>
 
                   <div className="d-grid gap-3 text-center  mt-3">
                     <Row>
