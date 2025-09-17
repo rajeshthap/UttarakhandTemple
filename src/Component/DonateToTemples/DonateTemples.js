@@ -38,7 +38,7 @@ const DonateTemples = () => {
                             <h3>Support Our Sacred Mission</h3>
                             <p>Your contributions play a vital role in preserving the temple’s heritage and supporting community services. Every donation, big or small, makes a difference.</p>
 
-                            <h2>How You Can Contribute</h2>
+                            <h3>How You Can Contribute</h3>
                             <div className='px-4'>
                                 <h4 className='pt-3'>Direct Bank Deposit</h4>
                                 <p>Securely transfer your donation to our official bank account.</p>

@@ -11,12 +11,12 @@ const Aboutus = () => {
 
                     <div className='container'>
                         <Row>
-                            <Col> <img
+                            <Col lg={6} md={6} sm={12}> <img
                                 src={abootimg}
                                 alt="About by god"
                                 className="img-fluid"
                             ></img></Col>
-                            <Col className='text-start'>
+                            <Col lg={6} md={6} sm={12} className='text-start'>
                                 <h1>About Us</h1>
                                 <h4>Temples of Uttarakhand – The Devbhumi (Land of the Gods)</h4>
                                 <p>Uttarakhand, often called Devbhumi, is a spiritual haven nestled in the lap of the Himalayas. This northern Indian state is home to countless ancient temples, each holding historical, mythological, and cultural significance. From world-famous pilgrimage circuits to hidden village shrines, Uttarakhand attracts millions of devotees, spiritual seekers, and tourists every year.</p>

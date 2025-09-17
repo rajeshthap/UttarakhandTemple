@@ -36,11 +36,12 @@
 
 .testimonial-card {
     background: #fff;
-    width: 90% !important;
-
+    max-width: 96% !important;
+    display: inline-block;
+    vertical-align: top;
     border-radius: var(--temp-space-300);
     padding: var(--temp-space-500) 20px;
-    margin: var(--temp-space-250);
+    margin: var(--temp-space-450);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out;
 }
