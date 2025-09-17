@@ -8,10 +8,7 @@ import axios from "axios";
 const EventParticipation = () => {
   const [otp, setOtp] = useState("");
   const [verifying, setVerifying] = useState(false);
-
   const [show, setShow] = useState(false);
-  const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
 
@@ -45,71 +42,87 @@ const EventParticipation = () => {
     }));
   };
 
-  //  Submit form
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/TempleEventBooking/",
-        formData
-      );
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-      if (res.status === 200 || res.status === 201) {
-        setShow(true);
-      }
-    } catch (err) {
-      if (err.response && err.response.data) {
-        console.error("Server Error:", err.response.data);
-        alert("Booking failed: " + JSON.stringify(err.response.data));
-      } else {
-        console.error("Error:", err);
-        alert("Something went wrong. Please try again.");
-      }
+  if (!otpVerified) {
+    return alert("Please verify OTP before registering.");
+  }
+
+  try {
+    const res = await axios.post(
+      "https://brjobsedu.com/Temple_portal/api/TempleEventBooking/",
+      formData
+    );
+
+    if (res.status === 200 || res.status === 201) {
+      alert("Event Registered Successfully!");
     }
-  };
+  } catch (err) {
+    if (err.response && err.response.data) {
+      console.error("Server Error:", err.response.data);
+      alert("Booking failed: " + JSON.stringify(err.response.data));
+    } else {
+      console.error("Error:", err);
+      alert("Something went wrong. Please try again.");
+    }
+  }
+};
+
 
   const handleCheckbox = async (e) => {
-    const checked = e.target.checked;
-    if (!checked) return setAgreeTerms(false);
+  const checked = e.target.checked;
 
-    if (!formData.mobile_number) return alert("Enter mobile first");
+  if (!checked) {
+    setAgreeTerms(false);
+    return;
+  }
 
-    try {
-      await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
-        phone: formData.mobile_number,
-      });
-      setShow(true); // open OTP modal
-      setAgreeTerms(true); // keep checkbox checked
-    } catch (err) {
-      alert("Failed to send OTP");
-      setAgreeTerms(false);
+  if (otpVerified) {
+    setAgreeTerms(true);
+    return;
+  }
+
+  if (!formData.mobile_number) return alert("Enter mobile first");
+
+  try {
+    await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
+      phone: formData.mobile_number,
+    });
+    setShow(true);
+    setAgreeTerms(true);
+  } catch (err) {
+    alert("Failed to send OTP");
+    setAgreeTerms(false);
+  }
+};
+
+
+ const handleVerifyOtp = async () => {
+  if (!otp) return alert("Enter OTP");
+
+  setVerifying(true);
+  try {
+    const res = await axios.post(
+      "https://brjobsedu.com/Temple_portal/api/Verify/",
+      { phone: formData.mobile_number, otp }
+    );
+
+    if (res.data.success) {
+      setOtpVerified(true); 
+      alert("OTP Verified!");
+      setShow(false); 
+    } else {
+      alert("Invalid OTP, try again.");
     }
-  };
+  } catch (err) {
+    console.error(err);
+    alert("OTP verification failed");
+  } finally {
+    setVerifying(false);
+  }
+};
 
-  const handleVerifyOtp = async () => {
-    if (!otp) return alert("Enter OTP");
-
-    setVerifying(true);
-    try {
-      const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/Verify/",
-        { phone: formData.mobile_number, otp }
-      );
-
-      if (res.data.success) {
-        setOtpVerified(true);
-        alert("OTP Verified!");
-        setShow(false);
-      } else {
-        alert("Invalid OTP, try again.");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("OTP verification failed");
-    } finally {
-      setVerifying(false);
-    }
-  };
   return (
     <div>
       <Container className="temp-container">
@@ -521,6 +534,7 @@ const EventParticipation = () => {
                 >
                   Registration Now
                 </Button>
+
                 <Button
                   variant="secondary"
                   className="temp-cancle-btn"
