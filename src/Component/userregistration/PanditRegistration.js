@@ -700,7 +700,7 @@ function PanditRegistration() {
                             controlId="exampleForm.ControlInput1"
                           >
                             <Form.Label className="temp-label">
-                              ZipCode <span className="temp-span-star">*</span>
+                              ZIP Code <span className="temp-span-star">*</span>
                             </Form.Label>
                             <Form.Control
                               type="text"
