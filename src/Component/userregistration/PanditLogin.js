@@ -40,14 +40,13 @@ const handleSubmit = async (e) => {
         : { phone: formData.identifier }),
     };
 
-    console.log("Login payload:", payload);
 
     const response = await axios.post(
       "https://brjobsedu.com/Temple_portal/api/login/",
       payload
     );
+navigate("/MainDashBoard");
 
-    console.log("Login response:", response.data);
 
     // Save user info in localStorage
     localStorage.setItem("PanditUser", JSON.stringify(response.data));
@@ -63,7 +62,7 @@ const handleSubmit = async (e) => {
     if (role === "Pandit") {
  alert("Login successfully!");
   
- navigate("/MainDashBoard");
+ 
 
     } else {
       console.warn("User does not have 'pandit' role, staying on login page.");

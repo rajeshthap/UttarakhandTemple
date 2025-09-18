@@ -52,8 +52,7 @@ function AuthorityLogin() {
         "https://brjobsedu.com/Temple_portal/api/login/",
         payload
       );
-
-      console.log("Login Response:", response.data);
+       navigate("/MainDashBoard");
 
       if (response.data.role) {
         localStorage.setItem("role", response.data.role);
@@ -62,7 +61,7 @@ function AuthorityLogin() {
  if(role==="temple")
       alert("Login successfully!");
      
-      navigate("/MainDashBoard");
+     
     } catch (error) {
       console.error("Login Error:", error.response?.data || error.message);
       alert(error.response?.data?.detail || "Invalid username or password");
