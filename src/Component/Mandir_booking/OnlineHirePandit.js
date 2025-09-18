@@ -117,12 +117,64 @@ const OnlineHirePandit = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
+
+    // Allow only digits & max 10 for mobile
+    if (name === "mobile_number" && !/^\d{0,10}$/.test(value)) {
+      return;
+    }
+
+    // Update formData
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // Remove existing error for the field immediately when user types
+    if (newErrors[name]) {
+      setnewErrors((prev) => {
+        const updated = { ...prev };
+        delete updated[name];
+        return updated;
+      });
+    }
+
+    // Live validation while typing
+    setnewErrors((prev) => {
+      const updated = { ...prev };
+
+      if (name === "mobile_number") {
+        if (!value) {
+          updated.mobile_number = "Mobile Number is required";
+        } else if (!/^[0-9]{10}$/.test(value)) {
+          updated.mobile_number = "Only digits allowed";
+        } else {
+          delete updated.mobile_number;
+        }
+      }
+
+      if (name === "email") {
+        if (!value) {
+          updated.email = "Email is required";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          updated.email = "Enter a valid Email address";
+        } else {
+          delete updated.email;
+        }
+      }
+
+      if (name === "date_of_ceremony") {
+        if (!value) {
+          updated.date_of_ceremony = "Date of Ceremony is required";
+        } else {
+          const today = new Date().toISOString().split("T")[0];
+          if (value > today) {
+            updated.date_of_ceremony = "Future dates are not allowed";
+          } else {
+            delete updated.date_of_ceremony;
+          }
+        }
+      }
+
+      return updated;
     });
   };
-
 
   // Final Submit
   const handleSubmit = async (e) => {
@@ -168,7 +220,22 @@ const OnlineHirePandit = () => {
       setIsOtpVerified(false);
     } catch (err) {
       console.error("Error booking pandit:", err.response?.data || err.message);
-      alert("Something went wrong. Please try again.");
+
+      if (err.response?.data) {
+        const errors = err.response.data.booking_errors || err.response.data;
+
+        // Save backend errors
+        setnewErrors(errors);
+
+        // Focus on the first invalid field
+        const firstErrorField = Object.keys(errors)[0];
+        if (firstErrorField) {
+          const el = document.querySelector(`[name="${firstErrorField}"]`);
+          if (el) el.focus();
+        }
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
     }
   };
 
@@ -178,7 +245,8 @@ const OnlineHirePandit = () => {
         <h1>Online Hire Pandit</h1>
         <p>
           <i>
-            Book experienced Pandits for Pooja, Seva, and religious rituals at your convenience.
+            Book experienced Pandits for Pooja, Seva, and religious rituals at
+            your convenience.
           </i>
         </p>
         <Form onSubmit={handleSubmit}>
@@ -186,7 +254,7 @@ const OnlineHirePandit = () => {
             <Col lg={8} md={8} sm={12} className="mt-2">
               <h2>Devotee Information</h2>
 
-              <Row className="mt-4">
+              <Row className="">
                 {/* Full Name */}
                 <Col lg={6}>
                   <Form.Group className="mb-3">
@@ -220,10 +288,15 @@ const OnlineHirePandit = () => {
                       name="mobile_number"
                       value={formData.mobile_number}
                       onChange={handleChange}
+                      placeholder="Enter Mobile Number."
+                      maxLength={10}
                       className="temp-form-control"
-                      required
-                      placeholder="Enter 10-digit Mobile No."
                     />
+                    {newErrors.mobile_number && (
+                      <small className="text-danger">
+                        {newErrors.mobile_number}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
 
@@ -231,15 +304,15 @@ const OnlineHirePandit = () => {
                 <Col lg={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>
-                      Email <span className="temp-span-star">*</span>
+                      Email ID <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className="temp-form-control"
                       placeholder="Enter Email ID"
+                      className="temp-form-control"
                     />
                     {newErrors.email && (
                       <small className="text-danger">{newErrors.email}</small>
@@ -260,7 +333,6 @@ const OnlineHirePandit = () => {
                       value={formData.address}
                       onChange={handleChange}
                       className="temp-form-control"
-                      required
                       placeholder="Enter Address"
                     />
                     {newErrors.address && (
@@ -270,9 +342,8 @@ const OnlineHirePandit = () => {
                 </Col>
               </Row>
 
-              <h2>
-                  <h2>Pooja / Ceremony Details</h2>
-              </h2>
+              <h2 className="mt-2">Pooja / Ceremony Details</h2>
+
               <Row>
                 <Col lg={6}>
                   <Form.Group className="mb-3">
@@ -285,7 +356,7 @@ const OnlineHirePandit = () => {
                       onChange={handleChange}
                       className="temp-form-control-option"
                     >
-                      <option value="">Select a Pooja</option>
+                      <option value="">Select Pooja</option>
                       <option value="Griha Pravesh">Griha Pravesh</option>
                       <option value="Satyanarayan Katha">
                         Satyanarayan Katha
@@ -313,15 +384,19 @@ const OnlineHirePandit = () => {
                       className="temp-form-control-option"
                       onChange={handleChange}
                     >
-                      {" "}
-                      <option value="">Select</option>{" "}
-                      <option value="Sanskrit">Sanskrit</option>{" "}
-                      <option value="Hindi">Hindi</option>{" "}
-                      <option value="Marathi">Marathi</option>{" "}
-                      <option value="Tamil">Tamil</option>{" "}
-                      <option value="Telugu">Telugu</option>{" "}
-                    </Form.Select>{" "}
-                  </Form.Group>{" "}
+                      <option value="">Select Language Preference</option>
+                      <option value="Sanskrit">Sanskrit</option>
+                      <option value="Hindi">Hindi</option>
+                      <option value="Marathi">Marathi</option>
+                      <option value="Tamil">Tamil</option>
+                      <option value="Telugu">Telugu</option>
+                    </Form.Select>
+                    {newErrors.language_preference && (
+                      <small className="text-danger">
+                        {newErrors.language_preference}
+                      </small>
+                    )}
+                  </Form.Group>
                 </Col>
 
                 <Col lg={6}>
@@ -334,6 +409,7 @@ const OnlineHirePandit = () => {
                       name="date_of_ceremony"
                       value={formData.date_of_ceremony}
                       onChange={handleChange}
+                      max={new Date().toISOString().split("T")[0]} // 👈 block future dates
                       className="temp-form-control"
                     />
                     {newErrors.date_of_ceremony && (
@@ -400,9 +476,8 @@ const OnlineHirePandit = () => {
                       name="duration"
                       value={formData.duration}
                       onChange={handleChange}
-                      placeholder="Enter Duration (e.g., 2 hours)"
                       className="temp-form-control"
-                      required
+                      placeholder="Enter Duration"
                     />
                     {newErrors.duration && (
                       <small className="text-danger">
@@ -413,7 +488,7 @@ const OnlineHirePandit = () => {
                 </Col>
               </Row>
 
-              <h2 className="mt-3">Pandit Requirements</h2>
+              <h2 className="mt-2">Pandit Requirements</h2>
               <Row>
                 <Col lg={6}>
                   <Form.Group className="mb-3">
@@ -439,89 +514,95 @@ const OnlineHirePandit = () => {
 
                 <Col lg={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label>
-                      Additional Assistants{" "}
-                      <span className="temp-span-star">*</span>
-                    </Form.Label>
+                    <Form.Label>Additional Assistants</Form.Label>
                     <Form.Control
-                      type="number"
+                      type="text"
                       name="additional_assistants"
                       value={formData.additional_assistants}
                       onChange={handleChange}
-                      className="temp-form-control"
-                      placeholder="Enter Number"
+                      className={`temp-form-control ${
+                        newErrors.additional_assistants ? "is-invalid" : ""
+                      }`}
+                      placeholder="Enter Number Assistants"
                     />
                     {newErrors.additional_assistants && (
-                      <small className="text-danger">
-                        {newErrors.additional_assistants}
-                      </small>
+                      <div className="invalid-feedback">
+                        {Array.isArray(newErrors.additional_assistants)
+                          ? newErrors.additional_assistants[0]
+                          : newErrors.additional_assistants}
+                      </div>
                     )}
                   </Form.Group>
                 </Col>
 
                 <Col lg={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label>
-                      Special Requirements{" "}
-                      <span className="temp-span-star">*</span>
-                    </Form.Label>
+                    <Form.Label>Special Requirements</Form.Label>
                     <Form.Control
-                      type="text"
+                      as="textarea"
                       name="special_requirements"
                       value={formData.special_requirements}
                       onChange={handleChange}
-                      className="temp-form-control"
-                      placeholder="Enter Requirements"
+                      className={`temp-form-control ${
+                        newErrors.special_requirements ? "is-invalid" : ""
+                      }`}
+                      placeholder="Enter requirements"
                     />
                     {newErrors.special_requirements && (
-                      <small className="text-danger">
-                        {newErrors.special_requirements}
-                      </small>
+                      <div className="invalid-feedback">
+                        {Array.isArray(newErrors.special_requirements)
+                          ? newErrors.special_requirements[0]
+                          : newErrors.special_requirements}
+                      </div>
                     )}
                   </Form.Group>
                 </Col>
 
                 <Col lg={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label>
-                      Estimated Fees <span className="temp-span-star">*</span>
-                    </Form.Label>
+                    <Form.Label>Estimated Fees</Form.Label>
                     <Form.Control
-                      type="number"
+                      type="text"
                       name="estimated_fees"
                       value={formData.estimated_fees}
                       onChange={handleChange}
-                      className="temp-form-control"
-                      placeholder="Enter Amount in Rs."
+                      className={`temp-form-control ${
+                        newErrors.estimated_fees ? "is-invalid" : ""
+                      }`}
+                      placeholder="Enter Estimated Fees"
                     />
                     {newErrors.estimated_fees && (
-                      <small className="text-danger">
-                        {newErrors.estimated_fees}
-                      </small>
+                      <div className="invalid-feedback">
+                        {Array.isArray(newErrors.estimated_fees)
+                          ? newErrors.estimated_fees[0]
+                          : newErrors.estimated_fees}
+                      </div>
                     )}
                   </Form.Group>
                 </Col>
                 <Col lg={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label>
-                      Payment Mode <span className="temp-span-star">*</span>
-                    </Form.Label>
+                    <Form.Label>Payment Mode</Form.Label>
                     <Form.Select
                       name="payment_mode"
                       value={formData.payment_mode}
                       onChange={handleChange}
-                      className="temp-form-control-option"
+                      className={`temp-form-control-option ${
+                        newErrors.payment_mode ? "is-invalid" : ""
+                      }`}
                     >
-                      <option value="">Select a Payment Mode</option>
+                      <option value="">Select Payment Mode</option>
                       <option value="upi">UPI</option>
                       <option value="netbanking">Net Banking</option>
                       <option value="card">Card</option>
                       <option value="cash">Cash at Temple</option>
                     </Form.Select>
                     {newErrors.payment_mode && (
-                      <small className="text-danger">
-                        {newErrors.payment_mode}
-                      </small>
+                      <div className="invalid-feedback">
+                        {Array.isArray(newErrors.payment_mode)
+                          ? newErrors.payment_mode[0]
+                          : newErrors.payment_mode}
+                      </div>
                     )}
                   </Form.Group>
                 </Col>
@@ -534,26 +615,39 @@ const OnlineHirePandit = () => {
                     type="checkbox"
                     name="agreeTerms"
                     className="mx-2"
+                    checked={agreeTerms}
+                    disabled={loadingOtp} // disable checkbox while loading
                     onChange={async (e) => {
                       const checked = e.target.checked;
 
                       if (checked) {
                         // Validate form before sending OTP
-                        const isValid = validateFields(); // call your validation
+                        const isValid = validateFields();
                         if (!isValid) {
                           alert(
                             "Please fill all required fields correctly before verifying OTP."
                           );
-                          return; // stop if validation fails
+                          return;
                         }
 
-                        await handleShow(); // send OTP only if form is valid
+                        try {
+                          setLoadingOtp(true);
+                          await handleShow();
+                          setAgreeTerms(true);
+                        } catch (error) {
+                          console.error("Error sending OTP:", error);
+                          setAgreeTerms(false);
+                        } finally {
+                          setLoadingOtp(false);
+                        }
                       } else {
-                        setAgreeTerms(false); // uncheck logic
+                        setAgreeTerms(false);
                       }
                     }}
                   />
-                  I agree to booking terms & cancellation policy
+                  {loadingOtp
+                    ? "Sending OTP..."
+                    : "I agree to booking terms & cancellation policy"}
                 </label>
               </div>
 
