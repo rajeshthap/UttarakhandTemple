@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import SendOtp from "../SendOtp/SendOtp";
 import VerifyOtp from "../VerifyOtp/VerifyOtp";
 import LocationState from "../userregistration/LocationState";
-import Regimg from "../../assets/images/User-regi-img.png";
+import Regimg1 from "../../assets/images/pandit-img.png";
 import Select from "react-select";
 
 function PanditRegistration() {
@@ -375,7 +375,7 @@ function PanditRegistration() {
                         </Col>
                         <Col lg={6} md={6} sm={12}>
                           <img
-                            src={Regimg}
+                            src={Regimg1}
                             className="img-fluid"
                             alt="User Registration"
                           />
@@ -396,7 +396,7 @@ function PanditRegistration() {
                         </Col>
                         <Col lg={6} md={6} sm={12}>
                           <img
-                            src={Regimg}
+                            src={Regimg1}
                             className="img-fluid"
                             alt="User Registration"
                           />

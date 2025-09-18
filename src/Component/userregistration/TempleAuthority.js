@@ -9,7 +9,7 @@ import LocationState from "./LocationState";
 import { Globaleapi } from "../GlobleAuth/Globleapi";
 import SendOtp from "../SendOtp/SendOtp";
 import VerifyOtp from "../VerifyOtp/VerifyOtp";
-import Regimg from "../../assets/images/User-regi-img.png";
+import Regimg1 from "../../assets/images/temple-img.jpg";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -327,7 +327,7 @@ function TempleAuthority() {
                         </Col>
                         <Col lg={6} md={6} sm={12}>
                           <img
-                            src={Regimg}
+                            src={Regimg1}
                             className="img-fluid"
                             alt="User Registration"
                           />
@@ -348,7 +348,7 @@ function TempleAuthority() {
                         </Col>
                         <Col lg={6} md={6} sm={12}>
                           <img
-                            src={Regimg}
+                            src={Regimg1}
                             className="img-fluid"
                             alt="User Registration"
                           />
