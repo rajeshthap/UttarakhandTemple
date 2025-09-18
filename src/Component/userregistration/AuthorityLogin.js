@@ -82,11 +82,11 @@ function AuthorityLogin() {
                     <Form.Group className="mb-3">
                       <Form.Label className="temp-label-lg-bg">
                         Email or Phone Number{" "}
-                        <span className="temp-span-star">*</span>
+                        <span className="temp-span-star"> *</span>
                       </Form.Label>
                       <Form.Control
                         type="text"
-                        name="identifier" // 👈 updated
+                        name="identifier" 
                         value={formData.identifier}
                         onChange={handleChange}
                         placeholder="Registered Mobile No. / Email"

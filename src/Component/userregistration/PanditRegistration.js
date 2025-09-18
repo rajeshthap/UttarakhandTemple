@@ -39,16 +39,16 @@ function PanditRegistration() {
   });
 
   const roleOptions = [
-    {"value": "pooja", "label": "पूजा विशेषज्ञ"},
-    {"value": "vedic_chanting", "label": "वैदिक मंत्रोच्चार"},
-    {"value": "astrology", "label": "ज्योतिष"},
-    {"value": "wedding", "label": "विवाह संस्कार"},
-    {"value": "funeral", "label": "अंत्येष्टि संस्कार"},
-    {"value": "festival", "label": "त्योहार आयोजन"},
-    {"value": "temple_priest", "label": "मंदिर पुजारी"},
-    {"value": "home_pooja", "label": "गृह पूजा"},
-    {"value": "yagya", "label": "यज्ञ विशेषज्ञ"},
-    {"value": "other", "label": "अन्य"}
+    { value: "pooja", label: "पूजा विशेषज्ञ" },
+    { value: "vedic_chanting", label: "वैदिक मंत्रोच्चार" },
+    { value: "astrology", label: "ज्योतिष" },
+    { value: "wedding", label: "विवाह संस्कार" },
+    { value: "funeral", label: "अंत्येष्टि संस्कार" },
+    { value: "festival", label: "त्योहार आयोजन" },
+    { value: "temple_priest", label: "मंदिर पुजारी" },
+    { value: "home_pooja", label: "गृह पूजा" },
+    { value: "yagya", label: "यज्ञ विशेषज्ञ" },
+    { value: "other", label: "अन्य" },
   ];
 
   const [preview, setPreview] = useState({
@@ -60,7 +60,7 @@ function PanditRegistration() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [formErrors, ] = useState({});
+  const [formErrors] = useState({});
 
   const navigate = useNavigate();
 
@@ -271,87 +271,95 @@ function PanditRegistration() {
     setErrorReason_querys(errors);
     return Object.keys(errors).length === 0;
   };
-  
- const handleSubmit = async (e) => {
-  e.preventDefault();
 
-  if (!validateForm()) return;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  setLoading(true);
+    if (!validateForm()) return;
 
-  try {
-    const formDataToSend = new FormData();
+    setLoading(true);
 
-    for (let key in formData) {
-      if (key === "pandit_role" && formData[key].length > 0) {
-        formData[key].forEach((role) => formDataToSend.append("pandit_role", role));
-      } else {
-        formDataToSend.append(key, formData[key]);
+    try {
+      const formDataToSend = new FormData();
+
+      for (let key in formData) {
+        if (key === "pandit_role" && formData[key].length > 0) {
+          formData[key].forEach((role) =>
+            formDataToSend.append("pandit_role", role)
+          );
+        } else {
+          formDataToSend.append(key, formData[key]);
+        }
       }
-    }
-    const res = await axios.post(
-      "https://brjobsedu.com/Temple_portal/api/pandit/",
-      formDataToSend,
-      { headers: { "Content-Type": "multipart/form-data" } }
-    );
-     console.log("Login Response:", res.data);
-    navigate("/PanditLogin"); 
-     console.log("Form submitted successfully:", res.data);
+      const res = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/pandit/",
+        formDataToSend,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+      console.log("Login Response:", res.data);
+      navigate("/PanditLogin");
+      console.log("Form submitted successfully:", res.data);
 
-  // redirect to login or dashboard page
+      // redirect to login or dashboard page
 
-    console.log("API Response:", res.data);
-    if (res.data.success === true || res.data.success === "true") {
-      setFormData({
-        first_name: "",
-        last_name: "",
-        father_name: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-        phone: "",
-        aadhar_number: "",
-        permanent_address: "",
-        country: "",
-        state: "",
-        city: "",
-        zipcode: "",
-        temple_association: "",
-        temple_image: "",
-        aadhar_document: "",
-        pandit_role: [],
-      });
-
-    } 
-       else {
-      alert(res.data.message || "Registration failed");
-    }
-  } catch (err) {
-    console.error(err);
-
-    if (err.response && err.response.data) {
-      const errorData = err.response.data;
-
-      if (errorData.error?.toLowerCase().includes("email")) {
-        setErrorReason_querys((prev) => ({ ...prev, email: errorData.error }));
-        document.getElementsByName("email")[0]?.focus();
-      } else if (errorData.error?.toLowerCase().includes("phone")) {
-        setErrorReason_querys((prev) => ({ ...prev, phone: errorData.error }));
-        document.getElementsByName("phone")[0]?.focus();
-      } else if (errorData.error?.toLowerCase().includes("aadhar")) {
-        setErrorReason_querys((prev) => ({ ...prev, aadhar_number: errorData.error }));
-        document.getElementsByName("aadhar_number")[0]?.focus();
+      console.log("API Response:", res.data);
+      if (res.data.success === true || res.data.success === "true") {
+        setFormData({
+          first_name: "",
+          last_name: "",
+          father_name: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+          phone: "",
+          aadhar_number: "",
+          permanent_address: "",
+          country: "",
+          state: "",
+          city: "",
+          zipcode: "",
+          temple_association: "",
+          temple_image: "",
+          aadhar_document: "",
+          pandit_role: [],
+        });
       } else {
-        alert(errorData.message || "Something went wrong");
+        alert(res.data.message || "Registration failed");
       }
-    } else {
-      alert(err.message || "Something went wrong");
-    }
-  } finally {
-    setLoading(false); 
-  }
-};
+    } catch (err) {
+      console.error(err);
 
+      if (err.response && err.response.data) {
+        const errorData = err.response.data;
+
+        if (errorData.error?.toLowerCase().includes("email")) {
+          setErrorReason_querys((prev) => ({
+            ...prev,
+            email: errorData.error,
+          }));
+          document.getElementsByName("email")[0]?.focus();
+        } else if (errorData.error?.toLowerCase().includes("phone")) {
+          setErrorReason_querys((prev) => ({
+            ...prev,
+            phone: errorData.error,
+          }));
+          document.getElementsByName("phone")[0]?.focus();
+        } else if (errorData.error?.toLowerCase().includes("aadhar")) {
+          setErrorReason_querys((prev) => ({
+            ...prev,
+            aadhar_number: errorData.error,
+          }));
+          document.getElementsByName("aadhar_number")[0]?.focus();
+        } else {
+          alert(errorData.message || "Something went wrong");
+        }
+      } else {
+        alert(err.message || "Something went wrong");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -417,7 +425,7 @@ function PanditRegistration() {
                             </Form.Label>
                             <Form.Control
                               type="text"
-                              placeholder=""
+                              placeholder="Enter First Name"
                               className="temp-form-control"
                               name="first_name"
                               value={formData.first_name}
@@ -442,7 +450,7 @@ function PanditRegistration() {
                             </Form.Label>
                             <Form.Control
                               type="text"
-                              placeholder=""
+                              placeholder="Enter Last Name"
                               className="temp-form-control"
                               name="last_name"
                               value={formData.last_name}
@@ -466,7 +474,7 @@ function PanditRegistration() {
                             </Form.Label>
                             <Form.Control
                               type="text"
-                              placeholder=""
+                              placeholder="Father Name"
                               className="temp-form-control"
                               name="father_name"
                               value={formData.father_name}
@@ -490,7 +498,7 @@ function PanditRegistration() {
                             </Form.Label>
                             <Form.Control
                               type="email"
-                              placeholder=""
+                              placeholder="Enter Email ID"
                               className="temp-form-control"
                               name="email"
                               value={formData.email}
@@ -514,7 +522,7 @@ function PanditRegistration() {
                               <span className="temp-span-star">*</span>
                             </Form.Label>
                             <Form.Control
-                              type="number"
+                              type="text"
                               placeholder=""
                               className="temp-form-control"
                               name="phone"
@@ -522,7 +530,7 @@ function PanditRegistration() {
                               onChange={handleInputChange}
                             />
                             {errorReason_querys.phone && (
-                               <div className="alert-txt">
+                              <div className="alert-txt">
                                 {errorReason_querys.phone}
                               </div>
                             )}
@@ -532,12 +540,13 @@ function PanditRegistration() {
                         <Col md={4} lg={4} sm={12}>
                           <Form.Group className="mb-3">
                             <Form.Label>
-                              Password <span className="alert-txt">*</span>
+                              Password <span className="temp-span-star"> *</span>
                             </Form.Label>
                             <InputGroup>
                               <Form.Control
                                 type={showPassword ? "text" : "password"}
                                 name="password"
+                                placeholder="Your Password"
                                 value={formData.password}
                                 onChange={handleInputChange}
                                 className="temp-form-control"
@@ -561,12 +570,13 @@ function PanditRegistration() {
                           <Form.Group className="mb-3">
                             <Form.Label>
                               Confirm Password
-                              <span className="alert-txt"> *</span>
+                              <span className="temp-span-star"> *</span>
                             </Form.Label>
                             <InputGroup>
                               <Form.Control
                                 type={showConfirmPassword ? "text" : "password"}
                                 name="confirmPassword"
+                                placeholder="Confirm Your Password"
                                 value={formData.confirmPassword}
                                 onChange={handleInputChange}
                                 className="temp-form-control"
@@ -602,8 +612,8 @@ function PanditRegistration() {
                               <span className="temp-span-star">*</span>
                             </Form.Label>
                             <Form.Control
-                              type="number"
-                              placeholder=""
+                              type="text"
+                              placeholder="Enter Aadhar Number"
                               className="temp-form-control"
                               name="aadhar_number"
                               value={formData.aadhar_number}
@@ -626,7 +636,7 @@ function PanditRegistration() {
                             <Select
                               isMulti
                               options={roleOptions}
-                              placeholder="Select multiple"
+                              placeholder="Select Role"
                               closeMenuOnSelect={false}
                               className="temp-form-control-input"
                               value={roleOptions.filter((option) =>
@@ -669,7 +679,7 @@ function PanditRegistration() {
                             <Form.Control
                               as="textarea"
                               rows={3}
-                              placeholder=""
+                              placeholder="Address"
                               className="temp-form-control"
                               name="permanent_address"
                               value={formData.permanent_address}
@@ -693,8 +703,8 @@ function PanditRegistration() {
                               ZipCode <span className="temp-span-star">*</span>
                             </Form.Label>
                             <Form.Control
-                              type="number"
-                              placeholder=""
+                              type="text"
+                              placeholder="ZIP Code"
                               className="temp-form-control"
                               name="zipcode"
                               value={formData.zipcode}
@@ -714,7 +724,7 @@ function PanditRegistration() {
                             </Form.Label>
                             <Form.Select
                               className="temp-form-control-option"
-                              placeholder=""
+                              placeholder="Enter Temple Association"
                               name="temple_association"
                               value={formData.temple_association}
                               onChange={handleInputChange}
@@ -741,16 +751,14 @@ function PanditRegistration() {
                         <h1>Supporting Documents</h1>
                       </div>
 
-                    <Row>
+                      <Row>
                         {/* Pandit Image Upload */}
                         <Col lg={6} md={12} sm={12}>
                           <Row className="temp-stepform-box">
                             <Col lg={5} md={5} sm={5}>
                               <fieldset
                                 className={`upload_dropZone text-center ${
-                                  dragging === "pandit_image"
-                                    ? "drag-over"
-                                    : ""
+                                  dragging === "pandit_image" ? "drag-over" : ""
                                 }`}
                                 onDragOver={(e) => {
                                   e.preventDefault();
@@ -847,7 +855,6 @@ function PanditRegistration() {
                             </Col>
                           </Row>
                         </Col>
-
                         {/* Aadhaar Card Upload */}
                         <Col lg={6} md={12} sm={12}>
                           <Row className="temp-stepform-box">
@@ -953,30 +960,30 @@ function PanditRegistration() {
                             </Col>
                           </Row>
                         </Col>
-                      </Row>
+                                  
+                      </Row>
 
-                     <div className="gap-3 mt-3 Temp-btn-submit">
-  <Button
-    variant="temp-submit-btn"
-    className="temp-submit-btn mx-3"
-    type="submit"
-    disabled={loading}
-  >
-    {loading ? (
-      <>
-        <span
-          className="spinner-border spinner-border-sm me-2"
-          role="status"
-          aria-hidden="true"
-        ></span>
-        Submitting...
-      </>
-    ) : (
-      "Register Now"
-    )}
-  </Button>
-</div>
-
+                      <div className="gap-3 mt-3 Temp-btn-submit">
+                        <Button
+                          variant="temp-submit-btn"
+                          className="temp-submit-btn mx-3"
+                          type="submit"
+                          disabled={loading}
+                        >
+                          {loading ? (
+                            <>
+                              <span
+                                className="spinner-border spinner-border-sm me-2"
+                                role="status"
+                                aria-hidden="true"
+                              ></span>
+                              Submitting...
+                            </>
+                          ) : (
+                            "Register Now"
+                          )}
+                        </Button>
+                      </div>
                     </>
                   )}
                 </Row>

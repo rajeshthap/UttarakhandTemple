@@ -83,14 +83,14 @@ function DevoteeLogin() {
                     <Form.Group className="mb-3">
                       <Form.Label className="temp-label-lg-bg">
                         Email or Phone Number{" "}
-                        <span className="temp-span-star">*</span>
+                        <span className="temp-span-star"> *</span>
                       </Form.Label>
                       <Form.Control
                         type="text"
                         name="username"
                         value={formData.username}
                         onChange={handleChange}
-                        placeholder="Registered Mobile No."
+                        placeholder="Registered Mobile No. / Email"
                         className="temp-form-control-bg "
                       />
                     </Form.Group>

@@ -92,11 +92,11 @@ navigate("/MainDashBoard");
                         <Form.Group className="mb-3">
                           <Form.Label className="temp-label-lg-bg">
                             Email or Phone Number{" "}
-                            <span className="temp-span-star">*</span>
+                            <span className="temp-span-star"> *</span>
                           </Form.Label>
                           <Form.Control
                             type="text"
-                            placeholder="Registered Email or Mobile No."
+                            placeholder="Registered Mobile No. / Email"
                             className="temp-form-control-bg"
                             name="identifier"
                             value={formData.identifier}
