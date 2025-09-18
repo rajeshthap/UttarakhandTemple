@@ -156,8 +156,7 @@ const SevaRegistration = () => {
     if (!formData.id_proof_number) {
       newErrors.id_proof_number = "ID Proof Number is required";
     } else if (formData.id_proof_number.length > 16) {
-      newErrors.id_proof_number =
-        "ID Proof Number must be 16 characters or less";
+      newErrors.id_proof_number = "ID Proof Number cannot exceed 16 characters";
     }
 
     if (!formData.temple_name)
@@ -211,6 +210,13 @@ const SevaRegistration = () => {
         errorMsg = "Enter a valid 10-digit mobile number";
       }
       setErrors((prev) => ({ ...prev, mobile_number: errorMsg }));
+    }
+    if (name === "id_proof_number") {
+      let errorMsg = "";
+      if (value.length > 16) {
+        errorMsg = "ID Proof Number cannot exceed 16 characters";
+      }
+      setErrors((prev) => ({ ...prev, id_proof_number: errorMsg }));
     }
 
     if (name === "email") {
@@ -433,6 +439,7 @@ const SevaRegistration = () => {
                       placeholder="ID Proof Type"
                       name="id_proof_type"
                       value={formData.id_proof_type}
+                      maxLength={formData.id_proof_type === "Aadhar" ? 16 : 20}
                       onChange={handleInputChange}
                     >
                       <option value="">Select ID Proof Type</option>

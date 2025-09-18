@@ -163,9 +163,10 @@ const OnlineHirePandit = () => {
         if (!value) {
           updated.date_of_ceremony = "Date of Ceremony is required";
         } else {
-          const today = new Date().toISOString().split("T")[0];
-          if (value > today) {
-            updated.date_of_ceremony = "Future dates are not allowed";
+          const today = new Date();
+          const selected = new Date(value);
+          if (selected < today.setHours(0, 0, 0, 0)) {
+            updated.date_of_ceremony = "Past dates are not allowed";
           } else {
             delete updated.date_of_ceremony;
           }
@@ -494,8 +495,8 @@ const OnlineHirePandit = () => {
                 <Col lg={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>
-                      Number of Pandits <span className="temp-span-star">*</span>{" "}
-
+                      Number of Pandits{" "}
+                      <span className="temp-span-star">*</span>{" "}
                     </Form.Label>
                     <Form.Control
                       type="number"
@@ -515,14 +516,18 @@ const OnlineHirePandit = () => {
 
                 <Col lg={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label>Additional Assistants <span className="temp-span-star">*</span></Form.Label>
+                    <Form.Label>
+                      Additional Assistants{" "}
+                      <span className="temp-span-star">*</span>
+                    </Form.Label>
                     <Form.Control
                       type="text"
                       name="additional_assistants"
                       value={formData.additional_assistants}
                       onChange={handleChange}
-                      className={`temp-form-control ${newErrors.additional_assistants ? "is-invalid" : ""
-                        }`}
+                      className={`temp-form-control ${
+                        newErrors.additional_assistants ? "is-invalid" : ""
+                      }`}
                       placeholder="Enter Number Assistants"
                     />
                     {newErrors.additional_assistants && (
@@ -537,14 +542,18 @@ const OnlineHirePandit = () => {
 
                 <Col lg={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label>Special Requirements <span className="temp-span-star">*</span></Form.Label>
+                    <Form.Label>
+                      Special Requirements{" "}
+                      <span className="temp-span-star">*</span>
+                    </Form.Label>
                     <Form.Control
                       as="textarea"
                       name="special_requirements"
                       value={formData.special_requirements}
                       onChange={handleChange}
-                      className={`temp-form-control ${newErrors.special_requirements ? "is-invalid" : ""
-                        }`}
+                      className={`temp-form-control ${
+                        newErrors.special_requirements ? "is-invalid" : ""
+                      }`}
                       placeholder="Enter requirements"
                     />
                     {newErrors.special_requirements && (
@@ -559,14 +568,17 @@ const OnlineHirePandit = () => {
 
                 <Col lg={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label>Estimated Fees <span className="temp-span-star">*</span></Form.Label>
+                    <Form.Label>
+                      Estimated Fees <span className="temp-span-star">*</span>
+                    </Form.Label>
                     <Form.Control
                       type="text"
                       name="estimated_fees"
                       value={formData.estimated_fees}
                       onChange={handleChange}
-                      className={`temp-form-control ${newErrors.estimated_fees ? "is-invalid" : ""
-                        }`}
+                      className={`temp-form-control ${
+                        newErrors.estimated_fees ? "is-invalid" : ""
+                      }`}
                       placeholder="Enter Estimated Fees"
                     />
                     {newErrors.estimated_fees && (
@@ -580,18 +592,20 @@ const OnlineHirePandit = () => {
                 </Col>
                 <Col lg={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label>Payment Mode <span className="temp-span-star">*</span></Form.Label>
+                    <Form.Label>
+                      Payment Mode <span className="temp-span-star">*</span>
+                    </Form.Label>
                     <Form.Select
                       name="payment_mode"
                       value={formData.payment_mode}
                       onChange={handleChange}
-                      className={`temp-form-control-option ${newErrors.payment_mode ? "is-invalid" : ""
-                        }`}
+                      className={`temp-form-control-option ${
+                        newErrors.payment_mode ? "is-invalid" : ""
+                      }`}
                     >
                       <option value="">Select Payment Mode</option>
                       <option value="upi">UPI</option>
                       <option value="card">Card</option>
-               
                     </Form.Select>
                     {newErrors.payment_mode && (
                       <div className="invalid-feedback">
