@@ -40,14 +40,14 @@ const VerifyOtp = ({ phone, onVerified }) => {
     <div>
       <Col lg={12} md={12} sm={12}>
         <Form.Group className="mb-3">
-          <Form.Label>Mobile Number</Form.Label>
+          <Form.Label>Mobile Number <span className="temp-span-star"> *</span></Form.Label>
           <Form.Control type="text" value={phone} readOnly />
         </Form.Group>
       </Col>
 
       <Col lg={12} md={12} sm={12}>
         <Form.Group className="mb-3">
-          <Form.Label>Enter OTP *</Form.Label>
+          <Form.Label>Enter OTP <span className="temp-span-star"> *</span></Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter OTP"
