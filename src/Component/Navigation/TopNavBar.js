@@ -110,7 +110,7 @@ const TopNavBar = () => {
                   </NavDropdown>
                 </Nav>
 
-                <Nav.Link href="/DonateTemples">
+                <Nav.Link href="/">
 
                   <button type="button" class="solution-btn " fdprocessedid="1ue26e"><FaRocketchat /> परामर्श</button>
 
