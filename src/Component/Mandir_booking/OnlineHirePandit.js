@@ -409,7 +409,7 @@ const OnlineHirePandit = () => {
                       type="date"
                       placeholder="Preferred Dates"
                       className="temp-form-control"
-                      name="preferred_dates"
+                      name="date_of_ceremony"
                       value={formData.date_of_ceremony}
                       onChange={handleChange}
                       min={new Date().toISOString().split("T")[0]}
@@ -499,7 +499,7 @@ const OnlineHirePandit = () => {
                       <span className="temp-span-star">*</span>{" "}
                     </Form.Label>
                     <Form.Control
-                      type="number"
+                      type="text"
                       name="number_of_pandits"
                       value={formData.number_of_pandits}
                       onChange={handleChange}

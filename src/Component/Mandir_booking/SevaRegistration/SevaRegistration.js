@@ -369,7 +369,7 @@ const SevaRegistration = () => {
                       Age <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
-                      type="number"
+                      type="text"
                       placeholder="Enter Your Age"
                       className="temp-form-control"
                       name="age"
@@ -390,7 +390,7 @@ const SevaRegistration = () => {
                       Mobile Number <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
-                      type="number"
+                      type="text"
                       placeholder="Enter Mobile Number"
                       className="temp-form-control"
                       name="mobile_number"
@@ -737,7 +737,7 @@ const SevaRegistration = () => {
                       Donation Amount <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
-                      type="number"
+                      type="text"
                       placeholder="Enter the Amount"
                       className="temp-form-control"
                       name="seva_donation_amount"
