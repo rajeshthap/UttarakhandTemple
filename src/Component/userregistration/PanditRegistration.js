@@ -61,7 +61,7 @@ function PanditRegistration() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [formErrors, setFormErrors] = useState({});
+  const [formErrors, ] = useState({});
 
   const navigate = useNavigate();
 
