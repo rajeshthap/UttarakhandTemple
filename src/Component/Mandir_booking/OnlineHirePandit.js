@@ -593,9 +593,8 @@ const OnlineHirePandit = () => {
                     >
                       <option value="">Select Payment Mode</option>
                       <option value="upi">UPI</option>
-                      <option value="netbanking">Net Banking</option>
                       <option value="card">Card</option>
-                      <option value="cash">Cash at Temple</option>
+               
                     </Form.Select>
                     {newErrors.payment_mode && (
                       <div className="invalid-feedback">
