@@ -683,8 +683,8 @@ const EventParticipation = () => {
                       onChange={handleChange}
                     >
                       <option value="">Select Payment Mode</option>
-                      <option value="card">Card </option>
                       <option value="upi">UPI </option>
+                      <option value="card">Card </option>
                     </Form.Select>
                     {errors.payment_mode && (
                       <small className="text-danger">

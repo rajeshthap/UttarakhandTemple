@@ -728,8 +728,6 @@ const SevaRegistration = () => {
                       onChange={handleInputChange}
                     >
                       <option value="">Select Payment Mode</option>
-                      <option value="cash">Cash </option>
-                      <option value="online">Online  </option>
                       <option value="upi">UPI</option>
                       <option value="card">Card</option>
                     </Form.Select>
