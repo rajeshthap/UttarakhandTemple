@@ -91,7 +91,7 @@ navigate("/MainDashBoard");
                       <Col lg={12} md={12} sm={12} className="mt-4">
                         <Form.Group className="mb-3">
                           <Form.Label className="temp-label-lg-bg">
-                            Email or Phone Number{" "}
+                            Email or Mobile Number{" "}
                             <span className="temp-span-star"> *</span>
                           </Form.Label>
                           <Form.Control

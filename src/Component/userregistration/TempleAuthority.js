@@ -721,7 +721,7 @@ function TempleAuthority() {
                             controlId="exampleForm.ControlInput1"
                           >
                             <Form.Label className="temp-label">
-                              Phone Number{" "}
+                              Mobile Number{" "}
                               <span className="temp-span-star">*</span>
                             </Form.Label>
                             <Form.Control
@@ -730,7 +730,7 @@ function TempleAuthority() {
                               value={formData.phone}
                               onChange={handleChange}
                               maxLength={10}
-                              className="temp-form-control" placeholder="Enter Phone Number"
+                              className="temp-form-control" placeholder="Enter Mobile Number"
                             />
 
                             {formErrors.phone && (

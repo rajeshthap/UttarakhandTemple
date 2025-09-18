@@ -162,7 +162,7 @@ function DevoteeRegistration() {
                     <Col lg={12}>
                       <Form.Group className="mb-3">
                         <Form.Label>
-                          Phone Number <span className="temp-span-star">*</span>
+                          Mobile Number <span className="temp-span-star">*</span>
                         </Form.Label>
                         <Form.Control
                           type="text"

@@ -162,7 +162,7 @@ const ForgotPassword = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                  <Form.Label className="temp-label-lg-bg">Email or Phone Number <span className="temp-span-star">*</span></Form.Label>
+                  <Form.Label className="temp-label-lg-bg">Email or Mobile Number <span className="temp-span-star">*</span></Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Enter your email or phone"

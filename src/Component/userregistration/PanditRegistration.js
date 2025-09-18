@@ -523,7 +523,7 @@ function PanditRegistration() {
                             </Form.Label>
                             <Form.Control
                               type="text"
-                              placeholder=""
+                              placeholder="Enter Mobile Number"
                               className="temp-form-control"
                               name="phone"
                               value={formData.phone}

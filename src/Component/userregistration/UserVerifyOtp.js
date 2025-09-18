@@ -114,7 +114,7 @@ const handleResend = async () => {
 
                             {/* Phone Field */}
                             <Form.Group className="mb-3">
-                                <Form.Label>Phone Number <span className="temp-span-star">*</span></Form.Label>
+                                <Form.Label>Mobile Number <span className="temp-span-star">*</span></Form.Label>
                                 <Form.Control
                                     type="text"
                                     value={phone}

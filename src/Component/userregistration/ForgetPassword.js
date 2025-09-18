@@ -83,7 +83,7 @@ const ForgetPassword = () => {
         <form onSubmit={handleSubmit} className="forgot-form">
             <Row>
                 <Form.Group className="mb-3">
-                <Col lg={12}> <Form.Control type="text" name="phone" placeholder="Enter registered Phone Number"
+                <Col lg={12}> <Form.Control type="text" name="phone" placeholder="Enter Registered Mobile Number"
                    value={formData.phone} onChange={handleChange} required/>
                  </Col>
                      </Form.Group>

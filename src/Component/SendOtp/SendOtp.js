@@ -39,7 +39,7 @@ const SendOtp = ({ phone, setPhone, onOtpSent }) => {
     <div>
       <Col lg={12} md={12} sm={12}>
         <Form.Group className="mb-3">
-          <Form.Label>Phone Number <span className="temp-span-star"> *</span></Form.Label>
+          <Form.Label>Mobile Number <span className="temp-span-star"> *</span></Form.Label>
           <Form.Control
             type="text"
             placeholder="Mobile No."
