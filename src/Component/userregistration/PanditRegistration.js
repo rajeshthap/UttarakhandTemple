@@ -18,6 +18,7 @@ function PanditRegistration() {
   const [phone, setPhone] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
+  const [dragging, setDragging] = useState(false);
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -740,16 +741,40 @@ function PanditRegistration() {
                         <h1>Supporting Documents</h1>
                       </div>
 
-                      <Row>
+                    <Row>
                         {/* Pandit Image Upload */}
                         <Col lg={6} md={12} sm={12}>
                           <Row className="temp-stepform-box">
                             <Col lg={5} md={5} sm={5}>
-                              <fieldset className="upload_dropZone text-center">
+                              <fieldset
+                                className={`upload_dropZone text-center ${
+                                  dragging === "pandit_image"
+                                    ? "drag-over"
+                                    : ""
+                                }`}
+                                onDragOver={(e) => {
+                                  e.preventDefault();
+                                  setDragging("pandit_image");
+                                }}
+                                onDragLeave={() => setDragging(null)}
+                                onDrop={(e) => {
+                                  e.preventDefault();
+                                  setDragging(null);
+                                  const file = e.dataTransfer.files[0];
+                                  if (file) {
+                                    handleInputChange({
+                                      target: {
+                                        name: "pandit_image",
+                                        files: [file],
+                                        type: "file",
+                                      },
+                                    });
+                                  }
+                                }}
+                              >
                                 <legend className="visually-hidden">
                                   Pandit Image Upload
                                 </legend>
-
                                 <img src={UploadFile} alt="upload-file" />
 
                                 <p className="temp-drop-txt my-2">
@@ -759,17 +784,16 @@ function PanditRegistration() {
                                 </p>
 
                                 <input
-                                  id="temple_image"
-                                  name="temple_image"
+                                  id="pandit_image"
+                                  name="pandit_image"
                                   type="file"
                                   accept="image/jpeg, image/png"
                                   className="invisible"
                                   onChange={handleInputChange}
                                 />
-
                                 <label
                                   className="btn temp-primary-btn mb-1"
-                                  htmlFor="temple_image"
+                                  htmlFor="pandit_image"
                                 >
                                   Choose file
                                 </label>
@@ -789,7 +813,7 @@ function PanditRegistration() {
                                 Pandit Image Upload{" "}
                                 <span className="temp-span-star">*</span>
                               </h3>
-                              {formData.temple_image && (
+                              {formData.pandit_image && (
                                 <>
                                   <div className="d-flex temp-doc-info">
                                     <Col lg={3} md={3} sm={3}>
@@ -809,7 +833,7 @@ function PanditRegistration() {
                                     onClick={() =>
                                       setFormData({
                                         ...formData,
-                                        temple_image: "",
+                                        pandit_image: "",
                                       })
                                     }
                                   >
@@ -828,11 +852,35 @@ function PanditRegistration() {
                         <Col lg={6} md={12} sm={12}>
                           <Row className="temp-stepform-box">
                             <Col lg={5} md={5} sm={5}>
-                              <fieldset className="upload_dropZone text-center">
+                              <fieldset
+                                className={`upload_dropZone text-center ${
+                                  dragging === "aadhar_document"
+                                    ? "drag-over"
+                                    : ""
+                                }`}
+                                onDragOver={(e) => {
+                                  e.preventDefault();
+                                  setDragging("aadhar_document");
+                                }}
+                                onDragLeave={() => setDragging(null)}
+                                onDrop={(e) => {
+                                  e.preventDefault();
+                                  setDragging(null);
+                                  const file = e.dataTransfer.files[0];
+                                  if (file) {
+                                    handleInputChange({
+                                      target: {
+                                        name: "aadhar_document",
+                                        files: [file],
+                                        type: "file",
+                                      },
+                                    });
+                                  }
+                                }}
+                              >
                                 <legend className="visually-hidden">
                                   Aadhar Card Upload
                                 </legend>
-
                                 <img src={UploadFile} alt="upload-file" />
 
                                 <p className="temp-drop-txt my-2">
@@ -849,7 +897,6 @@ function PanditRegistration() {
                                   className="invisible"
                                   onChange={handleInputChange}
                                 />
-
                                 <label
                                   className="btn temp-primary-btn mb-1"
                                   htmlFor="aadhar_document"
@@ -906,7 +953,7 @@ function PanditRegistration() {
                             </Col>
                           </Row>
                         </Col>
-                      </Row>
+                      </Row>
 
                      <div className="gap-3 mt-3 Temp-btn-submit">
   <Button
