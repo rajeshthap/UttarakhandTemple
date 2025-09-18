@@ -406,11 +406,12 @@ const OnlineHirePandit = () => {
                     </Form.Label>
                     <Form.Control
                       type="date"
-                      name="date_of_ceremony"
+                      placeholder="Preferred Dates"
+                      className="temp-form-control"
+                      name="preferred_dates"
                       value={formData.date_of_ceremony}
                       onChange={handleChange}
-                      max={new Date().toISOString().split("T")[0]} // 👈 block future dates
-                      className="temp-form-control"
+                      min={new Date().toISOString().split("T")[0]}
                     />
                     {newErrors.date_of_ceremony && (
                       <small className="text-danger">
@@ -494,7 +495,7 @@ const OnlineHirePandit = () => {
                   <Form.Group className="mb-3">
                     <Form.Label>
                       Number of Pandits <span className="temp-span-star">*</span>{" "}
-                  
+
                     </Form.Label>
                     <Form.Control
                       type="number"
@@ -520,9 +521,8 @@ const OnlineHirePandit = () => {
                       name="additional_assistants"
                       value={formData.additional_assistants}
                       onChange={handleChange}
-                      className={`temp-form-control ${
-                        newErrors.additional_assistants ? "is-invalid" : ""
-                      }`}
+                      className={`temp-form-control ${newErrors.additional_assistants ? "is-invalid" : ""
+                        }`}
                       placeholder="Enter Number Assistants"
                     />
                     {newErrors.additional_assistants && (
@@ -543,9 +543,8 @@ const OnlineHirePandit = () => {
                       name="special_requirements"
                       value={formData.special_requirements}
                       onChange={handleChange}
-                      className={`temp-form-control ${
-                        newErrors.special_requirements ? "is-invalid" : ""
-                      }`}
+                      className={`temp-form-control ${newErrors.special_requirements ? "is-invalid" : ""
+                        }`}
                       placeholder="Enter requirements"
                     />
                     {newErrors.special_requirements && (
@@ -566,9 +565,8 @@ const OnlineHirePandit = () => {
                       name="estimated_fees"
                       value={formData.estimated_fees}
                       onChange={handleChange}
-                      className={`temp-form-control ${
-                        newErrors.estimated_fees ? "is-invalid" : ""
-                      }`}
+                      className={`temp-form-control ${newErrors.estimated_fees ? "is-invalid" : ""
+                        }`}
                       placeholder="Enter Estimated Fees"
                     />
                     {newErrors.estimated_fees && (
@@ -587,9 +585,8 @@ const OnlineHirePandit = () => {
                       name="payment_mode"
                       value={formData.payment_mode}
                       onChange={handleChange}
-                      className={`temp-form-control-option ${
-                        newErrors.payment_mode ? "is-invalid" : ""
-                      }`}
+                      className={`temp-form-control-option ${newErrors.payment_mode ? "is-invalid" : ""
+                        }`}
                     >
                       <option value="">Select Payment Mode</option>
                       <option value="upi">UPI</option>
