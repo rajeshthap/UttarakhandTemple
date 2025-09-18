@@ -398,7 +398,7 @@ function TempleAuthority() {
                                 name="password"
                                 value={formData.password}
                                 onChange={handleChange}
-                                placeholder=""
+                                placeholder="Your Password"
                                 className="temp-form-control"
                               />
                               <span
@@ -431,7 +431,7 @@ function TempleAuthority() {
                                 name="confirm_password"
                                 value={formData.confirm_password}
                                 onChange={handleChange}
-                                placeholder=""
+                                placeholder=" Your Confirm Password"
                                 className="temp-form-control"
                               />
                               <span
@@ -464,9 +464,9 @@ function TempleAuthority() {
                               className="temp-form-control-option"
                               name="temple_type"
                               value={formData.temple_type}
-                              onChange={handleChange}
+                              onChange={handleChange} 
                             >
-                              <option value="">Select Temple Type</option>
+                              <option value="">Select Temple</option>
                               <option value="shiv">Shiv Temple</option>
                               <option value="vishnu">Vishnu Temple</option>
                               <option value="durga">Durga Temple</option>
@@ -493,7 +493,7 @@ function TempleAuthority() {
                             <Form.Select
                               className="temp-form-control-option"
                               name="temple_facility"
-                              value={formData.temple_facility}
+                              value={formData.temple_facility} placeholder="Facility"
                               onChange={handleChange}
                             >
                               <option value="">Select Facility</option>
@@ -534,7 +534,7 @@ function TempleAuthority() {
                               value={formData.temple_address}
                               onChange={handleChange}
                               rows={3}
-                              placeholder=""
+                              placeholder="Address"
                               className="temp-form-control"
                             />
                             {formErrors.temple_address && (
@@ -557,14 +557,14 @@ function TempleAuthority() {
                             controlId="exampleForm.ControlInput1"
                           >
                             <Form.Label className="temp-label">
-                              ZipCode <span className="temp-span-star">*</span>
+                              Zip Code <span className="temp-span-star">*</span>
                             </Form.Label>
                             <Form.Control
                               type="number"
                               name="zip_code"
                               value={formData.zip_code}
                               onChange={handleChange}
-                              placeholder=""
+                              placeholder="Enter Zip Code"
                               className="temp-form-control"
                             />
                             {formErrors.zip_code && (
@@ -590,7 +590,7 @@ function TempleAuthority() {
                               onChange={handleChange}
                             >
                               <option value="Select an option">
-                                Select an Establishment
+                                Select Establishment
                               </option>
                               <option value="">Select Year</option>
                               <option value="2035">2035</option>
@@ -651,7 +651,7 @@ function TempleAuthority() {
                             <Form.Select
                               className="temp-form-control-option"
                               name="temple_events"
-                              value={formData.temple_events}
+                              value={formData.temple_events} 
                               onChange={handleChange}
                             >
                               <option value="">Select Event</option>
@@ -725,12 +725,12 @@ function TempleAuthority() {
                               <span className="temp-span-star">*</span>
                             </Form.Label>
                             <Form.Control
-                              type="number"
+                              type="text"
                               name="phone"
                               value={formData.phone}
                               onChange={handleChange}
                               maxLength={10}
-                              className="temp-form-control"
+                              className="temp-form-control" placeholder="Enter Phone Number"
                             />
 
                             {formErrors.phone && (
@@ -748,11 +748,11 @@ function TempleAuthority() {
                             </Form.Label>
                             <Form.Control
                               type="email"
-                              name="email"
+                              name="email" placeholder="Enter Email ID"
                               value={formData.email || ""}
                               onChange={handleChange}
                               onBlur={(e) =>
-                                validateField("email", e.target.value)
+                                validateField("email", e.target.value) 
                               }
                             />
                             {formErrors.email && (
@@ -776,6 +776,7 @@ function TempleAuthority() {
                               value={formData.trust_committee_details}
                               onChange={handleChange}
                             >
+                              <option value="public">Select Details</option>
                               <option value="public">Public Trust</option>
                               <option value="private">Private Trust</option>
                               <option value="committee">
@@ -802,7 +803,7 @@ function TempleAuthority() {
                               // value={formData.trust_committee_details}
                               onChange={handleChange}
                               rows={4}
-                              placeholder="Enter additional details"
+                              placeholder="Enter Additional Details"
                               className="temp-form-control mt-regi-top"
                             />
                           </Form.Group>
@@ -828,10 +829,8 @@ function TempleAuthority() {
                               onChange={handleChange}
                             >
                               <option value="Select an option">
-                                Select an Bank Name
+                                Select  Bank Name
                               </option>
-
-                              <option value="">-- Select Bank --</option>
                               <option value="SBI">
                                 State Bank of India (SBI)
                               </option>
@@ -878,7 +877,7 @@ function TempleAuthority() {
                             </Form.Label>
                             <Form.Control
                               type="number"
-                              placeholder=""
+                              placeholder="Enter Account Number"
                               name="account_number"
                               value={formData.account_number}
                               onChange={handleChange}
@@ -904,7 +903,7 @@ function TempleAuthority() {
                             </Form.Label>
                             <Form.Control
                               type="number"
-                              placeholder=""
+                              placeholder="Enter Confirm Account Number"
                               name="confirm_account_number"
                               value={formData.confirm_account_number}
                               onChange={handleChange}
@@ -958,7 +957,7 @@ function TempleAuthority() {
                               name="account_name"
                               value={formData.account_name}
                               onChange={handleChange}
-                              placeholder=""
+                              placeholder="Account Number "
                               className="temp-form-control"
                             />
 
@@ -983,7 +982,7 @@ function TempleAuthority() {
                               name="ifsc_code"
                               value={formData.ifsc_code}
                               onChange={handleChange}
-                              placeholder=""
+                              placeholder="IFSC Code"
                               className="temp-form-control"
                             />
 
