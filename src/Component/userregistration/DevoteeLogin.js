@@ -100,7 +100,7 @@ function DevoteeLogin() {
                   <Col lg={12} md={12} sm={12}>
                     <Form.Group className="mb-3">
                       <Form.Label className="temp-label">
-                        Password <span className="temp-span-star">*</span>
+                        Password <span className="temp-span-star"> *</span>
                       </Form.Label>
                       <InputGroup>
                         <Form.Control
