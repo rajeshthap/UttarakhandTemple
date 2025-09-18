@@ -7,7 +7,6 @@ import Regimg from "../../assets/images/User-regi-img.png";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-
 function DevoteeLogin() {
   const [formData, setFormData] = useState({
     username: "",
@@ -16,7 +15,7 @@ function DevoteeLogin() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  
+
   // handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,55 +23,52 @@ function DevoteeLogin() {
   };
 
   // handle form submit
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (!formData.username || !formData.password) {
-    alert("Please fill in both fields");
-    return;
-  }
-
-  setLoading(true);
-  try {
-   
-    const isEmail = /\S+@\S+\.\S+/.test(formData.username);
-    const isPhone = /^[0-9]{10}$/.test(formData.username); 
-
-    let payload = {
-      password: formData.password,
-    };
-
-    if (isEmail) {
-      payload.email = formData.username;
-    } else if (isPhone) {
-      payload.phone = formData.username;
-    } else {
-      alert("Please enter a valid email or phone number");
-      setLoading(false);
+    if (!formData.username || !formData.password) {
+      alert("Please fill in both fields");
       return;
     }
 
-    const response = await axios.post(
-      "https://brjobsedu.com/Temple_portal/api/login/",
-      payload
-    );
+    setLoading(true);
+    try {
+      const isEmail = /\S+@\S+\.\S+/.test(formData.username);
+      const isPhone = /^[0-9]{10}$/.test(formData.username);
 
-    console.log("Login Response:", response.data);
-    navigate("/MainDashBoard"); 
-    if (response.data.success) {
-       alert("Login successfully!");
-       
-      
-    } else {
-      alert(response.data.message || "Login failed ");
+      let payload = {
+        password: formData.password,
+      };
+
+      if (isEmail) {
+        payload.email = formData.username;
+      } else if (isPhone) {
+        payload.phone = formData.username;
+      } else {
+        alert("Please enter a valid email or phone number");
+        setLoading(false);
+        return;
+      }
+
+      const response = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/login/",
+        payload
+      );
+
+      console.log("Login Response:", response.data);
+      navigate("/MainDashBoard");
+      const token = response.data.role;
+      if (token === "User") {
+        alert("Login successfully!");
+      } else {
+        alert(response.data.message || "Login failed ");
+      }
+    } catch (error) {
+      console.error("Login Error:", error);
+      alert("Invalid username or password");
     }
-  } catch (error) {
-    console.error("Login Error:", error);
-    alert("Invalid username or password");
-  }
-  setLoading(false);
-};
-
+    setLoading(false);
+  };
 
   return (
     <div>
@@ -101,29 +97,29 @@ const handleSubmit = async (e) => {
                   </Col>
 
                   {/* Password */}
-                      <Col lg={12} md={12} sm={12}>
-                        <Form.Group className="mb-3">
-                          <Form.Label className="temp-label">
-                            Password <span className="temp-span-star">*</span>
-                          </Form.Label>
-                          <InputGroup>
-                            <Form.Control
-                              type={showPassword ? "text" : "password"}
-                              placeholder="Your Password"
-                              className="temp-form-control-bg"
-                              name="password"
-                              value={formData.password}
-                              onChange={handleChange}
-                            />
-                            <InputGroup.Text
-                              onClick={() => setShowPassword(!showPassword)}
-                              style={{ cursor: "pointer" }}
-                            >
-                              {showPassword ? <FaEyeSlash /> : <FaEye />}
-                            </InputGroup.Text>
-                          </InputGroup>
-                        </Form.Group>
-                      </Col>
+                  <Col lg={12} md={12} sm={12}>
+                    <Form.Group className="mb-3">
+                      <Form.Label className="temp-label">
+                        Password <span className="temp-span-star">*</span>
+                      </Form.Label>
+                      <InputGroup>
+                        <Form.Control
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Your Password"
+                          className="temp-form-control-bg"
+                          name="password"
+                          value={formData.password}
+                          onChange={handleChange}
+                        />
+                        <InputGroup.Text
+                          onClick={() => setShowPassword(!showPassword)}
+                          style={{ cursor: "pointer" }}
+                        >
+                          {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </InputGroup.Text>
+                      </InputGroup>
+                    </Form.Group>
+                  </Col>
 
                   <div className="d-grid gap-3 text-center  mt-3">
                     <Row>
@@ -142,7 +138,9 @@ const handleSubmit = async (e) => {
                           variant="danger"
                           className="temp-submit-btn-login"
                           type="button"
-                          onClick={() => (window.location.href = "/ForgotPassword")}
+                          onClick={() =>
+                            (window.location.href = "/ForgotPassword")
+                          }
                         >
                           Forget Password ?
                         </Button>

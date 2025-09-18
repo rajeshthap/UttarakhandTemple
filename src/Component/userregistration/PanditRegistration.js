@@ -38,18 +38,16 @@ function PanditRegistration() {
   });
 
   const roleOptions = [
-    { value: "pooja", label: "विवाह समारोह पंडित" },
-    { value: "vedic_chanting", label: "मुंडन संस्कार पंडित" },
-    // { value: "grihPravesh", label: "गृह प्रवेश पंडित" },
-    // { value: "namkaran", label: "नामकरण संस्कार पंडित" },
-    // { value: "vastu", label: "वास्तु पूजा पंडित" },
-    // { value: "havan", label: "हवन / यज्ञ पंडित" },
-    // { value: "antim", label: "अंतिम संस्कार पंडित" },
-    // { value: "janmpatri", label: "जन्मपत्री बनाने वाले पंडित" },
-    // { value: "dasha", label: "दशा-फल बताने वाले पंडित" },
-    // { value: "kulachar", label: "कुलाचार / गोत्र पूजा पंडित" },
-    // { value: "pujapath", label: "पूजा-पाठ विशेषज्ञ" },
-    // { value: "tarpan", label: "तर्पण / श्राद्ध पंडित" },
+    {"value": "pooja", "label": "पूजा विशेषज्ञ"},
+    {"value": "vedic_chanting", "label": "वैदिक मंत्रोच्चार"},
+    {"value": "astrology", "label": "ज्योतिष"},
+    {"value": "wedding", "label": "विवाह संस्कार"},
+    {"value": "funeral", "label": "अंत्येष्टि संस्कार"},
+    {"value": "festival", "label": "त्योहार आयोजन"},
+    {"value": "temple_priest", "label": "मंदिर पुजारी"},
+    {"value": "home_pooja", "label": "गृह पूजा"},
+    {"value": "yagya", "label": "यज्ञ विशेषज्ञ"},
+    {"value": "other", "label": "अन्य"}
   ];
 
   const [preview, setPreview] = useState({
