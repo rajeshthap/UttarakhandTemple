@@ -493,8 +493,8 @@ const OnlineHirePandit = () => {
                 <Col lg={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>
-                      Number of Pandits{" "}
-                      <span className="temp-span-star">*</span>
+                      Number of Pandits <span className="temp-span-star">*</span>{" "}
+                  
                     </Form.Label>
                     <Form.Control
                       type="number"
@@ -514,7 +514,7 @@ const OnlineHirePandit = () => {
 
                 <Col lg={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label>Additional Assistants</Form.Label>
+                    <Form.Label>Additional Assistants <span className="temp-span-star">*</span></Form.Label>
                     <Form.Control
                       type="text"
                       name="additional_assistants"
@@ -537,7 +537,7 @@ const OnlineHirePandit = () => {
 
                 <Col lg={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label>Special Requirements</Form.Label>
+                    <Form.Label>Special Requirements <span className="temp-span-star">*</span></Form.Label>
                     <Form.Control
                       as="textarea"
                       name="special_requirements"
@@ -560,7 +560,7 @@ const OnlineHirePandit = () => {
 
                 <Col lg={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label>Estimated Fees</Form.Label>
+                    <Form.Label>Estimated Fees <span className="temp-span-star">*</span></Form.Label>
                     <Form.Control
                       type="text"
                       name="estimated_fees"
@@ -582,7 +582,7 @@ const OnlineHirePandit = () => {
                 </Col>
                 <Col lg={6}>
                   <Form.Group className="mb-3">
-                    <Form.Label>Payment Mode</Form.Label>
+                    <Form.Label>Payment Mode <span className="temp-span-star">*</span></Form.Label>
                     <Form.Select
                       name="payment_mode"
                       value={formData.payment_mode}
