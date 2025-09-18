@@ -41,48 +41,48 @@ const SevaRegistration = () => {
     payment_mode: ""
   });
 
-const handleAgreeChange = async (e) => {
-  const checked = e.target.checked;
+  const handleAgreeChange = async (e) => {
+    const checked = e.target.checked;
 
-  if (!checked) {
-    setAgree(false);
-    return;
-  }
+    if (!checked) {
+      setAgree(false);
+      return;
+    }
 
-  //  validate required fields before OTP
- if (!validateFields()) {
+    //  validate required fields before OTP
+    if (!validateFields()) {
       alert("Please fill all required fields correctly before verifying OTP.");
       setAgree(false);
       return;
     }
 
-  //  if OTP already verified, no need to resend
-  if (isVerified) {
-    setAgree(true);
-    return;
-  }
-
-  //  otherwise send OTP
-  try {
-    const res = await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
-      phone: formData.mobile_number,
-    });
-
-    if (res.data.success) {
-      setOtpSent(true);
-      setShow(true); // open modal
+    //  if OTP already verified, no need to resend
+    if (isVerified) {
       setAgree(true);
-      alert("OTP sent successfully!");
-    } else {
-      alert(res.data.message || "Failed to send OTP");
+      return;
+    }
+
+    //  otherwise send OTP
+    try {
+      const res = await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
+        phone: formData.mobile_number,
+      });
+
+      if (res.data.success) {
+        setOtpSent(true);
+        setShow(true); // open modal
+        setAgree(true);
+        alert("OTP sent successfully!");
+      } else {
+        alert(res.data.message || "Failed to send OTP");
+        setAgree(false);
+      }
+    } catch (err) {
+      console.error("OTP Send Error:", err);
+      alert("Error sending OTP");
       setAgree(false);
     }
-  } catch (err) {
-    console.error("OTP Send Error:", err);
-    alert("Error sending OTP");
-    setAgree(false);
-  }
-};
+  };
 
   const handleVerifyOtp = async () => {
     try {
@@ -95,7 +95,7 @@ const handleAgreeChange = async (e) => {
         setIsVerified(true);
         alert("Phone number verified!");
         handleClose(); // close modal
-         navigate("/PaymentConfirmation");
+        navigate("/PaymentConfirmation");
       } else {
         alert(res.data.message || "Invalid OTP");
       }
@@ -186,22 +186,22 @@ const handleAgreeChange = async (e) => {
     setErrors((prev) => ({ ...prev, [name]: "" }));
 
     if (name === "mobile_number") {
-    let errorMsg = "";
-    if (!/^\d*$/.test(value)) {
-      errorMsg = "Only digits allowed";
-    } else if (value.length > 0 && !/^\d{10}$/.test(value)) {
-      errorMsg = "Enter a valid 10-digit mobile number";
-    }
-    setErrors((prev) => ({ ...prev, mobile_number: errorMsg }));
+      let errorMsg = "";
+      if (!/^\d*$/.test(value)) {
+        errorMsg = "Only digits allowed";
+      } else if (value.length > 0 && !/^\d{10}$/.test(value)) {
+        errorMsg = "Enter a valid 10-digit mobile number";
+      }
+      setErrors((prev) => ({ ...prev, mobile_number: errorMsg }));
     }
 
-   if (name === "email") {
-    let errorMsg = "";
-    if (value.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-      errorMsg = "Enter a valid email address";
+    if (name === "email") {
+      let errorMsg = "";
+      if (value.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        errorMsg = "Enter a valid email address";
+      }
+      setErrors((prev) => ({ ...prev, email: errorMsg }));
     }
-    setErrors((prev) => ({ ...prev, email: errorMsg }));
-   }
   };
 
   const handleSubmit = async (e) => {
@@ -438,7 +438,7 @@ const handleAgreeChange = async (e) => {
                       ID Proof Number <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
-                      type="number"
+                      type="text"
                       placeholder="ID Proof Number"
                       className="temp-form-control"
                       name="id_proof_number"
@@ -519,11 +519,12 @@ const handleAgreeChange = async (e) => {
                     </Form.Label>
                     <Form.Control
                       type="date"
-                      placeholder="Preferred Date"
+                      placeholder="Preferred Dates"
                       className="temp-form-control"
                       name="preferred_dates"
                       value={formData.preferred_dates}
                       onChange={handleInputChange}
+                      min={new Date().toISOString().split("T")[0]}
                     />
                     {errors.preferred_dates && (
                       <small className="text-danger">{errors.preferred_dates}</small>
@@ -703,8 +704,8 @@ const handleAgreeChange = async (e) => {
                       name="seva_donation_amount"
                       value={formData.seva_donation_amount}
                       onChange={handleInputChange}
-                      />
-                      {errors.seva_donation_amount && (
+                    />
+                    {errors.seva_donation_amount && (
                       <small className="text-danger">{errors.seva_donation_amount}</small>
                     )}
                   </Form.Group>
