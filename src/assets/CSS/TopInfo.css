@@ -56,10 +56,10 @@
 }
 
 .solution-btn {
-    background-color: var(--temp-light-green);
+    background-color: #811522;
     color: var(--temp-white);
     padding: var(--temp-space-100) var(--temp-space-600);
-    font-size: var(--temp-space-350);
+    font-size: var(--temp-space-400);
     border-radius: var(--temp-space-100);
     transition: background-color 0.3s ease;
     border: 0px;
