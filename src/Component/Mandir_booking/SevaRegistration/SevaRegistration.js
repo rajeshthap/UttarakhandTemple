@@ -95,6 +95,7 @@ const handleAgreeChange = async (e) => {
         setIsVerified(true);
         alert("Phone number verified!");
         handleClose(); // close modal
+         navigate("/PaymentConfirmation");
       } else {
         alert(res.data.message || "Invalid OTP");
       }
@@ -183,6 +184,24 @@ const handleAgreeChange = async (e) => {
       [name]: type === "checkbox" ? checked : value,
     }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
+
+    if (name === "mobile_number") {
+    let errorMsg = "";
+    if (!/^\d*$/.test(value)) {
+      errorMsg = "Only digits allowed";
+    } else if (value.length > 0 && !/^\d{10}$/.test(value)) {
+      errorMsg = "Enter a valid 10-digit mobile number";
+    }
+    setErrors((prev) => ({ ...prev, mobile_number: errorMsg }));
+    }
+
+   if (name === "email") {
+    let errorMsg = "";
+    if (value.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      errorMsg = "Enter a valid email address";
+    }
+    setErrors((prev) => ({ ...prev, email: errorMsg }));
+   }
   };
 
   const handleSubmit = async (e) => {
@@ -217,7 +236,7 @@ const handleAgreeChange = async (e) => {
 
       if (res.data.message === "Seva booking created successfully") {
         alert("Seva Registration Successful!");
-        navigate("/PaymentConfirmation");
+        //navigate("/PaymentConfirmation");
         // reset form
         setFormData({
           full_name: "",
