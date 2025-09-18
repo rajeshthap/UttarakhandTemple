@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import OTPModel from "../OTPModel/OTPModel";
@@ -8,8 +8,11 @@ import { useNavigate } from "react-router-dom";
 const ExtendYourDivine = () => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [verifying, setVerifying] = useState(false); 
-  const [otp, setOtp] = useState(""); 
+  const [verifying, setVerifying] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [temples, setTemples] = useState([]);
+  const [errors, setErrors] = useState({});
+
   const [formData, setFormData] = useState({
     temple_id: "",
     amount: "",
@@ -17,10 +20,54 @@ const ExtendYourDivine = () => {
     mobile_number: "",
     email_id: "",
   });
+  useEffect(() => {
+    const fetchTemples = async () => {
+      try {
+        const res = await axios.get(
+          "https://brjobsedu.com/Temple_portal/api/temples-for-divine/"
+        );
+        if (res.data && Array.isArray(res.data.temples)) {
+          setTemples(res.data.temples);
+        }
+      } catch (err) {
+        console.error("Error fetching temples:", err);
+      }
+    };
+    fetchTemples();
+  }, []);
 
-    const navigate=useNavigate();
+  const navigate = useNavigate();
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
+
+  const validateForm = () => {
+    let formErrors = {};
+
+    if (!formData.temple_id) {
+      formErrors.temple_id = "Temple selection is required.";
+    }
+    if (!formData.amount) {
+      formErrors.amount = "Amount is required.";
+    } else if (isNaN(formData.amount) || Number(formData.amount) <= 0) {
+      formErrors.amount = "Enter a valid amount.";
+    }
+    if (!formData.pilgrim_name.trim()) {
+      formErrors.pilgrim_name = "Pilgrim name is required.";
+    }
+    if (!formData.mobile_number) {
+      formErrors.mobile_number = "Mobile number is required.";
+    } else if (!/^[6-9]\d{9}$/.test(formData.mobile_number)) {
+      formErrors.mobile_number = "Enter a valid 10-digit mobile number.";
+    }
+    if (!formData.email_id) {
+      formErrors.email_id = "Email ID is required.";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email_id)) {
+      formErrors.email_id = "Enter a valid email address.";
+    }
+
+    setErrors(formErrors);
+    return Object.keys(formErrors).length === 0;
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -29,83 +76,119 @@ const ExtendYourDivine = () => {
       ...prev,
       [name]: value,
     }));
+
+    if (name === "mobile_number") {
+      if (!/^[6-9]\d{9}$/.test(value)) {
+        setErrors((prev) => ({
+          ...prev,
+          mobile_number: "Enter a valid 10-digit mobile number.",
+        }));
+      } else {
+        setErrors((prev) => {
+          const { mobile_number, ...rest } = prev;
+          return rest;
+        });
+      }
+    }
+
+    if (name === "email_id") {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        setErrors((prev) => ({
+          ...prev,
+          email_id: "Enter a valid email address.",
+        }));
+      } else {
+        setErrors((prev) => {
+          const { email_id, ...rest } = prev;
+          return rest;
+        });
+      }
+    }
+
+    if (name !== "mobile_number" && name !== "email_id") {
+      setErrors((prev) => {
+        const { [name]: removed, ...rest } = prev;
+        return rest;
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
+    e.preventDefault();
 
-  try {
-    const formDataToSend = new FormData();
-    formDataToSend.append("temple_id", formData.temple_id);
-    formDataToSend.append("amount", formData.amount);
-    formDataToSend.append("pilgrim_name", formData.pilgrim_name);
-    formDataToSend.append("mobile_number", formData.mobile_number);
-    formDataToSend.append("email_id", formData.email_id);
-
-    const response = await axios.post(
-      "https://brjobsedu.com/Temple_portal/api/extend-your-divine/",
-      formDataToSend,
-      { headers: { "Content-Type": "multipart/form-data" } }
-    );
-
-    if (response.status >= 200 && response.status < 300) {
-      alert("Registration Successful!");
-
-      
-      await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
-  phone: formData.mobile_number, 
-});
-alert("OTP sent to your mobile number.");
-handleShow(); 
-    } else {
-      alert("Something went wrong!");
+    if (!validateForm()) {
+      return; 
     }
-  } catch (error) {
-    console.log(error.response?.data || error.message);
-    alert(
-      "Error: " +
-        (error.response?.data?.message ||
-          error.response?.data ||
-          error.message)
-    );
-  } finally {
-    setLoading(false);
-  }
-};
 
-const handleVerifyOtp = async () => {
-  if (!otp) {
-    alert("Please enter OTP");
-    return;
-  }
-  setVerifying(true);
-  try {
-    const payload = {
-      phone: formData.mobile_number, 
-      otp: otp, 
-    };
+    setLoading(true);
 
-    const response = await axios.post(
-      "https://brjobsedu.com/Temple_portal/api/Verify/",
-      payload
-    );
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append("temple_id", formData.temple_id);
+      formDataToSend.append("amount", formData.amount);
+      formDataToSend.append("pilgrim_name", formData.pilgrim_name);
+      formDataToSend.append("mobile_number", formData.mobile_number);
+      formDataToSend.append("email_id", formData.email_id);
 
-    if (response.data.success) {
-      alert("OTP Verified Successfully!");
-      handleClose();
-      navigate("/PaymentConfirmation"); 
-    } else {
-      alert(response.data.message || "OTP verification failed.");
+      const response = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/extend-your-divine/",
+        formDataToSend,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+
+      if (response.status >= 200 && response.status < 300) {
+        await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
+          phone: formData.mobile_number,
+        });
+        alert("OTP sent to your mobile number.");
+        handleShow();
+      } else {
+        alert("Something went wrong!");
+      }
+    } catch (error) {
+      console.log(error.response?.data || error.message);
+      alert(
+        "Error: " +
+          (error.response?.data?.message ||
+            error.response?.data ||
+            error.message)
+      );
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error("OTP Verify Error:", error.response?.data || error.message);
-    alert("OTP verification error. Try again.");
-  } finally {
-    setVerifying(false);
-  }
-};
+  };
 
+  const handleVerifyOtp = async () => {
+    if (!otp) {
+      alert("Please enter OTP");
+      return;
+    }
+    setVerifying(true);
+    try {
+      const payload = {
+        phone: formData.mobile_number,
+        otp: otp,
+      };
+
+      const response = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/Verify/",
+        payload
+      );
+
+      if (response.data.success) {
+        alert("OTP Verified Successfully!");
+        handleClose();
+        navigate("/PaymentConfirmation");
+      } else {
+        alert(response.data.message || "OTP verification failed.");
+      }
+    } catch (error) {
+      console.error("OTP Verify Error:", error.response?.data || error.message);
+      alert("OTP verification error. Try again.");
+    } finally {
+      setVerifying(false);
+    }
+  };
 
   return (
     <div>
@@ -124,7 +207,7 @@ const handleVerifyOtp = async () => {
               <Col lg={6} md={6} sm={12}>
                 <Form.Group className="mb-3">
                   <Form.Label className="temp-label">
-                    Select Temple <span className="temp-span-star">*</span>
+                    Select Temple Name <span className="temp-span-star">*</span>
                   </Form.Label>
                   <Form.Select
                     className="temp-form-control-option"
@@ -132,13 +215,16 @@ const handleVerifyOtp = async () => {
                     value={formData.temple_id}
                     onChange={handleInputChange}
                   >
-                    <option value="">Select Temple Type</option>
-                    <option value="42">Vishnu Temple</option>
-                    <option value="43">Durga Temple</option>
-                    <option value="44">Ganesh Temple</option>
-                    <option value="45">Hanuman Temple</option>
-                    <option value="46">Shiva Temple</option>
+                    <option value="">Select Temple Name</option>
+                    {temples.map((temple) => (
+                      <option key={temple.id} value={temple.id}>
+                        {temple.temple_name} – {temple.city}, {temple.state}
+                      </option>
+                    ))}
                   </Form.Select>
+                  {errors.temple_id && (
+                    <small className="text-danger">{errors.temple_id}</small>
+                  )}
                 </Form.Group>
               </Col>
               {/* Amount */}
@@ -149,11 +235,15 @@ const handleVerifyOtp = async () => {
                   </Form.Label>
                   <Form.Control
                     type="text"
+                    placeholder="Enter Amount"
                     className="temp-form-control"
                     name="amount"
                     value={formData.amount}
                     onChange={handleInputChange}
                   />
+                  {errors.amount && (
+                    <small className="text-danger">{errors.amount}</small>
+                  )}
                 </Form.Group>
               </Col>
               {/* Pilgrim Name */}
@@ -164,11 +254,15 @@ const handleVerifyOtp = async () => {
                   </Form.Label>
                   <Form.Control
                     type="text"
+                    placeholder="Enter Pilgrim Name"
                     className="temp-form-control"
                     name="pilgrim_name"
                     value={formData.pilgrim_name}
                     onChange={handleInputChange}
                   />
+                  {errors.pilgrim_name && (
+                    <small className="text-danger">{errors.pilgrim_name}</small>
+                  )}
                 </Form.Group>
               </Col>
               {/* Mobile Number */}
@@ -179,26 +273,36 @@ const handleVerifyOtp = async () => {
                   </Form.Label>
                   <Form.Control
                     type="text"
+                    placeholder="Enter Mobile Number"
                     className="temp-form-control"
                     name="mobile_number"
                     value={formData.mobile_number}
                     onChange={handleInputChange}
                   />
+                  {errors.mobile_number && (
+                    <small className="text-danger">
+                      {errors.mobile_number}
+                    </small>
+                  )}
                 </Form.Group>
               </Col>
               {/* Email */}
               <Col lg={6} md={6} sm={12}>
                 <Form.Group className="mb-3">
                   <Form.Label className="temp-label">
-                    Email <span className="temp-span-star">*</span>
+                    Email ID<span className="temp-span-star"> *</span>
                   </Form.Label>
                   <Form.Control
                     type="email"
+                    placeholder="Enter Email ID"
                     className="temp-form-control"
                     name="email_id"
                     value={formData.email_id}
                     onChange={handleInputChange}
                   />
+                  {errors.email_id && (
+                    <small className="text-danger">{errors.email_id}</small>
+                  )}
                 </Form.Group>
               </Col>
             </Row>
@@ -257,7 +361,6 @@ const handleVerifyOtp = async () => {
         </Row>
       </Container>
 
-      
       <OTPModel
         show={show}
         handleClose={handleClose}

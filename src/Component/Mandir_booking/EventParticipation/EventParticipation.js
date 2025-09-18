@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import OTPModel from "../../OTPModel/OTPModel";
@@ -14,7 +14,8 @@ const EventParticipation = () => {
   const [otpVerified, setOtpVerified] = useState(false);
   const [errors, setErrors] = useState({});
   const [sendingOtp, setSendingOtp] = useState(false);
-
+  const [temples, setTemples] = useState([]);
+  
   const [formData, setFormData] = useState({
     full_name: "",
     gender: "",
@@ -35,6 +36,22 @@ const EventParticipation = () => {
     donation_amount: "",
     payment_mode: "",
   });
+   useEffect(() => {
+      const fetchTemples = async () => {
+        try {
+          const res = await axios.get(
+            "https://brjobsedu.com/Temple_portal/api/temples-for-divine/"
+          );
+          if (res.data && Array.isArray(res.data.temples)) {
+            setTemples(res.data.temples);
+          }
+        } catch (err) {
+          console.error("Error fetching temples:", err);
+        }
+      };
+      fetchTemples();
+    }, []);
+  
 
   //  Validation logic
   const validateFields = () => {
@@ -421,16 +438,11 @@ const EventParticipation = () => {
                       onChange={handleChange}
                     >
                       <option value="">Select Temple Name</option>
-                      <option value="Kedarnath Temple">
-                        Kedarnath Temple{" "}
-                      </option>
-                      <option value="Somnath Temple">Somnath Temple</option>
-                      <option value="Badrinath Temple">
-                        Badrinath Temple{" "}
-                      </option>
-                      <option value="Shri Kashi Vishwanath Temple">
-                        Shri Kashi Vishwanath Temple
-                      </option>
+                      {temples.map((temple) => (
+                        <option key={temple.id} value={temple.temple_name}>
+                          {temple.temple_name} – {temple.city}, {temple.state}
+                        </option>
+                      ))}
                     </Form.Select>
                     {errors.temple_name && (
                       <small className="text-danger">

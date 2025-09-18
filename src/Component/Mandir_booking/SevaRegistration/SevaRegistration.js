@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import OTPModel from "../../OTPModel/OTPModel";
 import axios from "axios";
@@ -17,6 +17,7 @@ const SevaRegistration = () => {
   const [, setOtpSent] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [errors, setErrors] = useState({});
+  const [temples, setTemples] = useState([]);
 
   const navigate = useNavigate();
 
@@ -38,8 +39,23 @@ const SevaRegistration = () => {
     nakshatra_rashi: "",
     special_instructions: "",
     seva_donation_amount: "",
-    payment_mode: ""
+    payment_mode: "",
   });
+  useEffect(() => {
+    const fetchTemples = async () => {
+      try {
+        const res = await axios.get(
+          "https://brjobsedu.com/Temple_portal/api/temples-for-divine/"
+        );
+        if (res.data && Array.isArray(res.data.temples)) {
+          setTemples(res.data.temples);
+        }
+      } catch (err) {
+        console.error("Error fetching temples:", err);
+      }
+    };
+    fetchTemples();
+  }, []);
 
   const handleAgreeChange = async (e) => {
     const checked = e.target.checked;
@@ -64,9 +80,12 @@ const SevaRegistration = () => {
 
     //  otherwise send OTP
     try {
-      const res = await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
-        phone: formData.mobile_number,
-      });
+      const res = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/Sentotp/",
+        {
+          phone: formData.mobile_number,
+        }
+      );
 
       if (res.data.success) {
         setOtpSent(true);
@@ -86,10 +105,13 @@ const SevaRegistration = () => {
 
   const handleVerifyOtp = async () => {
     try {
-      const res = await axios.post("https://brjobsedu.com/Temple_portal/api/Verify/", {
-        phone: formData.mobile_number,
-        otp: otp,
-      });
+      const res = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/Verify/",
+        {
+          phone: formData.mobile_number,
+          otp: otp,
+        }
+      );
 
       if (res.data.success) {
         setIsVerified(true);
@@ -141,20 +163,18 @@ const SevaRegistration = () => {
     if (!formData.temple_name)
       newErrors.temple_name = "Temple Name is required";
 
-    if (!formData.type_of_seva) newErrors.type_of_seva = "Type of Seva is required";
+    if (!formData.type_of_seva)
+      newErrors.type_of_seva = "Type of Seva is required";
 
     if (!formData.preferred_dates)
       newErrors.preferred_dates = "Preferred date is required";
 
-    if (!formData.time_slot)
-      newErrors.time_slot = " Time slot is required";
+    if (!formData.time_slot) newErrors.time_slot = " Time slot is required";
 
-    if (!formData.frequency)
-      newErrors.frequency = " Frequency is required";
+    if (!formData.frequency) newErrors.frequency = " Frequency is required";
 
     if (!formData.participation_mode)
       newErrors.participation_mode = " Participation Mode is required";
-
 
     if (!formData.gotra.trim()) newErrors.gotra = "Gotra is required";
 
@@ -173,8 +193,6 @@ const SevaRegistration = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
-
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -215,7 +233,6 @@ const SevaRegistration = () => {
       alert("Please verify your phone number before submitting.");
       return;
     }
-
 
     setLoading(true);
 
@@ -258,8 +275,6 @@ const SevaRegistration = () => {
           seva_donation_amount: "",
           payment_mode: "",
         });
-
-
       } else {
         alert(res.data.message || "Seva Registration failed");
       }
@@ -276,7 +291,6 @@ const SevaRegistration = () => {
       setLoading(false);
     }
   };
-
 
   return (
     <div>
@@ -322,7 +336,8 @@ const SevaRegistration = () => {
                     <Form.Label className="temp-label">
                       Gender <span className="temp-span-star">*</span>
                     </Form.Label>
-                    <Form.Select className="temp-form-control-option"
+                    <Form.Select
+                      className="temp-form-control-option"
                       placeholder="Gender"
                       name="gender"
                       value={formData.gender}
@@ -377,7 +392,9 @@ const SevaRegistration = () => {
                       onChange={handleInputChange}
                     />
                     {errors.mobile_number && (
-                      <small className="text-danger">{errors.mobile_number}</small>
+                      <small className="text-danger">
+                        {errors.mobile_number}
+                      </small>
                     )}
                   </Form.Group>
                 </Col>
@@ -425,7 +442,9 @@ const SevaRegistration = () => {
                       <option value="Voter ID">Voter ID </option>
                     </Form.Select>
                     {errors.id_proof_type && (
-                      <small className="text-danger">{errors.id_proof_type}</small>
+                      <small className="text-danger">
+                        {errors.id_proof_type}
+                      </small>
                     )}
                   </Form.Group>
                 </Col>
@@ -444,15 +463,16 @@ const SevaRegistration = () => {
                       name="id_proof_number"
                       value={formData.id_proof_number}
                       onChange={handleInputChange}
-
                     />
                     {errors.id_proof_number && (
-                      <small className="text-danger">{errors.id_proof_number}</small>
+                      <small className="text-danger">
+                        {errors.id_proof_number}
+                      </small>
                     )}
                   </Form.Group>
                 </Col>
 
-                <h2>Seva Details  </h2>
+                <h2>Seva Details </h2>
 
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
@@ -464,19 +484,22 @@ const SevaRegistration = () => {
                     </Form.Label>
                     <Form.Select
                       className="temp-form-control-option"
-                      placeholder="Temple Name"
                       name="temple_name"
                       value={formData.temple_name}
                       onChange={handleInputChange}
                     >
                       <option value="">Select Temple Name</option>
-                      <option value="Kedarnath Temple">Kedarnath Temple </option>
-                      <option value="Somnath Temple">Somnath Temple</option>
-                      <option value="Badrinath Temple">Badrinath Temple </option>
-                      <option value="Jagannath Temple">Jagannath Temple </option>
+                      {temples.map((temple) => (
+                        <option key={temple.id} value={temple.temple_name}>
+                          {temple.temple_name} – {temple.city}, {temple.state}
+                        </option>
+                      ))}
                     </Form.Select>
+
                     {errors.temple_name && (
-                      <small className="text-danger">{errors.temple_name}</small>
+                      <small className="text-danger">
+                        {errors.temple_name}
+                      </small>
                     )}
                   </Form.Group>
                 </Col>
@@ -501,10 +524,14 @@ const SevaRegistration = () => {
                       <option value="Deep Aradhana">Deep Aradhana</option>
                       <option value="Abhishekam">Abhishekam </option>
                       <option value="Archana">Archana </option>
-                      <option value="Daily Pooja Sponsorship">Daily Pooja Sponsorship </option>
+                      <option value="Daily Pooja Sponsorship">
+                        Daily Pooja Sponsorship{" "}
+                      </option>
                     </Form.Select>
                     {errors.type_of_seva && (
-                      <small className="text-danger">{errors.type_of_seva}</small>
+                      <small className="text-danger">
+                        {errors.type_of_seva}
+                      </small>
                     )}
                   </Form.Group>
                 </Col>
@@ -515,7 +542,8 @@ const SevaRegistration = () => {
                     controlId="exampleForm.ControlInput1"
                   >
                     <Form.Label className="temp-label">
-                      Preferred Date(s) <span className="temp-span-star">*</span>
+                      Preferred Date(s){" "}
+                      <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
                       type="date"
@@ -527,7 +555,9 @@ const SevaRegistration = () => {
                       min={new Date().toISOString().split("T")[0]}
                     />
                     {errors.preferred_dates && (
-                      <small className="text-danger">{errors.preferred_dates}</small>
+                      <small className="text-danger">
+                        {errors.preferred_dates}
+                      </small>
                     )}
                   </Form.Group>
                 </Col>
@@ -538,8 +568,7 @@ const SevaRegistration = () => {
                     controlId="exampleForm.ControlInput1"
                   >
                     <Form.Label className="temp-label">
-                      Time Slot{" "}
-                      <span className="temp-span-star">*</span>
+                      Time Slot <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Select
                       className="temp-form-control-option"
@@ -565,8 +594,7 @@ const SevaRegistration = () => {
                     controlId="exampleForm.ControlInput1"
                   >
                     <Form.Label className="temp-label">
-                      Frequency {" "}
-                      <span className="temp-span-star">*</span>
+                      Frequency <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Select
                       className="temp-form-control-option"
@@ -577,9 +605,9 @@ const SevaRegistration = () => {
                     >
                       <option value="">Select Frequency</option>
                       <option value="once">One-time </option>
-                      <option value="daily">Daily  </option>
-                      <option value="weekly">Weekly  </option>
-                      <option value="monthly">Monthly  </option>
+                      <option value="daily">Daily </option>
+                      <option value="weekly">Weekly </option>
+                      <option value="monthly">Monthly </option>
                       <option value="yearly">Yearly </option>
                     </Form.Select>
                     {errors.frequency && (
@@ -594,7 +622,7 @@ const SevaRegistration = () => {
                     controlId="exampleForm.ControlInput1"
                   >
                     <Form.Label className="temp-label">
-                      Participation Mode {" "}
+                      Participation Mode{" "}
                       <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Select
@@ -610,7 +638,9 @@ const SevaRegistration = () => {
                       <option value="both">Both</option>
                     </Form.Select>
                     {errors.participation_mode && (
-                      <small className="text-danger">{errors.participation_mode}</small>
+                      <small className="text-danger">
+                        {errors.participation_mode}
+                      </small>
                     )}
                   </Form.Group>
                 </Col>
@@ -621,8 +651,8 @@ const SevaRegistration = () => {
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
                   >
-                    <Form.Label className="temp-label">Gotra {" "}
-                      <span className="temp-span-star">*</span>
+                    <Form.Label className="temp-label">
+                      Gotra <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -656,7 +686,9 @@ const SevaRegistration = () => {
                       onChange={handleInputChange}
                     />
                     {errors.nakshatra_rashi && (
-                      <small className="text-danger">{errors.nakshatra_rashi}</small>
+                      <small className="text-danger">
+                        {errors.nakshatra_rashi}
+                      </small>
                     )}
                   </Form.Group>
                 </Col>
@@ -678,10 +710,11 @@ const SevaRegistration = () => {
                       name="special_instructions"
                       value={formData.special_instructions}
                       onChange={handleInputChange}
-
                     />
                     {errors.special_instructions && (
-                      <small className="text-danger">{errors.special_instructions}</small>
+                      <small className="text-danger">
+                        {errors.special_instructions}
+                      </small>
                     )}
                   </Form.Group>
                 </Col>
@@ -694,8 +727,7 @@ const SevaRegistration = () => {
                     controlId="exampleForm.ControlInput1"
                   >
                     <Form.Label className="temp-label">
-                      Donation Amount {" "}
-                      <span className="temp-span-star">*</span>
+                      Donation Amount <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
                       type="number"
@@ -706,7 +738,9 @@ const SevaRegistration = () => {
                       onChange={handleInputChange}
                     />
                     {errors.seva_donation_amount && (
-                      <small className="text-danger">{errors.seva_donation_amount}</small>
+                      <small className="text-danger">
+                        {errors.seva_donation_amount}
+                      </small>
                     )}
                   </Form.Group>
                 </Col>
@@ -717,8 +751,7 @@ const SevaRegistration = () => {
                     controlId="exampleForm.ControlInput1"
                   >
                     <Form.Label className="temp-label">
-                      Payment Mode {" "}
-                      <span className="temp-span-star">*</span>
+                      Payment Mode <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Select
                       className="temp-form-control-option"
@@ -732,16 +765,19 @@ const SevaRegistration = () => {
                       <option value="card">Card</option>
                     </Form.Select>
                     {errors.payment_mode && (
-                      <small className="text-danger">{errors.payment_mode}</small>
+                      <small className="text-danger">
+                        {errors.payment_mode}
+                      </small>
                     )}
                   </Form.Group>
                 </Col>
-
-
               </Row>
               <div>
                 <label>
-                  <input type="checkbox" name="agreeTerms" className="mx-2"
+                  <input
+                    type="checkbox"
+                    name="agreeTerms"
+                    className="mx-2"
                     checked={agree}
                     onChange={handleAgreeChange}
                   />
@@ -839,7 +875,8 @@ const SevaRegistration = () => {
         handleClose={handleClose}
         otp={otp}
         setOtp={setOtp}
-        handleVerifyOtp={handleVerifyOtp} />
+        handleVerifyOtp={handleVerifyOtp}
+      />
     </div>
   );
 };
