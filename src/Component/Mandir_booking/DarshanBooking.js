@@ -166,7 +166,6 @@ const DarshanBooking = () => {
             </Row>
             <h2>Darshan Booking Details</h2>
             <Row>
-
               {/* Booking Details */}
               <Col lg={6} md={6} sm={12}>
                 <Form.Group className="mb-3" controlId="templeType">
@@ -225,8 +224,23 @@ const DarshanBooking = () => {
             <h2 className="pt-4">Address Details</h2>
             <Row>
 
-
-              <Col lg={12} md={12} sm={12}>
+ <Col lg={6} md={6} sm={12}>
+                <Form.Group
+                  className="mb-3"
+                  controlId="exampleForm.ControlInput1"
+                >
+                  <Form.Label className="temp-label">
+                    Special Requests <span className="temp-span-star">*</span>
+                  </Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={4}
+                    placeholder="Enter Your Special Requests"
+                    className="temp-form-control"
+                  />
+                </Form.Group>
+              </Col>
+              <Col lg={6} md={6} sm={12}>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
           <Form.Label className="temp-label">
             Prasad Delivery <span className="temp-span-star">*</span>
@@ -281,22 +295,7 @@ const DarshanBooking = () => {
                 </Form.Group>
               </Col>
 
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label">
-                    Special Requests <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={4}
-                    placeholder="Enter Your Special Requests"
-                    className="temp-form-control"
-                  />
-                </Form.Group>
-              </Col>
+             
             </Row>
             <h2>Payment Details</h2>
             <Row>
