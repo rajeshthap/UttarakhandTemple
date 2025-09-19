@@ -112,6 +112,23 @@ const ExtendYourDivine = () => {
       });
     }
   };
+  const handleResendOtp = async () => {
+  try {
+    const res = await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
+      phone: formData.mobile_number,  
+    });
+
+    if (res.data.success) {
+      alert("OTP resent successfully!");
+    } else {
+      alert("Failed to resend OTP. Try again.");
+    }
+  } catch (error) {
+    console.error("Error resending OTP:", error);
+    alert("Something went wrong. Please try again.");
+  }
+};
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -140,7 +157,6 @@ const ExtendYourDivine = () => {
         await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
           phone: formData.mobile_number,
         });
-        alert("OTP sent to your mobile number.");
         handleShow();
       } else {
         alert("Something went wrong!");
@@ -160,7 +176,7 @@ const ExtendYourDivine = () => {
 
   const handleVerifyOtp = async () => {
     if (!otp) {
-      alert("Please enter OTP");
+      
       return;
     }
     setVerifying(true);
@@ -368,6 +384,7 @@ const ExtendYourDivine = () => {
         setOtp={setOtp}
         handleVerifyOtp={handleVerifyOtp}
         phone={formData.mobile_number}   
+        handleResendOtp={handleResendOtp}
       />
     </div>
   );

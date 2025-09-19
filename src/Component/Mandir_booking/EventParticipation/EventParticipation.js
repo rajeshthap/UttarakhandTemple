@@ -36,6 +36,25 @@ const EventParticipation = () => {
     donation_amount: "",
     payment_mode: "",
   });
+
+  const handleResendOtp = async () => {
+  try {
+    
+    const res = await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
+      phone: formData.mobile_number, 
+    });
+
+    if (res.data.success) {
+      
+    } else {
+      alert("Failed to resend OTP. Try again.");
+    }
+  } catch (error) {
+    console.error("Error resending OTP:", error);
+    alert("Something went wrong. Please try again.");
+  }
+};
+
   useEffect(() => {
     const fetchTemples = async () => {
       try {
@@ -814,6 +833,7 @@ const EventParticipation = () => {
           handleVerifyOtp={handleVerifyOtp}
           verifying={verifying}
           phone={formData.mobile_number}   
+          handleResendOtp={handleResendOtp}
       
         />
       </Container>

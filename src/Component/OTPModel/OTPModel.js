@@ -2,13 +2,26 @@ import React from "react";
 import { Modal, Button, Col, Form } from "react-bootstrap";
 import "../../CustomCss/custom.css";
 
-const OTPModel = ({ show, handleClose, otp, setOtp, handleVerifyOtp, verifying,phone }) => {
+const OTPModel = ({ 
+  show, 
+  handleClose, 
+  otp, 
+  setOtp, 
+  handleVerifyOtp, 
+  verifying, 
+  phone,
+  handleResendOtp   
+}) => {
   return (
     <Modal show={show} onHide={handleClose} centered size="md" className="text-center">
       <Modal.Header closeButton>
         <Modal.Title className="otp-model">
           <h1>Please Verify OTP</h1>
-          <p>OTP sent to your mobile <strong>{phone}</strong> <br/>Please enter it below to continue.</p>
+          <p>
+            OTP sent to your mobile <strong>{phone}</strong> 
+            <br />
+            Please enter it below to continue.
+          </p>
         </Modal.Title>
       </Modal.Header>
 
@@ -35,8 +48,10 @@ const OTPModel = ({ show, handleClose, otp, setOtp, handleVerifyOtp, verifying,p
         >
           {verifying ? "Verifying..." : "Submit"}
         </Button>
-        <Button variant="secondary" onClick={handleClose}>
-          Close
+
+        
+        <Button variant="secondary" onClick={handleResendOtp}>
+          Resend OTP
         </Button>
       </Modal.Footer>
     </Modal>
