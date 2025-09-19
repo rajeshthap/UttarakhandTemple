@@ -8,7 +8,7 @@ const OTPModel = ({ show, handleClose, otp, setOtp, handleVerifyOtp, verifying,p
       <Modal.Header closeButton>
         <Modal.Title className="otp-model">
           <h1>Please Verify OTP</h1>
-          <p>OTP sent to your mobile. <strong>{phone}</strong> <br/>Please enter it below to continue.</p>
+          <p>OTP sent to your mobile <strong>{phone}</strong> <br/>Please enter it below to continue.</p>
         </Modal.Title>
       </Modal.Header>
 
