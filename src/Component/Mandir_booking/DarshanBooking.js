@@ -3,6 +3,7 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import { useState } from "react";
 import Form from "react-bootstrap/Form";
 import OTPModel from "../OTPModel/OTPModel";
+import LocationState from "../userregistration/LocationState";
 const DarshanBooking = () => {
   const [show, setShow] = useState(false);
 
@@ -298,7 +299,7 @@ const DarshanBooking = () => {
                   </Form.Select>
                 </Form.Group>
               </Col>
-
+ <LocationState />
               <Col lg={6} md={6} sm={12}>
                 <Form.Group
                   className="mb-3"
