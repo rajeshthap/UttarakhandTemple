@@ -1,6 +1,6 @@
 .alert-toast {
   position: absolute;
-  top: 56%;
+  top: 25%;
   right: 7%;
   background-color: #4BB543;
   color: white;
@@ -15,14 +15,14 @@
   z-index: 999;
 }
 
-@media (max-width: 844px) {
+/* @media (max-width: 844px) {
   .alert-toast {
     position: absolute;
     top: 49%;
     right: 9%;
   }
 
-}
+} */
 
 @media only screen and (max-width: 568px) {
   .alert-toast {
