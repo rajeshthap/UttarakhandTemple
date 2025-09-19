@@ -38,7 +38,7 @@ const OnlineHirePandit = () => {
 
   const handleClose = () => setShow(false);
   const [isOtpVerified, setIsOtpVerified] = useState(
-    localStorage.getItem("otpVerified") === "true"
+    // localStorage.getItem("otpVerified") === "true"
   );
   // Form state
   const [formData, setFormData] = useState({
