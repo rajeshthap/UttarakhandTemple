@@ -197,7 +197,7 @@ const ForgotPassword = () => {
             {step === 3 && (
               <>
                 <Form.Group className="mb-3">
-                  <Form.Label>New Password *</Form.Label>
+                  <Form.Label>New Password  <span class="temp-span-star">*</span></Form.Label>
                   <Form.Control
                     type="password"
                     placeholder="New Password"
@@ -206,7 +206,7 @@ const ForgotPassword = () => {
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label>Confirm Password *</Form.Label>
+                  <Form.Label>Confirm Password <span class="temp-span-star">*</span></Form.Label>
                   <Form.Control
                     type="password"
                     placeholder="Confirm Password"
