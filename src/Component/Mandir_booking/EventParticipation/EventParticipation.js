@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import OTPModel from "../../OTPModel/OTPModel";
@@ -15,7 +15,7 @@ const EventParticipation = () => {
   const [errors, setErrors] = useState({});
   const [sendingOtp, setSendingOtp] = useState(false);
   const [temples, setTemples] = useState([]);
-  
+
   const [formData, setFormData] = useState({
     full_name: "",
     gender: "",
@@ -36,22 +36,22 @@ const EventParticipation = () => {
     donation_amount: "",
     payment_mode: "",
   });
-   useEffect(() => {
-      const fetchTemples = async () => {
-        try {
-          const res = await axios.get(
-            "https://brjobsedu.com/Temple_portal/api/temples-for-divine/"
-          );
-          if (res.data && Array.isArray(res.data.temples)) {
-            setTemples(res.data.temples);
-          }
-        } catch (err) {
-          console.error("Error fetching temples:", err);
+  useEffect(() => {
+    const fetchTemples = async () => {
+      try {
+        const res = await axios.get(
+          "https://brjobsedu.com/Temple_portal/api/temples-for-divine/"
+        );
+        if (res.data && Array.isArray(res.data.temples)) {
+          setTemples(res.data.temples);
         }
-      };
-      fetchTemples();
-    }, []);
-  
+      } catch (err) {
+        console.error("Error fetching temples:", err);
+      }
+    };
+    fetchTemples();
+  }, []);
+
 
   //  Validation logic
   const validateFields = () => {
@@ -115,38 +115,38 @@ const EventParticipation = () => {
   };
 
   const handleChange = (e) => {
-  const { name, value } = e.target;
+    const { name, value } = e.target;
 
-  setFormData((prev) => ({
-    ...prev,
-    [name]: value,
-  }));
-
-  if (errors[name]) {
-    setErrors((prev) => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: "",
+      [name]: value,
     }));
-  }
 
-  if (name === "mobile_number") {
-    let errorMsg = "";
-    if (!/^\d*$/.test(value)) {
-      errorMsg = "Only digits allowed";
-    } else if (value.length > 0 && !/^\d{10}$/.test(value)) {
-      errorMsg = "Enter a valid 10-digit mobile number";
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
     }
-    setErrors((prev) => ({ ...prev, mobile_number: errorMsg }));
-  }
 
-  if (name === "email") {
-    let errorMsg = "";
-    if (value.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-      errorMsg = "Enter a valid email address";
+    if (name === "mobile_number") {
+      let errorMsg = "";
+      if (!/^\d*$/.test(value)) {
+        errorMsg = "Only digits allowed";
+      } else if (value.length > 0 && !/^\d{10}$/.test(value)) {
+        errorMsg = "Enter a valid 10-digit mobile number";
+      }
+      setErrors((prev) => ({ ...prev, mobile_number: errorMsg }));
     }
-    setErrors((prev) => ({ ...prev, email: errorMsg }));
-  }
-};
+
+    if (name === "email") {
+      let errorMsg = "";
+      if (value.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        errorMsg = "Enter a valid email address";
+      }
+      setErrors((prev) => ({ ...prev, email: errorMsg }));
+    }
+  };
 
   const handleCheckbox = async (e) => {
     const checked = e.target.checked;
@@ -168,7 +168,7 @@ const EventParticipation = () => {
     }
 
     try {
-      setSendingOtp(true); 
+      setSendingOtp(true);
       await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
         phone: formData.mobile_number,
       });
@@ -248,8 +248,7 @@ const EventParticipation = () => {
           <h1>Mandri Event Participation </h1>
           <p>
             <i>
-              Your support helps us preserve sacred traditions, maintain temple
-              facilities, and serve the community with devotion and care.{" "}
+              Join Sacred Gatherings and Be Part of Divine Celebrations{" "}
             </i>
           </p>
           <Row>

@@ -304,8 +304,7 @@ const SevaRegistration = () => {
         <h1>Mandri Seva Registration </h1>
         <p>
           <i>
-            Your support helps us preserve sacred traditions, maintain temple
-            facilities, and serve the community with devotion and care.{" "}
+            Serve the Divine, Register Your Seva with Devotion{" "}
           </i>
         </p>
         <Form onSubmit={handleSubmit}>

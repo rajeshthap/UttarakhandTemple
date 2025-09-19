@@ -39,8 +39,7 @@ const DarshanBooking = () => {
         <h1>Darshan Booking</h1>
         <p>
           <i>
-            Your support helps us preserve sacred traditions, maintain temple
-            facilities, and serve the community with devotion and care.{" "}
+            Book Your Sacred Darshan and Connect with the Divine{" "}
           </i>
         </p>
         <Row>
