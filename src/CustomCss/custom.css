@@ -194,6 +194,11 @@ body {
     color: var(--temp-red);
 }
 
+.otperror{
+    color: var(--temp-red);
+    font-size: var(--temp-space-350);
+    text-align: center;
+}
 @media screen and (min-width: 768px) and (max-width: 1024px) {
     .menubar {
         background-color: var(--temp-primary) !important;

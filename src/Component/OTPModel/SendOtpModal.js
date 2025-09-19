@@ -7,9 +7,11 @@ import { useNavigate } from "react-router-dom";
 const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
-const navigate = useNavigate();
+  const [resending, setResending] = useState(false); 
+  const navigate = useNavigate();
   const phone = localStorage.getItem("phone");
 
+  //  Verify OTP
   const verifyOtp = async () => {
     if (!otp.trim()) {
       alert("Please enter the OTP");
@@ -31,15 +33,12 @@ const navigate = useNavigate();
 
       if (res.data.success) {
         alert("OTP verified successfully");
-         navigate("/PaymentConfirmation");
-   
+        navigate("/PaymentConfirmation");
         localStorage.setItem("otpVerified", "true");
 
-     
         if (setIsOtpVerified) setIsOtpVerified(true);
 
-        // Automatically close modal
-        handleClose();
+        handleClose(); // close modal
       } else {
         alert(res.data.message || "Invalid OTP, please try again.");
       }
@@ -48,6 +47,34 @@ const navigate = useNavigate();
       alert(err.response?.data?.message || "Verification failed.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  //  Resend OTP
+  const resendOtp = async () => {
+    if (!phone) {
+      alert("No phone number found. Please restart the process.");
+      return;
+    }
+
+    try {
+      setResending(true);
+      const res = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/Sentotp/",
+        { phone: phone.trim() },
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      if (res.data.success) {
+        alert("OTP resent successfully!");
+      } else {
+        alert(res.data.message || "Failed to resend OTP.");
+      }
+    } catch (err) {
+      console.error("Error resending OTP:", err.response?.data || err.message);
+      alert(err.response?.data?.message || "Failed to resend OTP.");
+    } finally {
+      setResending(false);
     }
   };
 
@@ -63,6 +90,7 @@ const navigate = useNavigate();
           </p>
         </Modal.Title>
       </Modal.Header>
+
       <Modal.Body>
         <Col lg={12} md={12} sm={12}>
           <Form.Group className="mb-3" controlId="otpInput">
@@ -76,12 +104,14 @@ const navigate = useNavigate();
           </Form.Group>
         </Col>
       </Modal.Body>
+
       <Modal.Footer>
-        <Button className="model-btn" variant="" onClick={verifyOtp} disabled={loading}>
+        <Button className="model-btn" onClick={verifyOtp} disabled={loading}>
           {loading ? "Verifying..." : "Submit"}
         </Button>
-        <Button variant="secondary" onClick={handleClose}>
-          Close
+        
+        <Button variant="secondary" onClick={resendOtp} disabled={resending}>
+          {resending ? "Resending..." : "Resend OTP"}
         </Button>
       </Modal.Footer>
     </Modal>

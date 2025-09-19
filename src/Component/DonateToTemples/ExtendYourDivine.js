@@ -119,12 +119,12 @@ const ExtendYourDivine = () => {
     });
 
     if (res.data.success) {
-      alert("OTP resent successfully!");
+      alert("OTP Resent Successfully!");
     } else {
       alert("Failed to resend OTP. Try again.");
     }
   } catch (error) {
-    console.error("Error resending OTP:", error);
+    console.error("Error Resending OTP:", error);
     alert("Something went wrong. Please try again.");
   }
 };
@@ -200,7 +200,7 @@ const ExtendYourDivine = () => {
       }
     } catch (error) {
       console.error("OTP Verify Error:", error.response?.data || error.message);
-      alert("OTP verification error. Try again.");
+      alert("Please Enter Correct OTP");
     } finally {
       setVerifying(false);
     }
