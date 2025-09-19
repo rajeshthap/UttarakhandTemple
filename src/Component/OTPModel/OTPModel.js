@@ -13,41 +13,42 @@ const OTPModel = ({
   handleResendOtp   
 }) => {
   const [resending, setResending] = useState(false);
-  const [timer, setTimer] = useState(60);   
-  const [otpExpiry, setOtpExpiry] = useState(120); 
+  const [timer, setTimer] = useState(60);     
+  const [otpExpiry, setOtpExpiry] = useState(120); // OTP validity timer
+  const maskedPhone = phone ? `XXXXXX${phone.slice(-4)}` : "XXXXXXXXXX";
 
-  // Countdown for Resend button (60s lock)
+  // Resend button countdown
   useEffect(() => {
     let interval;
     if (timer > 0) {
-      interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
+      interval = setInterval(() => setTimer(prev => prev - 1), 1000);
     }
     return () => clearInterval(interval);
   }, [timer]);
 
-  // Countdown for OTP expiry (120s validity)
+  // OTP expiry countdown
   useEffect(() => {
     let interval;
     if (otpExpiry > 0) {
-      interval = setInterval(() => setOtpExpiry((prev) => prev - 1), 1000);
+      interval = setInterval(() => setOtpExpiry(prev => prev - 1), 1000);
     }
     return () => clearInterval(interval);
   }, [otpExpiry]);
 
-  // When modal first opens, reset timers
+  // Reset timers when modal opens
   useEffect(() => {
     if (show) {
-      setTimer(60);     
-      setOtpExpiry(120); 
+      setTimer(60);
+      setOtpExpiry(120);
     }
   }, [show]);
 
   const onResendClick = async () => {
     try {
       setResending(true);
-      setTimer(60);      
-      setOtpExpiry(120);  
-      await handleResendOtp();
+      setTimer(60);
+      setOtpExpiry(120);
+      await handleResendOtp(); // call parent API
     } catch (err) {
       console.error("Resend OTP failed:", err);
     } finally {
@@ -61,18 +62,14 @@ const OTPModel = ({
         <Modal.Title className="otp-model">
           <h1>Please Verify OTP</h1>
           <p>
-            OTP sent to your mobile <strong>{phone}</strong> <br />
+            OTP sent to your mobile <strong>{maskedPhone}</strong> <br />
             Please enter it below to continue.
           </p>
-          {otpExpiry > 0 ? (
-            <p className="otperror">
-              OTP valid for {otpExpiry}s
-            </p>
-          ) : (
-            <p className="otperror">
-              OTP expired, please resend
-            </p>
-          )}
+          <p className="otperror">
+            {otpExpiry > 0 
+              ? `OTP valid for ${otpExpiry}s` 
+              : "OTP expired, please resend"}
+          </p>
         </Modal.Title>
       </Modal.Header>
 

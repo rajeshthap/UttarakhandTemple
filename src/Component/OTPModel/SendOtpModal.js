@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Col, Form } from "react-bootstrap";
 import "../../CustomCss/custom.css";
 import axios from "axios";
@@ -7,11 +7,40 @@ import { useNavigate } from "react-router-dom";
 const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
-  const [resending, setResending] = useState(false); 
+  const [resending, setResending] = useState(false);
+  const [timer, setTimer] = useState(60);       
+  const [otpExpiry, setOtpExpiry] = useState(120); 
+
   const navigate = useNavigate();
   const phone = localStorage.getItem("phone");
 
-  //  Verify OTP
+  // Resend countdown
+  useEffect(() => {
+    let interval;
+    if (timer > 0) {
+      interval = setInterval(() => setTimer(prev => prev - 1), 1000);
+    }
+    return () => clearInterval(interval);
+  }, [timer]);
+
+  // OTP expiry countdown
+  useEffect(() => {
+    let interval;
+    if (otpExpiry > 0) {
+      interval = setInterval(() => setOtpExpiry(prev => prev - 1), 1000);
+    }
+    return () => clearInterval(interval);
+  }, [otpExpiry]);
+
+  // Reset timers when modal opens
+  useEffect(() => {
+    if (show) {
+      setTimer(60);
+      setOtpExpiry(120);
+    }
+  }, [show]);
+
+  // Verify OTP 
   const verifyOtp = async () => {
     if (!otp.trim()) {
       alert("Please enter the OTP");
@@ -38,7 +67,7 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
 
         if (setIsOtpVerified) setIsOtpVerified(true);
 
-        handleClose(); // close modal
+        handleClose(); 
       } else {
         alert(res.data.message || "Invalid OTP, please try again.");
       }
@@ -50,7 +79,7 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
     }
   };
 
-  //  Resend OTP
+  // Resend OTP 
   const resendOtp = async () => {
     if (!phone) {
       alert("No phone number found. Please restart the process.");
@@ -59,6 +88,8 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
 
     try {
       setResending(true);
+      setTimer(60);       
+      setOtpExpiry(120);  
       const res = await axios.post(
         "https://brjobsedu.com/Temple_portal/api/Sentotp/",
         { phone: phone.trim() },
@@ -85,8 +116,9 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
       <Modal.Header closeButton>
         <Modal.Title className="otp-model">
           <h1>Please Verify OTP</h1>
-          <p>
-            OTP sent to your mobile ({maskedPhone}). Please enter it below to continue.
+          <p>OTP sent to your mobile ({maskedPhone}).<br/> Please enter it below to continue.</p>
+          <p className="otperror">
+            {otpExpiry > 0 ? `OTP valid for ${otpExpiry}s` : "OTP expired, please resend"}
           </p>
         </Modal.Title>
       </Modal.Header>
@@ -106,12 +138,12 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
       </Modal.Body>
 
       <Modal.Footer>
-        <Button className="model-btn" onClick={verifyOtp} disabled={loading}>
+        <Button className="model-btn" onClick={verifyOtp} disabled={loading || otpExpiry <= 0}>
           {loading ? "Verifying..." : "Submit"}
         </Button>
-        
-        <Button variant="secondary" onClick={resendOtp} disabled={resending}>
-          {resending ? "Resending..." : "Resend OTP"}
+
+        <Button variant="secondary" onClick={resendOtp} disabled={resending || timer > 0}>
+          {timer > 0 ? `Resend in ${timer}s` : resending ? "Resending..." : "Resend OTP"}
         </Button>
       </Modal.Footer>
     </Modal>
