@@ -5,6 +5,7 @@ import Form from "react-bootstrap/Form";
 import OTPModel from "../../OTPModel/OTPModel";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import LocationState from "../../userregistration/LocationState";
 
 const PoojaBooking = () => {
   const [show, setShow] = useState(false);
@@ -46,8 +47,12 @@ const PoojaBooking = () => {
     city: "",
     pin_code: "",
 
-    donation_amount: ""
+    donation_amount: "",
   });
+  const handleInputChangeCity = (name, value) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    validateFields(name, value); 
+  };
 
   useEffect(() => {
     const fetchTemples = async () => {
@@ -65,7 +70,6 @@ const PoojaBooking = () => {
     fetchTemples();
   }, []);
 
-
   const validateFields = () => {
     const newErrors = {};
 
@@ -73,8 +77,7 @@ const PoojaBooking = () => {
     if (!formData.full_name.trim())
       newErrors.full_name = "Full Name is required";
 
-    if (!formData.gender)
-      newErrors.gender = "Gender is required";
+    if (!formData.gender) newErrors.gender = "Gender is required";
 
     if (!formData.age || isNaN(formData.age) || formData.age <= 0)
       newErrors.age = "Valid age is required";
@@ -104,8 +107,7 @@ const PoojaBooking = () => {
     if (!formData.temple_name)
       newErrors.temple_name = "Temple Name is required";
 
-    if (!formData.pooja_name)
-      newErrors.pooja_name = "Pooja Name is required";
+    if (!formData.pooja_name) newErrors.pooja_name = "Pooja Name is required";
 
     if (!formData.date_of_pooja)
       newErrors.date_of_pooja = "Date of Pooja is required";
@@ -117,11 +119,14 @@ const PoojaBooking = () => {
       newErrors.mode_of_participation = "Mode of Participation is required";
 
     //  Additional Details
-    if (!formData.number_of_participants || isNaN(formData.number_of_participants) || formData.number_of_participants <= 0)
+    if (
+      !formData.number_of_participants ||
+      isNaN(formData.number_of_participants) ||
+      formData.number_of_participants <= 0
+    )
       newErrors.number_of_participants = "Enter valid number of participants";
 
-    if (!formData.gotra.trim())
-      newErrors.gotra = "Gotra is required";
+    if (!formData.gotra.trim()) newErrors.gotra = "Gotra is required";
 
     if (!formData.nakshatra_rashi.trim())
       newErrors.nakshatra_rashi = "Nakshatra / Rashi is required";
@@ -130,21 +135,28 @@ const PoojaBooking = () => {
       newErrors.sankalp = "Sankalp / Intentions are required";
 
     // Accommodation (optional – validate only if user selected Yes)
-    if (formData.accommodation_required === "Yes" && !formData.special_requests.trim())
-      newErrors.special_requests = "Please specify special requests for accommodation";
+    if (
+      formData.accommodation_required === "Yes" &&
+      !formData.special_requests.trim()
+    )
+      newErrors.special_requests =
+        "Please specify special requests for accommodation";
 
     //  Prasad & Offerings
     if (!formData.prasad_delivery)
       newErrors.prasad_delivery = "Prasad Delivery option is required";
 
     // Payment Details
-    if (!formData.donation_amount || isNaN(formData.donation_amount) || formData.donation_amount <= 0)
+    if (
+      !formData.donation_amount ||
+      isNaN(formData.donation_amount) ||
+      formData.donation_amount <= 0
+    )
       newErrors.donation_amount = "Valid Donation Amount is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
 
   const handleAgreeChange = async (e) => {
     const checked = e.target.checked;
@@ -169,9 +181,12 @@ const PoojaBooking = () => {
 
     //  otherwise send OTP
     try {
-      const res = await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
-        phone: formData.mobile_number,
-      });
+      const res = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/Sentotp/",
+        {
+          phone: formData.mobile_number,
+        }
+      );
 
       if (res.data.success) {
         setOtpSent(true);
@@ -191,10 +206,13 @@ const PoojaBooking = () => {
 
   const handleVerifyOtp = async () => {
     try {
-      const res = await axios.post("https://brjobsedu.com/Temple_portal/api/Verify/", {
-        phone: formData.mobile_number,
-        otp: otp,
-      });
+      const res = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/Verify/",
+        {
+          phone: formData.mobile_number,
+          otp: otp,
+        }
+      );
 
       if (res.data.success) {
         setIsVerified(true);
@@ -209,7 +227,6 @@ const PoojaBooking = () => {
       alert("Error verifying OTP");
     }
   };
-
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -251,7 +268,6 @@ const PoojaBooking = () => {
       return;
     }
 
-
     setLoading(true);
 
     try {
@@ -272,9 +288,6 @@ const PoojaBooking = () => {
       if (res.data.message === "Temple booking created successfully") {
         alert("Pooja Registration Successful!");
         navigate("/PaymentConfirmation");
-
-
-
       } else {
         alert(res.data.message || "Pooja Registration failed");
       }
@@ -292,9 +305,6 @@ const PoojaBooking = () => {
     }
   };
 
-
-
-
   return (
     <div>
       <Container className="temp-container">
@@ -308,7 +318,7 @@ const PoojaBooking = () => {
           <Row>
             <Col lg={8} md={8} sm={12} className="mt-2">
               <h2>Devotee Information</h2>
-              <Row className="mt-4">
+              <Row className="mt-3">
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
                     className="mb-3"
@@ -328,7 +338,6 @@ const PoojaBooking = () => {
                     {errors.full_name && (
                       <small className="text-danger">{errors.full_name}</small>
                     )}
-
                   </Form.Group>
                 </Col>
                 <Col lg={6} md={6} sm={12}>
@@ -346,7 +355,7 @@ const PoojaBooking = () => {
                       value={formData.gender}
                       onChange={handleInputChange}
                     >
-                      <option value="">Select Gender Type</option>
+                      <option value="">Select Gender </option>
                       <option value="Male">Male </option>
                       <option value="Female">Female </option>
                       <option value="Other">Other </option>
@@ -354,7 +363,6 @@ const PoojaBooking = () => {
                     {errors.gender && (
                       <small className="text-danger">{errors.gender}</small>
                     )}
-
                   </Form.Group>
                 </Col>
                 <Col lg={6} md={6} sm={12}>
@@ -367,7 +375,7 @@ const PoojaBooking = () => {
                     </Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Enter Your Age"
+                      placeholder="Enter Age"
                       className="temp-form-control"
                       name="age"
                       value={formData.age}
@@ -387,7 +395,7 @@ const PoojaBooking = () => {
                       Mobile Number <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
-                      type="number"
+                      type="text"
                       placeholder="Enter Mobile Number"
                       className="temp-form-control"
                       name="mobile_number"
@@ -411,7 +419,7 @@ const PoojaBooking = () => {
                     </Form.Label>
                     <Form.Control
                       type="email"
-                      placeholder="Enter Email"
+                      placeholder="Enter Email ID"
                       className="temp-form-control"
                       name="email"
                       value={formData.email}
@@ -438,8 +446,8 @@ const PoojaBooking = () => {
                       value={formData.id_proof_type}
                       onChange={handleInputChange}
                     >
-                      <option value="">Select ID Proof Type</option>
-                      <option value="Aadhar">Aadhar </option>
+                      <option value="">Select ID Proof </option>
+                      <option value="Aadhar">Aadhar Card </option>
                       <option value="PAN ">PAN </option>
                       <option value="Passport ">Passport </option>
                       <option value="Voter ID">Voter ID </option>
@@ -461,7 +469,7 @@ const PoojaBooking = () => {
                     </Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="ID Proof Number"
+                      placeholder="Enter ID Proof Number"
                       className="temp-form-control"
                       name="id_proof_number"
                       value={formData.id_proof_number}
@@ -476,7 +484,7 @@ const PoojaBooking = () => {
                   </Form.Group>
                 </Col>
 
-                <h2>Pooja Booking Details </h2>
+                <h2 className="mb-3 mt-2">Pooja Booking Details </h2>
 
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
@@ -513,7 +521,8 @@ const PoojaBooking = () => {
                     controlId="exampleForm.ControlInput1"
                   >
                     <Form.Label className="temp-label">
-                      Pooja Name / Type <span className="temp-span-star">*</span>
+                      Pooja Name / Type{" "}
+                      <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Select
                       className="temp-form-control-option"
@@ -528,9 +537,7 @@ const PoojaBooking = () => {
                       <option value="Ganesh Pooja">Ganesh Pooja </option>
                     </Form.Select>
                     {errors.pooja_name && (
-                      <small className="text-danger">
-                        {errors.pooja_name}
-                      </small>
+                      <small className="text-danger">{errors.pooja_name}</small>
                     )}
                   </Form.Group>
                 </Col>
@@ -618,7 +625,7 @@ const PoojaBooking = () => {
                   </Form.Group>
                 </Col>
 
-                <h2>Additional Details</h2>
+                <h2 className="mb-3 mt-2">Additional Details</h2>
 
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
@@ -630,7 +637,7 @@ const PoojaBooking = () => {
                       <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
-                      type="number"
+                      type="text"
                       placeholder="Number of Participants "
                       className="temp-form-control"
                       name="number_of_participants"
@@ -650,8 +657,7 @@ const PoojaBooking = () => {
                     controlId="exampleForm.ControlInput1"
                   >
                     <Form.Label className="temp-label">
-                      Gotra {" "}
-                      <span className="temp-span-star">*</span>
+                      Gotra <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -682,7 +688,8 @@ const PoojaBooking = () => {
                       className="temp-form-control"
                       name="nakshatra_rashi"
                       value={formData.nakshatra_rashi}
-                      onChange={handleInputChange} />
+                      onChange={handleInputChange}
+                    />
                     {errors.nakshatra_rashi && (
                       <small className="text-danger">
                         {errors.nakshatra_rashi}
@@ -697,7 +704,7 @@ const PoojaBooking = () => {
                     controlId="exampleForm.ControlInput1"
                   >
                     <Form.Label className="temp-label">
-                      Any Specific Sankalp / Instructions for Pooja {" "}
+                      Any Specific Sankalp / Instructions for Pooja{" "}
                       <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
@@ -708,17 +715,14 @@ const PoojaBooking = () => {
                       name="sankalp"
                       value={formData.sankalp}
                       onChange={handleInputChange}
-
                     />
                     {errors.sankalp && (
-                      <small className="text-danger">
-                        {errors.sankalp}
-                      </small>
+                      <small className="text-danger">{errors.sankalp}</small>
                     )}
                   </Form.Group>
                 </Col>
 
-                <h2>Accomodation</h2>
+                <h2 className="mb-3 mt-2">Accomodation</h2>
 
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
@@ -753,8 +757,7 @@ const PoojaBooking = () => {
                     controlId="exampleForm.ControlInput1"
                   >
                     <Form.Label className="temp-label">
-                      Special Requests {" "}
-                      <span className="temp-span-star">*</span>
+                      Special Requests <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -773,7 +776,7 @@ const PoojaBooking = () => {
                 </Col>
 
                 {/* Prasad & Offerings */}
-                <h2>Prasad & Offerings</h2>
+                <h2 className="mb-3 mt-2">Prasad & Offerings</h2>
 
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
@@ -781,8 +784,7 @@ const PoojaBooking = () => {
                     controlId="exampleForm.ControlInput1"
                   >
                     <Form.Label className="temp-label">
-                      Prasad Type {" "}
-                      <span className="temp-span-star">*</span>
+                      Prasad Type <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Select
                       className="temp-form-control-option"
@@ -809,7 +811,7 @@ const PoojaBooking = () => {
                     controlId="exampleForm.ControlInput1"
                   >
                     <Form.Label className="temp-label">
-                      Prasad Delivery<span className="temp-span-star">*</span>
+                      Prasad Delivery<span className="temp-span-star"> *</span>
                     </Form.Label>
                     <Form.Select
                       className="temp-form-control-option"
@@ -819,7 +821,7 @@ const PoojaBooking = () => {
                     >
                       <option value="">Select option</option>
                       <option value="yes">Yes</option>
-                      <option value="no">No</option>
+                      {/* <option value="no">No</option> */}
                     </Form.Select>
                     {errors.prasad_delivery && (
                       <small className="text-danger">
@@ -831,68 +833,21 @@ const PoojaBooking = () => {
 
                 {formData.prasad_delivery === "yes" && (
                   <>
-                    <h4>Delivery Address</h4>
+                    <h2 className="mt-2 mb-3">Delivery Address</h2>
+
+                   <LocationState
+                          formData={formData}
+                          handleInputChange={handleInputChangeCity}
+                          formErrors={errors}
+                        />
+
                     <Col lg={6} md={6} sm={12}>
                       <Form.Group className="mb-3">
                         <Form.Label className="temp-label">
-                          Country<span className="temp-span-star">*</span>
+                          Pin Code <span className="temp-span-star">*</span>
                         </Form.Label>
                         <Form.Control
                           type="text"
-                          placeholder=""
-                          className="temp-form-control"
-                          name="country"
-                          value={formData.country}
-                          onChange={handleInputChange}
-                        />
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg={6} md={6} sm={12}>
-                      <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">
-                          State<span className="temp-span-star">*</span>
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          placeholder="State"
-                          className="temp-form-control"
-                          name="state"
-                          value={formData.state}
-                          onChange={handleInputChange}
-                        />
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg={6} md={6} sm={12}>
-                      <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">
-                          City<span className="temp-span-star">*</span>
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          placeholder="City"
-                          className="temp-form-control"
-                          name="city"
-                          value={formData.city}
-                          onChange={handleInputChange}
-                        />
-                      </Form.Group>
-                    </Col>
-
-                    {/* <LocationState
-                                            formData={formData}
-                                            handleInputChange={handleInputChangeCity}
-                                            formErrors={formErrors}
-                                          /> */}
-
-                    <Col lg={6} md={6} sm={12}>
-                      <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">
-                          Pin Code<span className="temp-span-star">*</span>
-                        </Form.Label>
-                        <Form.Control
-                          type="number"
                           placeholder="Pincode"
                           className="temp-form-control"
                           name="pin_code"
@@ -904,8 +859,7 @@ const PoojaBooking = () => {
                   </>
                 )}
 
-
-                <h2>Payment Details</h2>
+                <h2 className="mt-2 mb-3">Payment Details</h2>
 
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
@@ -913,8 +867,7 @@ const PoojaBooking = () => {
                     controlId="exampleForm.ControlInput1"
                   >
                     <Form.Label className="temp-label">
-                      Donation Amount {" "}
-                      <span className="temp-span-star">*</span>
+                      Donation Amount <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -931,9 +884,6 @@ const PoojaBooking = () => {
                     )}
                   </Form.Group>
                 </Col>
-
-
-
               </Row>
               <div>
                 <label>
@@ -943,8 +893,8 @@ const PoojaBooking = () => {
                     className="mx-2"
                     checked={agree}
                     onChange={handleAgreeChange}
-                  />I
-                  agree to booking terms &amp; cancellation policy
+                  />
+                  I agree to booking terms &amp; cancellation policy
                 </label>
               </div>
 
@@ -1004,7 +954,7 @@ const PoojaBooking = () => {
                       when the temple is closed.
                     </li>
                   </ul>
-                  <h2>Accepted Payment Methods</h2>
+                  <h2 className="mt-2 mb-3">Accepted Payment Methods</h2>
                   <ul>
                     <li>
                       Net Banking – Secure online transfers through major Indian
@@ -1034,11 +984,14 @@ const PoojaBooking = () => {
         </Form>
       </Container>
       <OTPModel
-        show={show}
-        handleClose={handleClose}
-        otp={otp}
-        setOtp={setOtp}
-        handleVerifyOtp={handleVerifyOtp} />
+  show={show}
+  handleClose={handleClose}
+  otp={otp}
+  setOtp={setOtp}
+  handleVerifyOtp={handleVerifyOtp}
+  phone={formData.mobile_number}   
+/>
+
     </div>
   );
 };
