@@ -42,7 +42,7 @@ const DarshanBooking = () => {
   return (
     <div>
       <Container className="temp-container">
-        <h1>Darshan Booking</h1>
+        <h1>Darshan Booking1</h1>
         <p>
           <i>
             Book Your Sacred Darshan and Connect with the Divine{" "}
