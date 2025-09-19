@@ -6,7 +6,7 @@ const ModifyAlert = ({ message, show, setShow }) => {
     if (show) {
       const timer = setTimeout(() => {
         setShow(false);
-      }, 3000); 
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [show, setShow]);
