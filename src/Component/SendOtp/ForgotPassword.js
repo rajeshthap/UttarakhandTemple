@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Form, Col, Container, Row } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../../CustomCss/custom.css";
 
 const ForgotPassword = () => {
   const [step, setStep] = useState(1);
@@ -13,6 +14,11 @@ const ForgotPassword = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState("");
+  const [resending, setResending] = useState(false);
+  const [otpExpiry, setOtpExpiry] = useState(120);      // OTP validity timer
+  const [resendTimer, setResendTimer] = useState(60);   // Resend lock timer
+  const [maskedContact, setMaskedContact] = useState("");
+
   const navigate = useNavigate();
 
   const phoneRegex = /^\+?\d{10,15}$/;
@@ -26,6 +32,17 @@ const ForgotPassword = () => {
     if (emailRegex.test(trimmedContact))
       return { email: trimmedContact, type: trimmedUserType };
     return null;
+  };
+
+  const maskContact = (contact) => {
+    if (phoneRegex.test(contact)) {
+      return `XXXXXX${contact.slice(-4)}`;
+    } else if (emailRegex.test(contact)) {
+      const [user, domain] = contact.split("@");
+      const maskedUser = user.length > 2 ? `${user[0]}****${user.slice(-1)}` : user;
+      return `${maskedUser}@${domain}`;
+    }
+    return contact;
   };
 
   // Step 1: Send OTP
@@ -55,7 +72,9 @@ const ForgotPassword = () => {
       if (res.data.success) {
         setMessage("OTP Sent Successfully!");
         setStep(2);
-        console.log("User type after sending OTP:", currentUserType);
+        setOtpExpiry(120);   // Start OTP validity timer
+        setResendTimer(60);  // Start resend button timer
+        setMaskedContact(maskContact(contact));
       } else {
         setErrors(res.data.message || "Failed to send OTP");
       }
@@ -69,11 +88,15 @@ const ForgotPassword = () => {
 
   // Step 2: Verify OTP
   const handleVerifyOtp = async () => {
-    const currentUserType = userType.trim();
     if (!otp) return setErrors("Enter the OTP sent to your contact");
 
     const payload = { ...getContactPayload(), otp };
     if (!payload) return setErrors("Invalid contact");
+
+    if (otpExpiry <= 0) {
+      setErrors("OTP expired, please resend");
+      return;
+    }
 
     setLoading(true);
     setErrors("");
@@ -88,18 +111,18 @@ const ForgotPassword = () => {
       if (res.data.success) {
         setMessage("OTP Verified! Now reset your password.");
         setStep(3);
-        console.log("User type after Verifying OTP:", currentUserType);
       } else {
         setErrors(res.data.message || "Invalid OTP");
       }
-    } catch {
+    } catch (err) {
+      console.error(err);
       setErrors("Error verifying OTP");
     } finally {
       setLoading(false);
     }
   };
 
-  //Reset password
+  // Step 3: Reset Password
   const handleResetPassword = async () => {
     if (!password || !confirmPassword) {
       setErrors("Enter both password fields");
@@ -110,7 +133,6 @@ const ForgotPassword = () => {
       return;
     }
 
-    const currentUserType = userType;
     const payload = { ...getContactPayload(), otp, password };
 
     setLoading(true);
@@ -122,7 +144,7 @@ const ForgotPassword = () => {
         "https://brjobsedu.com/Temple_portal/api/forgetpassword/",
         payload
       );
-      switch (currentUserType.toLowerCase()) {
+      switch (userType.toLowerCase()) {
         case "temple":
           navigate("/AuthorityLogin");
           break;
@@ -140,21 +162,70 @@ const ForgotPassword = () => {
     }
   };
 
+  // Resend OTP function
+  const handleResendOtp = async () => {
+    const payload = getContactPayload();
+    if (!payload) return setErrors("Invalid contact");
+
+    setResending(true);
+    setErrors("");
+    setMessage("");
+
+    try {
+      const res = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/Sentotp/",
+        payload
+      );
+      if (res.data.success) {
+        setMessage("OTP resent successfully!");
+        setOtpExpiry(120);
+        setResendTimer(60);
+      } else {
+        setErrors(res.data.message || "Failed to resend OTP");
+      }
+    } catch (err) {
+      setErrors("Error resending OTP");
+    } finally {
+      setResending(false);
+    }
+  };
+
+  // OTP expiry countdown
+  useEffect(() => {
+    let otpInterval;
+    if (otpExpiry > 0 && step === 2) {
+      otpInterval = setInterval(() => setOtpExpiry(prev => prev - 1), 1000);
+    }
+    return () => clearInterval(otpInterval);
+  }, [otpExpiry, step]);
+
+  // Resend button countdown
+  useEffect(() => {
+    let resendInterval;
+    if (resendTimer > 0 && step === 2) {
+      resendInterval = setInterval(() => setResendTimer(prev => prev - 1), 1000);
+    }
+    return () => clearInterval(resendInterval);
+  }, [resendTimer, step]);
+
   return (
     <Container className="temp-container">
       <div className="temple-registration-heading">
         <h2>Forgot Password</h2>
         <Row>
-          <Col lg={6} md={6} sm={12} className="mt-4">
+          <Col lg={6} md={6} sm={12} className="mt-1">
+            {/* Step 1: Contact and User Type */}
             {step === 1 && (
               <>
                 <Form.Group className="mb-3">
-                  <Form.Label className="temp-label-lg-bg">User Type <span className="temp-span-star">*</span></Form.Label>
+                  <Form.Label className="temp-label-lg-bg">
+                    User Type <span className="temp-span-star">*</span>
+                  </Form.Label>
                   <Form.Select
                     value={userType}
                     onChange={(e) => setUserType(e.target.value)}
                   >
-                    <option value="">Select type </option>
+                    <option value="">Select type</option>
                     <option value="Temple">Temple</option>
                     <option value="Pandit">Pandit</option>
                     <option value="Devotee">Devotee</option>
@@ -162,7 +233,9 @@ const ForgotPassword = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                  <Form.Label className="temp-label-lg-bg">Email or Mobile Number <span className="temp-span-star">*</span></Form.Label>
+                  <Form.Label className="temp-label-lg-bg">
+                    Email or Mobile Number <span className="temp-span-star">*</span>
+                  </Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Enter your email or phone"
@@ -177,10 +250,11 @@ const ForgotPassword = () => {
               </>
             )}
 
+            {/* Step 2: OTP Verification */}
             {step === 2 && (
               <>
-                <Form.Group className="mb-3">
-                  <Form.Label>Enter OTP *</Form.Label>
+                <Form.Group className="">
+                  <Form.Label>Enter OTP <span className="temp-span-star">*</span></Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Enter OTP"
@@ -188,16 +262,42 @@ const ForgotPassword = () => {
                     onChange={(e) => setOtp(e.target.value)}
                   />
                 </Form.Group>
-                <Button onClick={handleVerifyOtp} disabled={loading}>
-                  {loading ? "Verifying..." : "Verify OTP"}
+
+                <p className="otperror mt-2">
+                  {otpExpiry > 0
+                    ? `OTP valid for ${otpExpiry}s`
+                    : "OTP expired, please resend"}
+                </p>
+
+                {maskedContact && <p className="otpsuccess">OTP Sent To: {maskedContact}</p>}
+
+               
+                <Button onClick={handleVerifyOtp} disabled={loading || otpExpiry <= 0}>
+                  {loading ? "Verifying..." : "Verify"}
+                </Button>
+
+                <Button
+                  variant="secondary"
+                  onClick={handleResendOtp}
+                  disabled={resending || resendTimer > 0}
+                  className="ms-2"
+                >
+                  {resendTimer > 0
+                    ? `Resend in ${resendTimer}s`
+                    : resending
+                      ? "Resending..."
+                      : "Resend OTP"}
                 </Button>
               </>
             )}
 
+            {/* Step 3: Reset Password */}
             {step === 3 && (
               <>
                 <Form.Group className="mb-3">
-                  <Form.Label>New Password  <span class="temp-span-star">*</span></Form.Label>
+                  <Form.Label>
+                    New Password <span className="temp-span-star">*</span>
+                  </Form.Label>
                   <Form.Control
                     type="password"
                     placeholder="New Password"
@@ -205,8 +305,11 @@ const ForgotPassword = () => {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </Form.Group>
+
                 <Form.Group className="mb-3">
-                  <Form.Label>Confirm Password <span class="temp-span-star">*</span></Form.Label>
+                  <Form.Label>
+                    Confirm Password <span className="temp-span-star">*</span>
+                  </Form.Label>
                   <Form.Control
                     type="password"
                     placeholder="Confirm Password"
@@ -214,14 +317,14 @@ const ForgotPassword = () => {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                 </Form.Group>
+
                 <Button onClick={handleResetPassword} disabled={loading}>
                   {loading ? "Resetting..." : "Reset Password"}
                 </Button>
               </>
             )}
 
-            {message && <p className="success mt-2">{message}</p>}
-            {errors && <p className="error mt-2">{errors}</p>}
+            {errors && <p className="otperror mt-2">{errors}</p>}
           </Col>
         </Row>
       </div>
