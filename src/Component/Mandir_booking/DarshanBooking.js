@@ -6,7 +6,11 @@ import OTPModel from "../OTPModel/OTPModel";
 import LocationState from "../userregistration/LocationState";
 const DarshanBooking = () => {
   const [show, setShow] = useState(false);
+ const [prasadDelivery, setPrasadDelivery] = useState("");
 
+  const handlePrasadChange = (e) => {
+    setPrasadDelivery(e.target.value);
+  };
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   const [darshanType, setDarshanType] = useState("");
@@ -34,10 +38,11 @@ const DarshanBooking = () => {
       setAmount(""); // reset if no predefined amount
     }
   };
+  
   return (
     <div>
       <Container className="temp-container">
-        <h1>Darshan Booking</h1>
+        <h1>Darshan Booking1</h1>
         <p>
           <i>
             Book Your Sacred Darshan and Connect with the Divine{" "}
@@ -57,7 +62,7 @@ const DarshanBooking = () => {
                   </Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder=""
+                    placeholder="Enter Name"
                     className="temp-form-control"
                   />
                 </Form.Group>
@@ -72,7 +77,7 @@ const DarshanBooking = () => {
                   </Form.Label>
                   <Form.Control
                     type="email"
-                    placeholder=""
+                    placeholder="Enter Email"
                     className="temp-form-control"
                   />
                 </Form.Group>
@@ -86,9 +91,10 @@ const DarshanBooking = () => {
                     Gender <span className="temp-span-star">*</span>
                   </Form.Label>
                   <Form.Select className="temp-form-control-option">
-                    <option value="">Select Temple Type</option>
+                    <option value="">Select Gender</option>
                     <option value="shiv">Male </option>
                     <option value="vishnu">Female </option>
+                    <option value="vishnu">Other </option>
                   </Form.Select>
                 </Form.Group>
               </Col>
@@ -119,7 +125,7 @@ const DarshanBooking = () => {
                   </Form.Label>
                   <Form.Control
                     type="number"
-                    placeholder=""
+                    placeholder="Enetr Mobile Number"
                     className="temp-form-control"
                   />
                 </Form.Group>
@@ -134,7 +140,7 @@ const DarshanBooking = () => {
                     ID Proof Type <span className="temp-span-star">*</span>
                   </Form.Label>
                   <Form.Select className="temp-form-control-option">
-                    <option value="">Select Temple Type</option>
+                    <option value="">Select Temple</option>
                     <option value="shiv">Aadhar </option>
                     <option value="vishnu">PAN </option>
                     <option value="vishnu"> Voter ID </option>
@@ -152,7 +158,7 @@ const DarshanBooking = () => {
                   </Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder=""
+                    placeholder="Your ID Proof Number"
                     className="temp-form-control"
                   />
                 </Form.Group>
@@ -160,7 +166,6 @@ const DarshanBooking = () => {
             </Row>
             <h2>Darshan Booking Details</h2>
             <Row>
-
               {/* Booking Details */}
               <Col lg={6} md={6} sm={12}>
                 <Form.Group className="mb-3" controlId="templeType">
@@ -171,7 +176,7 @@ const DarshanBooking = () => {
                     className="temp-form-control-option"
                     name="temple_type"
                   >
-                    <option value="">Select Temple Type</option>
+                    <option value="">Select Temple</option>
                     <option value="shiv">Shiva Temple</option>
                     <option value="vishnu">Vishnu Temple</option>
                     <option value="durga">Durga Temple</option>
@@ -219,87 +224,60 @@ const DarshanBooking = () => {
             <h2 className="pt-4">Address Details</h2>
             <Row>
 
-              <Col lg={6} md={6} sm={12}>
+ <Col lg={6} md={6} sm={12}>
                 <Form.Group
                   className="mb-3"
                   controlId="exampleForm.ControlInput1"
                 >
                   <Form.Label className="temp-label">
-                    Country <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Select className="temp-form-control-option">
-                    <option value="Select an option">Select a Country</option>
-                    <option value="option1">Option 1</option>
-                    <option value="option2">Option 2</option>
-                    <option value="option3">Option 3</option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label">
-                    State <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Select className="temp-form-control-option">
-                    <option value="Select a option">Select a State</option>
-                    <option value="option1">Option 1</option>
-                    <option value="option2">Option 2</option>
-                    <option value="option3">Option 3</option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label">
-                    City <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Select className="temp-form-control-option">
-                    <option value="Select a option">Select a City</option>
-                    <option value="option1">Option 1</option>
-                    <option value="option2">Option 2</option>
-                    <option value="option3">Option 3</option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label">
-                    ZipCode <span className="temp-span-star">*</span>
+                    Special Requests <span className="temp-span-star">*</span>
                   </Form.Label>
                   <Form.Control
-                    type="number"
-                    placeholder=""
+                    as="textarea"
+                    rows={4}
+                    placeholder="Enter Your Special Requests"
                     className="temp-form-control"
                   />
                 </Form.Group>
               </Col>
-
               <Col lg={6} md={6} sm={12}>
+        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+          <Form.Label className="temp-label">
+            Prasad Delivery <span className="temp-span-star">*</span>
+          </Form.Label>
+          <Form.Select
+            className="temp-form-control-option"
+            value={prasadDelivery}
+            onChange={handlePrasadChange}
+          >
+            <option value="">Select a Prasad Delivery</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </Form.Select>
+        </Form.Group>
+      </Col>
+
+      {/* Show LocationState only if user selects Yes */}
+      {prasadDelivery === "Yes" && (
+       
+          <LocationState  />
+       
+      )}
+      <Col lg={6} md={6} sm={12}>
                 <Form.Group
                   className="mb-3"
                   controlId="exampleForm.ControlInput1"
                 >
                   <Form.Label className="temp-label">
-                    Prasad Delivery <span className="temp-span-star">*</span>
+                    Zip Code <span className="temp-span-star">*</span>
                   </Form.Label>
-                  <Form.Select className="temp-form-control-option">
-                    <option value="Select a option">Select a  Prasad Delivery</option>
-                    <option value="option1">Yes</option>
-                    <option value="option2">No</option>
-                  </Form.Select>
+                  <Form.Control
+                    type="number"
+                    placeholder="Enter Zip Code"
+                    className="temp-form-control"
+                  />
                 </Form.Group>
               </Col>
- <LocationState />
               <Col lg={6} md={6} sm={12}>
                 <Form.Group
                   className="mb-3"
@@ -317,22 +295,7 @@ const DarshanBooking = () => {
                 </Form.Group>
               </Col>
 
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label">
-                    Special Requests <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={4}
-                    placeholder=""
-                    className="temp-form-control"
-                  />
-                </Form.Group>
-              </Col>
+             
             </Row>
             <h2>Payment Details</h2>
             <Row>
@@ -347,8 +310,8 @@ const DarshanBooking = () => {
                     className="temp-form-control-option"
                     value={darshanType}
                     onChange={handleDarshanChange}
-                  >
-                    <option value="">Select Temple Type</option>
+                  > 
+                    <option value="">Select Darshan Type</option>
                     <option value="Darshan">Darshan</option>
                     <option value="Puja">Puja</option>
                     <option value="Festival Booking">Festival Booking</option>
@@ -356,6 +319,23 @@ const DarshanBooking = () => {
                     <option value="Archana">Archana</option>
                     <option value="Rudrabhishek">Rudrabhishek</option>
                     <option value="Other">Other</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+               <Col lg={6} md={6} sm={12}>
+                <Form.Group className="mb-3" controlId="darshanType">
+                  <Form.Label className="temp-label">
+                    Payment Mode <span className="temp-span-star">*</span>
+                  </Form.Label>
+                  <Form.Select
+                    className="temp-form-control-option"
+                    value={darshanType}
+                    onChange={handleDarshanChange}
+                  >
+                    <option value="">Select Temple Type</option>
+                    <option value="UPI">UPI</option>
+                    <option value="Card">Card</option>
+                   
                   </Form.Select>
                 </Form.Group>
               </Col>
