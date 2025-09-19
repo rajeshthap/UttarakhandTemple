@@ -367,7 +367,7 @@ const ExtendYourDivine = () => {
         otp={otp}
         setOtp={setOtp}
         handleVerifyOtp={handleVerifyOtp}
-        verifying={verifying}
+        phone={formData.mobile_number}   
       />
     </div>
   );

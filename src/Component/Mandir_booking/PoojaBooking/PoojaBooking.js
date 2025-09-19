@@ -192,7 +192,7 @@ const PoojaBooking = () => {
         setOtpSent(true);
         setShow(true); // open modal
         setAgree(true);
-        alert("OTP sent successfully!");
+       
       } else {
         alert(res.data.message || "Failed to send OTP");
         setAgree(false);

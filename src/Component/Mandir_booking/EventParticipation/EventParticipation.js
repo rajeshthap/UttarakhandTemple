@@ -813,6 +813,8 @@ const EventParticipation = () => {
           setOtp={setOtp}
           handleVerifyOtp={handleVerifyOtp}
           verifying={verifying}
+          phone={formData.mobile_number}   
+      
         />
       </Container>
     </div>

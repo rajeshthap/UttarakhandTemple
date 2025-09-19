@@ -91,7 +91,7 @@ const SevaRegistration = () => {
         setOtpSent(true);
         setShow(true); // open modal
         setAgree(true);
-        alert("OTP sent successfully!");
+        
       } else {
         alert(res.data.message || "Failed to send OTP");
         setAgree(false);
@@ -882,6 +882,8 @@ const SevaRegistration = () => {
         otp={otp}
         setOtp={setOtp}
         handleVerifyOtp={handleVerifyOtp}
+        phone={formData.mobile_number}   
+
       />
     </div>
   );

@@ -27,7 +27,7 @@ const OnlineHirePandit = () => {
       setnewErrors({});
       localStorage.setItem("phone", formData.mobile_number);
       setShow(true);
-      alert("OTP sent successfully!");
+      
     } catch (err) {
       console.error("Error sending OTP:", err.response?.data || err.message);
       alert("Failed to send OTP. Try again.");
