@@ -1,0 +1,12 @@
+.alert-toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  background-color: #4BB543; 
+  color: white;
+  padding: 12px 24px;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  text-align: center;
+}

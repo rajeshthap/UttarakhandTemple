@@ -6,6 +6,7 @@ import "../../assets/CSS/TempleAuthority.css";
 import Regimg from "../../assets/images/User-regi-img.png";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import ModifyAlert from "../Alert/ModifyAlert";
 
 function DevoteeLogin() {
   const [formData, setFormData] = useState({
@@ -15,6 +16,10 @@ function DevoteeLogin() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  // alert state
+  const [showModifyAlert, setShowModifyAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   // handle input changes
   const handleChange = (e) => {
@@ -27,7 +32,8 @@ function DevoteeLogin() {
     e.preventDefault();
 
     if (!formData.username || !formData.password) {
-      alert("Please fill in both fields");
+      setAlertMessage(" Please fill in both fields");
+      setShowModifyAlert(true);
       return;
     }
 
@@ -45,7 +51,8 @@ function DevoteeLogin() {
       } else if (isPhone) {
         payload.phone = formData.username;
       } else {
-        alert("Please enter a valid email or phone number");
+        setAlertMessage(" Please enter a valid email or phone number");
+        setShowModifyAlert(true);
         setLoading(false);
         return;
       }
@@ -55,17 +62,22 @@ function DevoteeLogin() {
         payload
       );
 
-      console.log("Login Response:", response.data);
-      navigate("/MainDashBoard");
+      setTimeout(() => {
+    navigate("/MainDashBoard");
+  }, 1500);
+
       const token = response.data.role;
       if (token === "User") {
-        alert("Login successfully!");
+        setAlertMessage(" Login successful!");
+        setShowModifyAlert(true);
       } else {
-        alert(response.data.message || "Login failed ");
+        setAlertMessage(response.data.message || " Login failed");
+        setShowModifyAlert(true);
       }
     } catch (error) {
       console.error("Login Error:", error);
-      alert("Invalid username or password");
+      setAlertMessage(" Invalid username or password");
+      setShowModifyAlert(true);
     }
     setLoading(false);
   };
@@ -164,6 +176,12 @@ function DevoteeLogin() {
           </Form>
         </div>
       </Container>
+
+      <ModifyAlert
+        message={alertMessage}
+        show={showModifyAlert}
+        setShow={setShowModifyAlert}
+      />
     </div>
   );
 }
