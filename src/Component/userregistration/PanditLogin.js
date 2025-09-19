@@ -6,6 +6,7 @@ import Regimg1 from "../../assets/images/pandit-img.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ModifyAlert from "../Alert/ModifyAlert";
 
 function PanditLogin() {
   const [formData, setFormData] = useState({
@@ -16,6 +17,9 @@ function PanditLogin() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
+   // alert state
+    const [showModifyAlert, setShowModifyAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
   const navigate = useNavigate();
 
   // Handle input change
@@ -27,6 +31,11 @@ function PanditLogin() {
   // Submit login
 const handleSubmit = async (e) => {
   e.preventDefault();
+  if (!formData.identifier || !formData.password) {
+      setAlertMessage(" Please fill in both fields");
+      setShowModifyAlert(true);
+      return;
+    }
   setErrorMsg("");
 
   try {
@@ -45,7 +54,9 @@ const handleSubmit = async (e) => {
       "https://brjobsedu.com/Temple_portal/api/login/",
       payload
     );
-navigate("/MainDashBoard");
+    setTimeout(() => {
+    navigate("/MainDashBoard");
+  }, 1500);
 
 
     // Save user info in localStorage
@@ -60,19 +71,19 @@ navigate("/MainDashBoard");
     //  Navigate only if role is "pandit"
       const role = response.data.role;
     if (role === "Pandit") {
- alert("Login successfully!");
+      setAlertMessage(" Login successful!");
+        setShowModifyAlert(true);
   
  
 
     } else {
-      console.warn("User does not have 'pandit' role, staying on login page.");
-      setErrorMsg("You are not authorized to access this dashboard.");
+      setAlertMessage(response.data.message || " Login failed");
+        setShowModifyAlert(true);
     }
   } catch (error) {
     console.error("Login error:", error.response?.data || error.message);
-    setErrorMsg(
-      error.response?.data?.error || "Invalid credentials, please try again."
-    );
+    setAlertMessage(" Invalid username or password");
+      setShowModifyAlert(true);
   }
 };
 
@@ -180,6 +191,11 @@ navigate("/MainDashBoard");
           </div>
         </div>
       </Container>
+      <ModifyAlert
+              message={alertMessage}
+              show={showModifyAlert}
+              setShow={setShowModifyAlert}
+            />
     </div>
   );
 }

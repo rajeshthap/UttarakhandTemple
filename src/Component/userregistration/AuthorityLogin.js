@@ -5,14 +5,20 @@ import "../../assets/CSS/TempleAuthority.css";
 import Regimg1 from "../../assets/images/temple-img.jpg";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ModifyAlert from "../Alert/ModifyAlert";
 
 function AuthorityLogin() {
   const [formData, setFormData] = useState({
-    identifier: "", // 👈 renamed to identifier (can be email or phone)
+    identifier: "", //  renamed to identifier (can be email or phone)
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // alert state
+  const [showModifyAlert, setShowModifyAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -24,7 +30,8 @@ function AuthorityLogin() {
     e.preventDefault();
 
     if (!formData.identifier || !formData.password) {
-      alert("Please fill in both fields");
+      setAlertMessage(" Please fill in both fields");
+      setShowModifyAlert(true);
       return;
     }
 
@@ -43,7 +50,8 @@ function AuthorityLogin() {
       } else if (isPhone) {
         payload.phone = formData.identifier; //  backend expects `phone`
       } else {
-        alert("Please enter a valid email or phone number");
+        setAlertMessage(" Please enter a valid email or phone number");
+        setShowModifyAlert(true);
         setLoading(false);
         return;
       }
@@ -52,19 +60,25 @@ function AuthorityLogin() {
         "https://brjobsedu.com/Temple_portal/api/login/",
         payload
       );
-       navigate("/MainDashBoard");
+      setTimeout(() => {
+        navigate("/MainDashBoard");
+      }, 1500);
 
       if (response.data.role) {
         localStorage.setItem("role", response.data.role);
       }
-      const role=response.data.role;
- if(role==="temple")
-      alert("Login successfully!");
-     
-     
+      const role = response.data.role;
+      if (role === "temple") {
+        setAlertMessage(" Login successful!");
+        setShowModifyAlert(true);
+      } else {
+        setAlertMessage(response.data.message || " Login failed");
+        setShowModifyAlert(true);
+      }
     } catch (error) {
-      console.error("Login Error:", error.response?.data || error.message);
-      alert(error.response?.data?.detail || "Invalid username or password");
+      console.error("Login Error:", error);
+      setAlertMessage(" Invalid username or password");
+      setShowModifyAlert(true);
     }
     setLoading(false);
   };
@@ -86,7 +100,7 @@ function AuthorityLogin() {
                       </Form.Label>
                       <Form.Control
                         type="text"
-                        name="identifier" 
+                        name="identifier"
                         value={formData.identifier}
                         onChange={handleChange}
                         placeholder="Registered Mobile No. / Email"
@@ -146,7 +160,9 @@ function AuthorityLogin() {
                           variant="danger"
                           className="temp-submit-btn-login"
                           type="button"
-                         onClick={() => (window.location.href = "/ForgotPassword")}
+                          onClick={() =>
+                            (window.location.href = "/ForgotPassword")
+                          }
                         >
                           Forgot Password ?
                         </Button>
@@ -163,17 +179,18 @@ function AuthorityLogin() {
                 className="d-flex justify-content-center align-items-center"
               >
                 <div>
-                  <img
-                    src={Regimg1}
-                    className="img-fluid"
-                    alt="Temple Login"
-                  />
+                  <img src={Regimg1} className="img-fluid" alt="Temple Login" />
                 </div>
               </Col>
             </Row>
           </Form>
         </div>
       </Container>
+      <ModifyAlert
+        message={alertMessage}
+        show={showModifyAlert}
+        setShow={setShowModifyAlert}
+      />
     </div>
   );
 }
