@@ -63,8 +63,8 @@ function DevoteeLogin() {
       );
 
       setTimeout(() => {
-    navigate("/MainDashBoard");
-  }, 1500);
+        navigate("/MainDashBoard");
+      }, 1500);
 
       const token = response.data.role;
       if (token === "User") {
