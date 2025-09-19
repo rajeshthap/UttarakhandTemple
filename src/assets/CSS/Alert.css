@@ -13,6 +13,7 @@
   justify-content: right !important;
   display: flex;
   z-index: 999;
+  animation: slideIn 0.5s ease-out;
 }
 
 /* @media (max-width: 844px) {
