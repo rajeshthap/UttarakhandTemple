@@ -103,7 +103,7 @@ const OTPModel = ({
           disabled={resending || timer > 0}
         >
           {timer > 0 
-            ? `Resend in ${timer}s` 
+            ? `Resend` 
             : resending 
               ? "Resending..." 
               : "Resend OTP"}

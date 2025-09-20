@@ -340,24 +340,35 @@ const PoojaBooking = () => {
               <Row className="mt-3">
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="temp-label">
-                      Full Name <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter Name"
-                      className="temp-form-control"
-                      name="full_name"
-                      value={formData.full_name}
-                      onChange={handleInputChange}
-                    />
-                    {errors.full_name && (
-                      <small className="text-danger">{errors.full_name}</small>
-                    )}
-                  </Form.Group>
+  className="mb-3"
+  controlId="exampleForm.ControlInput1"
+>
+  <Form.Label className="temp-label">
+    Full Name <span className="temp-span-star">*</span>
+  </Form.Label>
+  <Form.Control
+    type="text"
+    placeholder="Enter Name"
+    className="temp-form-control"
+    name="full_name"
+    value={formData.full_name}
+    onChange={(e) => {
+      const value = e.target.value;
+
+      // Prevent numbers
+      if (/^[^0-9]*$/.test(value)) {
+        handleInputChange(e);
+        setErrors((prev) => ({ ...prev, full_name: "" }));
+      } else {
+        setErrors((prev) => ({ ...prev, full_name: "Name cannot contain numbers" }));
+      }
+    }}
+  />
+  {errors.full_name && (
+    <small className="text-danger">{errors.full_name}</small>
+  )}
+</Form.Group>
+
                 </Col>
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group

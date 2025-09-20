@@ -8,7 +8,7 @@ const VerifyOtp = ({ phone, onVerified }) => {
   const [resending, setResending] = useState(false);
   const [message, setMessage] = useState("");
   const [timer, setTimer] = useState(60); // countdown for resend
-  const [otpExpiry, setOtpExpiry] = useState(120); // OTP validity
+  const [otpExpiry, setOtpExpiry] = useState(60); // OTP validity
 
   const maskedPhone = phone ? `XXXXXX${phone.slice(-4)}` : "XXXXXXXXXX";
 
@@ -91,19 +91,32 @@ const VerifyOtp = ({ phone, onVerified }) => {
         </Form.Group>
       </Col>
 
-      <Col lg={12} md={12} sm={12}>
-        <Form.Group className="mb-3">
-          <Form.Label>
-            Enter OTP <span className="temp-span-star"> *</span>
-          </Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter OTP"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-          />
-        </Form.Group>
-      </Col>
+     <Col lg={12} md={12} sm={12}>
+  <Form.Group className="mb-3">
+    <Form.Label>
+      Enter OTP <span className="temp-span-star"> *</span>
+    </Form.Label>
+
+    <Form.Control
+      type="text"
+      inputMode="numeric"
+      placeholder="Enter OTP"
+      value={otp}
+      onChange={(e) => {
+        // keep only digits and limit to 6 chars
+        const cleaned = e.target.value.replace(/\D/g, "").slice(0, 6);
+        setOtp(cleaned);
+      }}
+      maxLength={6}
+    />
+
+    {/* Live validation shown only under the input */}
+    {otp && otp.length !== 6 && (
+      <small className="text-danger">OTP must be exactly 6 digits</small>
+    )}
+  </Form.Group>
+</Col>
+
 
       <p className={`otperror ${otpExpiry > 0 ? "countdown" : ""}`}>
         {otpExpiry > 0
@@ -128,7 +141,7 @@ const VerifyOtp = ({ phone, onVerified }) => {
         disabled={resending || timer > 0}
       >
         {timer > 0
-          ? `Resend in ${timer}s`
+          ? `Resend`
           : resending
           ? "Resending..."
           : "Resend OTP"}

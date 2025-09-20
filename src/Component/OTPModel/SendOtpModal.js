@@ -143,7 +143,7 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
         </Button>
 
         <Button variant="secondary" onClick={resendOtp} disabled={resending || timer > 0}>
-          {timer > 0 ? `Resend in ${timer}s` : resending ? "Resending..." : "Resend OTP"}
+          {timer > 0 ? `Resend` : resending ? "Resending..." : "Resend OTP"}
         </Button>
       </Modal.Footer>
     </Modal>

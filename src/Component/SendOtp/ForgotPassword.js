@@ -3,6 +3,7 @@ import { Button, Form, Col, Container, Row } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../../CustomCss/custom.css";
+import "../../assets/CSS/ForgotPassword.css"
 
 const ForgotPassword = () => {
   const [step, setStep] = useState(1);
@@ -13,11 +14,15 @@ const ForgotPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [errors, setErrors] = useState("");
+  const [errors, setErrors] = useState("");   // for API/OTP errors
   const [resending, setResending] = useState(false);
-  const [otpExpiry, setOtpExpiry] = useState(120);      // OTP validity timer
-  const [resendTimer, setResendTimer] = useState(60);   // Resend lock timer
+  const [otpExpiry, setOtpExpiry] = useState(60);
+  const [resendTimer, setResendTimer] = useState(60);
   const [maskedContact, setMaskedContact] = useState("");
+
+  // separate error states for inputs
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const navigate = useNavigate();
 
@@ -72,8 +77,8 @@ const ForgotPassword = () => {
       if (res.data.success) {
         setMessage("OTP Sent Successfully!");
         setStep(2);
-        setOtpExpiry(120);   // Start OTP validity timer
-        setResendTimer(60);  // Start resend button timer
+        setOtpExpiry(60);
+        setResendTimer(60);
         setMaskedContact(maskContact(contact));
       } else {
         setErrors(res.data.message || "Failed to send OTP");
@@ -83,6 +88,20 @@ const ForgotPassword = () => {
       setErrors("Error while sending OTP");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value)) {
+      if (value.length <= 10) {
+        setContact(value);
+        if (value.length === 10) {
+          setErrors(""); 
+        } else {
+          setErrors("Mobile number must be 10 digits");
+        }
+      }
     }
   };
 
@@ -178,7 +197,7 @@ const ForgotPassword = () => {
       );
       if (res.data.success) {
         setMessage("OTP resent successfully!");
-        setOtpExpiry(120);
+        setOtpExpiry(60);
         setResendTimer(60);
       } else {
         setErrors(res.data.message || "Failed to resend OTP");
@@ -214,7 +233,8 @@ const ForgotPassword = () => {
         <h2>Forgot Password</h2>
         <Row>
           <Col lg={6} md={6} sm={12} className="mt-1">
-            {/* Step 1: Contact and User Type */}
+
+            {/* Step 1: Contact */}
             {step === 1 && (
               <>
                 <Form.Group className="mb-3">
@@ -223,7 +243,7 @@ const ForgotPassword = () => {
                   </Form.Label>
                   <Form.Select
                     value={userType}
-                    onChange={(e) => setUserType(e.target.value)}
+                    onChange={(e) => setUserType(e.target.value)} className="option-type"
                   >
                     <option value="">Select type</option>
                     <option value="Temple">Temple</option>
@@ -234,14 +254,15 @@ const ForgotPassword = () => {
 
                 <Form.Group className="mb-3">
                   <Form.Label className="temp-label-lg-bg">
-                    Email or Mobile Number <span className="temp-span-star">*</span>
+                    Mobile Number <span className="temp-span-star">*</span>
                   </Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Enter your email or phone"
+                    placeholder="Enter your Mobile Number" className="option-type"
                     value={contact}
-                    onChange={(e) => setContact(e.target.value)}
+                    onChange={handleChange}
                   />
+                  {errors && <small className="text-danger">{errors}</small>}
                 </Form.Group>
 
                 <Button onClick={handleSendOtp} disabled={loading}>
@@ -253,15 +274,31 @@ const ForgotPassword = () => {
             {/* Step 2: OTP Verification */}
             {step === 2 && (
               <>
-                <Form.Group className="">
-                  <Form.Label>Enter OTP <span className="temp-span-star">*</span></Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter OTP"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                  />
-                </Form.Group>
+               <Form.Group className="mb-3">
+  <Form.Label>
+    Enter OTP <span className="temp-span-star">*</span>
+  </Form.Label>
+  <Form.Control
+    type="text"
+    placeholder="Enter OTP"
+    value={otp}
+    onChange={(e) => {
+      const value = e.target.value;
+      // Allow only digits
+      if (/^\d*$/.test(value)) {
+        // Limit to 6 digits
+        if (value.length <= 6) {
+          setOtp(value);
+        }
+      }
+    }}
+  />
+  {/* Live validation */}
+  {otp && otp.length !== 6 && (
+    <small className="text-danger">OTP must be exactly 6 digits</small>
+  )}
+</Form.Group>
+
 
                 <p className="otperror mt-2">
                   {otpExpiry > 0
@@ -271,7 +308,6 @@ const ForgotPassword = () => {
 
                 {maskedContact && <p className="otpsuccess">OTP Sent To: {maskedContact}</p>}
 
-               
                 <Button onClick={handleVerifyOtp} disabled={loading || otpExpiry <= 0}>
                   {loading ? "Verifying..." : "Verify"}
                 </Button>
@@ -302,8 +338,23 @@ const ForgotPassword = () => {
                     type="password"
                     placeholder="New Password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setPassword(value);
+
+                      const strongPasswordRegex =
+                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+                      if (!strongPasswordRegex.test(value)) {
+                        setPasswordError(
+                          "Password must be at least 8 characters, include uppercase, lowercase, number, and special character."
+                        );
+                      } else {
+                        setPasswordError("");
+                      }
+                    }}
                   />
+                  {passwordError && <small className="text-danger">{passwordError}</small>}
                 </Form.Group>
 
                 <Form.Group className="mb-3">
@@ -314,8 +365,18 @@ const ForgotPassword = () => {
                     type="password"
                     placeholder="Confirm Password"
                     value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setConfirmPassword(value);
+
+                      if (password !== value) {
+                        setConfirmPasswordError("Passwords do not match");
+                      } else {
+                        setConfirmPasswordError("");
+                      }
+                    }}
                   />
+                  {confirmPasswordError && <small className="text-danger">{confirmPasswordError}</small>}
                 </Form.Group>
 
                 <Button onClick={handleResetPassword} disabled={loading}>

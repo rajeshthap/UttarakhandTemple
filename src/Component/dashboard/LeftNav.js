@@ -9,6 +9,7 @@ import { LuLogOut } from "react-icons/lu";
 import CompanyLogo from "../../assets/images/company-logo.png";
 import MenuIcon from "../../assets/images/menu_icon.png";
 import "../../assets/CSS/LeftNav.css";
+import ModifyAlert from "../Alert/ModifyAlert";
 import { BiDonateHeart } from "react-icons/bi";
 import { GiByzantinTemple } from "react-icons/gi";
 import { LiaCalendarCheck } from "react-icons/lia";
@@ -21,7 +22,9 @@ function LeftNav() {
   const [userName, setUserName] = useState("Loading...");
   const [activePath, setActivePath] = useState("");
   const location = useLocation();
-
+  // alert state
+  const [showModifyAlert, setShowModifyAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
   useEffect(() => {
     // Get initial user name
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -62,8 +65,9 @@ function LeftNav() {
     const confirmLogout = window.confirm("Are you sure you want to logout?");
     if (confirmLogout) {
       localStorage.clear();
-      alert(`Logout successful!`);
-      window.location.href = "/UserLogin"; // Redirect after logout
+        setAlertMessage(" Logout successfully!");
+         setShowModifyAlert(true);
+      window.location.href = "/"; // Redirect after logout
     }
   };
 
@@ -120,7 +124,11 @@ function LeftNav() {
         </div>
 
         <div className="message">
-
+ <ModifyAlert
+        message={alertMessage}
+        show={showModifyAlert}
+        setShow={setShowModifyAlert}
+      />
           <div className="nd-msg">User: {userName}</div>
           <div className="dp" title="Click to logout" onClick={logout}>
             <div className="nd-log-icon">
