@@ -18,10 +18,10 @@ const InfoBar = () => {
             className="text-center info-mob text-md-start d-flex flex-wrap align-items-center"
           >
             <div className="px-3">
-              <i className="bi bi-telephone-fill infoicon"></i> +91 1234567890
+              <i className="bi bi-telephone-fill infoicon"></i> +91 8193991148
             </div>
             <div className="px-3">
-              <i className="bi bi-envelope-fill infoicon"></i> info@gmail.com
+              <i className="bi bi-envelope-fill infoicon"></i> admin@mahadevaaya.com
             </div>
           </Col>
 

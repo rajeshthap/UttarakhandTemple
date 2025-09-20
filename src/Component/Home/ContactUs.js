@@ -11,9 +11,9 @@ function ContactUs() {
           <h1>Contact Us</h1>
           <p>We are here to assist you with any queries, suggestions, or support related to Mahadevaya Portal. Reach out to us through the following channels:</p>
           <ul>
-            <li><b>Email:</b> support@mahadevaya.com</li>
-            <li><b>Phone: </b> +91-XXXXXXXXXX</li>
-            <li><b>Address: </b> CASP Bhavan 132/2, Plot No 3, Baner - Pashan Link Rd, Pashan UK</li>
+            <li><b>Email:</b> admin@mahadevaaya.com</li>
+            <li><b>Phone: </b> +91 8193991148</li>
+            <li><b>Address: </b> 32, New Park Road Gandhi Gram, Kanwali Road Dehradun</li>
           </ul>
           <h2>Connect With Us:</h2>
           <ul>
