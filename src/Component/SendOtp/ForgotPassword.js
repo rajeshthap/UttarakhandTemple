@@ -98,7 +98,8 @@ const ForgotPassword = () => {
         setContact(value);
         if (value.length === 10) {
           setErrors(""); 
-        } else {
+        } 
+        else {
           setErrors("Mobile number must be 10 digits");
         }
       }
@@ -197,8 +198,8 @@ const ForgotPassword = () => {
       );
       if (res.data.success) {
         setMessage("OTP resent successfully!");
-        setOtpExpiry(60);
-        setResendTimer(60);
+        // setOtpExpiry(60);
+        // setResendTimer(60);
       } else {
         setErrors(res.data.message || "Failed to resend OTP");
       }
@@ -319,7 +320,7 @@ const ForgotPassword = () => {
                   className="ms-2"
                 >
                   {resendTimer > 0
-                    ? `Resend in ${resendTimer}s`
+                    ? `Resend`
                     : resending
                       ? "Resending..."
                       : "Resend OTP"}
@@ -385,7 +386,7 @@ const ForgotPassword = () => {
               </>
             )}
 
-            {errors && <p className="otperror mt-2">{errors}</p>}
+            {errors && <p className="otperror mt-2"></p>}
           </Col>
         </Row>
       </div>

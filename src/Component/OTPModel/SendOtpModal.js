@@ -9,7 +9,7 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
   const [loading, setLoading] = useState(false);
   const [resending, setResending] = useState(false);
   const [timer, setTimer] = useState(60);       
-  const [otpExpiry, setOtpExpiry] = useState(120); 
+  const [otpExpiry, setOtpExpiry] = useState(60); 
 
   const navigate = useNavigate();
   const phone = localStorage.getItem("phone");
@@ -126,13 +126,24 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
       <Modal.Body>
         <Col lg={12} md={12} sm={12}>
           <Form.Group className="mb-3" controlId="otpInput">
-            <Form.Control
-              type="text"
-              placeholder="Enter OTP"
-              className="temp-form-control"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-            />
+           <Form.Control
+  type="text"
+  placeholder="Enter OTP"
+  className="temp-form-control"
+  value={otp}
+  onChange={(e) => {
+    let value = e.target.value;
+
+    // Allow only digits
+    if (/^\d*$/.test(value)) {
+      // Limit to 6 digits
+      if (value.length <= 6) {
+        setOtp(value);
+      }
+    }
+  }}
+/>
+
           </Form.Group>
         </Col>
       </Modal.Body>

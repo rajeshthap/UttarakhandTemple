@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Col, Container, Row } from 'react-bootstrap';
-import Form from "react-bootstrap/Form";
 import { useNavigate } from 'react-router-dom';
+import "../../assets/CSS/Alltemple.css"
 
 const DonateTemples = () => {
     const navigate = useNavigate();
@@ -11,7 +11,7 @@ const DonateTemples = () => {
     };
 
     return (
-        <div>
+        <div className='temp-donate'>
             <Container className="temp-container">
                 <h1>How to Make Donations?</h1>
                 <Row>

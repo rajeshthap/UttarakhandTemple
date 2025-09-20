@@ -62,9 +62,12 @@ const OnlineHirePandit = () => {
   const validateFields = () => {
     let newErrors = {};
 
-    if (!formData.full_name.trim()) {
-      newErrors.full_name = "Full Name is required";
-    }
+   if (!formData.full_name.trim()) {
+  newErrors.full_name = "Full Name is required";
+} else if (!/^[A-Za-z\s]+$/.test(formData.full_name)) {
+  newErrors.full_name = "Only alphabets are allowed";
+}
+
     if (
       !formData.mobile_number ||
       !/^[0-9]{10}$/.test(formData.mobile_number)
@@ -262,19 +265,22 @@ const OnlineHirePandit = () => {
                     <Form.Label>
                       Full Name <span className="temp-span-star">*</span>
                     </Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="full_name"
-                      value={formData.full_name}
-                      onChange={handleChange}
-                      className="temp-form-control"
-                      placeholder="Enter Name"
-                    />
-                    {newErrors.full_name && (
-                      <small className="text-danger">
-                        {newErrors.full_name}
-                      </small>
-                    )}
+<Form.Control
+  type="text"
+  name="full_name"
+  value={formData.full_name}
+  onChange={(e) => {
+    const value = e.target.value;
+
+    // Allow only alphabets and spaces (no digits)
+    if (/^[A-Za-z\s]*$/.test(value)) {
+      handleChange(e); // keep your existing handler
+    }
+  }}
+  className="temp-form-control"
+  placeholder="Enter Name"
+/>
+
                   </Form.Group>
                 </Col>
 
@@ -525,17 +531,13 @@ const OnlineHirePandit = () => {
                       name="additional_assistants"
                       value={formData.additional_assistants}
                       onChange={handleChange}
-                      className={`temp-form-control ${
-                        newErrors.additional_assistants ? "is-invalid" : ""
-                      }`}
+                      className="temp-form-control "
                       placeholder="Enter Number Assistants"
                     />
                     {newErrors.additional_assistants && (
-                      <div className="invalid-feedback">
-                        {Array.isArray(newErrors.additional_assistants)
-                          ? newErrors.additional_assistants[0]
-                          : newErrors.additional_assistants}
-                      </div>
+                      <small className="text-danger">
+                        {newErrors.additional_assistants}
+                      </small>
                     )}
                   </Form.Group>
                 </Col>
@@ -551,17 +553,14 @@ const OnlineHirePandit = () => {
                       name="special_requirements"
                       value={formData.special_requirements}
                       onChange={handleChange}
-                      className={`temp-form-control ${
-                        newErrors.special_requirements ? "is-invalid" : ""
-                      }`}
+                      className="temp-form-control"
+                       
                       placeholder="Enter requirements"
                     />
                     {newErrors.special_requirements && (
-                      <div className="invalid-feedback">
-                        {Array.isArray(newErrors.special_requirements)
-                          ? newErrors.special_requirements[0]
-                          : newErrors.special_requirements}
-                      </div>
+                      <small className="text-danger">
+                        {newErrors.special_requirements}
+                      </small>
                     )}
                   </Form.Group>
                 </Col>
@@ -576,17 +575,13 @@ const OnlineHirePandit = () => {
                       name="estimated_fees"
                       value={formData.estimated_fees}
                       onChange={handleChange}
-                      className={`temp-form-control ${
-                        newErrors.estimated_fees ? "is-invalid" : ""
-                      }`}
+                      className="temp-form-control "
                       placeholder="Enter Estimated Fees"
                     />
-                    {newErrors.estimated_fees && (
-                      <div className="invalid-feedback">
-                        {Array.isArray(newErrors.estimated_fees)
-                          ? newErrors.estimated_fees[0]
-                          : newErrors.estimated_fees}
-                      </div>
+                     {newErrors.estimated_fees && (
+                      <small className="text-danger">
+                        {newErrors.estimated_fees}
+                      </small>
                     )}
                   </Form.Group>
                 </Col>
@@ -599,20 +594,17 @@ const OnlineHirePandit = () => {
                       name="payment_mode"
                       value={formData.payment_mode}
                       onChange={handleChange}
-                      className={`temp-form-control-option ${
-                        newErrors.payment_mode ? "is-invalid" : ""
-                      }`}
+                      className="temp-form-control-option"
+                       
                     >
                       <option value="">Select Payment Mode</option>
                       <option value="upi">UPI</option>
                       <option value="card">Card</option>
                     </Form.Select>
                     {newErrors.payment_mode && (
-                      <div className="invalid-feedback">
-                        {Array.isArray(newErrors.payment_mode)
-                          ? newErrors.payment_mode[0]
-                          : newErrors.payment_mode}
-                      </div>
+                      <small className="text-danger">
+                        {newErrors.payment_mode}
+                      </small>
                     )}
                   </Form.Group>
                 </Col>

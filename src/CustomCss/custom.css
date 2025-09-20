@@ -249,4 +249,7 @@ p.otpsuccess{
     .menubar {
         background-color: var(--temp-primary);
     }
+    .temp-donate{
+    margin: var(--temp-space-500);
+}
 }

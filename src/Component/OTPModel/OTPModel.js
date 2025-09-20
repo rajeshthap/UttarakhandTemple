@@ -14,7 +14,7 @@ const OTPModel = ({
 }) => {
   const [resending, setResending] = useState(false);
   const [timer, setTimer] = useState(60);     
-  const [otpExpiry, setOtpExpiry] = useState(120); // OTP validity timer
+  const [otpExpiry, setOtpExpiry] = useState(60); // OTP validity timer
   const maskedPhone = phone ? `XXXXXX${phone.slice(-4)}` : "XXXXXXXXXX";
 
   // Resend button countdown
@@ -39,7 +39,7 @@ const OTPModel = ({
   useEffect(() => {
     if (show) {
       setTimer(60);
-      setOtpExpiry(120);
+      setOtpExpiry(60);
     }
   }, [show]);
 
@@ -76,14 +76,25 @@ const OTPModel = ({
       <Modal.Body>
         <Col lg={12} md={12} sm={12}>
           <Form.Group className="mb-3" controlId="otpInput">
-            <Form.Control
-              type="text"
-              placeholder="Enter OTP"
-              className="temp-form-control"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-            />
-          </Form.Group>
+                    <Form.Control
+           type="text"
+           placeholder="Enter OTP"
+           className="temp-form-control"
+           value={otp}
+           onChange={(e) => {
+             let value = e.target.value;
+         
+             // Allow only digits
+             if (/^\d*$/.test(value)) {
+               // Limit to 6 digits
+               if (value.length <= 6) {
+                 setOtp(value);
+               }
+             }
+           }}
+         />
+         
+                   </Form.Group>
         </Col>
       </Modal.Body>
 

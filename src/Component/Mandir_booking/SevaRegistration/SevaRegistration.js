@@ -149,8 +149,11 @@ const SevaRegistration = () => {
   const validateFields = () => {
     const newErrors = {};
 
-    if (!formData.full_name.trim())
-      newErrors.full_name = "Full Name is required";
+   if (!formData.full_name.trim()) {
+  newErrors.full_name = "Full Name is required";
+} else if (!/^[A-Za-z\s]+$/.test(formData.full_name)) {
+  newErrors.full_name = "Only alphabets are allowed";
+}
 
     if (!formData.gender) newErrors.gender = "Gender is required";
 
@@ -333,24 +336,38 @@ const SevaRegistration = () => {
               <Row className="mt-4">
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="temp-label">
-                      Full Name <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter Your Name"
-                      className="temp-form-control"
-                      name="full_name"
-                      value={formData.full_name}
-                      onChange={handleInputChange}
-                    />
-                    {errors.full_name && (
-                      <small className="text-danger">{errors.full_name}</small>
-                    )}
-                  </Form.Group>
+  className="mb-3"
+  controlId="exampleForm.ControlInput1"
+>
+  <Form.Label className="temp-label">
+    Full Name <span className="temp-span-star">*</span>
+  </Form.Label>
+  <Form.Control
+    type="text"
+    placeholder="Enter Your Name"
+    className="temp-form-control"
+    name="full_name"
+    value={formData.full_name}
+    onChange={(e) => {
+      const value = e.target.value;
+
+      // Allow only alphabets and spaces
+      if (/^[A-Za-z\s]*$/.test(value)) {
+        handleInputChange(e);
+        setErrors((prev) => ({ ...prev, full_name: "" }));
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          full_name: "Only alphabets are allowed",
+        }));
+      }
+    }}
+  />
+  {errors.full_name && (
+    <small className="text-danger">{errors.full_name}</small>
+  )}
+</Form.Group>
+
                 </Col>
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
@@ -378,50 +395,84 @@ const SevaRegistration = () => {
                   </Form.Group>
                 </Col>
 
-                <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="temp-label">
-                      Age <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter Your Age"
-                      className="temp-form-control"
-                      name="age"
-                      value={formData.age}
-                      onChange={handleInputChange}
-                    />
-                    {errors.age && (
-                      <small className="text-danger">{errors.age}</small>
-                    )}
-                  </Form.Group>
-                </Col>
-                <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="temp-label">
-                      Mobile Number <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter Mobile Number"
-                      className="temp-form-control"
-                      name="mobile_number"
-                      value={formData.mobile_number}
-                      onChange={handleInputChange}
-                    />
-                    {errors.mobile_number && (
-                      <small className="text-danger">
-                        {errors.mobile_number}
-                      </small>
-                    )}
-                  </Form.Group>
-                </Col>
+               <Col lg={6} md={6} sm={12}>
+  <Form.Group
+    className="mb-3"
+    controlId="exampleForm.ControlInput1"
+  >
+    <Form.Label className="temp-label">
+      Age <span className="temp-span-star">*</span>
+    </Form.Label>
+    <Form.Control
+      type="text"
+      placeholder="Enter Your Age"
+      className="temp-form-control"
+      name="age"
+      value={formData.age}
+      onChange={(e) => {
+        const value = e.target.value;
+
+        // Allow only digits
+        if (/^\d*$/.test(value)) {
+          handleInputChange(e);
+          setErrors((prev) => ({ ...prev, age: "" }));
+        } else {
+          setErrors((prev) => ({
+            ...prev,
+            age: "Only digits are allowed",
+          }));
+        }
+      }}
+    />
+    {errors.age && (
+      <small className="text-danger">{errors.age}</small>
+    )}
+  </Form.Group>
+</Col>
+
+     <Col lg={6} md={6} sm={12}>
+  <Form.Group
+    className="mb-3"
+    controlId="exampleForm.ControlInput1"
+  >
+    <Form.Label className="temp-label">
+      Mobile Number <span className="temp-span-star">*</span>
+    </Form.Label>
+    <Form.Control
+      type="text"
+      placeholder="Enter Mobile Number"
+      className="temp-form-control"
+      name="mobile_number"
+      value={formData.mobile_number}
+      onChange={(e) => {
+        const value = e.target.value;
+
+        // Only allow digits and max 10
+        if (/^\d*$/.test(value) && value.length <= 10) {
+          handleInputChange(e);
+
+          // Remove error if input becomes valid
+          if (value.length === 10) {
+            setErrors((prev) => ({ ...prev, mobile_number: "" }));
+          } else {
+            setErrors((prev) => ({
+              ...prev,
+              mobile_number: "Mobile number must be 10 digits",
+            }));
+          }
+        } else {
+          setErrors((prev) => ({
+            ...prev,
+           
+          }));
+        }
+      }}
+    />
+    {errors.mobile_number && (
+      <small className="text-danger">{errors.mobile_number}</small>
+    )}
+  </Form.Group>
+</Col>
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
                     className="mb-3"

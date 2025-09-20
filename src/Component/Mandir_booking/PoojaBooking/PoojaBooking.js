@@ -50,15 +50,16 @@ const PoojaBooking = () => {
     donation_amount: "",
   });
 
-   const handleResendOtp = async () => {
+  const handleResendOtp = async () => {
     try {
-      
-      const res = await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
-        phone: formData.mobile_number, 
-      });
-  
+      const res = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/Sentotp/",
+        {
+          phone: formData.mobile_number,
+        }
+      );
+
       if (res.data.success) {
-        
       } else {
         alert("Failed to resend OTP. Try again.");
       }
@@ -67,10 +68,10 @@ const PoojaBooking = () => {
       alert("Something went wrong. Please try again.");
     }
   };
-  
+
   const handleInputChangeCity = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
-    validateFields(name, value); 
+    validateFields(name, value);
   };
 
   useEffect(() => {
@@ -154,13 +155,18 @@ const PoojaBooking = () => {
       newErrors.sankalp = "Sankalp / Intentions are required";
 
     // Accommodation (optional – validate only if user selected Yes)
-    if (
-      formData.accommodation_required === "Yes" &&
-      !formData.special_requests.trim()
-    )
-      newErrors.special_requests =
-        "Please specify special requests for accommodation";
+    // Accommodation selection is required (always)
+if (!formData.accommodation_required || !formData.accommodation_required.trim()) {
+  newErrors.accommodation_required = "Please select Accommodation option";
+}
 
+// Special Requests is required (always)
+if (!formData.special_requests || !formData.special_requests.trim()) {
+  newErrors.special_requests = "Please specify special requests for accommodation";
+}
+if (!formData.prasad_offerings || !formData.prasad_offerings.trim()) {
+  newErrors.prasad_offerings = "Please select a Prasad Type";
+}
     //  Prasad & Offerings
     if (!formData.prasad_delivery)
       newErrors.prasad_delivery = "Prasad Delivery option is required";
@@ -211,7 +217,6 @@ const PoojaBooking = () => {
         setOtpSent(true);
         setShow(true); // open modal
         setAgree(true);
-       
       } else {
         alert(res.data.message || "Failed to send OTP");
         setAgree(false);
@@ -256,15 +261,21 @@ const PoojaBooking = () => {
     }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
 
-    if (name === "mobile_number") {
-      let errorMsg = "";
-      if (!/^\d*$/.test(value)) {
-        errorMsg = "Only digits allowed";
-      } else if (value.length > 0 && !/^\d{10}$/.test(value)) {
-        errorMsg = "Enter a valid 10-digit mobile number";
-      }
-      setErrors((prev) => ({ ...prev, mobile_number: errorMsg }));
-    }
+   if (name === "mobile_number") {
+  let newValue = value.replace(/\D/g, ""); // remove non-digits
+  if (newValue.length > 10) {
+    newValue = newValue.slice(0, 10); // allow max 10 digits
+  }
+
+  let errorMsg = "";
+  if (newValue.length > 0 && newValue.length < 10) {
+    errorMsg = "Enter a valid 10-digit mobile number";
+  }
+
+  setFormData((prev) => ({ ...prev, mobile_number: newValue }));
+  setErrors((prev) => ({ ...prev, mobile_number: errorMsg }));
+}
+
 
     if (name === "email") {
       let errorMsg = "";
@@ -340,35 +351,43 @@ const PoojaBooking = () => {
               <Row className="mt-3">
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
-  className="mb-3"
-  controlId="exampleForm.ControlInput1"
->
-  <Form.Label className="temp-label">
-    Full Name <span className="temp-span-star">*</span>
-  </Form.Label>
-  <Form.Control
-    type="text"
-    placeholder="Enter Name"
-    className="temp-form-control"
-    name="full_name"
-    value={formData.full_name}
-    onChange={(e) => {
-      const value = e.target.value;
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label className="temp-label">
+                      Full Name <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Name"
+                      className="temp-form-control"
+                      name="full_name"
+                      value={formData.full_name}
+                      onChange={(e) => {
+                        let value = e.target.value;
 
-      // Prevent numbers
-      if (/^[^0-9]*$/.test(value)) {
-        handleInputChange(e);
-        setErrors((prev) => ({ ...prev, full_name: "" }));
-      } else {
-        setErrors((prev) => ({ ...prev, full_name: "Name cannot contain numbers" }));
-      }
-    }}
-  />
-  {errors.full_name && (
-    <small className="text-danger">{errors.full_name}</small>
-  )}
-</Form.Group>
-
+                        // Allow only letters and single space between words
+                        if (
+                          /^[A-Za-z]+(\s[A-Za-z]+)?$/.test(value) ||
+                          value === ""
+                        ) {
+                          handleInputChange({
+                            target: { name: "full_name", value },
+                          });
+                          setErrors((prev) => ({ ...prev, full_name: "" }));
+                        } else {
+                          setErrors((prev) => ({
+                            ...prev,
+                            full_name:
+                              "Name can contain only letters and a single space between words",
+                          }));
+                        }
+                      }}
+                    />
+                    {errors.full_name && (
+                      <small className="text-danger">{errors.full_name}</small>
+                    )}
+                  </Form.Group>
                 </Col>
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
@@ -409,7 +428,20 @@ const PoojaBooking = () => {
                       className="temp-form-control"
                       name="age"
                       value={formData.age}
-                      onChange={handleInputChange}
+                      onChange={(e) => {
+                        const value = e.target.value;
+
+                        // Allow only numbers
+                        if (/^\d*$/.test(value)) {
+                          handleInputChange({ target: { name: "age", value } });
+                          setErrors((prev) => ({ ...prev, age: "" }));
+                        } else {
+                          setErrors((prev) => ({
+                            ...prev,
+                            age: "Age must be a number",
+                          }));
+                        }
+                      }}
                     />
                     {errors.age && (
                       <small className="text-danger">{errors.age}</small>
@@ -865,11 +897,11 @@ const PoojaBooking = () => {
                   <>
                     <h2 className="mt-2 mb-3">Delivery Address</h2>
 
-                   <LocationState
-                          formData={formData}
-                          handleInputChange={handleInputChangeCity}
-                          formErrors={errors}
-                        />
+                    <LocationState
+                      formData={formData}
+                      handleInputChange={handleInputChangeCity}
+                      formErrors={errors}
+                    />
 
                     <Col lg={6} md={6} sm={12}>
                       <Form.Group className="mb-3">
@@ -1014,16 +1046,14 @@ const PoojaBooking = () => {
         </Form>
       </Container>
       <OTPModel
-  show={show}
-  handleClose={handleClose}
-  otp={otp}
-  setOtp={setOtp}
-  handleVerifyOtp={handleVerifyOtp}
-  phone={formData.mobile_number}   
-            handleResendOtp={handleResendOtp}
-
-/>
-
+        show={show}
+        handleClose={handleClose}
+        otp={otp}
+        setOtp={setOtp}
+        handleVerifyOtp={handleVerifyOtp}
+        phone={formData.mobile_number}
+        handleResendOtp={handleResendOtp}
+      />
     </div>
   );
 };
