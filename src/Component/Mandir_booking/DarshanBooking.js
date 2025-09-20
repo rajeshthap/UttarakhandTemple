@@ -1,44 +1,328 @@
 import React from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import OTPModel from "../OTPModel/OTPModel";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import LocationState from "../userregistration/LocationState";
+
 const DarshanBooking = () => {
   const [show, setShow] = useState(false);
- const [prasadDelivery, setPrasadDelivery] = useState("");
-
-  const handlePrasadChange = (e) => {
-    setPrasadDelivery(e.target.value);
-  };
-  const handleShow = () => setShow(true);
+  const [temples, setTemples] = useState([]);
   const handleClose = () => setShow(false);
-  const [darshanType, setDarshanType] = useState("");
-  const [amount, setAmount] = useState("");
-  const handleDarshanChange = (e) => {
-    const value = e.target.value;
-    setDarshanType(value);
+  const [agree, setAgree] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [, setLoading] = useState(false);
+  const [, setOtpSent] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
-    // Autofill amount logic
-    if (value === "Puja") {
-      setAmount(500);
-    } else if (value === "Darshan") {
-      setAmount(200);
-    } else if (value === "Festival Booking") {
-      setAmount(1000);
-    } else if (value === "Abhishekam") {
-      setAmount(1000);
-    } else if (value === "Archana") {
-      setAmount(1000);
-    } else if (value === "Rudrabhishek") {
-      setAmount(1000);
-    } else if (value === "Other") {
-      setAmount(1000);
-    } else {
-      setAmount(""); // reset if no predefined amount
+  const [formData, setFormData] = useState({
+  full_name: "",
+  gender: "",
+  age: "",
+  mobile_number: "",
+  email: "",
+  id_proof_type: "",
+  id_proof_number: "",
+  temple_name: "",
+  darshan_type: "",
+  date_of_darshan: "",
+  time_slot: "",
+  number_of_devotees: "",
+  prasad_delivery:"",  
+  special_seva_or_puja: "",
+  state: "",
+  country: "",
+  city: "",
+  pin_code: "",
+  donation_amount: "",
+  payment_mode: "",
+});
+
+
+   const handleResendOtp = async () => {
+    try {
+      
+      const res = await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
+        phone: formData.mobile_number, 
+      });
+  
+      if (res.data.success) {
+        
+      } else {
+        alert("Failed to resend OTP. Try again.");
+      }
+    } catch (error) {
+      console.error("Error resending OTP:", error);
+      alert("Something went wrong. Please try again.");
     }
   };
   
+
+
+
+  const handleInputChangeCity = (name, value) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    validateFields(name, value);
+  };
+
+  useEffect(() => {
+    const fetchTemples = async () => {
+      try {
+        const res = await axios.get(
+          "https://brjobsedu.com/Temple_portal/api/temples-for-divine/"
+        );
+        if (res.data && Array.isArray(res.data.temples)) {
+          setTemples(res.data.temples);
+        }
+      } catch (err) {
+        console.error("Error fetching temples:", err);
+      }
+    };
+    fetchTemples();
+  }, []);
+
+  const validateFields = () => {
+  const newErrors = {};
+
+  // Devotee Information
+  if (!formData.full_name.trim())
+    newErrors.full_name = "Full Name is required";
+
+  if (!formData.gender) newErrors.gender = "Gender is required";
+
+  if (!formData.age || isNaN(formData.age) || formData.age <= 0)
+    newErrors.age = "Valid age is required";
+
+  if (!formData.mobile_number) {
+    newErrors.mobile_number = "Mobile number is required";
+  } else if (!/^\d{10}$/.test(formData.mobile_number)) {
+    newErrors.mobile_number = "Enter a valid 10-digit mobile number";
+  }
+
+  if (!formData.email) {
+    newErrors.email = "Email is required";
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    newErrors.email = "Enter a valid email address";
+  }
+
+  if (!formData.id_proof_type)
+    newErrors.id_proof_type = "ID Proof Type is required";
+
+  if (!formData.id_proof_number) {
+    newErrors.id_proof_number = "ID Proof Number is required";
+  } else if (formData.id_proof_number.length > 16) {
+    newErrors.id_proof_number = "ID Proof Number cannot exceed 16 characters";
+  }
+
+  // Darshan Booking Details
+  if (!formData.temple_name)
+    newErrors.temple_name = "Temple Name is required";
+
+  if (!formData.darshan_type)
+    newErrors.darshan_type = "Darshan Type is required";
+
+  if (!formData.date_of_darshan)
+    newErrors.date_of_darshan = "Date of Darshan is required";
+
+  if (!formData.time_slot)
+    newErrors.time_slot = "Time Slot is required";
+
+  if (
+    !formData.number_of_devotees ||
+    isNaN(formData.number_of_devotees) ||
+    formData.number_of_devotees <= 0
+  )
+    newErrors.number_of_devotees = "Enter valid number of devotees";
+
+  if (!formData.special_seva_or_puja.trim())
+    newErrors.special_seva_or_puja = "Special Seva / Puja is required";
+
+  
+  // Prasad Delivery (Required field)
+  if (formData.prasad_delivery === "" || formData.prasad_delivery === null) {
+    newErrors.prasad_delivery = "Prasad Delivery option is required";
+  }
+
+   // Address Details (validate only if prasad_delivery is true)
+  if (formData.prasad_delivery === true || formData.prasad_delivery === "yes") {
+    if (!formData.state.trim()) newErrors.state = "State is required";
+    if (!formData.country.trim()) newErrors.country = "Country is required";
+    if (!formData.city.trim()) newErrors.city = "City is required";
+    if (!formData.pin_code.trim()) {
+      newErrors.pin_code = "Pin Code is required";
+    } else if (!/^\d{6}$/.test(formData.pin_code)) {
+      newErrors.pin_code = "Enter a valid 6-digit Pin Code";
+    }
+  }
+
+  // Payment Details
+  if (
+    !formData.donation_amount ||
+    isNaN(formData.donation_amount) ||
+    formData.donation_amount <= 0
+  )
+    newErrors.donation_amount = "Valid Donation Amount is required";
+
+  if (!formData.payment_mode)
+    newErrors.payment_mode = "Payment Mode is required";
+
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+};
+
+
+  
+  const handleAgreeChange = async (e) => {
+    const checked = e.target.checked;
+
+    if (!checked) {
+      setAgree(false);
+      return;
+    }
+
+    //  validate required fields before OTP
+    if (!validateFields()) {
+      alert("Please fill all required fields correctly before verifying OTP.");
+      setAgree(false);
+      return;
+    }
+
+    //  if OTP already verified, no need to resend
+    if (isVerified) {
+      setAgree(true);
+      return;
+    }
+
+    //  otherwise send OTP
+    try {
+      const res = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/Sentotp/",
+        {
+          phone: formData.mobile_number,
+        }
+      );
+
+      if (res.data.success) {
+        setOtpSent(true);
+        setShow(true); // open modal
+        setAgree(true);
+       
+      } else {
+        alert(res.data.message || "Failed to send OTP");
+        setAgree(false);
+      }
+    } catch (err) {
+      console.error("OTP Send Error:", err);
+      alert("Error sending OTP");
+      setAgree(false);
+    }
+  };
+
+ const handleVerifyOtp = async () => {
+    try {
+      const res = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/Verify/",
+        {
+          phone: formData.mobile_number,
+          otp: otp,
+        }
+      );
+
+      if (res.data.success) {
+        setIsVerified(true);
+        alert("Phone number verified!");
+        handleClose(); // close modal
+        //navigate("/PaymentConfirmation");
+      } else {
+        alert(res.data.message || "Invalid OTP");
+      }
+    } catch (err) {
+      console.error("OTP Verify Error:", err);
+      alert("Error verifying OTP");
+    }
+  };
+
+    const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
+
+    if (name === "mobile_number") {
+      let errorMsg = "";
+      if (!/^\d*$/.test(value)) {
+        errorMsg = "Only digits allowed";
+      } else if (value.length > 0 && !/^\d{10}$/.test(value)) {
+        errorMsg = "Enter a valid 10-digit mobile number";
+      }
+      setErrors((prev) => ({ ...prev, mobile_number: errorMsg }));
+    }
+
+    if (name === "email") {
+      let errorMsg = "";
+      if (value.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        errorMsg = "Enter a valid email address";
+      }
+      setErrors((prev) => ({ ...prev, email: errorMsg }));
+    }
+  };
+
+    const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validateFields()) {
+      return alert("Please fill all required fields.");
+    }
+
+    if (!isVerified) {
+      alert("Please verify your phone number before submitting.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const formDataToSend = new FormData();
+
+      for (let key in formData) {
+        formDataToSend.append(key, formData[key]);
+      }
+
+      const res = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/darshan-booking/",
+        formDataToSend,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+
+      console.log("Darshan Registration Response:", res.data);
+
+      if (res.data.message === "Darshan booking created") {
+        alert("Darshan Registration Successful!");
+        navigate("/PaymentConfirmation");
+      } else {
+        alert(res.data.message || "Darshan Registration failed");
+      }
+    } catch (err) {
+      console.error(err);
+
+      if (err.response && err.response.data) {
+        const errorData = err.response.data;
+        alert(errorData.message || "Something went wrong!");
+      } else {
+        alert(err.message || "Something went wrong!");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       <Container className="temp-container">
@@ -48,317 +332,470 @@ const DarshanBooking = () => {
             Book Your Sacred Darshan and Connect with the Divine{" "}
           </i>
         </p>
+         <Form onSubmit={handleSubmit}>
         <Row>
           <Col lg={8} md={8} sm={12} className="mt-2">
             <h2>Personal Details</h2>
-            <Row className="mt-4">
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
+<Row>
+            <Col lg={6} md={6} sm={12}>
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label className="temp-label">
+                  Full Name <span className="temp-span-star">*</span>
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter Name"
+                  className="temp-form-control"
+                  name="full_name"
+                  value={formData.full_name}
+                  onChange={handleInputChange}
+                />
+                {errors.full_name && (
+                  <small className="text-danger">{errors.full_name}</small>
+                )}
+              </Form.Group>
+            </Col>
+            <Col lg={6} md={6} sm={12}>
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label className="temp-label">
+                  Email ID <span className="temp-span-star">*</span>
+                </Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Enter Email ID"
+                  className="temp-form-control"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                />
+                {errors.email && (
+                  <small className="text-danger">{errors.email}</small>
+                )}
+              </Form.Group>
+            </Col>
+            <Col lg={6} md={6} sm={12}>
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label className="temp-label">
+                  Gender <span className="temp-span-star">*</span>
+                </Form.Label>
+                <Form.Select
+                  className="temp-form-control-option"
+                  placeholder="Gender"
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleInputChange}
                 >
-                  <Form.Label className="temp-label">
-                    Full Name <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter Name"
-                    className="temp-form-control"
-                  />
-                </Form.Group>
-              </Col>
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label">
-                    Email ID <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    type="email"
-                    placeholder="Enter Email"
-                    className="temp-form-control"
-                  />
-                </Form.Group>
-              </Col>
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label">
-                    Gender <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Select className="temp-form-control-option">
-                    <option value="">Select Gender</option>
-                    <option value="shiv">Male </option>
-                    <option value="vishnu">Female </option>
-                    <option value="vishnu">Other </option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
+                  <option value="">Select Gender </option>
+                  <option value="Male">Male </option>
+                  <option value="Female">Female </option>
+                  <option value="Other">Other </option>
+                </Form.Select>
+                {errors.gender && (
+                  <small className="text-danger">{errors.gender}</small>
+                )}
+              </Form.Group>
+            </Col>
 
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label">
-                    Age <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    type="Date"
-                    placeholder=""
-                    className="temp-form-control"
-                  />
-                </Form.Group>
-              </Col>
+            <Col lg={6} md={6} sm={12}>
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label className="temp-label">
+                  Age <span className="temp-span-star">*</span>
+                </Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="Enter Age"
+                  className="temp-form-control"
+                  name="age"
+                  value={formData.age}
+                  onChange={handleInputChange}
+                />
+                {errors.age && (
+                  <small className="text-danger">{errors.age}</small>
+                )}
+              </Form.Group>
+            </Col>
 
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label">
-                    Mobile Number <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    type="number"
-                    placeholder="Enetr Mobile Number"
-                    className="temp-form-control"
-                  />
-                </Form.Group>
-              </Col>
+            <Col lg={6} md={6} sm={12}>
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label className="temp-label">
+                  Mobile Number <span className="temp-span-star">*</span>
+                </Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="Enter Mobile Number"
+                  className="temp-form-control"
+                  name="mobile_number"
+                  value={formData.mobile_number}
+                  onChange={handleInputChange}
+                />
+                {errors.mobile_number && (
+                  <small className="text-danger">
+                    {errors.mobile_number}
+                  </small>
+                )}
 
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
+              </Form.Group>
+            </Col>
+
+            <Col lg={6} md={6} sm={12}>
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label className="temp-label">
+                  ID Proof Type <span className="temp-span-star">*</span>
+                </Form.Label>
+                <Form.Select
+                  className="temp-form-control-option"
+                  placeholder="ID Proof Type"
+                  name="id_proof_type"
+                  value={formData.id_proof_type}
+                  onChange={handleInputChange}
                 >
-                  <Form.Label className="temp-label">
-                    ID Proof Type <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Select className="temp-form-control-option">
-                    <option value="">Select Temple</option>
-                    <option value="shiv">Aadhar </option>
-                    <option value="vishnu">PAN </option>
-                    <option value="vishnu"> Voter ID </option>
-                    <option value="durga"> Passport </option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label">
-                    ID Proof Number <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Your ID Proof Number"
-                    className="temp-form-control"
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
+                  <option value="">Select ID Proof </option>
+                  <option value="Aadhar">Aadhar Card </option>
+                  <option value="PAN ">PAN </option>
+                  <option value="Passport ">Passport </option>
+                  <option value="Voter ID">Voter ID </option>
+                </Form.Select>
+                {errors.id_proof_type && (
+                  <small className="text-danger">
+                    {errors.id_proof_type}
+                  </small>
+                )}
+
+              </Form.Group>
+            </Col>
+            <Col lg={6} md={6} sm={12}>
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label className="temp-label">
+                  ID Proof Number <span className="temp-span-star">*</span>
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter ID Proof Number"
+                  className="temp-form-control"
+                  name="id_proof_number"
+                  value={formData.id_proof_number}
+                  onChange={handleInputChange}
+                  maxLength={16}
+                />
+                {errors.id_proof_number && (
+                  <small className="text-danger">
+                    {errors.id_proof_number}
+                  </small>
+                )}
+              </Form.Group>
+            </Col>
+</Row>
             <h2>Darshan Booking Details</h2>
+
             <Row>
               {/* Booking Details */}
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group className="mb-3" controlId="templeType">
-                  <Form.Label className="temp-label">
-                    Temple Name <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Select
-                    className="temp-form-control-option"
-                    name="temple_type"
-                  >
-                    <option value="">Select Temple</option>
-                    <option value="shiv">Shiva Temple</option>
-                    <option value="vishnu">Vishnu Temple</option>
-                    <option value="durga">Durga Temple</option>
-                    <option value="ganesha">Ganesha Temple</option>
-                    <option value="hanuman">Hanuman Temple</option>
-                    <option value="krishna">Krishna Temple</option>
-                    <option value="buddha">Buddha Temple</option>
-                    <option value="jain">Jain Temple</option>
-                    <option value="sai">Sai Baba Temple</option>
-                    <option value="other">Other</option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
 
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
+            <Col lg={6} md={6} sm={12}>
+              <Form.Group className="mb-3" controlId="templeType">
+                <Form.Label className="temp-label">
+                  Temple Name <span className="temp-span-star">*</span>
+                </Form.Label>
+                <Form.Select
+                  className="temp-form-control-option"
+                  name="temple_name"
+                  value={formData.temple_name}
+                  onChange={handleInputChange}
                 >
-                  <Form.Label className="temp-label">
-                    Preferred Date <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    type="Date"
-                    placeholder=""
-                    className="temp-form-control"
-                  />
-                </Form.Group>
-              </Col>
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group controlId="donationFor">
-                  <Form.Label>
-                    Preferred Time Slot{" "}
-                    <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Select aria-label="Select donation purpose">
-                    <option>Select Purpose</option>
-                    <option value="temple">Morning</option>
-                    <option value="festivals">Afternoon </option>
-                    <option value="charity">Evening</option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-            </Row>
+                  <option value="">Select Temple Name</option>
+                  {temples.map((temple) => (
+                    <option key={temple.id} value={temple.temple_name}>
+                      {temple.temple_name} – {temple.city}, {temple.state}
+                    </option>
+                  ))}
+                </Form.Select>
+                {errors.temple_name && (
+                  <small className="text-danger">
+                    {errors.temple_name}
+                  </small>
+                )}
+              </Form.Group>
+            </Col>
+
+            <Col lg={6} md={6} sm={12}>
+              <Form.Group className="mb-3" controlId="darshanType">
+                <Form.Label className="temp-label">
+                  Darshan Type <span className="temp-span-star">*</span>
+                </Form.Label>
+                <Form.Select
+                  className="temp-form-control-option"
+                  placeholder="Darshan Type"
+                  name="darshan_type"
+                  value={formData.darshan_type}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select Darshan Type</option>
+                  <option value="Darshan">Darshan</option>
+                  <option value="Puja">Puja</option>
+                  <option value="Festival Booking">Festival Booking</option>
+                  <option value="Abhishekam">Abhishekam</option>
+                  <option value="Archana">Archana</option>
+                  <option value="Rudrabhishek">Rudrabhishek</option>
+                  <option value="Other">Other</option>
+                </Form.Select>
+                {errors.darshan_type && (
+                  <small className="text-danger">
+                    {errors.darshan_type}
+                  </small>
+                )}
+              </Form.Group>
+            </Col>
+
+
+            <Col lg={6} md={6} sm={12}>
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label className="temp-label">
+                  Date Of Darshan <span className="temp-span-star">*</span>
+                </Form.Label>
+                <Form.Control
+                  type="date"
+                  placeholder="Date Of Darshan"
+                  className="temp-form-control"
+                  name="date_of_darshan"
+                  value={formData.date_of_darshan}
+                  onChange={handleInputChange}
+                  min={new Date().toISOString().split("T")[0]}
+                />
+                {errors.date_of_darshan && (
+                  <small className="text-danger">
+                    {errors.date_of_darshan}
+                  </small>
+                )}
+              </Form.Group>
+            </Col>
+
+            <Col lg={6} md={6} sm={12}>
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label className="temp-label">
+                  Number of Devotees{" "}
+                  <span className="temp-span-star">*</span>
+                </Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="Number of Devotees"
+                  className="temp-form-control"
+                  name="number_of_devotees"
+                  value={formData.number_of_devotees}
+                  onChange={handleInputChange}
+                />
+                {errors.number_of_devotees && (
+                  <small className="text-danger">
+                    {errors.number_of_devotees}
+                  </small>
+                )}
+              </Form.Group>
+            </Col>
+
+
+            <Col lg={6} md={6} sm={12}>
+              <Form.Group controlId="donationFor">
+                <Form.Label>
+                  Time Slot{" "}
+                  <span className="temp-span-star">*</span>
+                </Form.Label>
+                <Form.Select
+                  className="temp-form-control-option"
+                  placeholder="Time Slot"
+                  name="time_slot"
+                  value={formData.time_slot}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select Time Slot</option>
+                  <option value="Morning ">Morning </option>
+                  <option value="Afternoon ">Afternoon </option>
+                  <option value="Evening">Evening </option>
+                </Form.Select>
+                {errors.time_slot && (
+                  <small className="text-danger">
+                    {errors.time_slot}
+                  </small>
+                )}
+              </Form.Group>
+            </Col>
+
             <h2 className="pt-4">Address Details</h2>
-            <Row>
 
- <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
+            <Col lg={6} md={6} sm={12}>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                <Form.Label className="temp-label">
+                  Prasad Delivery <span className="temp-span-star">*</span>
+                </Form.Label>
+                <Form.Select
+                  className="temp-form-control-option"
+                  name="prasad_delivery"
+                  value={formData.prasad_delivery}
+                  onChange={handleInputChange}
                 >
-                  <Form.Label className="temp-label">
-                    Special Requests <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={4}
-                    placeholder="Enter Your Special Requests"
-                    className="temp-form-control"
-                  />
-                </Form.Group>
-              </Col>
-              <Col lg={6} md={6} sm={12}>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Label className="temp-label">
-            Prasad Delivery <span className="temp-span-star">*</span>
-          </Form.Label>
-          <Form.Select
-            className="temp-form-control-option"
-            value={prasadDelivery}
-            onChange={handlePrasadChange}
-          >
-            <option value="">Select a Prasad Delivery</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </Form.Select>
-        </Form.Group>
-      </Col>
+                  <option value="">Select option</option>
+                  <option value="yes">Yes</option>
+                  {/* <option value="no">No</option> */}
+                </Form.Select>
+                {errors.prasad_delivery && (
+                  <small className="text-danger">
+                    {errors.prasad_delivery}
+                  </small>
+                )}
+              </Form.Group>
+            </Col>
 
-      {/* Show LocationState only if user selects Yes */}
-      {prasadDelivery === "Yes" && (
-       
-          <LocationState  />
-       
-      )}
-      <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label">
-                    Zip Code <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    type="number"
-                    placeholder="Enter Zip Code"
-                    className="temp-form-control"
-                  />
-                </Form.Group>
-              </Col>
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
-                >
-                  <Form.Label className="temp-label">
-                    Accommodation Required{" "}
-                    <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Select className="temp-form-control-option">
-                    <option value="Select a option">Select a Accommodation</option>
-                    <option value="option1">Yes</option>
-                    <option value="option2">No</option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
 
-             
-            </Row>
+           {formData.prasad_delivery === "yes" && (
+                  <>
+                    <h2 className="mt-2 mb-3">Delivery Address</h2>
+
+                   <LocationState
+                          formData={formData}
+                          handleInputChange={handleInputChangeCity}
+                          formErrors={errors}
+                        />
+
+                    <Col lg={6} md={6} sm={12}>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="temp-label">
+                          Pin Code <span className="temp-span-star">*</span>
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          placeholder="Pincode"
+                          className="temp-form-control"
+                          name="pin_code"
+                          value={formData.pin_code}
+                          onChange={handleInputChange}
+                        />
+                      </Form.Group>
+                    </Col>
+                  </>
+                )}
+
+            <Col lg={6} md={6} sm={12}>
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label className="temp-label">
+                  Special Requests <span className="temp-span-star">*</span>
+                </Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={4}
+                  placeholder="Enter Your Special Requests"
+                  className="temp-form-control"
+                  name="special_seva_or_puja"
+                  value={formData.special_seva_or_puja}
+                  onChange={handleInputChange}
+                />
+                {errors.special_seva_or_puja && (
+                  <small className="text-danger">
+                    {errors.special_seva_or_puja}
+                  </small>
+                )}
+
+              </Form.Group>
+            </Col>
+
             <h2>Payment Details</h2>
-            <Row>
-              {/* Payment Details */}
 
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group className="mb-3" controlId="darshanType">
-                  <Form.Label className="temp-label">
-                    Darshan Type <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Select
-                    className="temp-form-control-option"
-                    value={darshanType}
-                    onChange={handleDarshanChange}
-                  > 
-                    <option value="">Select Darshan Type</option>
-                    <option value="Darshan">Darshan</option>
-                    <option value="Puja">Puja</option>
-                    <option value="Festival Booking">Festival Booking</option>
-                    <option value="Abhishekam">Abhishekam</option>
-                    <option value="Archana">Archana</option>
-                    <option value="Rudrabhishek">Rudrabhishek</option>
-                    <option value="Other">Other</option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-               <Col lg={6} md={6} sm={12}>
-                <Form.Group className="mb-3" controlId="darshanType">
-                  <Form.Label className="temp-label">
-                    Payment Mode <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Select
-                    className="temp-form-control-option"
-                    value={darshanType}
-                    onChange={handleDarshanChange}
-                  >
-                    <option value="">Select Temple Type</option>
-                    <option value="UPI">UPI</option>
-                    <option value="Card">Card</option>
-                   
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-              <Col lg={6} md={6} sm={12}>
-                <Form.Group className="mb-3" controlId="amount">
-                  <Form.Label className="temp-label">
-                    Amount (Rs.) <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    type="number"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)} // allow manual edit
-                    className="temp-form-control"
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
+            {/* Payment Details */}
+
+
+
+            <Col lg={6} md={6} sm={12}>
+              <Form.Group className="mb-3" controlId="darshanType">
+                <Form.Label className="temp-label">
+                  Payment Mode <span className="temp-span-star">*</span>
+                </Form.Label>
+                <Form.Select
+                  className="temp-form-control-option"
+                  name="payment_mode"
+                  value={formData.payment_mode}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select Payment Type</option>
+                  <option value="upi">UPI</option>
+                  <option value="card">Card</option>
+
+                </Form.Select>
+                {errors.payment_mode && (
+                  <small className="text-danger">
+                    {errors.payment_mode}
+                  </small>
+                )}
+              </Form.Group>
+            </Col>
+
+
+            <Col lg={6} md={6} sm={12}>
+              <Form.Group className="mb-3" controlId="amount">
+                <Form.Label className="temp-label">
+                  Donation Amount (Rs.) <span className="temp-span-star">*</span>
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter the Amount"
+                  className="temp-form-control"
+                  name="donation_amount"
+                  value={formData.donation_amount}
+                  onChange={handleInputChange}
+                />
+                {errors.donation_amount && (
+                  <small className="text-danger">
+                    {errors.donation_amount}
+                  </small>
+                )}
+              </Form.Group>
+            </Col>
+</Row>
+            <div>
+              <label>
+                <input
+                  type="checkbox"
+                  name="agreeTerms"
+                  className="mx-2"
+                  checked={agree}
+                  onChange={handleAgreeChange}
+                />
+                I agree to booking terms &amp; cancellation policy
+              </label>
+            </div>
+
             <div className="gap-3 mt-3 mb-3 Temp-btn-submit">
               <Button
                 variant="temp-submit-btn"
                 className="temp-submit-btn mx-3"
                 type="submit"
-                onClick={handleShow}
+                disabled={!agree || !isVerified}
+
               >
                 Registration Now
               </Button>
@@ -366,11 +803,14 @@ const DarshanBooking = () => {
                 variant="secondary"
                 className="temp-cancle-btn"
                 type="button"
+                onClick={() => setFormData({})}
               >
                 Cancel
               </Button>
             </div>
           </Col>
+
+
           <Col lg={4} md={4} sm={12} className="mt-2 ">
             <div className="tem-rhs">
               <h3>Guidelines for Online Donation</h3>
@@ -435,8 +875,18 @@ const DarshanBooking = () => {
             </div>
           </Col>
         </Row>
+        </Form>
       </Container>
-      <OTPModel show={show} handleClose={handleClose} />
+      <OTPModel
+        show={show}
+        handleClose={handleClose}
+        otp={otp}
+        setOtp={setOtp}
+        handleVerifyOtp={handleVerifyOtp}
+        phone={formData.mobile_number}
+        handleResendOtp={handleResendOtp}
+
+      />
     </div>
   );
 };
