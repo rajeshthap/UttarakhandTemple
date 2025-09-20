@@ -48,25 +48,26 @@ const Testimonials = () => {
     return (
         <div className="container-fluid p-0">
             <div className="Testimonials-wrapper">
-
-                <h2 className="testimonial-title">Testimonials</h2>
-                <h3>What Our Congregation Say</h3>
-                <div className="carousel-container">
-                    <div className="slick-slider slick-initialized">
-                        <Slider {...settings}>
-                            {testimonials.map((item, index) => (
-                                <div key={index} className="testimonial-card">
-                                    <img src={item.img} alt={item.name} className="testimonial-img" />
-                                    <h4>{item.name}</h4>
-                                    <p>{item.text}</p>
-                                    <div className="stars">
-                                        {[...Array(item.rating)].map((_, i) => (
-                                            <FaStar key={i} color="#FFD700" />
-                                        ))}
+                <div className="container p-l-0">
+                    <h2 className="testimonial-title">Testimonials</h2>
+                    <h3>What Our Congregation Say</h3>
+                    <div className="carousel-container">
+                        <div className="slick-slider slick-initialized">
+                            <Slider {...settings}>
+                                {testimonials.map((item, index) => (
+                                    <div key={index} className="testimonial-card">
+                                        <img src={item.img} alt={item.name} className="testimonial-img" />
+                                        <h4>{item.name}</h4>
+                                        <p>{item.text}</p>
+                                        <div className="stars">
+                                            {[...Array(item.rating)].map((_, i) => (
+                                                <FaStar key={i} color="#FFD700" />
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
-                        </Slider>
+                                ))}
+                            </Slider>
+                        </div>
                     </div>
                 </div>
             </div>

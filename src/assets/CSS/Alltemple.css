@@ -3,32 +3,39 @@
     margin: auto;
 
 }
+
 .password-wrapper {
-  position: relative;
+    position: relative;
 }
 
 .password-wrapper .form-control {
-  padding-right: 40px; /* space for eye */
+    padding-right: 40px;
+    /* space for eye */
 }
 
-.toggle-eye {
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%);
-  cursor: pointer;
-  font-size: var(--temp-space-350);
-  color: #666;
-  user-select: none;
+.p-l-0 {
+    padding-left: 0 !important;
 }
+
+
+.toggle-eye {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: var(--temp-space-350);
+    color: #666;
+    user-select: none;
+}
+
 .text-danger {
     color: var(--temp-org) !important;
     font-size: var(--temp-space-300);
 }
 
-.t
-.toggle-eye:hover {
-  color: #000;
+.t .toggle-eye:hover {
+    color: #000;
 }
 
 .card-item {

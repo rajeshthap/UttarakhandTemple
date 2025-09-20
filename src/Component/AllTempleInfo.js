@@ -38,7 +38,7 @@ const AllTempleInfo = () => {
     return (
         <div className="container-fluid p-0">
             <div className="Alltemple-wrapper">
-                <div className="container">
+                <div className="container p-l-0">
                     <div><h2>Temple Info</h2>
                     <h3>Explore Temple History, Facilities & Services</h3>
                     </div>
