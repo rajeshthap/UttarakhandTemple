@@ -83,6 +83,9 @@ function PanditRegistration() {
             "First name must start with a capital letter and contain only alphabets";
         break;
 
+        case "country":
+          if(!value) error ="Country is Required";
+         
       case "last_name":
         if (!value) error = "Last name is required";
         else if (!/^[A-Z][a-zA-Z]*$/.test(value))
@@ -267,9 +270,9 @@ function PanditRegistration() {
     //  Address validations
     if (!formData.permanent_address)
       errors.permanent_address = "Address is required";
-    if (!formData.country) errors.country = "Country is required";
-    if (!formData.state) errors.state = "State is required";
-    if (!formData.city) errors.city = "City is required";
+    if (!formData.country) formErrors.country = "Country is required";
+    if (!formData.state) formErrors.state = "State is required";
+    if (!formData.city) formErrors.city = "City is required";
     if (!formData.zipcode) errors.zipcode = "Zip code is required";
     if (!formData.temple_association)
       errors.temple_association = "Temple association is required";

@@ -8,8 +8,6 @@ import { useNavigate } from "react-router-dom";
 
 const SevaRegistration = () => {
   const [show, setShow] = useState(false);
-  // const [prasadDelivery, setPrasadDelivery] = useState("");
-  //const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   const [agree, setAgree] = useState(false);
   const [, setLoading] = useState(false);
@@ -44,13 +42,13 @@ const SevaRegistration = () => {
 
   const handleResendOtp = async () => {
     try {
-      
+
       const res = await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
-        phone: formData.mobile_number, 
+        phone: formData.mobile_number,
       });
-  
+
       if (res.data.success) {
-        
+
       } else {
         alert("Failed to resend OTP. Try again.");
       }
@@ -110,7 +108,7 @@ const SevaRegistration = () => {
         setOtpSent(true);
         setShow(true); // open modal
         setAgree(true);
-        
+
       } else {
         alert(res.data.message || "Failed to send OTP");
         setAgree(false);
@@ -149,11 +147,11 @@ const SevaRegistration = () => {
   const validateFields = () => {
     const newErrors = {};
 
-   if (!formData.full_name.trim()) {
-  newErrors.full_name = "Full Name is required";
-} else if (!/^[A-Za-z\s]+$/.test(formData.full_name)) {
-  newErrors.full_name = "Only alphabets are allowed";
-}
+    if (!formData.full_name.trim()) {
+      newErrors.full_name = "Full Name is required";
+    } else if (!/^[A-Za-z\s]+$/.test(formData.full_name)) {
+      newErrors.full_name = "Only alphabets are allowed";
+    }
 
     if (!formData.gender) newErrors.gender = "Gender is required";
 
@@ -282,7 +280,6 @@ const SevaRegistration = () => {
       if (res.data.message === "Seva booking created successfully") {
         alert("Seva Registration Successful!");
         //navigate("/PaymentConfirmation");
-        // reset form
         setFormData({
           full_name: "",
           gender: "",
@@ -321,7 +318,7 @@ const SevaRegistration = () => {
   };
 
   return (
-     <div className="temp-donate">
+    <div>
       <Container className="temp-container">
         <h1>Mandri Seva Registration </h1>
         <p>
@@ -336,37 +333,37 @@ const SevaRegistration = () => {
               <Row className="mt-4">
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
-  className="mb-3"
-  controlId="exampleForm.ControlInput1"
->
-  <Form.Label className="temp-label">
-    Full Name <span className="temp-span-star">*</span>
-  </Form.Label>
-  <Form.Control
-    type="text"
-    placeholder="Enter Your Name"
-    className="temp-form-control"
-    name="full_name"
-    value={formData.full_name}
-    onChange={(e) => {
-      const value = e.target.value;
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label className="temp-label">
+                      Full Name <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Name"
+                      className="temp-form-control"
+                      name="full_name"
+                      value={formData.full_name}
+                      onChange={(e) => {
+                        const value = e.target.value;
 
-      // Allow only alphabets and spaces
-      if (/^[A-Za-z\s]*$/.test(value)) {
-        handleInputChange(e);
-        setErrors((prev) => ({ ...prev, full_name: "" }));
-      } else {
-        setErrors((prev) => ({
-          ...prev,
-          full_name: "Only alphabets are allowed",
-        }));
-      }
-    }}
-  />
-  {errors.full_name && (
-    <small className="text-danger">{errors.full_name}</small>
-  )}
-</Form.Group>
+                        // Allow only alphabets and spaces
+                        if (/^[A-Za-z\s]*$/.test(value)) {
+                          handleInputChange(e);
+                          setErrors((prev) => ({ ...prev, full_name: "" }));
+                        } else {
+                          setErrors((prev) => ({
+                            ...prev,
+                            full_name: "Only alphabets are allowed",
+                          }));
+                        }
+                      }}
+                    />
+                    {errors.full_name && (
+                      <small className="text-danger">{errors.full_name}</small>
+                    )}
+                  </Form.Group>
 
                 </Col>
                 <Col lg={6} md={6} sm={12}>
@@ -384,7 +381,7 @@ const SevaRegistration = () => {
                       value={formData.gender}
                       onChange={handleInputChange}
                     >
-                      <option value="">Select Gender Type</option>
+                      <option value="">Select Gender </option>
                       <option value="Male">Male </option>
                       <option value="Female">Female </option>
                       <option value="Other">Other </option>
@@ -395,84 +392,84 @@ const SevaRegistration = () => {
                   </Form.Group>
                 </Col>
 
-               <Col lg={6} md={6} sm={12}>
-  <Form.Group
-    className="mb-3"
-    controlId="exampleForm.ControlInput1"
-  >
-    <Form.Label className="temp-label">
-      Age <span className="temp-span-star">*</span>
-    </Form.Label>
-    <Form.Control
-      type="text"
-      placeholder="Enter Your Age"
-      className="temp-form-control"
-      name="age"
-      value={formData.age}
-      onChange={(e) => {
-        const value = e.target.value;
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label className="temp-label">
+                      Age <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Age"
+                      className="temp-form-control"
+                      name="age"
+                      value={formData.age}
+                      onChange={(e) => {
+                        const value = e.target.value;
 
-        // Allow only digits
-        if (/^\d*$/.test(value)) {
-          handleInputChange(e);
-          setErrors((prev) => ({ ...prev, age: "" }));
-        } else {
-          setErrors((prev) => ({
-            ...prev,
-            age: "Only digits are allowed",
-          }));
-        }
-      }}
-    />
-    {errors.age && (
-      <small className="text-danger">{errors.age}</small>
-    )}
-  </Form.Group>
-</Col>
+                        // Allow only digits
+                        if (/^\d*$/.test(value)) {
+                          handleInputChange(e);
+                          setErrors((prev) => ({ ...prev, age: "" }));
+                        } else {
+                          setErrors((prev) => ({
+                            ...prev,
+                            age: "Only digits are allowed",
+                          }));
+                        }
+                      }}
+                    />
+                    {errors.age && (
+                      <small className="text-danger">{errors.age}</small>
+                    )}
+                  </Form.Group>
+                </Col>
 
-     <Col lg={6} md={6} sm={12}>
-  <Form.Group
-    className="mb-3"
-    controlId="exampleForm.ControlInput1"
-  >
-    <Form.Label className="temp-label">
-      Mobile Number <span className="temp-span-star">*</span>
-    </Form.Label>
-    <Form.Control
-      type="text"
-      placeholder="Enter Mobile Number"
-      className="temp-form-control"
-      name="mobile_number"
-      value={formData.mobile_number}
-      onChange={(e) => {
-        const value = e.target.value;
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label className="temp-label">
+                      Mobile Number <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Mobile Number"
+                      className="temp-form-control"
+                      name="mobile_number"
+                      value={formData.mobile_number}
+                      onChange={(e) => {
+                        const value = e.target.value;
 
-        // Only allow digits and max 10
-        if (/^\d*$/.test(value) && value.length <= 10) {
-          handleInputChange(e);
+                        // Only allow digits and max 10
+                        if (/^\d*$/.test(value) && value.length <= 10) {
+                          handleInputChange(e);
 
-          // Remove error if input becomes valid
-          if (value.length === 10) {
-            setErrors((prev) => ({ ...prev, mobile_number: "" }));
-          } else {
-            setErrors((prev) => ({
-              ...prev,
-              mobile_number: "Mobile number must be 10 digits",
-            }));
-          }
-        } else {
-          setErrors((prev) => ({
-            ...prev,
-           
-          }));
-        }
-      }}
-    />
-    {errors.mobile_number && (
-      <small className="text-danger">{errors.mobile_number}</small>
-    )}
-  </Form.Group>
-</Col>
+                          // Remove error if input becomes valid
+                          if (value.length === 10) {
+                            setErrors((prev) => ({ ...prev, mobile_number: "" }));
+                          } else {
+                            setErrors((prev) => ({
+                              ...prev,
+                              mobile_number: "Mobile number must be 10 digits",
+                            }));
+                          }
+                        } else {
+                          setErrors((prev) => ({
+                            ...prev,
+
+                          }));
+                        }
+                      }}
+                    />
+                    {errors.mobile_number && (
+                      <small className="text-danger">{errors.mobile_number}</small>
+                    )}
+                  </Form.Group>
+                </Col>
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
                     className="mb-3"
@@ -511,7 +508,7 @@ const SevaRegistration = () => {
                       maxLength={formData.id_proof_type === "Aadhar" ? 16 : 20}
                       onChange={handleInputChange}
                     >
-                      <option value="">Select ID Proof Type</option>
+                      <option value="">Select ID Proof </option>
                       <option value="Aadhar">Aadhar </option>
                       <option value="PAN">PAN </option>
                       <option value="Passport">Passport </option>
@@ -534,7 +531,7 @@ const SevaRegistration = () => {
                     </Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="ID Proof Number"
+                      placeholder="Enter ID Proof Number"
                       className="temp-form-control"
                       name="id_proof_number"
                       value={formData.id_proof_number}
@@ -952,8 +949,8 @@ const SevaRegistration = () => {
         otp={otp}
         setOtp={setOtp}
         handleVerifyOtp={handleVerifyOtp}
-        phone={formData.mobile_number}  
-        handleResendOtp={handleResendOtp} 
+        phone={formData.mobile_number}
+        handleResendOtp={handleResendOtp}
 
       />
     </div>
