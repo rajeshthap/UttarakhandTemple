@@ -139,10 +139,41 @@ const ForgotPassword = () => {
       setLoading(false);
     }
   };
+const handleSubmit = (e) => {
+  e.preventDefault();
+  let valid = true;
+
+  if (!password.trim()) {
+    setPasswordError("Please enter a new password");
+    valid = false;
+  } else if (!strongPasswordRegex.test(password)) {
+    setPasswordError(
+      "Password must be at least 8 characters, include uppercase, lowercase, number, and special character."
+    );
+    valid = false;
+  } else {
+    setPasswordError("");
+  }
+
+  if (!confirmPassword.trim()) {
+    setConfirmPasswordError("Please confirm your password");
+    valid = false;
+  } else if (password !== confirmPassword) {
+    setConfirmPasswordError("Passwords do not match");
+    valid = false;
+  } else {
+    setConfirmPasswordError("");
+  }
+
+  if (valid) {
+    // ✅ submit to API or continue
+    console.log("Form submitted", { password, confirmPassword });
+  }
+};
 
   const handleResetPassword = async () => {
     if (!password || !confirmPassword) {
-      setErrors("Enter both password fields");
+      // setErrors("Enter both password fields");
       return;
     }
     if (password !== confirmPassword) {
@@ -236,6 +267,7 @@ const ForgotPassword = () => {
         <div className="temple-registration-heading">
           <h2>Forgot Password</h2>
           <Row>
+            <Form onSubmit={handleSubmit}>
             <Col lg={6} md={6} sm={12} className="mt-1">
 
               {/* Step 1: Contact */}
@@ -414,10 +446,8 @@ const ForgotPassword = () => {
                 </>
               )}
 
-              {errors && step !== 3 && <p className="otperror mt-2">{errors}</p>}
-              {message && step !== 3 && <p className="otpsuccess mt-2">{message}</p>}
-
             </Col>
+            </Form>
           </Row>
         </div>
       </Container>
