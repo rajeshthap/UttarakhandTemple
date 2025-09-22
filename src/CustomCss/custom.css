@@ -194,24 +194,35 @@ body {
     color: var(--temp-red);
 }
 
-.otperror{
+.otperror {
     color: var(--temp-red);
     font-size: var(--temp-space-350);
     text-align: center;
 }
 
-p.otperror
-{
-     color: var(--temp-red);
+p.otperror {
+    color: var(--temp-red);
     font-size: var(--temp-space-350);
     text-align: center;
 }
-p.otpsuccess{
+
+p.otpsuccess {
     color: var(--temp-light-green);
     font-size: var(--temp-space-350);
     text-align: center;
 }
 
+/* Chrome, Safari, Edge, Opera */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
     .menubar {
@@ -249,7 +260,8 @@ p.otpsuccess{
     .menubar {
         background-color: var(--temp-primary);
     }
-    .temp-donate{
-    margin: var(--temp-space-500);
-}
+
+    .temp-donate {
+        margin: var(--temp-space-500);
+    }
 }
