@@ -11,7 +11,10 @@ function ContactUs() {
           <h1>Contact Us</h1>
           <p>We are here to assist you with any queries, suggestions, or support related to Mahadevaya Portal. Reach out to us through the following channels:</p>
           <ul>
-            <li><b>Email:</b> admin@mahadevaaya.com</li>
+            <li>
+              <b>Email:</b>{' '}
+              <a href="mailto:admin@mahadevaaya.com">admin@mahadevaaya.com</a>
+            </li>
             <li><b>Phone: </b> +91 8193991148</li>
             <li><b>Address: </b> 32, New Park Road Gandhi Gram, Kanwali Road Dehradun</li>
           </ul>
