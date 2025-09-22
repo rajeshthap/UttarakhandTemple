@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import "../../assets/CSS/TempleAuthority.css";
@@ -12,11 +12,10 @@ import VerifyOtp from "../VerifyOtp/VerifyOtp";
 import Regimg1 from "../../assets/images/temple-img.jpg";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-
+import axios from "axios";
 function TempleAuthority() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
   const [fileErrors, setFileErrors] = useState({});
 
   const navigate = useNavigate();
@@ -24,6 +23,8 @@ function TempleAuthority() {
   const [phone, setPhone] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
+  const [banks, setBanks] = useState([]);
+
   const [formErrors, setFormErrors] = useState({});
   const [formData, setFormData] = useState({
     state: "",
@@ -58,6 +59,25 @@ function TempleAuthority() {
     noc_doc: null,
     trust_cert: null,
   });
+
+  useEffect(() => {
+    const fetchBanks = async () => {
+      try {
+        const response = await axios.get(
+          "https://brjobsedu.com/Nandagora/api2/Bankdetails/"
+        );
+        const bankOptions = response.data.map((bank) => ({
+          value: bank.bank_name,
+          label: bank.bank_name,
+        }));
+        setBanks(bankOptions);
+      } catch (error) {
+        console.error("Error fetching banks:", error);
+      }
+    };
+
+    fetchBanks();
+  }, []);
 
   //  Full form validation
   const validateForm = () => {
@@ -407,7 +427,13 @@ function TempleAuthority() {
                           <SendOtp
                             phone={phone}
                             setPhone={setPhone}
-                            onOtpSent={() => setOtpSent(true)}
+                            onOtpSent={() => {
+                              setOtpSent(true);
+                              setFormData((prev) => ({
+                                ...prev,
+                                phone: phone,
+                              }));
+                            }}
                           />
                         </Col>
                         <Col lg={6} md={6} sm={12}>
@@ -428,6 +454,10 @@ function TempleAuthority() {
                             onVerified={() => {
                               setOtpVerified(true);
                               setOtpSent(false);
+                              setFormData((prev) => ({
+                                ...prev,
+                                phone: phone,
+                              }));
                             }}
                           />
                         </Col>
@@ -782,6 +812,7 @@ function TempleAuthority() {
                               maxLength={10}
                               className="temp-form-control"
                               placeholder="Enter Mobile Number"
+                              readOnly={otpVerified}
                             />
 
                             {formErrors.phone && (
@@ -789,6 +820,7 @@ function TempleAuthority() {
                             )}
                           </Form.Group>
                         </Col>
+
                         <Col lg={4} md={4} sm={12}>
                           <Form.Group
                             className="mb-3"
@@ -879,36 +911,14 @@ function TempleAuthority() {
                               value={formData.bank_name}
                               onChange={handleChange}
                             >
-                              <option value="Select an option">
-                                Select Bank Name
-                              </option>
-                              <option value="SBI">
-                                State Bank of India (SBI)
-                              </option>
-                              <option value="HDFC">HDFC Bank</option>
-                              <option value="ICICI">ICICI Bank</option>
-                              <option value="AXIS">Axis Bank</option>
-                              <option value="PNB">Punjab National Bank</option>
-                              <option value="BOB">Bank of Baroda</option>
-                              <option value="Canara">Canara Bank</option>
-                              <option value="Union">Union Bank of India</option>
-                              <option value="IDBI">IDBI Bank</option>
-                              <option value="Yes">Yes Bank</option>
-                              <option value="Kotak">Kotak Mahindra Bank</option>
-                              <option value="IndusInd">IndusInd Bank</option>
-                              <option value="Central">
-                                Central Bank of India
-                              </option>
-                              <option value="Indian">Indian Bank</option>
-                              <option value="UCO">UCO Bank</option>
-                              <option value="BankOfIndia">Bank of India</option>
-                              <option value="SouthIndian">
-                                South Indian Bank
-                              </option>
-                              <option value="Federal">Federal Bank</option>
-                              <option value="RBL">RBL Bank</option>
-                              <option value="J&K">Jammu & Kashmir Bank</option>
+                              <option value="">Select Bank Name</option>
+                              {banks.map((bank, index) => (
+                                <option key={index} value={bank.value}>
+                                  {bank.label}
+                                </option>
+                              ))}
                             </Form.Select>
+
                             {formErrors.bank_name && (
                               <p className="text-danger">
                                 {formErrors.bank_name}
