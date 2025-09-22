@@ -362,7 +362,7 @@ function PanditRegistration() {
   };
 
   return (
-    <div>
+    <div className='temp-donate'>
       <Container className="temp-container">
         <div>
           <div className=" temple-registration-heading  ">
@@ -757,9 +757,8 @@ function PanditRegistration() {
                           <Row className="temp-stepform-box">
                             <Col lg={5} md={5} sm={5}>
                               <fieldset
-                                className={`upload_dropZone text-center ${
-                                  dragging === "pandit_image" ? "drag-over" : ""
-                                }`}
+                                className={`upload_dropZone text-center ${dragging === "pandit_image" ? "drag-over" : ""
+                                  }`}
                                 onDragOver={(e) => {
                                   e.preventDefault();
                                   setDragging("pandit_image");
@@ -860,11 +859,10 @@ function PanditRegistration() {
                           <Row className="temp-stepform-box">
                             <Col lg={5} md={5} sm={5}>
                               <fieldset
-                                className={`upload_dropZone text-center ${
-                                  dragging === "aadhar_document"
+                                className={`upload_dropZone text-center ${dragging === "aadhar_document"
                                     ? "drag-over"
                                     : ""
-                                }`}
+                                  }`}
                                 onDragOver={(e) => {
                                   e.preventDefault();
                                   setDragging("aadhar_document");
@@ -960,7 +958,7 @@ function PanditRegistration() {
                             </Col>
                           </Row>
                         </Col>
-                                  
+
                       </Row>
 
                       <div className="gap-3 mt-3 Temp-btn-submit">
