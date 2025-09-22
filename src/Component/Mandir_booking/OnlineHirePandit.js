@@ -27,7 +27,6 @@ const OnlineHirePandit = () => {
       setnewErrors({});
       localStorage.setItem("phone", formData.mobile_number);
       setShow(true);
-      
     } catch (err) {
       console.error("Error sending OTP:", err.response?.data || err.message);
       alert("Failed to send OTP. Try again.");
@@ -37,9 +36,9 @@ const OnlineHirePandit = () => {
   };
 
   const handleClose = () => setShow(false);
-  const [isOtpVerified, setIsOtpVerified] = useState(
+  const [isOtpVerified, setIsOtpVerified] =
+    useState();
     // localStorage.getItem("otpVerified") === "true"
-  );
   // Form state
   const [formData, setFormData] = useState({
     full_name: "",
@@ -62,11 +61,11 @@ const OnlineHirePandit = () => {
   const validateFields = () => {
     let newErrors = {};
 
-   if (!formData.full_name.trim()) {
-  newErrors.full_name = "Full Name is required";
-} else if (!/^[A-Za-z\s]+$/.test(formData.full_name)) {
-  newErrors.full_name = "Only alphabets are allowed";
-}
+    if (!formData.full_name.trim()) {
+      newErrors.full_name = "Full Name is required";
+    } else if (!/^[A-Za-z\s]+$/.test(formData.full_name)) {
+      newErrors.full_name = "Only alphabets are allowed";
+    }
 
     if (
       !formData.mobile_number ||
@@ -265,22 +264,25 @@ const OnlineHirePandit = () => {
                     <Form.Label>
                       Full Name <span className="temp-span-star">*</span>
                     </Form.Label>
-<Form.Control
-  type="text"
-  name="full_name"
-  value={formData.full_name}
-  onChange={(e) => {
-    const value = e.target.value;
+                    <Form.Control
+                      type="text"
+                      name="full_name"
+                      value={formData.full_name}
+                      onChange={(e) => {
+                        const value = e.target.value;
 
-    // Allow only alphabets and spaces (no digits)
-    if (/^[A-Za-z\s]*$/.test(value)) {
-      handleChange(e); // keep your existing handler
-    }
-  }}
-  className="temp-form-control"
-  placeholder="Enter Name"
-/>
-
+                        // Allow only alphabets and spaces (no digits)
+                        if (/^[A-Za-z\s]*$/.test(value)) {
+                          handleChange(e); // keep your existing handler
+                        }
+                      }}
+                      className="temp-form-control"
+                      placeholder="Enter Name"
+                    /> {newErrors.full_name && (
+                      <small className="text-danger">
+                        {newErrors.full_name}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
 
@@ -554,7 +556,6 @@ const OnlineHirePandit = () => {
                       value={formData.special_requirements}
                       onChange={handleChange}
                       className="temp-form-control"
-                       
                       placeholder="Enter requirements"
                     />
                     {newErrors.special_requirements && (
@@ -578,7 +579,7 @@ const OnlineHirePandit = () => {
                       className="temp-form-control "
                       placeholder="Enter Estimated Fees"
                     />
-                     {newErrors.estimated_fees && (
+                    {newErrors.estimated_fees && (
                       <small className="text-danger">
                         {newErrors.estimated_fees}
                       </small>
@@ -595,7 +596,6 @@ const OnlineHirePandit = () => {
                       value={formData.payment_mode}
                       onChange={handleChange}
                       className="temp-form-control-option"
-                       
                     >
                       <option value="">Select Payment Mode</option>
                       <option value="upi">UPI</option>

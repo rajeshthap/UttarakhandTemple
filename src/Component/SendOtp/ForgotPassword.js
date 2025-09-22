@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Col, Container, Row } from "react-bootstrap";
+import { Button, Form, Col, Container, Row, InputGroup } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../../CustomCss/custom.css";
 import "../../assets/CSS/ForgotPassword.css"
-
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 const ForgotPassword = () => {
   const [step, setStep] = useState(1);
   const [contact, setContact] = useState("");
@@ -19,6 +19,9 @@ const ForgotPassword = () => {
   const [otpExpiry, setOtpExpiry] = useState(60);
   const [resendTimer, setResendTimer] = useState(60);
   const [maskedContact, setMaskedContact] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // separate error states for inputs
   const [passwordError, setPasswordError] = useState("");
@@ -38,6 +41,9 @@ const ForgotPassword = () => {
       return { email: trimmedContact, type: trimmedUserType };
     return null;
   };
+
+   const strongPasswordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
   const maskContact = (contact) => {
     if (phoneRegex.test(contact)) {
@@ -229,6 +235,7 @@ const ForgotPassword = () => {
   }, [resendTimer, step]);
 
   return (
+    <div className='temp-donate'>
     <Container className="temp-container">
       <div className="temple-registration-heading">
         <h2>Forgot Password</h2>
@@ -331,54 +338,83 @@ const ForgotPassword = () => {
             {/* Step 3: Reset Password */}
             {step === 3 && (
               <>
-                <Form.Group className="mb-3">
-                  <Form.Label>
-                    New Password <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="New Password"
-                    value={password}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      setPassword(value);
+                 <Form.Group className="mb-3">
+        <Form.Label>
+          New Password <span className="temp-span-star">*</span>
+        </Form.Label>
+        <InputGroup>
+          <Form.Control
+            type={showPassword ? "text" : "password"}
+            placeholder="New Password"
+            value={password}
+            onChange={(e) => {
+              const value = e.target.value;
+              setPassword(value);
 
-                      const strongPasswordRegex =
-                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+              if (!strongPasswordRegex.test(value)) {
+                setPasswordError(
+                  "Password must be at least 8 characters, include uppercase, lowercase, number, and special character."
+                );
+              } else {
+                setPasswordError("");
+              }
 
-                      if (!strongPasswordRegex.test(value)) {
-                        setPasswordError(
-                          "Password must be at least 8 characters, include uppercase, lowercase, number, and special character."
-                        );
-                      } else {
-                        setPasswordError("");
-                      }
-                    }}
-                  />
-                  {passwordError && <small className="text-danger">{passwordError}</small>}
-                </Form.Group>
+              // Also check confirm password match if already typed
+              if (confirmPassword && value !== confirmPassword) {
+                setConfirmPasswordError("Passwords do not match");
+              } else {
+                setConfirmPasswordError("");
+              }
+            }}
+          />
+          <Button
+            variant="outline-secondary"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </Button>
+        </InputGroup>
+        {passwordError && (
+          <small className="text-danger" style={{ fontSize: "12px" }}>
+            {passwordError}
+          </small>
+        )}
+      </Form.Group>
 
-                <Form.Group className="mb-3">
-                  <Form.Label>
-                    Confirm Password <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="Confirm Password"
-                    value={confirmPassword}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      setConfirmPassword(value);
+      {/* Confirm Password */}
+      <Form.Group className="mb-3">
+        <Form.Label>
+          Confirm Password <span className="temp-span-star">*</span>
+        </Form.Label>
+        <InputGroup>
+          <Form.Control
+            type={showConfirmPassword ? "text" : "password"}
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChange={(e) => {
+              const value = e.target.value;
+              setConfirmPassword(value);
 
-                      if (password !== value) {
-                        setConfirmPasswordError("Passwords do not match");
-                      } else {
-                        setConfirmPasswordError("");
-                      }
-                    }}
-                  />
-                  {confirmPasswordError && <small className="text-danger">{confirmPasswordError}</small>}
-                </Form.Group>
+              if (password !== value) {
+                setConfirmPasswordError("Passwords do not match");
+              } else {
+                setConfirmPasswordError("");
+              }
+            }}
+          />
+          <Button
+            variant="outline-secondary"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+          >
+            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+          </Button>
+        </InputGroup>
+        {confirmPasswordError && (
+          <small className="text-danger" style={{ fontSize: "12px" }}>
+            {confirmPasswordError}
+          </small>
+        )}
+      </Form.Group>
 
                 <Button onClick={handleResetPassword} disabled={loading}>
                   {loading ? "Resetting..." : "Reset Password"}
@@ -391,6 +427,7 @@ const ForgotPassword = () => {
         </Row>
       </div>
     </Container>
+    </div>
   );
 };
 
