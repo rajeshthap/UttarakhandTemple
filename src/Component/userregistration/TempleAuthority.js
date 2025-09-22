@@ -78,46 +78,52 @@ function TempleAuthority() {
     if (!formData.temple_name) {
       errors.temple_name = "Temple name is required";
     }
-     if (!formData.temple_events) {
+    if (!formData.temple_events) {
       errors.temple_events = "Temple Events is required";
     }
-      if (!formData.trust_committee_details) {
+    if (!formData.trust_committee_details) {
       errors.trust_committee_details = "Trust Committee Details is required";
     }
- if (!formData.temple_type) {
+    if (!formData.temple_type) {
       errors.temple_type = "Temple Type is required";
     }
-     if (!formData.temple_facility) {
+    if (!formData.temple_facility) {
       errors.temple_facility = "Temple Facility is required";
     }
-      if (!formData.account_name) {
+    if (!formData.account_name) {
       errors.account_name = "Account Name is required";
     }
-    if (!formData. temple_ownership_type) {
-      errors. temple_ownership_type = " temple ownership type is required";
+    if (!formData.temple_ownership_type) {
+      errors.temple_ownership_type = " temple ownership type is required";
     }
-     if (!formData.temple_address) {
+    if (!formData.temple_address) {
       errors.temple_address = "Temple Address is required";
     }
-     if (!formData.ifsc_code) {
+    if (!formData.ifsc_code) {
       errors.ifsc_code = "IFSC Code is required";
     }
-     if (!formData.account_type) {
+    if (!formData.account_type) {
       errors.account_type = "Account type is required";
     }
-     if (!formData.bank_name) {
+    if (!formData.bank_name) {
       errors.bank_name = "Bank name is required";
     }
 
-      if (!formData.year_of_establishment) {
-      errors.year_of_establishment = "establishment is required";
+    // Year of Establishment
+    if (!formData.year_of_establishment) {
+      errors.year_of_establishment = "Year of Establishment is required";
+    } else if (
+      isNaN(formData.year_of_establishment) ||
+      formData.year_of_establishment < 1800 ||
+      formData.year_of_establishment > new Date().getFullYear()
+    ) {
+      errors.year_of_establishment = "Please enter a valid year";
     }
-    
-      if (!formData.country) {
+
+    if (!formData.country) {
       errors.country = "country is required";
     }
-  
-   
+
     // Password (strong validation)
     if (!formData.password) {
       errors.password = "Password is required";
@@ -156,12 +162,11 @@ function TempleAuthority() {
       errors.account_number = "Account number must be between 9 and 16 digits";
     }
 
-  if (!formData.confirm_account_number) {
-  errors.confirm_account_number = "Confirm Account Number is required";
-} else if (formData.account_number !== formData.confirm_account_number) {
-  errors.confirm_account_number = "Confirm Account Numbers do not match";
-}
-
+    if (!formData.confirm_account_number) {
+      errors.confirm_account_number = "Confirm Account Number is required";
+    } else if (formData.account_number !== formData.confirm_account_number) {
+      errors.confirm_account_number = "Confirm Account Numbers do not match";
+    }
 
     // IFSC
     // if (!formData.ifsc_code) {
@@ -234,7 +239,17 @@ function TempleAuthority() {
           error = "Account number must be between 9 and 16 digits";
         }
         break;
-
+      case "year_of_establishment":
+        if (!value) {
+          error = "Year of Establishment is required";
+        } else if (
+          isNaN(value) ||
+          value < 1800 ||
+          value > new Date().getFullYear()
+        ) {
+          error = "Please enter a valid year";
+        }
+        break;
       case "confirm_account_number":
         if (value !== formData.account_number)
           error = "Account numbers do not match";
@@ -274,38 +289,36 @@ function TempleAuthority() {
     validateField(name, newValue); // live validation
   };
 
-const handleFileChange = (e, field) => {
-  const file = e.target.files[0];
-  if (!file) return;
+  const handleFileChange = (e, field) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-  const allowedTypes = ["image/jpeg", "image/png", "image/svg+xml"];
+    const allowedTypes = ["image/jpeg", "image/png", "image/svg+xml"];
 
-  // reset previous error
-  setFileErrors((prev) => ({ ...prev, [field]: "" }));
+    // reset previous error
+    setFileErrors((prev) => ({ ...prev, [field]: "" }));
 
-  // type check
-  if (!allowedTypes.includes(file.type)) {
-    setFileErrors((prev) => ({
-      ...prev,
-      [field]: "Only JPG, PNG, or SVG files are allowed.",
-    }));
-    return;
-  }
+    // type check
+    if (!allowedTypes.includes(file.type)) {
+      setFileErrors((prev) => ({
+        ...prev,
+        [field]: "Only JPG, PNG, or SVG files are allowed.",
+      }));
+      return;
+    }
 
-  // size check (100KB)
-  if (file.size > 102400) {
-    setFileErrors((prev) => ({
-      ...prev,
-      [field]: "File size must be less than or equal to 100KB.",
-    }));
-    return;
-  }
+    // size check (100KB)
+    if (file.size > 102400) {
+      setFileErrors((prev) => ({
+        ...prev,
+        [field]: "File size must be less than or equal to 100KB.",
+      }));
+      return;
+    }
 
-  // if valid, save file
-  setDocuments({ ...documents, [field]: file });
-};
-
-
+    // if valid, save file
+    setDocuments({ ...documents, [field]: file });
+  };
 
   const removeFile = (field) => {
     setDocuments({ ...documents, [field]: null });
@@ -379,7 +392,7 @@ const handleFileChange = (e, field) => {
   };
 
   return (
-     <div className="temp-donate">
+    <div className="temp-donate">
       <Container className="temp-container">
         <div>
           <div className="mt-3 temple-registration-heading ">
@@ -512,7 +525,11 @@ const handleFileChange = (e, field) => {
                                   setShowConfirmPassword(!showConfirmPassword)
                                 }
                               >
-                                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                                {showConfirmPassword ? (
+                                  <FaEyeSlash />
+                                ) : (
+                                  <FaEye />
+                                )}
                               </span>
                             </div>
                             {formErrors.confirm_password && (
@@ -536,7 +553,7 @@ const handleFileChange = (e, field) => {
                               className="temp-form-control-option"
                               name="temple_type"
                               value={formData.temple_type}
-                              onChange={handleChange} 
+                              onChange={handleChange}
                             >
                               <option value="">Select Temple</option>
                               <option value="shiv">Shiv Temple</option>
@@ -565,7 +582,8 @@ const handleFileChange = (e, field) => {
                             <Form.Select
                               className="temp-form-control-option"
                               name="temple_facility"
-                              value={formData.temple_facility} placeholder="Facility"
+                              value={formData.temple_facility}
+                              placeholder="Facility"
                               onChange={handleChange}
                             >
                               <option value="">Select Facility</option>
@@ -583,13 +601,12 @@ const handleFileChange = (e, field) => {
                               <option value="wheelchairAccess">
                                 Wheelchair Access
                               </option>
-                            
                             </Form.Select>
-                             {formErrors.temple_facility && (
-                                <p className="text-danger">
-                                  {formErrors.temple_facility}
-                                </p>
-                              )}
+                            {formErrors.temple_facility && (
+                              <p className="text-danger">
+                                {formErrors.temple_facility}
+                              </p>
+                            )}
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
@@ -650,66 +667,27 @@ const handleFileChange = (e, field) => {
                         <Col lg={4} md={4} sm={12}>
                           <Form.Group
                             className="mb-3"
-                            controlId="exampleForm.ControlInput1"
+                            controlId="yearOfEstablishment"
                           >
                             <Form.Label className="temp-label">
                               Year of Establishment{" "}
                               <span className="temp-span-star">*</span>
                             </Form.Label>
-                            <Form.Select
+                            <Form.Control
+                              type="number"
+                              placeholder="Enter year"
                               className="temp-form-control-option"
                               name="year_of_establishment"
                               value={formData.year_of_establishment}
                               onChange={handleChange}
-                            >
-                              <option value="Select an option">
-                                Select Establishment
-                              </option>
-                              <option value="">Select Year</option>
-                              <option value="2035">2035</option>
-                              <option value="2034">2034</option>
-                              <option value="2033">2033</option>
-                              <option value="2032">2032</option>
-                              <option value="2031">2031</option>
-                              <option value="2030">2030</option>
-                              <option value="2029">2029</option>
-                              <option value="2028">2028</option>
-                              <option value="2027">2027</option>
-                              <option value="2026">2026</option>
-                              <option value="2025">2025</option>
-                              <option value="2024">2024</option>
-                              <option value="2023">2023</option>
-                              <option value="2022">2022</option>
-                              <option value="2021">2021</option>
-                              <option value="2020">2020</option>
-                              <option value="2019">2019</option>
-                              <option value="2018">2018</option>
-                              <option value="2017">2017</option>
-                              <option value="2016">2016</option>
-                              <option value="2015">2015</option>
-                              <option value="2014">2014</option>
-                              <option value="2013">2013</option>
-                              <option value="2012">2012</option>
-                              <option value="2011">2011</option>
-                              <option value="2010">2010</option>
-                              <option value="2009">2009</option>
-                              <option value="2008">2008</option>
-                              <option value="2007">2007</option>
-                              <option value="2006">2006</option>
-                              <option value="2005">2005</option>
-                              <option value="2004">2004</option>
-                              <option value="2003">2003</option>
-                              <option value="2002">2002</option>
-                              <option value="2001">2001</option>
-                              <option value="2000">2000</option>
-
-                            
-                            </Form.Select>
-                              {formErrors.year_of_establishment && (
-                                <p className="text-danger">
-                                  {formErrors.year_of_establishment}
-                                </p>
-                              )}
+                              min="1800"
+                              max={new Date().getFullYear()}
+                            />
+                            {formErrors.year_of_establishment && (
+                              <p className="text-danger">
+                                {formErrors.year_of_establishment}
+                              </p>
+                            )}
                           </Form.Group>
                         </Col>
 
@@ -725,7 +703,7 @@ const handleFileChange = (e, field) => {
                             <Form.Select
                               className="temp-form-control-option"
                               name="temple_events"
-                              value={formData.temple_events} 
+                              value={formData.temple_events}
                               onChange={handleChange}
                             >
                               <option value="">Select Event</option>
@@ -743,14 +721,12 @@ const handleFileChange = (e, field) => {
                               <option value="yatra">
                                 Annual Yatra/Pilgrimage
                               </option>
-
-                              
                             </Form.Select>
                             {formErrors.temple_events && (
-                                <p className="text-danger">
-                                  {formErrors.temple_events}
-                                </p>
-                              )}
+                              <p className="text-danger">
+                                {formErrors.temple_events}
+                              </p>
+                            )}
                           </Form.Group>
                         </Col>
 
@@ -781,14 +757,12 @@ const handleFileChange = (e, field) => {
                                 Community Managed
                               </option>
                               <option value="other">Other</option>
-
-                            
                             </Form.Select>
-                              {formErrors.temple_ownership_type && (
-                                <p className="text-danger">
-                                  {formErrors.temple_ownership_type}
-                                </p>
-                              )}
+                            {formErrors.temple_ownership_type && (
+                              <p className="text-danger">
+                                {formErrors.temple_ownership_type}
+                              </p>
+                            )}
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
@@ -806,7 +780,8 @@ const handleFileChange = (e, field) => {
                               value={formData.phone}
                               onChange={handleChange}
                               maxLength={10}
-                              className="temp-form-control" placeholder="Enter Mobile Number"
+                              className="temp-form-control"
+                              placeholder="Enter Mobile Number"
                             />
 
                             {formErrors.phone && (
@@ -824,11 +799,12 @@ const handleFileChange = (e, field) => {
                             </Form.Label>
                             <Form.Control
                               type="email"
-                              name="email" placeholder="Enter Email ID"
+                              name="email"
+                              placeholder="Enter Email ID"
                               value={formData.email || ""}
                               onChange={handleChange}
                               onBlur={(e) =>
-                                validateField("email", e.target.value) 
+                                validateField("email", e.target.value)
                               }
                             />
                             {formErrors.email && (
@@ -858,14 +834,12 @@ const handleFileChange = (e, field) => {
                               <option value="committee">
                                 Managing Committee
                               </option>
-
-                             
                             </Form.Select>
-                             {formErrors.trust_committee_details && (
-                                <p className="text-danger">
-                                  {formErrors.trust_committee_details}
-                                </p>
-                              )}
+                            {formErrors.trust_committee_details && (
+                              <p className="text-danger">
+                                {formErrors.trust_committee_details}
+                              </p>
+                            )}
                           </Form.Group>
                         </Col>
 
@@ -906,7 +880,7 @@ const handleFileChange = (e, field) => {
                               onChange={handleChange}
                             >
                               <option value="Select an option">
-                                Select  Bank Name
+                                Select Bank Name
                               </option>
                               <option value="SBI">
                                 State Bank of India (SBI)
@@ -934,14 +908,12 @@ const handleFileChange = (e, field) => {
                               <option value="Federal">Federal Bank</option>
                               <option value="RBL">RBL Bank</option>
                               <option value="J&K">Jammu & Kashmir Bank</option>
-
-                              
                             </Form.Select>
                             {formErrors.bank_name && (
-                                <p className="text-danger">
-                                  {formErrors.bank_name}
-                                </p>
-                              )}
+                              <p className="text-danger">
+                                {formErrors.bank_name}
+                              </p>
+                            )}
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
@@ -1012,14 +984,12 @@ const handleFileChange = (e, field) => {
                               <option value="">Select Account Type</option>
                               <option value="savings">Savings Account</option>
                               <option value="current">Current Account</option>
-
-                              
                             </Form.Select>
                             {formErrors.account_type && (
-                                <p className="text-danger">
-                                  {formErrors.account_type}
-                                </p>
-                              )}
+                              <p className="text-danger">
+                                {formErrors.account_type}
+                              </p>
+                            )}
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
@@ -1076,102 +1046,120 @@ const handleFileChange = (e, field) => {
                       <div className="temple-registration-heading">
                         <h1>Supporting Documents</h1>
                       </div>
-                     <Row>
-  {[
-    { key: "temple_image", label: "Temple Image Upload" },
-    { key: "land_doc", label: "Land Ownership Documents" },
-    { key: "noc_doc", label: "NOC Certificate" },
-    { key: "trust_cert", label: "Trust Registration Certificate" },
-  ].map((doc) => (
-    <Col lg={6} md={12} sm={12} key={doc.key}>
-      <Row className="temp-stepform-box">
-        <Col lg={5} md={5} sm={5}>
-          <fieldset
-            className="upload_dropZone text-center"
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={(e) => {
-              e.preventDefault();
-              const file = e.dataTransfer.files[0];
-              if (file)
-                handleFileChange({ target: { files: [file] } }, doc.key);
-            }}
-          >
-            <legend className="visually-hidden">{doc.label}</legend>
-            <img src={UploadFile} alt="upload-file" />
-            <p className="temp-drop-txt my-2">
-              Drag &amp; drop files
-              <br />
-              <i>or</i>
-            </p>
+                      <Row>
+                        {[
+                          { key: "temple_image", label: "Temple Image Upload" },
+                          {
+                            key: "land_doc",
+                            label: "Land Ownership Documents",
+                          },
+                          { key: "noc_doc", label: "NOC Certificate" },
+                          {
+                            key: "trust_cert",
+                            label: "Trust Registration Certificate",
+                          },
+                        ].map((doc) => (
+                          <Col lg={6} md={12} sm={12} key={doc.key}>
+                            <Row className="temp-stepform-box">
+                              <Col lg={5} md={5} sm={5}>
+                                <fieldset
+                                  className="upload_dropZone text-center"
+                                  onDragOver={(e) => e.preventDefault()}
+                                  onDrop={(e) => {
+                                    e.preventDefault();
+                                    const file = e.dataTransfer.files[0];
+                                    if (file)
+                                      handleFileChange(
+                                        { target: { files: [file] } },
+                                        doc.key
+                                      );
+                                  }}
+                                >
+                                  <legend className="visually-hidden">
+                                    {doc.label}
+                                  </legend>
+                                  <img src={UploadFile} alt="upload-file" />
+                                  <p className="temp-drop-txt my-2">
+                                    Drag &amp; drop files
+                                    <br />
+                                    <i>or</i>
+                                  </p>
 
-            {/* Hidden File Input */}
-            <input
-              id={`${doc.key}_upload`}
-              className="invisible"
-              type="file"
-              accept="image/jpeg, image/png, image/svg+xml"
-              onChange={(e) => handleFileChange(e, doc.key)}
-            />
-            <label
-              className="btn temp-primary-btn mb-1"
-              htmlFor={`${doc.key}_upload`}
-            >
-              Choose file(s)
-            </label>
+                                  {/* Hidden File Input */}
+                                  <input
+                                    id={`${doc.key}_upload`}
+                                    className="invisible"
+                                    type="file"
+                                    accept="image/jpeg, image/png, image/svg+xml"
+                                    onChange={(e) =>
+                                      handleFileChange(e, doc.key)
+                                    }
+                                  />
+                                  <label
+                                    className="btn temp-primary-btn mb-1"
+                                    htmlFor={`${doc.key}_upload`}
+                                  >
+                                    Choose file(s)
+                                  </label>
 
-            <p className="temp-upload-file">
-              Upload size up to 10KB to 100KB (jpg, png)
-            </p>
+                                  <p className="temp-upload-file">
+                                    Upload size up to 10KB to 100KB (jpg, png)
+                                  </p>
 
-            {/* Error message here */}
-            {fileErrors[doc.key] && (
-              <div className="file-error-style"
-                
-              >
-                {fileErrors[doc.key]}
-              </div>
-            )}
-          </fieldset>
-        </Col>
+                                  {/* Error message here */}
+                                  {fileErrors[doc.key] && (
+                                    <div className="file-error-style">
+                                      {fileErrors[doc.key]}
+                                    </div>
+                                  )}
+                                </fieldset>
+                              </Col>
 
-        {/* Uploaded File Info */}
-        <Col lg={7} md={7} sm={7} className="temp-doc-subinfo mt-2">
-          <h3>
-            {doc.label} <span className="temp-span-star">*</span>
-          </h3>
+                              {/* Uploaded File Info */}
+                              <Col
+                                lg={7}
+                                md={7}
+                                sm={7}
+                                className="temp-doc-subinfo mt-2"
+                              >
+                                <h3>
+                                  {doc.label}{" "}
+                                  <span className="temp-span-star">*</span>
+                                </h3>
 
-          {documents[doc.key] && (
-            <>
-              <div className="d-flex temp-doc-info">
-                <Col lg={3} md={3} sm={3}>
-                  {new Date().toLocaleDateString()} {/* upload date */}
-                </Col>
-                <Col
-                  lg={9}
-                  md={9}
-                  sm={9}
-                  className="px-4 temp-success-doc"
-                >
-                  <FaCheckCircle /> {documents[doc.key].name} Uploaded
-                </Col>
-              </div>
-              <div
-                className="col temp-delete-icon"
-                onClick={() => removeFile(doc.key)}
-              >
-                <h3>
-                  <RiDeleteBin6Line className="mx-1" />
-                  Click here to Remove
-                </h3>
-              </div>
-            </>
-          )}
-        </Col>
-      </Row>
-    </Col>
-  ))}
-</Row>
-
+                                {documents[doc.key] && (
+                                  <>
+                                    <div className="d-flex temp-doc-info">
+                                      <Col lg={3} md={3} sm={3}>
+                                        {new Date().toLocaleDateString()}{" "}
+                                        {/* upload date */}
+                                      </Col>
+                                      <Col
+                                        lg={9}
+                                        md={9}
+                                        sm={9}
+                                        className="px-4 temp-success-doc"
+                                      >
+                                        <FaCheckCircle />{" "}
+                                        {documents[doc.key].name} Uploaded
+                                      </Col>
+                                    </div>
+                                    <div
+                                      className="col temp-delete-icon"
+                                      onClick={() => removeFile(doc.key)}
+                                    >
+                                      <h3>
+                                        <RiDeleteBin6Line className="mx-1" />
+                                        Click here to Remove
+                                      </h3>
+                                    </div>
+                                  </>
+                                )}
+                              </Col>
+                            </Row>
+                          </Col>
+                        ))}
+                      </Row>
 
                       <div className="gap-3 mt-3 Temp-btn-submit">
                         <Button

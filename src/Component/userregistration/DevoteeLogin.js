@@ -98,7 +98,8 @@ useEffect(() => {
   };
 
   return (
-    <div>
+    <div className='temp-donate'>
+ 
       <Container className="temp-container">
         <div className="temple-registration-heading">
           <h1>User Login</h1>

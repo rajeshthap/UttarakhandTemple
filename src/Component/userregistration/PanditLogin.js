@@ -103,7 +103,7 @@ const handleSubmit = async (e) => {
 };
 
   return (
-    <div>
+    <div className='temp-donate'>
       <Container className="temp-container">
         <div>
           <div className="temple-registration-heading">
