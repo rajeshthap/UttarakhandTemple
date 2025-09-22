@@ -336,7 +336,7 @@ if (!formData.prasad_offerings || !formData.prasad_offerings.trim()) {
   };
 
   return (
-    <div>
+    <div className="temp-donate">
       <Container className="temp-container">
         <h1>Pooja Booking</h1>
         <p>

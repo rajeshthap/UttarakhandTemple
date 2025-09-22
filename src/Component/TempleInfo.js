@@ -98,7 +98,7 @@ const TempleInfo = () => {
       : selectedCard?.price || 0;
 
   return (
-    <div className="temple-all-info">
+    <div className="temp-donate">
       <Container className="temp-container temp-container-details">
         <h1>Mandir Booking With Pandit Booking</h1>
         <p>Experienced Pandit Ji for every Puja, just a click away</p>

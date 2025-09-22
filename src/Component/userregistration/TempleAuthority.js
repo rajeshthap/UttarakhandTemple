@@ -17,7 +17,8 @@ function TempleAuthority() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  
+  const [fileErrors, setFileErrors] = useState({});
+
   const navigate = useNavigate();
   const [, setShow] = useState(false);
   const [phone, setPhone] = useState("");
@@ -77,7 +78,43 @@ function TempleAuthority() {
     if (!formData.temple_name) {
       errors.temple_name = "Temple name is required";
     }
+     if (!formData.trust_committee_details) {
+      errors.trust_committee_details = "Trust Committee Details is required";
+    }
+ if (!formData.temple_type) {
+      errors.temple_type = "Temple Type is required";
+    }
+     if (!formData.temple_facility) {
+      errors.temple_facility = "Temple Facility is required";
+    }
+      if (!formData.account_name) {
+      errors.account_name = "Account Name is required";
+    }
+    if (!formData. temple_ownership_type) {
+      errors. temple_ownership_type = " temple ownership type is required";
+    }
+     if (!formData.temple_address) {
+      errors.temple_address = "Temple Address is required";
+    }
+     if (!formData.ifsc_code) {
+      errors.ifsc_code = "IFSC Code is required";
+    }
+     if (!formData.account_type) {
+      errors.account_type = "Account type is required";
+    }
+     if (!formData.bank_name) {
+      errors.bank_name = "Bank name is required";
+    }
 
+      if (!formData.year_of_establishment) {
+      errors.year_of_establishment = "establishment is required";
+    }
+    
+      if (!formData.country) {
+      errors.country = "country is required";
+    }
+  
+   
     // Password (strong validation)
     if (!formData.password) {
       errors.password = "Password is required";
@@ -116,9 +153,12 @@ function TempleAuthority() {
       errors.account_number = "Account number must be between 9 and 16 digits";
     }
 
-    if (formData.account_number !== formData.confirm_account_number) {
-      errors.confirm_account_number = "Account numbers do not match";
-    }
+  if (!formData.confirm_account_number) {
+  errors.confirm_account_number = "Confirm Account Number is required";
+} else if (formData.account_number !== formData.confirm_account_number) {
+  errors.confirm_account_number = "Confirm Account Numbers do not match";
+}
+
 
     // IFSC
     // if (!formData.ifsc_code) {
@@ -231,9 +271,38 @@ function TempleAuthority() {
     validateField(name, newValue); // live validation
   };
 
-  const handleFileChange = (e, field) => {
-    setDocuments({ ...documents, [field]: e.target.files[0] });
-  };
+const handleFileChange = (e, field) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const allowedTypes = ["image/jpeg", "image/png", "image/svg+xml"];
+
+  // reset previous error
+  setFileErrors((prev) => ({ ...prev, [field]: "" }));
+
+  // type check
+  if (!allowedTypes.includes(file.type)) {
+    setFileErrors((prev) => ({
+      ...prev,
+      [field]: "Only JPG, PNG, or SVG files are allowed.",
+    }));
+    return;
+  }
+
+  // size check (100KB)
+  if (file.size > 102400) {
+    setFileErrors((prev) => ({
+      ...prev,
+      [field]: "File size must be less than or equal to 100KB.",
+    }));
+    return;
+  }
+
+  // if valid, save file
+  setDocuments({ ...documents, [field]: file });
+};
+
+
 
   const removeFile = (field) => {
     setDocuments({ ...documents, [field]: null });
@@ -307,7 +376,7 @@ function TempleAuthority() {
   };
 
   return (
-    <div>
+     <div className="temp-donate">
       <Container className="temp-container">
         <div>
           <div className="mt-3 temple-registration-heading ">
@@ -511,12 +580,13 @@ function TempleAuthority() {
                               <option value="wheelchairAccess">
                                 Wheelchair Access
                               </option>
-                              {formErrors.temple_facility && (
+                            
+                            </Form.Select>
+                             {formErrors.temple_facility && (
                                 <p className="text-danger">
                                   {formErrors.temple_facility}
                                 </p>
                               )}
-                            </Form.Select>
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
@@ -630,12 +700,13 @@ function TempleAuthority() {
                               <option value="2001">2001</option>
                               <option value="2000">2000</option>
 
+                            
+                            </Form.Select>
                               {formErrors.year_of_establishment && (
                                 <p className="text-danger">
                                   {formErrors.year_of_establishment}
                                 </p>
                               )}
-                            </Form.Select>
                           </Form.Group>
                         </Col>
 
@@ -670,12 +741,13 @@ function TempleAuthority() {
                                 Annual Yatra/Pilgrimage
                               </option>
 
-                              {formErrors.temple_events && (
+                              
+                            </Form.Select>
+                            {formErrors.temple_events && (
                                 <p className="text-danger">
                                   {formErrors.temple_events}
                                 </p>
                               )}
-                            </Form.Select>
                           </Form.Group>
                         </Col>
 
@@ -707,12 +779,13 @@ function TempleAuthority() {
                               </option>
                               <option value="other">Other</option>
 
+                            
+                            </Form.Select>
                               {formErrors.temple_ownership_type && (
                                 <p className="text-danger">
                                   {formErrors.temple_ownership_type}
                                 </p>
                               )}
-                            </Form.Select>
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
@@ -783,12 +856,13 @@ function TempleAuthority() {
                                 Managing Committee
                               </option>
 
-                              {formErrors.trust_committee_details && (
+                             
+                            </Form.Select>
+                             {formErrors.trust_committee_details && (
                                 <p className="text-danger">
                                   {formErrors.trust_committee_details}
                                 </p>
                               )}
-                            </Form.Select>
                           </Form.Group>
                         </Col>
 
@@ -858,12 +932,13 @@ function TempleAuthority() {
                               <option value="RBL">RBL Bank</option>
                               <option value="J&K">Jammu & Kashmir Bank</option>
 
-                              {formErrors.bank_name && (
+                              
+                            </Form.Select>
+                            {formErrors.bank_name && (
                                 <p className="text-danger">
                                   {formErrors.bank_name}
                                 </p>
                               )}
-                            </Form.Select>
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
@@ -935,12 +1010,13 @@ function TempleAuthority() {
                               <option value="savings">Savings Account</option>
                               <option value="current">Current Account</option>
 
-                              {formErrors.account_type && (
+                              
+                            </Form.Select>
+                            {formErrors.account_type && (
                                 <p className="text-danger">
                                   {formErrors.account_type}
                                 </p>
                               )}
-                            </Form.Select>
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
@@ -997,113 +1073,102 @@ function TempleAuthority() {
                       <div className="temple-registration-heading">
                         <h1>Supporting Documents</h1>
                       </div>
-                      <Row>
-                        {[
-                          { key: "temple_image", label: "Temple Image Upload" },
-                          {
-                            key: "land_doc",
-                            label: "Land Ownership Documents",
-                          },
-                          { key: "noc_doc", label: "NOC Certificate" },
-                          {
-                            key: "trust_cert",
-                            label: "Trust Registration Certificate",
-                          },
-                        ].map((doc) => (
-                          <Col lg={6} md={12} sm={12} key={doc.key}>
-                            <Row className="temp-stepform-box">
-                              <Col lg={5} md={5} sm={5}>
-                                <fieldset
-                                  className="upload_dropZone text-center"
-                                  onDragOver={(e) => e.preventDefault()}
-                                  onDrop={(e) => {
-                                    e.preventDefault();
-                                    const file = e.dataTransfer.files[0];
-                                    if (file)
-                                      handleFileChange(
-                                        { target: { files: [file] } },
-                                        doc.key
-                                      );
-                                  }}
-                                >
-                                  <legend className="visually-hidden">
-                                    {doc.label}
-                                  </legend>
-                                  <img src={UploadFile} alt="upload-file" />
-                                  <p className="temp-drop-txt my-2">
-                                    Drag &amp; drop files
-                                    <br />
-                                    <i>or</i>
-                                  </p>
+                     <Row>
+  {[
+    { key: "temple_image", label: "Temple Image Upload" },
+    { key: "land_doc", label: "Land Ownership Documents" },
+    { key: "noc_doc", label: "NOC Certificate" },
+    { key: "trust_cert", label: "Trust Registration Certificate" },
+  ].map((doc) => (
+    <Col lg={6} md={12} sm={12} key={doc.key}>
+      <Row className="temp-stepform-box">
+        <Col lg={5} md={5} sm={5}>
+          <fieldset
+            className="upload_dropZone text-center"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault();
+              const file = e.dataTransfer.files[0];
+              if (file)
+                handleFileChange({ target: { files: [file] } }, doc.key);
+            }}
+          >
+            <legend className="visually-hidden">{doc.label}</legend>
+            <img src={UploadFile} alt="upload-file" />
+            <p className="temp-drop-txt my-2">
+              Drag &amp; drop files
+              <br />
+              <i>or</i>
+            </p>
 
-                                  {/* Hidden File Input */}
-                                  <input
-                                    id={`${doc.key}_upload`}
-                                    className="invisible"
-                                    type="file"
-                                    accept="image/jpeg, image/png, image/svg+xml"
-                                    onChange={(e) =>
-                                      handleFileChange(e, doc.key)
-                                    }
-                                  />
-                                  <label
-                                    className="btn temp-primary-btn mb-1"
-                                    htmlFor={`${doc.key}_upload`}
-                                  >
-                                    Choose file(s)
-                                  </label>
+            {/* Hidden File Input */}
+            <input
+              id={`${doc.key}_upload`}
+              className="invisible"
+              type="file"
+              accept="image/jpeg, image/png, image/svg+xml"
+              onChange={(e) => handleFileChange(e, doc.key)}
+            />
+            <label
+              className="btn temp-primary-btn mb-1"
+              htmlFor={`${doc.key}_upload`}
+            >
+              Choose file(s)
+            </label>
 
-                                  <p className="temp-upload-file">
-                                    Upload size up to 10KB to 100KB (jpg, png)
-                                  </p>
-                                </fieldset>
-                              </Col>
+            <p className="temp-upload-file">
+              Upload size up to 10KB to 100KB (jpg, png)
+            </p>
 
-                              {/* Uploaded File Info */}
-                              <Col
-                                lg={7}
-                                md={7}
-                                sm={7}
-                                className="temp-doc-subinfo mt-2"
-                              >
-                                <h3>
-                                  {doc.label}{" "}
-                                  <span className="temp-span-star">*</span>
-                                </h3>
+            {/* Error message here */}
+            {fileErrors[doc.key] && (
+              <div className="file-error-style"
+                
+              >
+                {fileErrors[doc.key]}
+              </div>
+            )}
+          </fieldset>
+        </Col>
 
-                                {documents[doc.key] && (
-                                  <>
-                                    <div className="d-flex temp-doc-info">
-                                      <Col lg={3} md={3} sm={3}>
-                                        {new Date().toLocaleDateString()}{" "}
-                                        {/* upload date */}
-                                      </Col>
-                                      <Col
-                                        lg={9}
-                                        md={9}
-                                        sm={9}
-                                        className="px-4 temp-success-doc"
-                                      >
-                                        <FaCheckCircle />{" "}
-                                        {documents[doc.key].name} Uploaded
-                                      </Col>
-                                    </div>
-                                    <div
-                                      className="col temp-delete-icon"
-                                      onClick={() => removeFile(doc.key)}
-                                    >
-                                      <h3>
-                                        <RiDeleteBin6Line className="mx-1" />
-                                        Click here to Remove
-                                      </h3>
-                                    </div>
-                                  </>
-                                )}
-                              </Col>
-                            </Row>
-                          </Col>
-                        ))}
-                      </Row>
+        {/* Uploaded File Info */}
+        <Col lg={7} md={7} sm={7} className="temp-doc-subinfo mt-2">
+          <h3>
+            {doc.label} <span className="temp-span-star">*</span>
+          </h3>
+
+          {documents[doc.key] && (
+            <>
+              <div className="d-flex temp-doc-info">
+                <Col lg={3} md={3} sm={3}>
+                  {new Date().toLocaleDateString()} {/* upload date */}
+                </Col>
+                <Col
+                  lg={9}
+                  md={9}
+                  sm={9}
+                  className="px-4 temp-success-doc"
+                >
+                  <FaCheckCircle /> {documents[doc.key].name} Uploaded
+                </Col>
+              </div>
+              <div
+                className="col temp-delete-icon"
+                onClick={() => removeFile(doc.key)}
+              >
+                <h3>
+                  <RiDeleteBin6Line className="mx-1" />
+                  Click here to Remove
+                </h3>
+              </div>
+            </>
+          )}
+        </Col>
+      </Row>
+    </Col>
+  ))}
+</Row>
+
 
                       <div className="gap-3 mt-3 Temp-btn-submit">
                         <Button

@@ -63,7 +63,7 @@ const LocationState = ({
     fetchCities();
   }, [formData.state, states]);
 
-  // Stable handler to prevent unnecessary renders
+  // Stable handler
   const onChange = useCallback(
     (field, value) => {
       handleInputChange(field, value);
@@ -73,14 +73,16 @@ const LocationState = ({
 
   return (
     <>
+      {/* Country */}
       <Col md={4}>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Label className="temp-label">Country <span className="temp-span-star">*</span></Form.Label>
+        <Form.Group className="mb-3" controlId="countrySelect">
+          <Form.Label className="temp-label">
+            Country <span className="temp-span-star">*</span>
+          </Form.Label>
           <Form.Select
             className="temp-form-control-option"
             value={formData.country || ""}
             onChange={(e) => onChange("country", e.target.value)}
-            isInvalid={!!formErrors.country}
           >
             <option value="">Select Country</option>
             {countries.map((c) => (
@@ -89,17 +91,24 @@ const LocationState = ({
               </option>
             ))}
           </Form.Select>
+          {formErrors.country && (
+            <div style={{ color: "red", fontSize: "12px" }}>
+              {formErrors.country}
+            </div>
+          )}
         </Form.Group>
       </Col>
 
+      {/* State */}
       <Col md={4}>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Label className="temp-label">State<span className="temp-span-star"> *</span></Form.Label>
+        <Form.Group className="mb-3" controlId="stateSelect">
+          <Form.Label className="temp-label">
+            State <span className="temp-span-star">*</span>
+          </Form.Label>
           <Form.Select
             className="temp-form-control-option"
             value={formData.state || ""}
             onChange={(e) => onChange("state", e.target.value)}
-            isInvalid={!!formErrors.state}
           >
             <option value="">Select State</option>
             {states.map((s) => (
@@ -108,17 +117,24 @@ const LocationState = ({
               </option>
             ))}
           </Form.Select>
+          {formErrors.state && (
+            <div style={{ color: "red", fontSize: "12px" }}>
+              {formErrors.state}
+            </div>
+          )}
         </Form.Group>
       </Col>
 
+      {/* City */}
       <Col md={4}>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Label className="temp-label">City<span className="temp-span-star"> *</span></Form.Label>
+        <Form.Group className="mb-3" controlId="citySelect">
+          <Form.Label className="temp-label">
+            City <span className="temp-span-star">*</span>
+          </Form.Label>
           <Form.Select
             className="temp-form-control-option"
             value={formData.city || ""}
             onChange={(e) => onChange("city", e.target.value)}
-            isInvalid={!!formErrors.city}
           >
             <option value="">Select City</option>
             {cities.map((ct) => (
@@ -127,6 +143,11 @@ const LocationState = ({
               </option>
             ))}
           </Form.Select>
+          {formErrors.city && (
+            <div style={{ color: "red", fontSize: "12px" }}>
+              {formErrors.city}
+            </div>
+          )}
         </Form.Group>
       </Col>
     </>

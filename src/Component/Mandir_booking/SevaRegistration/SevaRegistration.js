@@ -321,7 +321,7 @@ const SevaRegistration = () => {
   };
 
   return (
-    <div>
+     <div className="temp-donate">
       <Container className="temp-container">
         <h1>Mandri Seva Registration </h1>
         <p>

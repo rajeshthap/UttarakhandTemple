@@ -324,7 +324,7 @@ const DarshanBooking = () => {
   };
 
   return (
-    <div>
+     <div className="temp-donate">
       <Container className="temp-container">
         <h1>Darshan Booking1</h1>
         <p>

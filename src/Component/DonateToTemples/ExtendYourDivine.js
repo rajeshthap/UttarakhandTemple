@@ -207,7 +207,7 @@ const ExtendYourDivine = () => {
   };
 
   return (
-    <div>
+     <div className="temp-donate">
       <Container className="temp-container">
         <h1>Extend Your Divine Support</h1>
         <p>

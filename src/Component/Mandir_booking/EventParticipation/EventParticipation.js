@@ -261,7 +261,7 @@ const EventParticipation = () => {
   };
 
   return (
-    <div>
+     <div className="temp-donate">
       <Container className="temp-container">
         <Form onSubmit={handleSubmit}>
           <h1>Mandri Event Participation </h1>

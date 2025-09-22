@@ -22,7 +22,7 @@ const MandirBooking = () => {
     }
   };
   return (
-    <div>
+     <div className="temp-donate">
       <Container className="temp-container">
         <h1>Mandir Booking</h1>
         <p>

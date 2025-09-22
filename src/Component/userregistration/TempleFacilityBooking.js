@@ -10,7 +10,7 @@ const TempleFacilityBooking = () => {
   const handleClose = () => setShow(false);
   const [agree, setAgree] = useState(false);
   return (
-    <div>
+    <div className="temp-donate">
       <Container className="temp-container">
         <h1>Temple Facility Booking</h1>
         <p>

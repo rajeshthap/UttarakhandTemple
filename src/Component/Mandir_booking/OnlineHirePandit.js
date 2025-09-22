@@ -244,7 +244,7 @@ const OnlineHirePandit = () => {
   };
 
   return (
-    <div>
+    <div className="temp-donate">
       <Container className="temp-container">
         <h1>Online Hire Pandit</h1>
         <p>
