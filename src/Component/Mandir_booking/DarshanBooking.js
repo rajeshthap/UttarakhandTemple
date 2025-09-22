@@ -64,27 +64,39 @@ const DarshanBooking = () => {
 
 
 
-  const handleInputChangeCity = (name, value) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
+const handleInputChangeCity = (name, value) => {
+  setFormData((prev) => ({ ...prev, [name]: value }));
 
-    // Live validation: clear error if value exists
-    setErrors((prev) => ({
-      ...prev,
-      [name]:
-        value && value.trim() !== ""
-          ? ""
-          : `${name.charAt(0).toUpperCase() + name.slice(1)} is required`,
-    }));
-
-    // Reset dependent dropdowns
-    if (name === "country") {
-      setFormData((prev) => ({ ...prev, state: "", city: "" }));
-      setErrors((prev) => ({ ...prev, state: "", city: "" }));
-    } else if (name === "state") {
-      setFormData((prev) => ({ ...prev, city: "" }));
-      setErrors((prev) => ({ ...prev, city: "" }));
+  // Remove validation error as soon as a valid value is entered
+  setErrors((prev) => {
+    const newErrors = { ...prev };
+    if (value && value.trim() !== "") {
+      delete newErrors[name]; // clear only that specific error
+    } else {
+      newErrors[name] = `${name.charAt(0).toUpperCase() + name.slice(1)} is required`;
     }
-  };
+    return newErrors;
+  });
+
+  // Reset dependent dropdowns
+  if (name === "country") {
+    setFormData((prev) => ({ ...prev, state: "", city: "" }));
+    setErrors((prev) => {
+      const newErrors = { ...prev };
+      delete newErrors.state;
+      delete newErrors.city;
+      return newErrors;
+    });
+  } else if (name === "state") {
+    setFormData((prev) => ({ ...prev, city: "" }));
+    setErrors((prev) => {
+      const newErrors = { ...prev };
+      delete newErrors.city;
+      return newErrors;
+    });
+  }
+};
+
 
 
   useEffect(() => {
