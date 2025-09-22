@@ -171,6 +171,18 @@ if (!formData.prasad_offerings || !formData.prasad_offerings.trim()) {
     if (!formData.prasad_delivery)
       newErrors.prasad_delivery = "Prasad Delivery option is required";
 
+    if (!formData.country)
+      newErrors.country = "Country is required";
+
+    if (!formData.state)
+      newErrors.state = "State is required";
+
+    if (!formData.city)
+      newErrors.city = "City is required";
+
+    if (!formData.pin_code)
+      newErrors.pin_code = "Pin Code is required";
+
     // Payment Details
     if (
       !formData.donation_amount ||
@@ -916,6 +928,11 @@ if (!formData.prasad_offerings || !formData.prasad_offerings.trim()) {
                           value={formData.pin_code}
                           onChange={handleInputChange}
                         />
+                         {errors.pin_code && (
+                      <small className="text-danger">
+                        {errors.pin_code}
+                      </small>
+                    )}
                       </Form.Group>
                     </Col>
                   </>
