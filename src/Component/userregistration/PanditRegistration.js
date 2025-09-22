@@ -215,6 +215,11 @@ function PanditRegistration() {
       errors.last_name =
         "Last name must start with a capital letter and contain only alphabets";
     }
+      
+    // Father Name
+     if (!formData.father_name) {
+      errors.father_name = "Father name is required";
+    }
 
     //  Email validation
     if (!formData.email) {
@@ -253,6 +258,11 @@ function PanditRegistration() {
     if (formData.password !== formData.confirmPassword) {
       errors.confirmPassword = "Passwords do not match";
     }
+
+     if (!formData.pandit_role) {
+      errors.pandit_role= "Pandit Role is required";
+    }
+    
 
     //  Address validations
     if (!formData.permanent_address)
@@ -690,6 +700,11 @@ function PanditRegistration() {
                               value={formData.permanent_address}
                               onChange={handleInputChange}
                             />
+                             {errorReason_querys.permanent_address && (
+                              <div className="alert-txt">
+                                {errorReason_querys.permanent_address}
+                              </div>
+                            )}
                           </Form.Group>
                         </Col>
 
@@ -715,6 +730,11 @@ function PanditRegistration() {
                               value={formData.zipcode}
                               onChange={handleInputChange}
                             />
+                              {errorReason_querys.zipcode && (
+                              <div className="alert-txt">
+                                {errorReason_querys.zipcode}
+                              </div>
+                            )}
                           </Form.Group>
                         </Col>
 
@@ -748,6 +768,11 @@ function PanditRegistration() {
                               </option>
                               <option value="option3">Independent</option>
                             </Form.Select>
+                               {errorReason_querys.temple_association && (
+                              <div className="alert-txt">
+                                {errorReason_querys.temple_association}
+                              </div>
+                            )}
                           </Form.Group>
                         </Col>
                       </Row>
