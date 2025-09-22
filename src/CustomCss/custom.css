@@ -221,7 +221,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 /* Firefox */
 input[type=number] {
-    -moz-appearance: textfield;
+    -moz--appearance: textfield !important;
 }
 
 .file-error-style {
@@ -254,6 +254,13 @@ input[type=number] {
 
     .social-icon {
         display: none !important;
+        margin-top: var(--temp-space-200) !important;
+    }
+
+    .social-icon::before,
+    .social-icon::after {
+        display: none !important;
+        content: none !important;
     }
 
     .header-top {

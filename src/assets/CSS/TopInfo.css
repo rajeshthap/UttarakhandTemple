@@ -314,4 +314,9 @@ button.accordion-button.collapsed {
         height: 42px;
 
     }
+
+    .social-icon {
+        display: none !important;
+
+    }
 }
