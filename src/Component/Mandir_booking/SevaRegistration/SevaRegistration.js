@@ -5,6 +5,7 @@ import Form from "react-bootstrap/Form";
 import OTPModel from "../../OTPModel/OTPModel";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ModifyAlert from "../../Alert/ModifyAlert";
 
 const SevaRegistration = () => {
   const [show, setShow] = useState(false);
@@ -16,6 +17,8 @@ const SevaRegistration = () => {
   const [isVerified, setIsVerified] = useState(false);
   const [errors, setErrors] = useState({});
   const [temples, setTemples] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
+const [alertMessage, setAlertMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -84,10 +87,12 @@ const SevaRegistration = () => {
 
     //  validate required fields before OTP
     if (!validateFields()) {
-      alert("Please fill all required fields correctly before verifying OTP.");
-      setAgree(false);
-      return;
-    }
+  setAlertMessage("Please fill all required fields correctly before verifying OTP.");
+  setShowAlert(true);
+  setAgree(false);
+  return;
+}
+
 
     //  if OTP already verified, no need to resend
     if (isVerified) {
@@ -943,6 +948,12 @@ const SevaRegistration = () => {
           </Row>
         </Form>
       </Container>
+      <ModifyAlert 
+  message={alertMessage} 
+  show={showAlert} 
+  setShow={setShowAlert} 
+/>
+
       <OTPModel
         show={show}
         handleClose={handleClose}

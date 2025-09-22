@@ -4,6 +4,7 @@ import Form from "react-bootstrap/Form";
 import OTPModel from "../../OTPModel/OTPModel";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ModifyAlert from "../../Alert/ModifyAlert";
 
 const EventParticipation = () => {
   const navigate = useNavigate();
@@ -15,6 +16,8 @@ const EventParticipation = () => {
   const [errors, setErrors] = useState({});
   const [sendingOtp, setSendingOtp] = useState(false);
   const [temples, setTemples] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   const [formData, setFormData] = useState({
     full_name: "",
@@ -38,22 +41,23 @@ const EventParticipation = () => {
   });
 
   const handleResendOtp = async () => {
-  try {
-    
-    const res = await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
-      phone: formData.mobile_number, 
-    });
+    try {
+      const res = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/Sentotp/",
+        {
+          phone: formData.mobile_number,
+        }
+      );
 
-    if (res.data.success) {
-      
-    } else {
-      alert("Failed to resend OTP. Try again.");
+      if (res.data.success) {
+      } else {
+        alert("Failed to resend OTP. Try again.");
+      }
+    } catch (error) {
+      console.error("Error resending OTP:", error);
+      alert("Something went wrong. Please try again.");
     }
-  } catch (error) {
-    console.error("Error resending OTP:", error);
-    alert("Something went wrong. Please try again.");
-  }
-};
+  };
 
   useEffect(() => {
     const fetchTemples = async () => {
@@ -70,7 +74,6 @@ const EventParticipation = () => {
     };
     fetchTemples();
   }, []);
-
 
   //  Validation logic
   const validateFields = () => {
@@ -176,7 +179,10 @@ const EventParticipation = () => {
     }
 
     if (!validateFields()) {
-      alert("Please fill all required fields correctly before verifying OTP.");
+      setAlertMessage(
+        "Please fill all required fields correctly before verifying OTP."
+      );
+      setShowAlert(true);
       setAgreeTerms(false);
       return;
     }
@@ -261,14 +267,12 @@ const EventParticipation = () => {
   };
 
   return (
-     <div className="temp-donate">
+    <div className="temp-donate">
       <Container className="temp-container">
         <Form onSubmit={handleSubmit}>
           <h1>Mandri Event Participation </h1>
           <p>
-            <i>
-              Join Sacred Gatherings and Be Part of Divine Celebrations{" "}
-            </i>
+            <i>Join Sacred Gatherings and Be Part of Divine Celebrations </i>
           </p>
           <Row>
             <Col lg={8} md={8} sm={12} className="mt-2">
@@ -825,6 +829,12 @@ const EventParticipation = () => {
             </Col>
           </Row>
         </Form>
+        <ModifyAlert
+          message={alertMessage}
+          show={showAlert}
+          setShow={setShowAlert}
+        />
+
         <OTPModel
           show={show}
           handleClose={() => setShow(false)}
@@ -832,9 +842,8 @@ const EventParticipation = () => {
           setOtp={setOtp}
           handleVerifyOtp={handleVerifyOtp}
           verifying={verifying}
-          phone={formData.mobile_number}   
+          phone={formData.mobile_number}
           handleResendOtp={handleResendOtp}
-      
         />
       </Container>
     </div>

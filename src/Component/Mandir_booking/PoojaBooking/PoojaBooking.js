@@ -6,6 +6,7 @@ import OTPModel from "../../OTPModel/OTPModel";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import LocationState from "../../userregistration/LocationState";
+import ModifyAlert from "../../Alert/ModifyAlert";
 
 const PoojaBooking = () => {
   const [show, setShow] = useState(false);
@@ -17,6 +18,10 @@ const PoojaBooking = () => {
   const [, setOtpSent] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [errors, setErrors] = useState({});
+  const [showAlert, setShowAlert] = useState(false);
+const [alertMessage, setAlertMessage] = useState("");
+
+
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -73,12 +78,13 @@ const PoojaBooking = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
     //validateFields(name, value);
     setErrors((prev) => ({
-    ...prev,
-    [name]: value.trim() === "" ? `${name.charAt(0).toUpperCase() + name.slice(1)} is required` : "",
-  }));
-};
-    
-  
+      ...prev,
+      [name]:
+        value.trim() === ""
+          ? `${name.charAt(0).toUpperCase() + name.slice(1)} is required`
+          : "",
+    }));
+  };
 
   useEffect(() => {
     const fetchTemples = async () => {
@@ -162,32 +168,32 @@ const PoojaBooking = () => {
 
     // Accommodation (optional – validate only if user selected Yes)
     // Accommodation selection is required (always)
-if (!formData.accommodation_required || !formData.accommodation_required.trim()) {
-  newErrors.accommodation_required = "Please select Accommodation option";
-}
+    if (
+      !formData.accommodation_required ||
+      !formData.accommodation_required.trim()
+    ) {
+      newErrors.accommodation_required = "Please select Accommodation option";
+    }
 
-// Special Requests is required (always)
-if (!formData.special_requests || !formData.special_requests.trim()) {
-  newErrors.special_requests = "Please specify special requests for accommodation";
-}
-if (!formData.prasad_offerings || !formData.prasad_offerings.trim()) {
-  newErrors.prasad_offerings = "Please select a Prasad Type";
-}
+    // Special Requests is required (always)
+    if (!formData.special_requests || !formData.special_requests.trim()) {
+      newErrors.special_requests =
+        "Please specify special requests for accommodation";
+    }
+    if (!formData.prasad_offerings || !formData.prasad_offerings.trim()) {
+      newErrors.prasad_offerings = "Please select a Prasad Type";
+    }
     //  Prasad & Offerings
     if (!formData.prasad_delivery)
       newErrors.prasad_delivery = "Prasad Delivery option is required";
 
-    if (!formData.country)
-      newErrors.country = "Country is required";
+    if (!formData.country) newErrors.country = "Country is required";
 
-    if (!formData.state)
-      newErrors.state = "State is required";
+    if (!formData.state) newErrors.state = "State is required";
 
-    if (!formData.city)
-      newErrors.city = "City is required";
+    if (!formData.city) newErrors.city = "City is required";
 
-    if (!formData.pin_code)
-      newErrors.pin_code = "Pin Code is required";
+    if (!formData.pin_code) newErrors.pin_code = "Pin Code is required";
 
     // Payment Details
     if (
@@ -211,10 +217,12 @@ if (!formData.prasad_offerings || !formData.prasad_offerings.trim()) {
 
     //  validate required fields before OTP
     if (!validateFields()) {
-      alert("Please fill all required fields correctly before verifying OTP.");
-      setAgree(false);
-      return;
-    }
+  setAlertMessage("Please fill all required fields correctly before verifying OTP.");
+  setShowAlert(true);
+  setAgree(false);
+  return;
+}
+
 
     //  if OTP already verified, no need to resend
     if (isVerified) {
@@ -279,21 +287,20 @@ if (!formData.prasad_offerings || !formData.prasad_offerings.trim()) {
     }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
 
-   if (name === "mobile_number") {
-  let newValue = value.replace(/\D/g, ""); // remove non-digits
-  if (newValue.length > 10) {
-    newValue = newValue.slice(0, 10); // allow max 10 digits
-  }
+    if (name === "mobile_number") {
+      let newValue = value.replace(/\D/g, ""); // remove non-digits
+      if (newValue.length > 10) {
+        newValue = newValue.slice(0, 10); // allow max 10 digits
+      }
 
-  let errorMsg = "";
-  if (newValue.length > 0 && newValue.length < 10) {
-    errorMsg = "Enter a valid 10-digit mobile number";
-  }
+      let errorMsg = "";
+      if (newValue.length > 0 && newValue.length < 10) {
+        errorMsg = "Enter a valid 10-digit mobile number";
+      }
 
-  setFormData((prev) => ({ ...prev, mobile_number: newValue }));
-  setErrors((prev) => ({ ...prev, mobile_number: errorMsg }));
-}
-
+      setFormData((prev) => ({ ...prev, mobile_number: newValue }));
+      setErrors((prev) => ({ ...prev, mobile_number: errorMsg }));
+    }
 
     if (name === "email") {
       let errorMsg = "";
@@ -847,7 +854,6 @@ if (!formData.prasad_offerings || !formData.prasad_offerings.trim()) {
                       value={formData.special_requests}
                       onChange={handleInputChange}
                     />
-                   
                   </Form.Group>
                 </Col>
 
@@ -930,11 +936,11 @@ if (!formData.prasad_offerings || !formData.prasad_offerings.trim()) {
                           value={formData.pin_code}
                           onChange={handleInputChange}
                         />
-                         {errors.pin_code && (
-                      <small className="text-danger">
-                        {errors.pin_code}
-                      </small>
-                    )}
+                        {errors.pin_code && (
+                          <small className="text-danger">
+                            {errors.pin_code}
+                          </small>
+                        )}
                       </Form.Group>
                     </Col>
                   </>
@@ -1064,6 +1070,12 @@ if (!formData.prasad_offerings || !formData.prasad_offerings.trim()) {
           </Row>
         </Form>
       </Container>
+      <ModifyAlert
+        message={alertMessage}
+        show={showAlert}
+        setShow={setShowAlert}
+      />
+
       <OTPModel
         show={show}
         handleClose={handleClose}

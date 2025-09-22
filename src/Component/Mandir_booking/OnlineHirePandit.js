@@ -3,12 +3,17 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
 import SendOtpModal from "../OTPModel/SendOtpModal";
+import ModifyAlert from "../Alert/ModifyAlert";
 
 const OnlineHirePandit = () => {
   const [show, setShow] = useState(false); // OTP modal
   const [loadingOtp, setLoadingOtp] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [newErrors, setnewErrors] = useState({});
+
+  // alert state
+  const [showModifyAlert, setShowModifyAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   const handleShow = async () => {
     if (!formData.mobile_number) {
@@ -36,9 +41,8 @@ const OnlineHirePandit = () => {
   };
 
   const handleClose = () => setShow(false);
-  const [isOtpVerified, setIsOtpVerified] =
-    useState();
-    // localStorage.getItem("otpVerified") === "true"
+  const [isOtpVerified, setIsOtpVerified] = useState();
+  // localStorage.getItem("otpVerified") === "true"
   // Form state
   const [formData, setFormData] = useState({
     full_name: "",
@@ -59,62 +63,82 @@ const OnlineHirePandit = () => {
   });
 
   const validateFields = () => {
-    let newErrors = {};
+    let errors = {};
 
     if (!formData.full_name.trim()) {
-      newErrors.full_name = "Full Name is required";
+      errors.full_name = "Full Name is required";
     } else if (!/^[A-Za-z\s]+$/.test(formData.full_name)) {
-      newErrors.full_name = "Only alphabets are allowed";
+      errors.full_name = "Only alphabets are allowed";
     }
 
     if (
       !formData.mobile_number ||
       !/^[0-9]{10}$/.test(formData.mobile_number)
     ) {
-      newErrors.mobile_number = "Valid 10-digit Mobile Number is required";
-    }
-    if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Valid Email is required";
-    }
-    if (!formData.address.trim()) {
-      newErrors.address = "Address is required";
-    }
-    if (!formData.pooja_type) {
-      newErrors.pooja_type = "Please select Pooja type";
-    }
-    if (!formData.language_preference) {
-      newErrors.language_preference = "Please select Language";
-    }
-    if (!formData.date_of_ceremony) {
-      newErrors.date_of_ceremony = "Please select ceremony date";
-    }
-    if (!formData.time_slot) {
-      newErrors.time_slot = "Please select time slot";
-    }
-    if (!formData.location.trim()) {
-      newErrors.location = "Location is required";
-    }
-    if (!formData.duration.trim()) {
-      newErrors.duration = "Duration is required";
-    }
-    if (!formData.number_of_pandits) {
-      newErrors.number_of_pandits = "Enter number of Pandits";
-    }
-    if (!formData.additional_assistants) {
-      newErrors.additional_assistants = "Enter number of Assistants";
-    }
-    if (!formData.special_requirements.trim()) {
-      newErrors.special_requirements = "Enter Special Requirements";
-    }
-    if (!formData.estimated_fees) {
-      newErrors.estimated_fees = "Estimated Fees is required";
-    }
-    if (!formData.payment_mode) {
-      newErrors.payment_mode = "Please select Payment Mode";
+      errors.mobile_number = "Valid 10-digit Mobile Number is required";
     }
 
-    setnewErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.email = "Valid Email is required";
+    }
+
+    if (!formData.address.trim()) {
+      errors.address = "Address is required";
+    }
+
+    if (!formData.pooja_type) {
+      errors.pooja_type = "Please select Pooja type";
+    }
+
+    if (!formData.language_preference) {
+      errors.language_preference = "Please select Language";
+    }
+
+    if (!formData.date_of_ceremony) {
+      errors.date_of_ceremony = "Please select ceremony date";
+    }
+
+    if (!formData.time_slot) {
+      errors.time_slot = "Please select time slot";
+    }
+
+    if (!formData.location.trim()) {
+      errors.location = "Location is required";
+    }
+
+    if (!formData.duration.trim()) {
+      errors.duration = "Duration is required";
+    }
+
+    if (!formData.number_of_pandits) {
+      errors.number_of_pandits = "Enter number of Pandits";
+    }
+
+    if (!formData.additional_assistants) {
+      errors.additional_assistants = "Enter number of Assistants";
+    }
+
+    if (!formData.special_requirements.trim()) {
+      errors.special_requirements = "Enter Special Requirements";
+    }
+
+    if (!formData.estimated_fees) {
+      errors.estimated_fees = "Estimated Fees is required";
+    }
+
+    if (!formData.payment_mode) {
+      errors.payment_mode = "Please select Payment Mode";
+    }
+
+    setnewErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
+      setAlertMessage("Please fill all required fields.");
+      setShowModifyAlert(true);
+      return false;
+    }
+
+    return true;
   };
 
   const handleChange = (e) => {
@@ -278,7 +302,8 @@ const OnlineHirePandit = () => {
                       }}
                       className="temp-form-control"
                       placeholder="Enter Name"
-                    /> {newErrors.full_name && (
+                    />{" "}
+                    {newErrors.full_name && (
                       <small className="text-danger">
                         {newErrors.full_name}
                       </small>
@@ -293,11 +318,11 @@ const OnlineHirePandit = () => {
                       Mobile Number <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
-                      type="text"
+                      type="number"
                       name="mobile_number"
                       value={formData.mobile_number}
                       onChange={handleChange}
-                      placeholder="Enter Mobile Number."
+                      placeholder="Enter Mobile Number"
                       maxLength={10}
                       className="temp-form-control"
                     />
@@ -479,10 +504,10 @@ const OnlineHirePandit = () => {
                 <Col lg={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>
-                      Duration <span className="temp-span-star">*</span>
+                      Duration(Hrs) <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
-                      type="text"
+                      type="number"
                       name="duration"
                       value={formData.duration}
                       onChange={handleChange}
@@ -507,7 +532,7 @@ const OnlineHirePandit = () => {
                       <span className="temp-span-star">*</span>{" "}
                     </Form.Label>
                     <Form.Control
-                      type="text"
+                      type="number"
                       name="number_of_pandits"
                       value={formData.number_of_pandits}
                       onChange={handleChange}
@@ -529,7 +554,7 @@ const OnlineHirePandit = () => {
                       <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
-                      type="text"
+                      type="number"
                       name="additional_assistants"
                       value={formData.additional_assistants}
                       onChange={handleChange}
@@ -572,7 +597,7 @@ const OnlineHirePandit = () => {
                       Estimated Fees <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
-                      type="text"
+                      type="number"
                       name="estimated_fees"
                       value={formData.estimated_fees}
                       onChange={handleChange}
@@ -626,10 +651,14 @@ const OnlineHirePandit = () => {
                         // Validate form before sending OTP
                         const isValid = validateFields();
                         if (!isValid) {
-                          alert(
-                            "Please fill all required fields correctly before verifying OTP."
-                          );
-                          return;
+                          if (!isValid) {
+                            setAlertMessage(
+                              "Please fill all required fields correctly before verifying OTP."
+                            );
+                            setShowModifyAlert(true);
+                            setAgreeTerms(false);
+                            return;
+                          }
                         }
 
                         try {
@@ -663,15 +692,8 @@ const OnlineHirePandit = () => {
 
               {/* Buttons */}
               <div className="gap-3 mt-3 Temp-btn-submit">
-                {!isOtpVerified && (
-                  <p style={{ color: "red", marginBottom: "10px" }}>
-                    Please verify your phone first by clicking the checkbox
-                    above.
-                  </p>
-                )}
-
                 <Button
-                  variant="primary"
+                  variant=""
                   className="temp-submit-btn mx-3"
                   type="submit"
                   disabled={!isOtpVerified} // Disabled until OTP verified
@@ -739,6 +761,11 @@ const OnlineHirePandit = () => {
           </Row>
         </Form>
       </Container>
+      <ModifyAlert
+        message={alertMessage}
+        show={showModifyAlert}
+        setShow={setShowModifyAlert}
+      />
     </div>
   );
 };
