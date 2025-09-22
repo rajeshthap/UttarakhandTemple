@@ -90,7 +90,7 @@ function CarouselSlider() {
 
                         <Col lg={4} md={4} sm={12}>
                             <div className=" d-flex flex-column h-100 align-items-start justify-content-center bottom-0 resorce-sub-title ">
-                                <h1 className=" bg-opacity-50 py-2 px-4">Maa Ganga1</h1>
+                                <h1 className=" bg-opacity-50 py-2 px-4">Maa Ganga</h1>
                                 <p className=" bg-opacity-50 px-4">The Divine River of Purity and Blessings</p>
 
                             </div>
