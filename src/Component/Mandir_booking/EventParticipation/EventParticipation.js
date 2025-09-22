@@ -329,7 +329,7 @@ const EventParticipation = () => {
                       Age <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
-                      type="text"
+                      type="number"
                       placeholder="Enter Age"
                       className="temp-form-control"
                       name="age"
@@ -350,7 +350,7 @@ const EventParticipation = () => {
                       Mobile Number <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
-                      type="text"
+                      type="number"
                       placeholder="Enter Mobile Number"
                       className="temp-form-control"
                       name="mobile_number"
@@ -422,7 +422,7 @@ const EventParticipation = () => {
                       ID Proof Number <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
-                      type="text"
+                      type="number"
                       placeholder="Enter ID Proof Number"
                       className="temp-form-control"
                       name="id_proof_number"
@@ -533,7 +533,7 @@ const EventParticipation = () => {
                       <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
-                      type="text"
+                      type="number"
                       placeholder="Number of Participants"
                       className="temp-form-control"
                       name="number_of_participants"
@@ -554,7 +554,7 @@ const EventParticipation = () => {
                     controlId="exampleForm.ControlInput1"
                   >
                     <Form.Label className="temp-label">
-                      Preferred Dates <span className="temp-span-star">*</span>
+                      Preferred Date <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
                       type="date"
@@ -684,7 +684,7 @@ const EventParticipation = () => {
                       Donation Amount <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
-                      type="text"
+                      type="number"
                       placeholder="Enter Donation Amount"
                       className="temp-form-control"
                       name="donation_amount"

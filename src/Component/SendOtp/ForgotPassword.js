@@ -3,8 +3,9 @@ import { Button, Form, Col, Container, Row, InputGroup } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../../CustomCss/custom.css";
-import "../../assets/CSS/ForgotPassword.css"
+import "../../assets/CSS/ForgotPassword.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 const ForgotPassword = () => {
   const [step, setStep] = useState(1);
   const [contact, setContact] = useState("");
@@ -13,17 +14,16 @@ const ForgotPassword = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [, setMessage] = useState("");
-  const [errors, setErrors] = useState("");   // for API/OTP errors
+  const [message, setMessage] = useState("");
+  const [errors, setErrors] = useState("");
   const [resending, setResending] = useState(false);
   const [otpExpiry, setOtpExpiry] = useState(60);
-  const [resendTimer, setResendTimer] = useState(60);
+  const [resendTimer, setResendTimer] = useState(0);
   const [maskedContact, setMaskedContact] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  // separate error states for inputs
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
@@ -31,6 +31,9 @@ const ForgotPassword = () => {
 
   const phoneRegex = /^\+?\d{10,15}$/;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  const strongPasswordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
   const getContactPayload = () => {
     const trimmedContact = contact.trim();
@@ -42,24 +45,20 @@ const ForgotPassword = () => {
     return null;
   };
 
-   const strongPasswordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
   const maskContact = (contact) => {
     if (phoneRegex.test(contact)) {
       return `XXXXXX${contact.slice(-4)}`;
     } else if (emailRegex.test(contact)) {
       const [user, domain] = contact.split("@");
-      const maskedUser = user.length > 2 ? `${user[0]}****${user.slice(-1)}` : user;
+      const maskedUser =
+        user.length > 2 ? `${user[0]}****${user.slice(-1)}` : user;
       return `${maskedUser}@${domain}`;
     }
     return contact;
   };
 
-  // Step 1: Send OTP
   const handleSendOtp = async () => {
-    const currentUserType = userType.trim();
-    if (!currentUserType) {
+    if (!userType.trim()) {
       setErrors("Please select user type");
       return;
     }
@@ -79,9 +78,8 @@ const ForgotPassword = () => {
         "https://brjobsedu.com/Temple_portal/api/Sentotp/",
         payload
       );
-
       if (res.data.success) {
-        setMessage("OTP Sent Successfully!");
+        // setMessage("OTP Sent Successfully!");
         setStep(2);
         setOtpExpiry(60);
         setResendTimer(60);
@@ -102,17 +100,11 @@ const ForgotPassword = () => {
     if (/^\d*$/.test(value)) {
       if (value.length <= 10) {
         setContact(value);
-        if (value.length === 10) {
-          setErrors(""); 
-        } 
-        else {
-          setErrors("Mobile number must be 10 digits");
-        }
+        setErrors(value.length === 10 ? "" : "Mobile number must be 10 digits");
       }
     }
   };
 
-  // Step 2: Verify OTP
   const handleVerifyOtp = async () => {
     if (!otp) return setErrors("Enter the OTP sent to your contact");
 
@@ -135,7 +127,7 @@ const ForgotPassword = () => {
       );
 
       if (res.data.success) {
-        setMessage("OTP Verified! Now reset your password.");
+        // setMessage("OTP Verified! Now reset your password.");
         setStep(3);
       } else {
         setErrors(res.data.message || "Invalid OTP");
@@ -148,7 +140,6 @@ const ForgotPassword = () => {
     }
   };
 
-  // Step 3: Reset Password
   const handleResetPassword = async () => {
     if (!password || !confirmPassword) {
       setErrors("Enter both password fields");
@@ -156,6 +147,12 @@ const ForgotPassword = () => {
     }
     if (password !== confirmPassword) {
       setErrors("Passwords do not match");
+      return;
+    }
+    if (!strongPasswordRegex.test(password)) {
+      setErrors(
+        "Password must be at least 8 characters, include uppercase, lowercase, number, and special character."
+      );
       return;
     }
 
@@ -188,7 +185,6 @@ const ForgotPassword = () => {
     }
   };
 
-  // Resend OTP function
   const handleResendOtp = async () => {
     const payload = getContactPayload();
     if (!payload) return setErrors("Invalid contact");
@@ -203,9 +199,9 @@ const ForgotPassword = () => {
         payload
       );
       if (res.data.success) {
-        setMessage("OTP resent successfully!");
-        // setOtpExpiry(60);
-        // setResendTimer(60);
+        // setMessage("OTP resent successfully!");
+        setOtpExpiry(60);
+        setResendTimer(60); // reset resend timer
       } else {
         setErrors(res.data.message || "Failed to resend OTP");
       }
@@ -235,198 +231,196 @@ const ForgotPassword = () => {
   }, [resendTimer, step]);
 
   return (
-    <div className='temp-donate'>
-    <Container className="temp-container">
-      <div className="temple-registration-heading">
-        <h2>Forgot Password</h2>
-        <Row>
-          <Col lg={6} md={6} sm={12} className="mt-1">
+    <div className="temp-donate">
+      <Container className="temp-container">
+        <div className="temple-registration-heading">
+          <h2>Forgot Password</h2>
+          <Row>
+            <Col lg={6} md={6} sm={12} className="mt-1">
 
-            {/* Step 1: Contact */}
-            {step === 1 && (
-              <>
-                <Form.Group className="mb-3">
-                  <Form.Label className="temp-label-lg-bg">
-                    User Type <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Select
-                    value={userType}
-                    onChange={(e) => setUserType(e.target.value)} className="option-type"
+              {/* Step 1: Contact */}
+              {step === 1 && (
+                <>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="temp-label-lg-bg">
+                      User Type <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Select
+                      value={userType}
+                      onChange={(e) => setUserType(e.target.value)}
+                      className="option-type"
+                    >
+                      <option value="">Select type</option>
+                      <option value="Temple">Temple</option>
+                      <option value="Pandit">Pandit</option>
+                      <option value="Devotee">Devotee</option>
+                    </Form.Select>
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Label className="temp-label-lg-bg">
+                      Mobile Number <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter your Mobile Number"
+                      className="option-type"
+                      value={contact}
+                      onChange={handleChange}
+                    />
+                    {errors && <small className="text-danger">{errors}</small>}
+                  </Form.Group>
+
+                  <Button onClick={handleSendOtp} disabled={loading}>
+                    {loading ? "Sending..." : "Send OTP"}
+                  </Button>
+                </>
+              )}
+
+              {/* Step 2: OTP Verification */}
+              {step === 2 && (
+                <>
+                  <Form.Group className="mb-3">
+                    <Form.Label>
+                      Enter OTP <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter OTP"
+                      value={otp}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (/^\d*$/.test(value) && value.length <= 6) {
+                          setOtp(value);
+                        }
+                      }}
+                    />
+                    {otp && otp.length !== 6 && (
+                      <small className="text-danger">OTP must be exactly 6 digits</small>
+                    )}
+                  </Form.Group>
+
+                  <p className="otperror mt-2">
+                    {otpExpiry > 0
+                      ? `OTP valid for ${otpExpiry}s`
+                      : "OTP expired, please resend"}
+                  </p>
+
+                  {maskedContact && <p className="otpsuccess">OTP Sent To: {maskedContact}</p>}
+
+                  <Button onClick={handleVerifyOtp} disabled={loading || otpExpiry <= 0}>
+                    {loading ? "Verifying..." : "Verify"}
+                  </Button>
+
+                  <Button
+                    variant="secondary"
+                    onClick={handleResendOtp}
+                    disabled={resending || resendTimer > 0}
+                    className="ms-2"
                   >
-                    <option value="">Select type</option>
-                    <option value="Temple">Temple</option>
-                    <option value="Pandit">Pandit</option>
-                    <option value="Devotee">Devotee</option>
-                  </Form.Select>
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label className="temp-label-lg-bg">
-                    Mobile Number <span className="temp-span-star">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter your Mobile Number" className="option-type"
-                    value={contact}
-                    onChange={handleChange}
-                  />
-                  {errors && <small className="text-danger">{errors}</small>}
-                </Form.Group>
-
-                <Button onClick={handleSendOtp} disabled={loading}>
-                  {loading ? "Sending..." : "Send OTP"}
-                </Button>
-              </>
-            )}
-
-            {/* Step 2: OTP Verification */}
-            {step === 2 && (
-              <>
-               <Form.Group className="mb-3">
-  <Form.Label>
-    Enter OTP <span className="temp-span-star">*</span>
-  </Form.Label>
-  <Form.Control
-    type="text"
-    placeholder="Enter OTP"
-    value={otp}
-    onChange={(e) => {
-      const value = e.target.value;
-      // Allow only digits
-      if (/^\d*$/.test(value)) {
-        // Limit to 6 digits
-        if (value.length <= 6) {
-          setOtp(value);
-        }
-      }
-    }}
-  />
-  {/* Live validation */}
-  {otp && otp.length !== 6 && (
-    <small className="text-danger">OTP must be exactly 6 digits</small>
-  )}
-</Form.Group>
-
-
-                <p className="otperror mt-2">
-                  {otpExpiry > 0
-                    ? `OTP valid for ${otpExpiry}s`
-                    : "OTP expired, please resend"}
-                </p>
-
-                {maskedContact && <p className="otpsuccess">OTP Sent To: {maskedContact}</p>}
-
-                <Button onClick={handleVerifyOtp} disabled={loading || otpExpiry <= 0}>
-                  {loading ? "Verifying..." : "Verify"}
-                </Button>
-
-                <Button
-                  variant="secondary"
-                  onClick={handleResendOtp}
-                  disabled={resending || resendTimer > 0}
-                  className="ms-2"
-                >
-                  {resendTimer > 0
-                    ? `Resend`
-                    : resending
+                    {resending
                       ? "Resending..."
+                      : resendTimer > 0
+                      ? `Resend`
                       : "Resend OTP"}
-                </Button>
-              </>
-            )}
+                  </Button>
+                </>
+              )}
 
-            {/* Step 3: Reset Password */}
-            {step === 3 && (
-              <>
-                 <Form.Group className="mb-3">
-        <Form.Label>
-          New Password <span className="temp-span-star">*</span>
-        </Form.Label>
-        <InputGroup>
-          <Form.Control
-            type={showPassword ? "text" : "password"}
-            placeholder="New Password"
-            value={password}
-            onChange={(e) => {
-              const value = e.target.value;
-              setPassword(value);
+              {/* Step 3: Reset Password */}
+              {step === 3 && (
+                <>
+                  <Form.Group className="mb-3">
+                    <Form.Label>
+                      New Password <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <InputGroup>
+                      <Form.Control
+                        type={showPassword ? "text" : "password"}
+                        placeholder="New Password"
+                        value={password}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setPassword(value);
 
-              if (!strongPasswordRegex.test(value)) {
-                setPasswordError(
-                  "Password must be at least 8 characters, include uppercase, lowercase, number, and special character."
-                );
-              } else {
-                setPasswordError("");
-              }
+                          if (!strongPasswordRegex.test(value)) {
+                            setPasswordError(
+                              "Password must be at least 8 characters, include uppercase, lowercase, number, and special character."
+                            );
+                          } else {
+                            setPasswordError("");
+                          }
 
-              // Also check confirm password match if already typed
-              if (confirmPassword && value !== confirmPassword) {
-                setConfirmPasswordError("Passwords do not match");
-              } else {
-                setConfirmPasswordError("");
-              }
-            }}
-          />
-          <Button
-            variant="outline-secondary"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? <FaEyeSlash /> : <FaEye />}
-          </Button>
-        </InputGroup>
-        {passwordError && (
-          <small className="text-danger" style={{ fontSize: "12px" }}>
-            {passwordError}
-          </small>
-        )}
-      </Form.Group>
+                          if (confirmPassword && value !== confirmPassword) {
+                            setConfirmPasswordError("Passwords do not match");
+                          } else {
+                            setConfirmPasswordError("");
+                          }
+                        }}
+                      />
+                      <Button
+                        variant="outline-secondary"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <FaEyeSlash /> : <FaEye />}
+                      </Button>
+                    </InputGroup>
+                    {passwordError && (
+                      <small className="text-danger" style={{ fontSize: "12px" }}>
+                        {passwordError}
+                      </small>
+                    )}
+                  </Form.Group>
 
-      {/* Confirm Password */}
-      <Form.Group className="mb-3">
-        <Form.Label>
-          Confirm Password <span className="temp-span-star">*</span>
-        </Form.Label>
-        <InputGroup>
-          <Form.Control
-            type={showConfirmPassword ? "text" : "password"}
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => {
-              const value = e.target.value;
-              setConfirmPassword(value);
+                  <Form.Group className="mb-3">
+                    <Form.Label>
+                      Confirm Password <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <InputGroup>
+                      <Form.Control
+                        type={showConfirmPassword ? "text" : "password"}
+                        placeholder="Confirm Password"
+                        value={confirmPassword}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setConfirmPassword(value);
 
-              if (password !== value) {
-                setConfirmPasswordError("Passwords do not match");
-              } else {
-                setConfirmPasswordError("");
-              }
-            }}
-          />
-          <Button
-            variant="outline-secondary"
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-          >
-            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-          </Button>
-        </InputGroup>
-        {confirmPasswordError && (
-          <small className="text-danger" style={{ fontSize: "12px" }}>
-            {confirmPasswordError}
-          </small>
-        )}
-      </Form.Group>
+                          if (password !== value) {
+                            setConfirmPasswordError("Passwords do not match");
+                          } else {
+                            setConfirmPasswordError("");
+                          }
+                        }}
+                      />
+                      <Button
+                        variant="outline-secondary"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      >
+                        {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                      </Button>
+                    </InputGroup>
+                    {confirmPasswordError && (
+                      <small className="text-danger" style={{ fontSize: "12px" }}>
+                        {confirmPasswordError}
+                      </small>
+                    )}
+                  </Form.Group>
 
-                <Button onClick={handleResetPassword} disabled={loading}>
-                  {loading ? "Resetting..." : "Reset Password"}
-                </Button>
-              </>
-            )}
+                  <Button onClick={handleResetPassword} disabled={loading}>
+                    {loading ? "Resetting..." : "Reset Password"}
+                  </Button>
+                  {errors && <p className="otperror mt-2">{errors}</p>}
+                  {message && <p className="otpsuccess mt-2">{message}</p>}
+                </>
+              )}
 
-            {errors && <p className="otperror mt-2"></p>}
-          </Col>
-        </Row>
-      </div>
-    </Container>
+              {errors && step !== 3 && <p className="otperror mt-2">{errors}</p>}
+              {message && step !== 3 && <p className="otpsuccess mt-2">{message}</p>}
+
+            </Col>
+          </Row>
+        </div>
+      </Container>
     </div>
   );
 };
