@@ -118,9 +118,9 @@ const LocationState = ({
             ))}
           </Form.Select>
           {formErrors.state && (
-            <div style={{ color: "red", fontSize: "12px" }}>
+            <small className="text-danger">
               {formErrors.state}
-            </div>
+            </small>
           )}
         </Form.Group>
       </Col>
@@ -144,9 +144,9 @@ const LocationState = ({
             ))}
           </Form.Select>
           {formErrors.city && (
-            <div style={{ color: "red", fontSize: "12px" }}>
+             <small className="text-danger">
               {formErrors.city}
-            </div>
+            </small>
           )}
         </Form.Group>
       </Col>
