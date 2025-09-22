@@ -586,7 +586,7 @@ function TempleAuthority() {
                               onChange={handleChange}
                             >
                               <option value="">Select Temple</option>
-                              <option value="shiv">Shiv Temple</option>
+                              <option value="shiv">Shiva Temple</option>
                               <option value="vishnu">Vishnu Temple</option>
                               <option value="durga">Durga Temple</option>
                               <option value="ganesh">Ganesh Temple</option>
@@ -859,7 +859,7 @@ function TempleAuthority() {
                               value={formData.trust_committee_details}
                               onChange={handleChange}
                             >
-                              <option value="public">Select Details</option>
+                              <option value="">Select Details</option>
                               <option value="public">Public Trust</option>
                               <option value="private">Private Trust</option>
                               <option value="committee">
