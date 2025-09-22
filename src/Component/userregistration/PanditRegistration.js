@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row, InputGroup } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import "../../assets/CSS/TempleAuthority.css";
@@ -16,6 +16,9 @@ import Select from "react-select";
 
 function PanditRegistration() {
   const [phone, setPhone] = useState("");
+  useEffect(() => {
+    setFormData((prev) => ({ ...prev, phone }));
+  }, [phone]);
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
   const [dragging, setDragging] = useState(false);
@@ -63,7 +66,6 @@ function PanditRegistration() {
   const [formErrors] = useState({});
 
   const navigate = useNavigate();
-
   const handleInputChangeCity = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
     validateField(name, value); // live validation on custom handler
@@ -362,7 +364,7 @@ function PanditRegistration() {
   };
 
   return (
-    <div className='temp-donate'>
+    <div className="temp-donate">
       <Container className="temp-container">
         <div>
           <div className=" temple-registration-heading  ">
@@ -528,7 +530,9 @@ function PanditRegistration() {
                               name="phone"
                               value={formData.phone}
                               onChange={handleInputChange}
+                              disabled={otpSent || otpVerified}
                             />
+
                             {errorReason_querys.phone && (
                               <div className="alert-txt">
                                 {errorReason_querys.phone}
@@ -540,7 +544,8 @@ function PanditRegistration() {
                         <Col md={4} lg={4} sm={12}>
                           <Form.Group className="mb-3">
                             <Form.Label>
-                              Password <span className="temp-span-star"> *</span>
+                              Password{" "}
+                              <span className="temp-span-star"> *</span>
                             </Form.Label>
                             <InputGroup>
                               <Form.Control
@@ -757,8 +762,9 @@ function PanditRegistration() {
                           <Row className="temp-stepform-box">
                             <Col lg={5} md={5} sm={5}>
                               <fieldset
-                                className={`upload_dropZone text-center ${dragging === "pandit_image" ? "drag-over" : ""
-                                  }`}
+                                className={`upload_dropZone text-center ${
+                                  dragging === "pandit_image" ? "drag-over" : ""
+                                }`}
                                 onDragOver={(e) => {
                                   e.preventDefault();
                                   setDragging("pandit_image");
@@ -859,10 +865,11 @@ function PanditRegistration() {
                           <Row className="temp-stepform-box">
                             <Col lg={5} md={5} sm={5}>
                               <fieldset
-                                className={`upload_dropZone text-center ${dragging === "aadhar_document"
+                                className={`upload_dropZone text-center ${
+                                  dragging === "aadhar_document"
                                     ? "drag-over"
                                     : ""
-                                  }`}
+                                }`}
                                 onDragOver={(e) => {
                                   e.preventDefault();
                                   setDragging("aadhar_document");
@@ -958,7 +965,6 @@ function PanditRegistration() {
                             </Col>
                           </Row>
                         </Col>
-
                       </Row>
 
                       <div className="gap-3 mt-3 Temp-btn-submit">
