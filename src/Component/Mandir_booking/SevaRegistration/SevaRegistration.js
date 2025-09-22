@@ -18,7 +18,7 @@ const SevaRegistration = () => {
   const [errors, setErrors] = useState({});
   const [temples, setTemples] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
-const [alertMessage, setAlertMessage] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -87,11 +87,11 @@ const [alertMessage, setAlertMessage] = useState("");
 
     //  validate required fields before OTP
     if (!validateFields()) {
-  setAlertMessage("Please fill all required fields correctly before verifying OTP.");
-  setShowAlert(true);
-  setAgree(false);
-  return;
-}
+      setAlertMessage("Please fill all required fields correctly before verifying OTP.");
+      setShowAlert(true);
+      setAgree(false);
+      return;
+    }
 
 
     //  if OTP already verified, no need to resend
@@ -620,7 +620,7 @@ const [alertMessage, setAlertMessage] = useState("");
                     controlId="exampleForm.ControlInput1"
                   >
                     <Form.Label className="temp-label">
-                      Preferred Date(s){" "}
+                      Preferred Date{" "}
                       <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
@@ -948,11 +948,11 @@ const [alertMessage, setAlertMessage] = useState("");
           </Row>
         </Form>
       </Container>
-      <ModifyAlert 
-  message={alertMessage} 
-  show={showAlert} 
-  setShow={setShowAlert} 
-/>
+      <ModifyAlert
+        message={alertMessage}
+        show={showAlert}
+        setShow={setShowAlert}
+      />
 
       <OTPModel
         show={show}
