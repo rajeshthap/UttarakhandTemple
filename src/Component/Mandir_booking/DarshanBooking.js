@@ -66,8 +66,26 @@ const DarshanBooking = () => {
 
   const handleInputChangeCity = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
-    validateFields(name, value);
+
+    // Live validation: clear error if value exists
+    setErrors((prev) => ({
+      ...prev,
+      [name]:
+        value && value.trim() !== ""
+          ? ""
+          : `${name.charAt(0).toUpperCase() + name.slice(1)} is required`,
+    }));
+
+    // Reset dependent dropdowns
+    if (name === "country") {
+      setFormData((prev) => ({ ...prev, state: "", city: "" }));
+      setErrors((prev) => ({ ...prev, state: "", city: "" }));
+    } else if (name === "state") {
+      setFormData((prev) => ({ ...prev, city: "" }));
+      setErrors((prev) => ({ ...prev, city: "" }));
+    }
   };
+
 
   useEffect(() => {
     const fetchTemples = async () => {
@@ -253,8 +271,17 @@ const DarshanBooking = () => {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
-    setErrors((prev) => ({ ...prev, [name]: "" }));
 
+    // Clear error if value is valid
+    setErrors((prev) => ({
+      ...prev,
+      [name]:
+        value && value.trim() !== ""
+          ? ""
+          : prev[name], // keep error if value empty
+    }));
+
+    // Specific validations
     if (name === "mobile_number") {
       let errorMsg = "";
       if (!/^\d*$/.test(value)) {
@@ -273,6 +300,7 @@ const DarshanBooking = () => {
       setErrors((prev) => ({ ...prev, email: errorMsg }));
     }
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
