@@ -711,7 +711,7 @@ if (!formData.prasad_offerings || !formData.prasad_offerings.trim()) {
                       <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
-                      type="text"
+                      type="number"
                       placeholder="Number of Participants "
                       className="temp-form-control"
                       name="number_of_participants"
@@ -831,7 +831,7 @@ if (!formData.prasad_offerings || !formData.prasad_offerings.trim()) {
                     controlId="exampleForm.ControlInput1"
                   >
                     <Form.Label className="temp-label">
-                      Special Requests <span className="temp-span-star">*</span>
+                      Special Requests
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -841,11 +841,7 @@ if (!formData.prasad_offerings || !formData.prasad_offerings.trim()) {
                       value={formData.special_requests}
                       onChange={handleInputChange}
                     />
-                    {errors.special_requests && (
-                      <small className="text-danger">
-                        {errors.special_requests}
-                      </small>
-                    )}
+                   
                   </Form.Group>
                 </Col>
 
