@@ -244,9 +244,9 @@ input[type=number] {
         display: none !important;
     }
 
-    .menubar {
+    /* .menubar {
         background-color: var(--temp-primary);
-    }
+    } */
 
 }
 
@@ -264,9 +264,9 @@ input[type=number] {
         margin-bottom: var(--temp-space-200) !important;
     }
 
-    .menubar {
+    /* .menubar {
         background-color: var(--temp-primary);
-    }
+    } */
 
     .temp-donate {
         margin: var(--temp-space-500);
