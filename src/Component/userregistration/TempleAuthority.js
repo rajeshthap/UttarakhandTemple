@@ -78,7 +78,10 @@ function TempleAuthority() {
     if (!formData.temple_name) {
       errors.temple_name = "Temple name is required";
     }
-     if (!formData.trust_committee_details) {
+     if (!formData.temple_events) {
+      errors.temple_events = "Temple Events is required";
+    }
+      if (!formData.trust_committee_details) {
       errors.trust_committee_details = "Trust Committee Details is required";
     }
  if (!formData.temple_type) {
