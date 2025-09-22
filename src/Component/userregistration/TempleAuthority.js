@@ -812,9 +812,8 @@ function TempleAuthority() {
                               maxLength={10}
                               className="temp-form-control"
                               placeholder="Enter Mobile Number"
-                              readOnly={otpVerified}
+                              disabled={otpVerified}
                             />
-
                             {formErrors.phone && (
                               <p className="text-danger">{formErrors.phone}</p>
                             )}
