@@ -71,8 +71,14 @@ const PoojaBooking = () => {
 
   const handleInputChangeCity = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
-    validateFields(name, value);
-  };
+    //validateFields(name, value);
+    setErrors((prev) => ({
+    ...prev,
+    [name]: value.trim() === "" ? `${name.charAt(0).toUpperCase() + name.slice(1)} is required` : "",
+  }));
+};
+    
+  
 
   useEffect(() => {
     const fetchTemples = async () => {
