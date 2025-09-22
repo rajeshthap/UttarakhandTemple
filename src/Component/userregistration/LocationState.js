@@ -67,6 +67,9 @@ const LocationState = ({
   const onChange = useCallback(
     (field, value) => {
       handleInputChange(field, value);
+        if (value && value.trim() !== "") {
+      handleInputChange("clearError", field); // custom signal to clear error
+    }
     },
     [handleInputChange]
   );
