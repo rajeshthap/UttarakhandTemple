@@ -34,7 +34,7 @@ function PanditRegistration() {
     zipcode: "",
     pandit_role: "",
     temple_association: "",
-    temple_image: "",
+    pandit_image: "",
     aadhar_document: "",
   });
 
@@ -52,7 +52,7 @@ function PanditRegistration() {
   ];
 
   const [preview, setPreview] = useState({
-    temple_image: null,
+    pandit_image: null,
     aadhar_document: null,
   });
 
@@ -263,8 +263,8 @@ function PanditRegistration() {
       errors.temple_association = "Temple association is required";
 
     //  File validations
-    if (!formData.temple_image)
-      errors.temple_image = "Pandit image is required";
+    if (!formData.pandit_image)
+      errors.pandit_image = "Pandit image is required";
     if (!formData.aadhar_document)
       errors.aadhar_document = "Aadhar document is required";
 
@@ -319,7 +319,7 @@ function PanditRegistration() {
           city: "",
           zipcode: "",
           temple_association: "",
-          temple_image: "",
+          pandit_image: "",
           aadhar_document: "",
           pandit_role: [],
         });
@@ -969,6 +969,7 @@ function PanditRegistration() {
                           className="temp-submit-btn mx-3"
                           type="submit"
                           disabled={loading}
+                          onClick={handleSubmit}
                         >
                           {loading ? (
                             <>

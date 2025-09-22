@@ -13,7 +13,7 @@ const ForgotPassword = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [, setMessage] = useState("");
   const [errors, setErrors] = useState("");   // for API/OTP errors
   const [resending, setResending] = useState(false);
   const [otpExpiry, setOtpExpiry] = useState(60);
