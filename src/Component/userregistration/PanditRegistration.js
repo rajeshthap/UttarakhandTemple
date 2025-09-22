@@ -83,9 +83,9 @@ function PanditRegistration() {
             "First name must start with a capital letter and contain only alphabets";
         break;
 
-        case "country":
-          if(!value) error ="Country is Required";
-         
+      case "country":
+        if (!value) error = "Country is Required";
+
       case "last_name":
         if (!value) error = "Last name is required";
         else if (!/^[A-Z][a-zA-Z]*$/.test(value))
@@ -142,6 +142,18 @@ function PanditRegistration() {
       case "confirmPassword":
         if (value !== formData.password) {
           error = "Passwords do not match";
+        }
+        break;
+
+      case "pandit_image":
+        if (!value) {
+          error = "Pandit image is required";
+        }
+        break;
+
+      case "aadhar_document":
+        if (!value) {
+          error = "Aadhar document is required";
         }
         break;
 
@@ -218,9 +230,9 @@ function PanditRegistration() {
       errors.last_name =
         "Last name must start with a capital letter and contain only alphabets";
     }
-      
+
     // Father Name
-     if (!formData.father_name) {
+    if (!formData.father_name) {
       errors.father_name = "Father name is required";
     }
 
@@ -262,10 +274,9 @@ function PanditRegistration() {
       errors.confirmPassword = "Passwords do not match";
     }
 
-     if (!formData.pandit_role) {
-      errors.pandit_role= "Pandit Role is required";
+    if (!formData.pandit_role) {
+      errors.pandit_role = "Pandit Role is required";
     }
-    
 
     //  Address validations
     if (!formData.permanent_address)
@@ -703,7 +714,7 @@ function PanditRegistration() {
                               value={formData.permanent_address}
                               onChange={handleInputChange}
                             />
-                             {errorReason_querys.permanent_address && (
+                            {errorReason_querys.permanent_address && (
                               <div className="alert-txt">
                                 {errorReason_querys.permanent_address}
                               </div>
@@ -733,7 +744,7 @@ function PanditRegistration() {
                               value={formData.zipcode}
                               onChange={handleInputChange}
                             />
-                              {errorReason_querys.zipcode && (
+                            {errorReason_querys.zipcode && (
                               <div className="alert-txt">
                                 {errorReason_querys.zipcode}
                               </div>
@@ -771,7 +782,7 @@ function PanditRegistration() {
                               </option>
                               <option value="option3">Independent</option>
                             </Form.Select>
-                               {errorReason_querys.temple_association && (
+                            {errorReason_querys.temple_association && (
                               <div className="alert-txt">
                                 {errorReason_querys.temple_association}
                               </div>
@@ -854,16 +865,21 @@ function PanditRegistration() {
                                 Pandit Image Upload{" "}
                                 <span className="temp-span-star">*</span>
                               </h3>
+                              {!formData.pandit_image &&
+                                errorReason_querys.pandit_image && (
+                                  <div className="alert-txt">
+                                    {errorReason_querys.pandit_image}
+                                  </div>
+                                )}
+
                               {formData.pandit_image && (
                                 <>
                                   <div className="d-flex temp-doc-info">
-                                    <Col lg={3} md={3} sm={3}>
+                                    <Col lg={3}>
                                       {new Date().toLocaleDateString()}
                                     </Col>
                                     <Col
                                       lg={9}
-                                      md={9}
-                                      sm={9}
                                       className="px-4 temp-success-doc"
                                     >
                                       <FaCheckCircle /> Uploaded Successfully
@@ -959,16 +975,21 @@ function PanditRegistration() {
                                 Aadhar Card Documents{" "}
                                 <span className="temp-span-star">*</span>
                               </h3>
+                              {!formData.aadhar_document &&
+                                errorReason_querys.aadhar_document && (
+                                  <div className="alert-txt">
+                                    {errorReason_querys.aadhar_document}
+                                  </div>
+                                )}
+
                               {formData.aadhar_document && (
                                 <>
                                   <div className="d-flex temp-doc-info">
-                                    <Col lg={3} md={3} sm={3}>
+                                    <Col lg={3}>
                                       {new Date().toLocaleDateString()}
                                     </Col>
                                     <Col
                                       lg={9}
-                                      md={9}
-                                      sm={9}
                                       className="px-4 temp-success-doc"
                                     >
                                       <FaCheckCircle /> Uploaded Successfully
