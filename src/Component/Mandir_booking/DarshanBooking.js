@@ -693,6 +693,12 @@ const DarshanBooking = () => {
                           value={formData.pin_code}
                           onChange={handleInputChange}
                         />
+                        {errors.pin_code && (
+                  <small className="text-danger">
+                    {errors.pin_code}
+                  </small>
+                )}
+
                       </Form.Group>
                     </Col>
                   </>
