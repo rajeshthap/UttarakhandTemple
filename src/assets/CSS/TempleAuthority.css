@@ -55,8 +55,8 @@ span.temp-span-star {
     height: 48px;
     font-size: var(--temp-space-350);
     border: 1px solid var(--temp-search-border);
-    font-size: var(--temp-space-400) !important;
-    color: #808090;
+    font-size: var(--temp-space-350) !important;
+    color: #808090 !important;
 }
 
 .temp-form-control-option-bg {
