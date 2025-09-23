@@ -51,11 +51,12 @@ const EventParticipation = () => {
 
       if (res.data.success) {
       } else {
-        alert("Failed to resend OTP. Try again.");
+        setAlertMessage("Failed to resend OTP. Try again.");
+        setShowAlert(true);
       }
     } catch (error) {
-      console.error("Error resending OTP:", error);
-      alert("Something went wrong. Please try again.");
+      setAlertMessage("Something went wrong. Please try again.");
+      setShowAlert(true);
     }
   };
 
@@ -200,8 +201,8 @@ const EventParticipation = () => {
       setShow(true);
       setAgreeTerms(true);
     } catch (err) {
-      alert("Failed to send OTP");
-      setAgreeTerms(false);
+      setAlertMessage("Failed to send OTP");
+      setShowAlert(true);
     } finally {
       setSendingOtp(false);
     }
@@ -212,11 +213,14 @@ const EventParticipation = () => {
     e.preventDefault();
 
     if (!validateFields()) {
-      return alert("Please fill all required fields.");
+      setAlertMessage("Please fill all required fields.");
+      setShowAlert(true);
+      return;
     }
 
     if (!otpVerified) {
-      return alert("Please verify OTP before registering.");
+       setAlertMessage("Please verify OTP before registering.");
+        setShowAlert(true);
     }
 
     try {
@@ -226,22 +230,29 @@ const EventParticipation = () => {
       );
 
       if (res.status === 200 || res.status === 201) {
-        alert("Event Registered Successfully!");
+        setAlertMessage("Event Registered Successfully!");
+        setShowAlert(true);
       }
     } catch (err) {
       if (err.response && err.response.data) {
         console.error("Server Error:", err.response.data);
-        alert("Booking failed: " + JSON.stringify(err.response.data));
+        setAlertMessage("Booking failed: " + JSON.stringify(err.response.data));
+        setShowAlert(true);
       } else {
         console.error("Error:", err);
-        alert("Something went wrong. Please try again.");
+        setAlertMessage("Something went wrong. Please try again.");
+        setShowAlert(true);
+
       }
     }
   };
 
   //  Verify OTP
   const handleVerifyOtp = async () => {
-    if (!otp) return alert("Enter OTP");
+    if (!otp) { setAlertMessage("Enter OTP");
+      setShowAlert(true);
+      return;
+    }
 
     setVerifying(true);
     try {
@@ -252,15 +263,20 @@ const EventParticipation = () => {
 
       if (res.data.success) {
         setOtpVerified(true);
-        alert("OTP Verified Successfully!");
-        setShow(false);
-        navigate("/PaymentConfirmation");
+        setAlertMessage("OTP Verified Successfully!");
+        setShowAlert(true);
+        setTimeout(() => {
+                  navigate("/PaymentConfirmation");
+
+        }
+, 1000);
       } else {
-        alert("Invalid OTP, try again.");
+        setAlertMessage("Invalid OTP, try again.");
+        setShowAlert(true);
       }
     } catch (err) {
-      console.error(err);
-      alert("OTP verification failed");
+      setAlertMessage("OTP verification failed");
+      setShowAlert(true);
     } finally {
       setVerifying(false);
     }
