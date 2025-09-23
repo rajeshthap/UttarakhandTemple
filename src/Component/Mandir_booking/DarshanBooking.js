@@ -273,7 +273,7 @@ const DarshanBooking = () => {
         setShowAlert(true);
         handleClose(); // close modal
 
-        //navigate("/PaymentConfirmation");
+        navigate("/PaymentConfirmation");
       } else {
          setAlertMessage(res.data.message || "Invalid OTP");
         setShowAlert(true);
@@ -756,11 +756,11 @@ const DarshanBooking = () => {
                     <Col lg={6} md={6} sm={12}>
                       <Form.Group className="mb-3">
                         <Form.Label className="temp-label">
-                          Pin Code <span className="temp-span-star">*</span>
+                          PIN Code <span className="temp-span-star">*</span>
                         </Form.Label>
                         <Form.Control
                           type="text"
-                          placeholder="Pincode"
+                          placeholder=" Enter PIN Code"
                           className="temp-form-control"
                           name="pin_code"
                           value={formData.pin_code}

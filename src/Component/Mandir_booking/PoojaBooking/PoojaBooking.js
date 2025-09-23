@@ -276,7 +276,7 @@ const [alertMessage, setAlertMessage] = useState("");
         setShowAlert(true)
       
         handleClose(); // close modal
-        //navigate("/PaymentConfirmation");
+        navigate("/PaymentConfirmation");
       } else {
          setAlertMessage(res.data.message || "Invalid OTP");
         setShowAlert(true)
@@ -879,7 +879,7 @@ const [alertMessage, setAlertMessage] = useState("");
                     controlId="exampleForm.ControlInput1"
                   >
                     <Form.Label className="temp-label">
-                      Special Requests
+                      Special Requests <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -889,6 +889,11 @@ const [alertMessage, setAlertMessage] = useState("");
                       value={formData.special_requests}
                       onChange={handleInputChange}
                     />
+                     {errors.special_requests && (
+                      <small className="text-danger">
+                        {errors.special_requests}
+                      </small>
+                    )}
                   </Form.Group>
                 </Col>
 
@@ -961,11 +966,11 @@ const [alertMessage, setAlertMessage] = useState("");
                     <Col lg={6} md={6} sm={12}>
                       <Form.Group className="mb-3">
                         <Form.Label className="temp-label">
-                          Pin Code <span className="temp-span-star">*</span>
+                          PIN Code <span className="temp-span-star">*</span>
                         </Form.Label>
                         <Form.Control
                           type="text"
-                          placeholder="Pincode"
+                          placeholder="Enter PIN Code"
                           className="temp-form-control"
                           name="pin_code"
                           value={formData.pin_code}
