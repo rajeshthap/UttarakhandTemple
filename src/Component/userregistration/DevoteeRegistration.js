@@ -15,6 +15,7 @@ import SendOtp from "../SendOtp/SendOtp";
 import VerifyOtp from "../VerifyOtp/VerifyOtp";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import ModifyAlert from "../Alert/ModifyAlert";
 
 function DevoteeRegistration() {
   const [phone, setPhone] = useState("");
@@ -23,6 +24,8 @@ function DevoteeRegistration() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
   const navigate = useNavigate();
 
   // Input states
@@ -138,8 +141,12 @@ function DevoteeRegistration() {
       setPassword("");
       setErrors({});
       setMessage("");
-      alert("User Registered Successfully!");
-      navigate("/DevoteeLogin");
+      setAlertMessage("User Registered Successfully!");
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+        navigate("/DevoteeLogin");
+      }, 3000);
     } catch (err) {
       console.error(err);
       if (err.response && err.response.data) {
@@ -358,6 +365,11 @@ function DevoteeRegistration() {
           </Form>
         </div>
       </Container>
+      <ModifyAlert
+        message={alertMessage}
+        show={showAlert}
+        setShow={setShowAlert}
+      />
     </div>
   );
 }
