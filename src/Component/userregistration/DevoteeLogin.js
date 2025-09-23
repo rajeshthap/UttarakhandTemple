@@ -79,7 +79,7 @@ useEffect(() => {
 
       setTimeout(() => {
         navigate("/MainDashBoard");
-      }, 1500);
+      }, 2000);
 
       const token = response.data.role;
       if (token === "User") {

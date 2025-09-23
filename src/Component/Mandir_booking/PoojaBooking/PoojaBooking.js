@@ -351,7 +351,7 @@ const [alertMessage, setAlertMessage] = useState("");
 
         setTimeout(() => {
           navigate("/PaymentConfirmation");
-        }, 3000);
+        }, 2000);
 
       } else {
         setAlertMessage(res.data.message || "Pooja Registration failed");

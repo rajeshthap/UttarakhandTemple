@@ -349,7 +349,7 @@ const DarshanBooking = () => {
  
   setTimeout(() => {
         navigate("/PaymentConfirmation");
-      }, 3000);
+      }, 2000);
       
       } else {
          setAlertMessage(res.data.message || "Darshan Registration failed");

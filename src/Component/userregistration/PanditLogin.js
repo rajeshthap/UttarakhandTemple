@@ -71,7 +71,7 @@ const handleSubmit = async (e) => {
     );
     setTimeout(() => {
     navigate("/MainDashBoard");
-  }, 1500);
+  }, 2000);
 
 
     // Save user info in localStorage

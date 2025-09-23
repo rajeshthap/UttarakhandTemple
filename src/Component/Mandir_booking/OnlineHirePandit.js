@@ -229,7 +229,7 @@ const OnlineHirePandit = () => {
       setShowModifyAlert(true);
       setTimeout(() => {
         navigate("/PaymentConfirmation");
-        }, 1000);
+        }, 2000);
 
       // Reset form
       setFormData({

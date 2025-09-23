@@ -233,7 +233,7 @@ const EventParticipation = () => {
         setTimeout(() => {
         setAlertMessage("Event Registered Successfully!");
         setShowAlert(true);
-        }, 1000);
+        }, 2000);
         
       }
     } catch (err) {
@@ -272,7 +272,7 @@ const EventParticipation = () => {
                   navigate("/PaymentConfirmation");
 
         }
-, 1000);
+, 2000);
       } else {
         setAlertMessage("Invalid OTP, try again.");
         setShowAlert(true);

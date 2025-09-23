@@ -69,7 +69,7 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
         setShowAlert(true);
         setTimeout(() => {
                   navigate("/PaymentConfirmation");
-        }, 1000);
+        }, 2000);
         localStorage.setItem("otpVerified", "true");
 
         if (setIsOtpVerified) setIsOtpVerified(true);

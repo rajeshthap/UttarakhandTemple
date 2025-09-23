@@ -146,7 +146,7 @@ function DevoteeRegistration() {
       setTimeout(() => {
         setShowAlert(false);
         navigate("/DevoteeLogin");
-      }, 3000);
+      }, 2000);
     } catch (err) {
       console.error(err);
       if (err.response && err.response.data) {

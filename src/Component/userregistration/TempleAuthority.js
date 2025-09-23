@@ -415,7 +415,7 @@ function TempleAuthority() {
         setTimeout(() => {
           setShowAlert(false);
           navigate("/AuthorityLogin");
-        }, 3000);
+        }, 2000);
       }
     } catch (error) {
       console.log(error.response?.data);

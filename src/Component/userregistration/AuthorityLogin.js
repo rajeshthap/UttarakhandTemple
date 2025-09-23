@@ -77,7 +77,7 @@ useEffect(() => {
       );
       setTimeout(() => {
         navigate("/MainDashBoard");
-      }, 1500);
+      }, 2000);
 
       if (response.data.role) {
         localStorage.setItem("role", response.data.role);

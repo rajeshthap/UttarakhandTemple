@@ -356,7 +356,7 @@ function PanditRegistration() {
       setTimeout(() => {
         setShowAlert(false);
         navigate("/PanditLogin");
-      }, 3000);
+      }, 2000);
 
 
       // redirect to login or dashboard page
