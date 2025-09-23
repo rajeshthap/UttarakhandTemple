@@ -77,10 +77,11 @@ const ForgetPassword = () => {
   };
 
   return (
+    <>
     <Container className="mt-4">
       <div className="forgot-container">
         <h2>Reset Password</h2>
-        <form onSubmit={handleSubmit} className="forgot-form">
+        <Form onSubmit={handleSubmit} className="forgot-form">
             <Row>
                 <Form.Group className="mb-3">
                 <Col lg={12}> <Form.Control type="text" name="phone" placeholder="Enter Registered Mobile Number"
@@ -111,12 +112,10 @@ const ForgetPassword = () => {
       
            </Col>
             </Row>
-         
-        
-          
-           </form>
+           </Form>
       </div>
     </Container>
+    </>
   );
 };
 
