@@ -230,8 +230,11 @@ const EventParticipation = () => {
       );
 
       if (res.status === 200 || res.status === 201) {
+        setTimeout(() => {
         setAlertMessage("Event Registered Successfully!");
         setShowAlert(true);
+        }, 1000);
+        
       }
     } catch (err) {
       if (err.response && err.response.data) {
