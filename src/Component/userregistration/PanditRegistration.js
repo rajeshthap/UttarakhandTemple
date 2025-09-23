@@ -13,6 +13,7 @@ import VerifyOtp from "../VerifyOtp/VerifyOtp";
 import LocationState from "../userregistration/LocationState";
 import Regimg1 from "../../assets/images/pandit-img.png";
 import Select from "react-select";
+import ModifyAlert from "../Alert/ModifyAlert";
 
 function PanditRegistration() {
   const [phone, setPhone] = useState("");
@@ -22,6 +23,8 @@ function PanditRegistration() {
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
   const [dragging, setDragging] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -348,13 +351,16 @@ function PanditRegistration() {
         formDataToSend,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
-      console.log("Login Response:", res.data);
-      navigate("/PanditLogin");
-      console.log("Form submitted successfully:", res.data);
+      setAlertMessage("Pandit Registered Successfully!");
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+        navigate("/PanditLogin");
+      }, 3000);
+
 
       // redirect to login or dashboard page
 
-      console.log("API Response:", res.data);
       if (res.data.success === true || res.data.success === "true") {
         setFormData({
           first_name: "",
@@ -376,7 +382,8 @@ function PanditRegistration() {
           pandit_role: [],
         });
       } else {
-        alert(res.data.message || "Registration failed");
+       setAlertMessage(res.data.message || "Registration failed");
+       setShowAlert(true);
       }
     } catch (err) {
       console.error(err);
@@ -403,10 +410,12 @@ function PanditRegistration() {
           }));
           document.getElementsByName("aadhar_number")[0]?.focus();
         } else {
-          alert(errorData.message || "Something went wrong");
+          setAlertMessage(errorData.message || "Something went wrong");
+          setShowAlert(true);
         }
       } else {
-        alert(err.message || "Something went wrong");
+        setAlertMessage(err.message || "Something went wrong");
+        setShowAlert(true);
       }
     } finally {
       setLoading(false);
@@ -992,14 +1001,13 @@ function PanditRegistration() {
                                 </label>
                                 <p className="temp-upload-file">
                                   Upload size up to 2MB (jpg, png, Jpeg)
-                                    {fileErrors.aadhar_document && (
-                                <div className="alert-txt">
-                                  {fileErrors.aadhar_document}
-                                </div>
-                              )}
+                                  {fileErrors.aadhar_document && (
+                                    <div className="alert-txt">
+                                      {fileErrors.aadhar_document}
+                                    </div>
+                                  )}
                                 </p>
                               </fieldset>
-                            
                             </Col>
 
                             <Col
@@ -1083,6 +1091,11 @@ function PanditRegistration() {
           </div>
         </div>
       </Container>
+       <ModifyAlert
+              message={alertMessage}
+              show={showAlert}
+              setShow={setShowAlert}
+            />
     </div>
   );
 }
