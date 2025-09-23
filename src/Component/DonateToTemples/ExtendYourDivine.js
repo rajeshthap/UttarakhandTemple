@@ -205,7 +205,7 @@ const ExtendYourDivine = () => {
         setShowAlert(true);
         setTimeout(() => {
           navigate("/PaymentConfirmation");
-        }, 1000);
+        }, 2000);
         handleClose();
       } else {
         setAlertMessage(response.data.message || "OTP verification failed.");
