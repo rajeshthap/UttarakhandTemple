@@ -161,7 +161,7 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
 
       <Modal.Footer>
         <Button className="model-btn" onClick={verifyOtp} disabled={loading || otpExpiry <= 0}>
-          {loading ? "Verifying..." : "Submit"}
+          {loading ? "Verifying..." : "Verify"}
         </Button>
 
         <Button variant="secondary" onClick={resendOtp} disabled={resending || timer > 0}>
