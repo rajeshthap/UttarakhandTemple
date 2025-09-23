@@ -40,6 +40,10 @@ function PanditRegistration() {
     pandit_image: "",
     aadhar_document: "",
   });
+  const [fileErrors, setFileErrors] = useState({
+    pandit_image: "",
+    aadhar_document: "",
+  });
 
   const roleOptions = [
     { value: "pooja", label: "पूजा विशेषज्ञ" },
@@ -169,13 +173,37 @@ function PanditRegistration() {
 
     if (type === "file" && files.length > 0) {
       const file = files[0];
+
+      // Allowed types
+      const allowedTypes = ["image/jpeg", "image/png"];
+      if (!allowedTypes.includes(file.type)) {
+        setFileErrors((prev) => ({
+          ...prev,
+          [name]: "Only JPG or PNG files are allowed.",
+        }));
+        setFormData((prev) => ({ ...prev, [name]: "" }));
+        return;
+      }
+
+      // Max size 2MB
+      if (file.size > 2 * 1024 * 1024) {
+        setFileErrors((prev) => ({
+          ...prev,
+          [name]: "File size must be less than or equal to 2MB.",
+        }));
+        setFormData((prev) => ({ ...prev, [name]: "" }));
+        return;
+      }
+
+      // Clear previous file errors & set file
       setFormData({ ...formData, [name]: file });
       setPreview({ ...preview, [name]: URL.createObjectURL(file) });
+      setFileErrors((prev) => ({ ...prev, [name]: "" }));
       validateField(name, file);
     } else {
+      // All your existing non-file handling stays the same
       let newValue = value;
 
-      // First Name & Last Name: No spaces + capitalize first letter
       if (name === "first_name" || name === "last_name") {
         newValue = newValue.replace(/\s/g, "");
         if (newValue.length > 0) {
@@ -195,13 +223,11 @@ function PanditRegistration() {
           .join(" ");
       }
 
-      // Phone: only digits, max 10
       if (name === "phone") {
         newValue = newValue.replace(/\D/g, "");
         if (newValue.length > 10) newValue = newValue.slice(0, 10);
       }
 
-      // Aadhaar: only digits, max 12
       if (name === "aadhar_number") {
         newValue = newValue.replace(/\D/g, "");
         if (newValue.length > 12) newValue = newValue.slice(0, 12);
@@ -850,7 +876,12 @@ function PanditRegistration() {
                                   Choose file
                                 </label>
                                 <p className="temp-upload-file">
-                                  Upload size up to 100KB (jpg, png)
+                                  Upload size up to 2MB (jpg, png,jpeg)
+                                  {fileErrors.pandit_image && (
+                                    <div className="alert-txt">
+                                      {fileErrors.pandit_image}
+                                    </div>
+                                  )}
                                 </p>
                               </fieldset>
                             </Col>
@@ -960,9 +991,15 @@ function PanditRegistration() {
                                   Choose file
                                 </label>
                                 <p className="temp-upload-file">
-                                  Upload size up to 200KB (jpg, png, pdf)
+                                  Upload size up to 2MB (jpg, png, Jpeg)
+                                    {fileErrors.aadhar_document && (
+                                <div className="alert-txt">
+                                  {fileErrors.aadhar_document}
+                                </div>
+                              )}
                                 </p>
                               </fieldset>
+                            
                             </Col>
 
                             <Col
