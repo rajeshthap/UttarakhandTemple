@@ -59,7 +59,7 @@ const SevaRegistration = () => {
          setAlertMessage("Failed to resend OTP. Try again.");
         setShowAlert(true);
         setAgree(false);
-        //alert("Failed to resend OTP. Try again.");
+        
       }
     } catch (error) {
       console.error("Error resending OTP:", error);
@@ -67,7 +67,6 @@ const SevaRegistration = () => {
        setAlertMessage("Something went wrong. Please try again.");
         setShowAlert(true);
         setAgree(false);
-      //alert("Something went wrong. Please try again.");
     }
   };
 
@@ -128,16 +127,14 @@ const SevaRegistration = () => {
         setAlertMessage(res.data.message || "Failed to send OTP");
         setShowAlert(true);
         setAgree(false);
-        // alert(res.data.message || "Failed to send OTP");
-        // setAgree(false);
+       
       }
     } catch (err) {
       console.error("OTP Send Error:", err);
          setAlertMessage("Error sending OTP");
         setShowAlert(true);
         setAgree(false);
-      // alert("Error sending OTP");
-      // setAgree(false);
+    
     }
   };
 
