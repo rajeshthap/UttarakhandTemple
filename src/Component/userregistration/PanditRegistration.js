@@ -885,7 +885,8 @@ function PanditRegistration() {
                                   Choose file
                                 </label>
                                 <p className="temp-upload-file">
-                                  Upload size up to 2MB (jpg, png,jpeg)
+                                   Upload size up to 10KB to 2MB (jpg, png,
+                                    jpeg)
                                   {fileErrors.pandit_image && (
                                     <div className="alert-txt">
                                       {fileErrors.pandit_image}
@@ -1000,7 +1001,8 @@ function PanditRegistration() {
                                   Choose file
                                 </label>
                                 <p className="temp-upload-file">
-                                  Upload size up to 2MB (jpg, png, Jpeg)
+                                   Upload size up to 10KB to 2MB (jpg, png,
+                                    jpeg)
                                   {fileErrors.aadhar_document && (
                                     <div className="alert-txt">
                                       {fileErrors.aadhar_document}
