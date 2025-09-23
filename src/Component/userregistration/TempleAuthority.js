@@ -13,6 +13,7 @@ import Regimg1 from "../../assets/images/temple-img.jpg";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
+import ModifyAlert from "../Alert/ModifyAlert";
 
 function TempleAuthority() {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,7 +27,8 @@ function TempleAuthority() {
   const [banks, setBanks] = useState([]);
   const [formErrors, setFormErrors] = useState({});
   const [documentErrors, setDocumentErrors] = useState({});
-   
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
   const [formData, setFormData] = useState({
     state: "",
     country: "",
@@ -157,7 +159,8 @@ function TempleAuthority() {
         formData.password
       )
     ) {
-      errors.password = "Password must be at least 8 characters, include uppercase, lowercase, number, and special character";
+      errors.password =
+        "Password must be at least 8 characters, include uppercase, lowercase, number, and special character";
     }
     if (!formData.confirm_password) {
       errors.confirm_password = "Confirm Password is required";
@@ -192,15 +195,20 @@ function TempleAuthority() {
     }
 
     // Document validation
-    if (!documents.temple_image) docErrors.temple_image = "Temple image is required";
-    if (!documents.land_doc) docErrors.land_doc = "Land ownership document is required";
+    if (!documents.temple_image)
+      docErrors.temple_image = "Temple image is required";
+    if (!documents.land_doc)
+      docErrors.land_doc = "Land ownership document is required";
     if (!documents.noc_doc) docErrors.noc_doc = "NOC certificate is required";
-    if (!documents.trust_cert) docErrors.trust_cert = "Trust registration certificate is required";
+    if (!documents.trust_cert)
+      docErrors.trust_cert = "Trust registration certificate is required";
 
     setFormErrors(errors);
     setDocumentErrors(docErrors);
 
-    return Object.keys(errors).length === 0 && Object.keys(docErrors).length === 0;
+    return (
+      Object.keys(errors).length === 0 && Object.keys(docErrors).length === 0
+    );
   };
 
   // Single field validation (real-time)
@@ -213,7 +221,8 @@ function TempleAuthority() {
         } else if (/^\s+$/.test(value)) {
           error = "Temple name cannot be just spaces";
         } else if (!/^[A-Za-z]+(?: [A-Za-z]+)*$/.test(value)) {
-          error = "Temple name should only contain letters with a single space between words";
+          error =
+            "Temple name should only contain letters with a single space between words";
         }
         break;
       case "zip_code":
@@ -225,7 +234,8 @@ function TempleAuthority() {
             value
           )
         ) {
-          error = "Password must be at least 8 characters, include uppercase, lowercase, number, and special character";
+          error =
+            "Password must be at least 8 characters, include uppercase, lowercase, number, and special character";
         }
         break;
       case "confirm_password":
@@ -262,21 +272,22 @@ function TempleAuthority() {
         }
         break;
       case "confirm_account_number":
-        if (value !== formData.account_number) error = "Account numbers do not match";
+        if (value !== formData.account_number)
+          error = "Account numbers do not match";
         break;
       default:
         break;
     }
     setFormErrors((prev) => ({
       ...prev,
-      [name]: error
+      [name]: error,
     }));
   };
 
   const handleInputChange = (name, value) => {
     setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
     validateField(name, value);
   };
@@ -299,7 +310,7 @@ function TempleAuthority() {
 
     setFormData({
       ...formData,
-      [name]: newValue
+      [name]: newValue,
     });
     validateField(name, newValue);
   };
@@ -313,7 +324,7 @@ function TempleAuthority() {
       file = e.target.files[0];
       // Reset the file input value to allow selecting the same file again
       if (fileInputRefs[field]?.current) {
-        fileInputRefs[field].current.value = '';
+        fileInputRefs[field].current.value = "";
       }
     } else if (e.dataTransfer && e.dataTransfer.files) {
       file = e.dataTransfer.files[0];
@@ -321,54 +332,53 @@ function TempleAuthority() {
 
     if (!file) return;
 
-    const allowedTypes = ["image/jpeg","image/jpg", "image/png", "image/pdf"];
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/pdf"];
 
     // Reset previous errors
     setFileErrors((prev) => ({
       ...prev,
-      [field]: ""
+      [field]: "",
     }));
 
     setDocumentErrors((prev) => ({
       ...prev,
-      [field]: ""
+      [field]: "",
     }));
 
     // Type check
     if (!allowedTypes.includes(file.type)) {
       setFileErrors((prev) => ({
         ...prev,
-        [field]: "Only JPG, PNG, or PDF  files are allowed."
+        [field]: "Only JPG, PNG, or PDF  files are allowed.",
       }));
       return;
     }
 
     // Size check (100KB)
-   if (file.size > 2 * 1024 * 1024) {
-  setFileErrors((prev) => ({
-    ...prev,
-    [field]: "File size must be less than or equal to 2MB."
-  }));
-  return;
-}
-
+    if (file.size > 2 * 1024 * 1024) {
+      setFileErrors((prev) => ({
+        ...prev,
+        [field]: "File size must be less than or equal to 2MB.",
+      }));
+      return;
+    }
 
     // If valid, save file
     setDocuments({
       ...documents,
-      [field]: file
+      [field]: file,
     });
   };
 
   const removeFile = (field) => {
     setDocuments({
       ...documents,
-      [field]: null
+      [field]: null,
     });
 
     setDocumentErrors((prev) => ({
       ...prev,
-      [field]: `${field.replace('_', ' ')} is required`
+      [field]: `${field.replace("_", " ")} is required`,
     }));
   };
 
@@ -377,17 +387,20 @@ function TempleAuthority() {
     Object.keys(formData).forEach((key) => {
       payload.append(key, formData[key] || "");
     });
-    if (documents.temple_image) payload.append("temple_image", documents.temple_image);
+    if (documents.temple_image)
+      payload.append("temple_image", documents.temple_image);
     if (documents.land_doc) payload.append("land_doc", documents.land_doc);
     if (documents.noc_doc) payload.append("noc_doc", documents.noc_doc);
-    if (documents.trust_cert) payload.append("trust_cert", documents.trust_cert);
+    if (documents.trust_cert)
+      payload.append("trust_cert", documents.trust_cert);
     return payload;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) {
-      alert("Please fix validation errors before submitting");
+      setAlertMessage("Please fix validation errors before submitting");
+      setShowAlert(true);
       return;
     }
 
@@ -395,10 +408,12 @@ function TempleAuthority() {
     try {
       const registerResult = await Globaleapi(payload);
       if (registerResult?.data) {
-        console.log("Registration Response:", registerResult.data);
-        alert("Temple Registered Successfully!");
-        navigate("/AuthorityLogin");
-        setShow(true);
+        setAlertMessage("Temple Registered Successfully!");
+        setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+          navigate("/AuthorityLogin");
+        }, 3000);
       }
     } catch (error) {
       console.log(error.response?.data);
@@ -410,21 +425,23 @@ function TempleAuthority() {
         ) {
           setFormErrors((prev) => ({
             ...prev,
-            email: errorData.error
+            email: errorData.error,
           }));
           document.getElementsByName("email")[0]?.focus();
-        }
-        else if (
+        } else if (
           errorData.error &&
           errorData.error.toLowerCase().includes("phone")
         ) {
           setFormErrors((prev) => ({
             ...prev,
-            phone: errorData.error
+            phone: errorData.error,
           }));
           document.getElementsByName("phone")[0]?.focus();
         } else {
-          alert("Error: " + (errorData.message || "Something went wrong"));
+          setAlertMessage(
+            "Error: " + (errorData.message || "Something went wrong")
+          );
+          setShowAlert(true);
         }
       } else {
         alert("Error: " + error.message);
@@ -445,33 +462,48 @@ function TempleAuthority() {
                     {!otpSent && !otpVerified && (
                       <>
                         <Col lg={6} md={6} sm={12}>
-                          <SendOtp phone={phone} setPhone={setPhone} onOtpSent={() => {
-                            setOtpSent(true);
-                            setFormData((prev) => ({
-                              ...prev,
-                              phone: phone,
-                            }));
-                          }} />
+                          <SendOtp
+                            phone={phone}
+                            setPhone={setPhone}
+                            onOtpSent={() => {
+                              setOtpSent(true);
+                              setFormData((prev) => ({
+                                ...prev,
+                                phone: phone,
+                              }));
+                            }}
+                          />
                         </Col>
                         <Col lg={6} md={6} sm={12}>
-                          <img src={Regimg1} className="img-fluid" alt="User Registration" />
+                          <img
+                            src={Regimg1}
+                            className="img-fluid"
+                            alt="User Registration"
+                          />
                         </Col>
                       </>
                     )}
                     {otpSent && !otpVerified && (
                       <>
                         <Col lg={6} md={6} sm={12}>
-                          <VerifyOtp phone={phone} onVerified={() => {
-                            setOtpVerified(true);
-                            setOtpSent(false);
-                            setFormData((prev) => ({
-                              ...prev,
-                              phone: phone,
-                            }));
-                          }} />
+                          <VerifyOtp
+                            phone={phone}
+                            onVerified={() => {
+                              setOtpVerified(true);
+                              setOtpSent(false);
+                              setFormData((prev) => ({
+                                ...prev,
+                                phone: phone,
+                              }));
+                            }}
+                          />
                         </Col>
                         <Col lg={6} md={6} sm={12}>
-                          <img src={Regimg1} className="img-fluid" alt="User Registration" />
+                          <img
+                            src={Regimg1}
+                            className="img-fluid"
+                            alt="User Registration"
+                          />
                         </Col>
                       </>
                     )}
@@ -480,7 +512,10 @@ function TempleAuthority() {
                     <>
                       <Row className="mt-4">
                         <Col lg={4} md={4} sm={12}>
-                          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
                             <Form.Label className="temp-label">
                               Temple Name{" "}
                               <span className="temp-span-star">*</span>
@@ -501,7 +536,10 @@ function TempleAuthority() {
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
-                          <Form.Group className="mb-3" controlId="passwordField">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="passwordField"
+                          >
                             <Form.Label className="temp-label">
                               Password <span className="temp-span-star">*</span>
                             </Form.Label>
@@ -529,7 +567,10 @@ function TempleAuthority() {
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
-                          <Form.Group className="mb-3" controlId="confirmPasswordField">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="confirmPasswordField"
+                          >
                             <Form.Label className="temp-label">
                               Confirm Password{" "}
                               <span className="temp-span-star">*</span>
@@ -545,7 +586,9 @@ function TempleAuthority() {
                               />
                               <span
                                 className="toggle-eye"
-                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                onClick={() =>
+                                  setShowConfirmPassword(!showConfirmPassword)
+                                }
                               >
                                 {showConfirmPassword ? (
                                   <FaEyeSlash />
@@ -562,7 +605,10 @@ function TempleAuthority() {
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
-                          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
                             <Form.Label className="temp-label">
                               Temple Type{" "}
                               <span className="temp-span-star">*</span>
@@ -589,7 +635,10 @@ function TempleAuthority() {
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
-                          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
                             <Form.Label className="temp-label">
                               Temple Facility{" "}
                               <span className="temp-span-star">*</span>
@@ -610,8 +659,14 @@ function TempleAuthority() {
                               <option value="prasadCounter">
                                 Prasad Counter
                               </option>
-                              <option value="accommodation"> Accommodation </option>
-                              <option value="wheelchairAccess"> Wheelchair Access </option>
+                              <option value="accommodation">
+                                {" "}
+                                Accommodation{" "}
+                              </option>
+                              <option value="wheelchairAccess">
+                                {" "}
+                                Wheelchair Access{" "}
+                              </option>
                             </Form.Select>
                             {formErrors.temple_facility && (
                               <p className="text-danger">
@@ -621,7 +676,10 @@ function TempleAuthority() {
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
-                          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
                             <Form.Label className="temp-label">
                               Temple Address{" "}
                               <span className="temp-span-star">*</span>
@@ -648,7 +706,10 @@ function TempleAuthority() {
                           formErrors={formErrors}
                         />
                         <Col lg={4} md={4} sm={12}>
-                          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
                             <Form.Label className="temp-label">
                               Zip Code <span className="temp-span-star">*</span>
                             </Form.Label>
@@ -668,7 +729,10 @@ function TempleAuthority() {
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
-                          <Form.Group className="mb-3" controlId="yearOfEstablishment">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="yearOfEstablishment"
+                          >
                             <Form.Label className="temp-label">
                               Year of Establishment{" "}
                               <span className="temp-span-star">*</span>
@@ -691,7 +755,10 @@ function TempleAuthority() {
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
-                          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
                             <Form.Label className="temp-label">
                               Temple Events{" "}
                               <span className="temp-span-star">*</span>
@@ -704,11 +771,23 @@ function TempleAuthority() {
                             >
                               <option value="">Select Event</option>
                               <option value="dailyPuja">Daily Puja</option>
-                              <option value="aarti"> Morning/Evening Aarti </option>
-                              <option value="festivals"> Festivals (Diwali, Navratri, etc.) </option>
+                              <option value="aarti">
+                                {" "}
+                                Morning/Evening Aarti{" "}
+                              </option>
+                              <option value="festivals">
+                                {" "}
+                                Festivals (Diwali, Navratri, etc.){" "}
+                              </option>
                               <option value="specialPuja">Special Puja</option>
-                              <option value="annadhanam"> Annadhanam (Food Offering) </option>
-                              <option value="yatra"> Annual Yatra/Pilgrimage </option>
+                              <option value="annadhanam">
+                                {" "}
+                                Annadhanam (Food Offering){" "}
+                              </option>
+                              <option value="yatra">
+                                {" "}
+                                Annual Yatra/Pilgrimage{" "}
+                              </option>
                             </Form.Select>
                             {formErrors.temple_events && (
                               <p className="text-danger">
@@ -718,7 +797,10 @@ function TempleAuthority() {
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
-                          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
                             <Form.Label className="temp-label">
                               Temple Ownership Type{" "}
                               <span className="temp-span-star">*</span>
@@ -730,10 +812,19 @@ function TempleAuthority() {
                               onChange={handleChange}
                             >
                               <option value="">Select Ownership Type</option>
-                              <option value="government"> Government Owned </option>
-                              <option value="trust"> Trust / Committee Managed </option>
+                              <option value="government">
+                                {" "}
+                                Government Owned{" "}
+                              </option>
+                              <option value="trust">
+                                {" "}
+                                Trust / Committee Managed{" "}
+                              </option>
                               <option value="private">Private Ownership</option>
-                              <option value="community"> Community Managed </option>
+                              <option value="community">
+                                {" "}
+                                Community Managed{" "}
+                              </option>
                               <option value="other">Other</option>
                             </Form.Select>
                             {formErrors.temple_ownership_type && (
@@ -744,7 +835,10 @@ function TempleAuthority() {
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
-                          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
                             <Form.Label className="temp-label">
                               Mobile Number{" "}
                               <span className="temp-span-star">*</span>
@@ -765,7 +859,10 @@ function TempleAuthority() {
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
-                          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
                             <Form.Label className="temp-label">
                               Email <span className="temp-span-star">*</span>
                             </Form.Label>
@@ -775,7 +872,9 @@ function TempleAuthority() {
                               placeholder="Enter Email ID"
                               value={formData.email || ""}
                               onChange={handleChange}
-                              onBlur={(e) => validateField("email", e.target.value)}
+                              onBlur={(e) =>
+                                validateField("email", e.target.value)
+                              }
                             />
                             {formErrors.email && (
                               <p className="text-danger">{formErrors.email}</p>
@@ -783,7 +882,10 @@ function TempleAuthority() {
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
-                          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
                             <Form.Label className="temp-label">
                               Trust/Managing Committee Details{" "}
                               <span className="temp-span-star">*</span>
@@ -797,7 +899,10 @@ function TempleAuthority() {
                               <option value="">Select Details</option>
                               <option value="public">Public Trust</option>
                               <option value="private">Private Trust</option>
-                              <option value="committee"> Managing Committee </option>
+                              <option value="committee">
+                                {" "}
+                                Managing Committee{" "}
+                              </option>
                             </Form.Select>
                             {formErrors.trust_committee_details && (
                               <p className="text-danger">
@@ -807,7 +912,10 @@ function TempleAuthority() {
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
-                          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
                             <Form.Control
                               as="textarea"
                               name="trust_committee_details"
@@ -824,7 +932,10 @@ function TempleAuthority() {
                       </div>
                       <Row>
                         <Col lg={4} md={4} sm={12}>
-                          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
                             <Form.Label className="temp-label">
                               Bank Name{" "}
                               <span className="temp-span-star">*</span>
@@ -850,7 +961,10 @@ function TempleAuthority() {
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
-                          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
                             <Form.Label className="temp-label">
                               Account Number{" "}
                               <span className="temp-span-star">*</span>
@@ -872,7 +986,10 @@ function TempleAuthority() {
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
-                          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
                             <Form.Label className="temp-label">
                               Confirm Account Number{" "}
                               <span className="temp-span-star">*</span>
@@ -893,7 +1010,10 @@ function TempleAuthority() {
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
-                          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
                             <Form.Label className="temp-label">
                               Account Type{" "}
                               <span className="temp-span-star">*</span>
@@ -916,7 +1036,10 @@ function TempleAuthority() {
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
-                          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
                             <Form.Label className="temp-label">
                               Account Name{" "}
                               <span className="temp-span-star">*</span>
@@ -937,7 +1060,10 @@ function TempleAuthority() {
                           </Form.Group>
                         </Col>
                         <Col lg={4} md={4} sm={12}>
-                          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
                             <Form.Label className="temp-label">
                               IFSC Code{" "}
                               <span className="temp-span-star">*</span>
@@ -964,9 +1090,15 @@ function TempleAuthority() {
                       <Row>
                         {[
                           { key: "temple_image", label: "Temple Image Upload" },
-                          { key: "land_doc", label: "Land Ownership Documents" },
+                          {
+                            key: "land_doc",
+                            label: "Land Ownership Documents",
+                          },
                           { key: "noc_doc", label: "NOC Certificate" },
-                          { key: "trust_cert", label: "Trust Registration Certificate" },
+                          {
+                            key: "trust_cert",
+                            label: "Trust Registration Certificate",
+                          },
                         ].map((doc) => (
                           <Col lg={6} md={12} sm={12} key={doc.key}>
                             <Row className="temp-stepform-box">
@@ -997,7 +1129,9 @@ function TempleAuthority() {
                                     className="invisible"
                                     type="file"
                                     accept="image/jpeg, image/png, image/svg+xml"
-                                    onChange={(e) => handleFileChange(e, doc.key)}
+                                    onChange={(e) =>
+                                      handleFileChange(e, doc.key)
+                                    }
                                   />
                                   <label
                                     className="btn temp-primary-btn mb-1"
@@ -1020,7 +1154,12 @@ function TempleAuthority() {
                                   )} */}
                                 </fieldset>
                               </Col>
-                              <Col lg={7} md={7} sm={7} className="temp-doc-subinfo mt-2">
+                              <Col
+                                lg={7}
+                                md={7}
+                                sm={7}
+                                className="temp-doc-subinfo mt-2"
+                              >
                                 <h3>
                                   {doc.label}{" "}
                                   <span className="temp-span-star">*</span>
@@ -1031,7 +1170,12 @@ function TempleAuthority() {
                                       <Col lg={3} md={3} sm={3}>
                                         {new Date().toLocaleDateString()}
                                       </Col>
-                                      <Col lg={9} md={9} sm={9} className="px-4 temp-success-doc">
+                                      <Col
+                                        lg={9}
+                                        md={9}
+                                        sm={9}
+                                        className="px-4 temp-success-doc"
+                                      >
                                         <FaCheckCircle />{" "}
                                         {documents[doc.key].name} Uploaded
                                       </Col>
@@ -1082,6 +1226,11 @@ function TempleAuthority() {
           </div>
         </div>
       </Container>
+      <ModifyAlert
+        message={alertMessage}
+        show={showAlert}
+        setShow={setShowAlert}
+      />
     </div>
   );
 }
