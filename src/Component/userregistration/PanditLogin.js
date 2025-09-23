@@ -114,7 +114,7 @@ const handleSubmit = async (e) => {
                   <Col lg={6} md={6}>
                     <Row>
                       {/* Email or Phone */}
-                      <Col lg={12} md={12} sm={12} className="mt-4">
+                      <Col lg={12} md={12} sm={12} className="">
                         <Form.Group className="mb-3">
                           <Form.Label className="temp-label-lg-bg">
                             Email or Mobile Number{" "}
