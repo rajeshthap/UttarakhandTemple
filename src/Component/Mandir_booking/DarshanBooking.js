@@ -246,8 +246,8 @@ const DarshanBooking = () => {
         setAgree(true);
 
       } else {
-        alert(res.data.message || "Failed to send OTP");
-        setAgree(false);
+        setAlertMessage(res.data.message || "Failed to send OTP");
+        setShowAlert(true)
       }
     } catch (err) {
       console.error("OTP Send Error:", err);
