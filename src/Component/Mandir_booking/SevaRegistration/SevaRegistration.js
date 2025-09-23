@@ -51,13 +51,23 @@ const SevaRegistration = () => {
       });
 
       if (res.data.success) {
+        setAlertMessage("OTP sent successfully!");
+        setShowAlert(true);
+        setAgree(false);
 
       } else {
-        alert("Failed to resend OTP. Try again.");
+         setAlertMessage("Failed to resend OTP. Try again.");
+        setShowAlert(true);
+        setAgree(false);
+        //alert("Failed to resend OTP. Try again.");
       }
     } catch (error) {
       console.error("Error resending OTP:", error);
-      alert("Something went wrong. Please try again.");
+
+       setAlertMessage("Something went wrong. Please try again.");
+        setShowAlert(true);
+        setAgree(false);
+      //alert("Something went wrong. Please try again.");
     }
   };
 
@@ -115,13 +125,19 @@ const SevaRegistration = () => {
         setAgree(true);
 
       } else {
-        alert(res.data.message || "Failed to send OTP");
+        setAlertMessage(res.data.message || "Failed to send OTP");
+        setShowAlert(true);
         setAgree(false);
+        // alert(res.data.message || "Failed to send OTP");
+        // setAgree(false);
       }
     } catch (err) {
       console.error("OTP Send Error:", err);
-      alert("Error sending OTP");
-      setAgree(false);
+         setAlertMessage("Error sending OTP");
+        setShowAlert(true);
+        setAgree(false);
+      // alert("Error sending OTP");
+      // setAgree(false);
     }
   };
 
@@ -137,15 +153,27 @@ const SevaRegistration = () => {
 
       if (res.data.success) {
         setIsVerified(true);
-        alert("Phone number verified!");
+        setAlertMessage("Phone number verified!");
+        setShowAlert(true);
+        setAgree(true);
         handleClose(); // close modal
-        navigate("/PaymentConfirmation");
+
+        setTimeout(() => {
+          navigate("/PaymentConfirmation");
+        }, 2000);
+
+
       } else {
-        alert(res.data.message || "Invalid OTP");
+
+        setAlertMessage(res.data.message || "Invalid OTP");
+        setShowAlert(true);
+        setAgree(false);
       }
     } catch (err) {
       console.error("OTP Verify Error:", err);
-      alert("Error verifying OTP");
+      setAlertMessage("Error verifying OTP");
+      setShowAlert(true);
+      setAgree(false);
     }
   };
 
@@ -257,11 +285,18 @@ const SevaRegistration = () => {
     e.preventDefault();
 
     if (!validateFields()) {
-      return alert("Please fill all required fields.");
+      setAlertMessage("Please fill all required fields.");
+      setShowAlert(true);
+      setAgree(false);
+      return
     }
 
     if (!isVerified) {
-      alert("Please verify your phone number before submitting.");
+
+      setAlertMessage("Please verify your phone number before submitting.");
+      setShowAlert(true);
+      setAgree(false);
+
       return;
     }
 
@@ -283,7 +318,13 @@ const SevaRegistration = () => {
       console.log("Seva Registration Response:", res.data);
 
       if (res.data.message === "Seva booking created successfully") {
-        alert("Seva Registration Successful!");
+
+        setAlertMessage("Seva Registration Successful!");
+        setShowAlert(true);
+        setAgree(false);
+
+
+
         //navigate("/PaymentConfirmation");
         setFormData({
           full_name: "",
@@ -306,16 +347,25 @@ const SevaRegistration = () => {
           payment_mode: "",
         });
       } else {
-        alert(res.data.message || "Seva Registration failed");
+        setAlertMessage(res.data.message || "Seva Registration failed");
+        setShowAlert(true);
+        setAgree(false);
+
       }
     } catch (err) {
       console.error(err);
 
       if (err.response && err.response.data) {
         const errorData = err.response.data;
-        alert(errorData.message || "Something went wrong!");
+
+        setAlertMessage(errorData.message || "Something went wrong!");
+        setShowAlert(true);
+        setAgree(false);
       } else {
-        alert(err.message || "Something went wrong!");
+
+        setAlertMessage(err.message || "Something went wrong!");
+        setShowAlert(true);
+        setAgree(false);
       }
     } finally {
       setLoading(false);
