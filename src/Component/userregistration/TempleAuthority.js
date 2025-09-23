@@ -925,7 +925,7 @@ function TempleAuthority() {
                             <Form.Control
                               as="textarea"
                               name="trust_committee_details"
-                              onChange={handleChange}
+                              // onChange={handleChange}
                               rows={4}
                               placeholder="Enter Additional Details"
                               className="temp-form-control mt-regi-top"
@@ -1055,7 +1055,7 @@ function TempleAuthority() {
                               name="account_name"
                               value={formData.account_name}
                               onChange={handleChange}
-                              placeholder="Account Number "
+                              placeholder="Account Name "
                               className="temp-form-control"
                             />
                             {formErrors.account_name && (

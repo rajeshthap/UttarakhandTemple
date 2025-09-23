@@ -3,7 +3,7 @@ import { Col, Container, Row } from 'react-bootstrap'
 import Platform from "../../assets/images/Platform-img.png";
 function PlatFormInfo() {
   return (
-    <div className='p-4'>
+   <div className='temp-donate'>
       <Container className='temp-container p-4'>
         <Row>
           <Col lg={7} md={7} sm={12}>
