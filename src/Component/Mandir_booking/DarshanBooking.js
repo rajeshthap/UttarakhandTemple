@@ -6,6 +6,7 @@ import OTPModel from "../OTPModel/OTPModel";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import LocationState from "../userregistration/LocationState";
+import ModifyAlert from "../Alert/ModifyAlert"
 
 const DarshanBooking = () => {
   const [show, setShow] = useState(false);
@@ -17,6 +18,8 @@ const DarshanBooking = () => {
   const [, setOtpSent] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [errors, setErrors] = useState({});
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -208,11 +211,12 @@ const DarshanBooking = () => {
     }
 
     //  validate required fields before OTP
-    if (!validateFields()) {
-      alert("Please fill all required fields correctly before verifying OTP.");
-      setAgree(false);
-      return;
-    }
+     if (!validateFields()) {
+  setAlertMessage("Please fill all required fields correctly before verifying OTP.");
+  setShowAlert(true);
+  setAgree(false);
+  return;
+}
 
     //  if OTP already verified, no need to resend
     if (isVerified) {
@@ -337,19 +341,36 @@ const DarshanBooking = () => {
       console.log("Darshan Registration Response:", res.data);
 
       if (res.data.message === "Darshan booking created") {
-        alert("Darshan Registration Successful!");
+         setAlertMessage("Darshan Registration Successful!");
+  setShowAlert(true);
+   setAgree(false);
+
+   // delay navigation by 3 seconds
+ 
+  setTimeout(() => {
         navigate("/PaymentConfirmation");
+      }, 3000);
+      
       } else {
-        alert(res.data.message || "Darshan Registration failed");
+         setAlertMessage(res.data.message || "Darshan Registration failed");
+             setShowAlert(true);
+            setAgree(false);
+      
       }
     } catch (err) {
       console.error(err);
 
       if (err.response && err.response.data) {
         const errorData = err.response.data;
-        alert(errorData.message || "Something went wrong!");
+
+        setAlertMessage(errorData.message || "Darshan Registration failed");
+             setShowAlert(true);
+            setAgree(false);
+      
       } else {
-        alert(err.message || "Something went wrong!");
+          setAlertMessage(err.message ||"Darshan Registration failed");
+             setShowAlert(true);
+            setAgree(false);
       }
     } finally {
       setLoading(false);
@@ -916,6 +937,11 @@ const DarshanBooking = () => {
           </Row>
         </Form>
       </Container>
+       <ModifyAlert
+        message={alertMessage}
+        show={showAlert}
+        setShow={setShowAlert}
+      />
       <OTPModel
         show={show}
         handleClose={handleClose}
