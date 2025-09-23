@@ -26,7 +26,7 @@ function TempleAuthority() {
   const [banks, setBanks] = useState([]);
   const [formErrors, setFormErrors] = useState({});
   const [documentErrors, setDocumentErrors] = useState({});
-
+   
   const [formData, setFormData] = useState({
     state: "",
     country: "",
@@ -321,7 +321,7 @@ function TempleAuthority() {
 
     if (!file) return;
 
-    const allowedTypes = ["image/jpeg", "image/png", "image/svg+xml"];
+    const allowedTypes = ["image/jpeg","image/jpg", "image/png", "image/pdf"];
 
     // Reset previous errors
     setFileErrors((prev) => ({
@@ -338,19 +338,20 @@ function TempleAuthority() {
     if (!allowedTypes.includes(file.type)) {
       setFileErrors((prev) => ({
         ...prev,
-        [field]: "Only JPG, PNG, or SVG files are allowed."
+        [field]: "Only JPG, PNG, or PDF  files are allowed."
       }));
       return;
     }
 
     // Size check (100KB)
-    if (file.size > 102400) {
-      setFileErrors((prev) => ({
-        ...prev,
-        [field]: "File size must be less than or equal to 100KB."
-      }));
-      return;
-    }
+   if (file.size > 2 * 1024 * 1024) {
+  setFileErrors((prev) => ({
+    ...prev,
+    [field]: "File size must be less than or equal to 2MB."
+  }));
+  return;
+}
+
 
     // If valid, save file
     setDocuments({
@@ -1012,11 +1013,11 @@ function TempleAuthority() {
                                       {fileErrors[doc.key]}
                                     </div>
                                   )}
-                                  {documentErrors[doc.key] && (
+                                  {/* {documentErrors[doc.key] && (
                                     <div className="text-danger mt-2">
                                       {documentErrors[doc.key]}
                                     </div>
-                                  )}
+                                  )} */}
                                 </fieldset>
                               </Col>
                               <Col lg={7} md={7} sm={7} className="temp-doc-subinfo mt-2">

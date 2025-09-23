@@ -225,7 +225,7 @@ input[type=number] {
 }
 
 .file-error-style {
-    color: var(--temp-space-1200);
+    color: var(--temp-org);
     margin: var(--temp-space-300);
     font-size: var(--temp-space-300);
 

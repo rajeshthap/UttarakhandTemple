@@ -47,7 +47,7 @@ const OTPModel = ({
     try {
       setResending(true);
       setTimer(60);
-      setOtpExpiry(120);
+      setOtpExpiry(60);
       await handleResendOtp(); // call parent API
     } catch (err) {
       console.error("Resend OTP failed:", err);

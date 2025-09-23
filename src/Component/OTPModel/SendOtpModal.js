@@ -89,7 +89,7 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
     try {
       setResending(true);
       setTimer(60);       
-      setOtpExpiry(120);  
+      setOtpExpiry(60);  
       const res = await axios.post(
         "https://brjobsedu.com/Temple_portal/api/Sentotp/",
         { phone: phone.trim() },
