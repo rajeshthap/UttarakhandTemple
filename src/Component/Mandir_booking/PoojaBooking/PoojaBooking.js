@@ -340,20 +340,41 @@ const [alertMessage, setAlertMessage] = useState("");
 
       console.log("Pooja Registration Response:", res.data);
 
-      if (res.data.message === "Temple booking created successfully") {
-        alert("Pooja Registration Successful!");
-        navigate("/PaymentConfirmation");
+      
+
+       if (res.data.message === "Temple booking created successfully") {
+        setAlertMessage("Pooja Registration Successful!");
+        setShowAlert(true);
+        setAgree(false);
+
+        // delay navigation by 3 seconds
+
+        setTimeout(() => {
+          navigate("/PaymentConfirmation");
+        }, 3000);
+
       } else {
-        alert(res.data.message || "Pooja Registration failed");
+        setAlertMessage(res.data.message || "Pooja Registration failed");
+        setShowAlert(true);
+        setAgree(false);
+
       }
     } catch (err) {
       console.error(err);
 
-      if (err.response && err.response.data) {
+   
+
+    if (err.response && err.response.data) {
         const errorData = err.response.data;
-        alert(errorData.message || "Something went wrong!");
+
+        setAlertMessage(errorData.message || "Pooja Registration failed");
+        setShowAlert(true);
+        setAgree(false);
+
       } else {
-        alert(err.message || "Something went wrong!");
+        setAlertMessage(err.message || "Pooja Registration failed");
+        setShowAlert(true);
+        setAgree(false);
       }
     } finally {
       setLoading(false);
