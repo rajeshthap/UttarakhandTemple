@@ -3,7 +3,7 @@ import { Col, Container, Row } from 'react-bootstrap'
 import Missionimg from "../../assets/images/Mission-img.png";
 function MissionVision() {
   return (
-    <div>
+    <div className='temp-donate'>
       <Container className='temp-container p-4'>
         <Row>
           <Col lg={7} md={7} sm={12}>

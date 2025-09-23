@@ -3,7 +3,7 @@ import { Col, Container, Row } from 'react-bootstrap'
 import Mandirimg from "../../assets/images/Mandir-img.png";
 function MandirMahadevaya() {
   return (
-    <div className='p-4'>
+     <div className='temp-donate'>
       <Container className='temp-container p-4'>
         <Row>
           <Col lg={7} md={7} sm={12}>
@@ -17,9 +17,6 @@ function MandirMahadevaya() {
               <li>List rituals, festivals, and special events.</li>
               <li>Connect with devotees seeking guidance and participation.</li>
             </ul>
-
-
-
             <h2>Platform Overview:</h2>
             <p>Mahadevaya Portal offers a wide range of features to support spiritual engagement:</p>
             <ul>

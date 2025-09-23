@@ -5,7 +5,8 @@ import Form from 'react-bootstrap/Form';
 
 function ContactUs() {
   return (
-    <div>      <Container className='temp-container p-4'>
+    <div className='temp-donate'>  
+         <Container className='temp-container p-4'>
       <Row>
         <Col lg={7} md={7} sm={12}>
           <h1>Contact Us</h1>
