@@ -1140,7 +1140,7 @@ function TempleAuthority() {
                                     Choose file(s)
                                   </label>
                                   <p className="temp-upload-file">
-                                    Upload size up to 10KB to 100KB (jpg, png)
+                                    Upload size up to 10KB to 2MB (jpg, png, jpeg)
                                   </p>
                                   {fileErrors[doc.key] && (
                                     <div className="file-error-style">
