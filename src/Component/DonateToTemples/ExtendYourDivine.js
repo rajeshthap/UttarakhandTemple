@@ -4,6 +4,7 @@ import Form from "react-bootstrap/Form";
 import OTPModel from "../OTPModel/OTPModel";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ModifyAlert from "../Alert/ModifyAlert";
 
 const ExtendYourDivine = () => {
   const [show, setShow] = useState(false);
@@ -12,6 +13,8 @@ const ExtendYourDivine = () => {
   const [otp, setOtp] = useState("");
   const [temples, setTemples] = useState([]);
   const [errors, setErrors] = useState({});
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   const [formData, setFormData] = useState({
     temple_id: "",
@@ -29,9 +32,7 @@ const ExtendYourDivine = () => {
         if (res.data && Array.isArray(res.data.temples)) {
           setTemples(res.data.temples);
         }
-      } catch (err) {
-        console.error("Error fetching temples:", err);
-      }
+      } catch (err) {}
     };
     fetchTemples();
   }, []);
@@ -113,28 +114,35 @@ const ExtendYourDivine = () => {
     }
   };
   const handleResendOtp = async () => {
-  try {
-    const res = await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
-      phone: formData.mobile_number,  
-    });
+    try {
+      const res = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/Sentotp/",
+        {
+          phone: formData.mobile_number,
+        }
+      );
 
-    if (res.data.success) {
-      alert("OTP Resent Successfully!");
-    } else {
-      alert("Failed to resend OTP. Try again.");
+      if (res.data.success) {
+        setAlertMessage("OTP Resent Successfully!");
+        setShowAlert(true);
+      } else {
+        setAlertMessage("Failed to resend OTP. Try again.");
+        setShowAlert(true);
+      }
+    } catch (error) {
+      setAlertMessage("Something went wrong. Please try again.");
+      setShowAlert(true);
     }
-  } catch (error) {
-    console.error("Error Resending OTP:", error);
-    alert("Something went wrong. Please try again.");
-  }
-};
-
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) {
-      return; 
+      setAlertMessage("Please fill all required fields.");
+      setShowAlert(true);
+
+      return;
     }
 
     setLoading(true);
@@ -159,16 +167,18 @@ const ExtendYourDivine = () => {
         });
         handleShow();
       } else {
-        alert("Something went wrong!");
+        setAlertMessage("Something went wrong!");
+        setShowAlert(true);
       }
     } catch (error) {
       console.log(error.response?.data || error.message);
-      alert(
+      setAlertMessage(
         "Error: " +
           (error.response?.data?.message ||
             error.response?.data ||
             error.message)
       );
+      setShowAlert(true);
     } finally {
       setLoading(false);
     }
@@ -176,7 +186,6 @@ const ExtendYourDivine = () => {
 
   const handleVerifyOtp = async () => {
     if (!otp) {
-      
       return;
     }
     setVerifying(true);
@@ -192,22 +201,26 @@ const ExtendYourDivine = () => {
       );
 
       if (response.data.success) {
-        alert("OTP Verified Successfully!");
+        setAlertMessage("OTP Verified Successfully!");
+        setShowAlert(true);
+        setTimeout(() => {
+          navigate("/PaymentConfirmation");
+        }, 1000);
         handleClose();
-        navigate("/PaymentConfirmation");
       } else {
-        alert(response.data.message || "OTP verification failed.");
+        setAlertMessage(response.data.message || "OTP verification failed.");
+        setShowAlert(true);
       }
     } catch (error) {
-      console.error("OTP Verify Error:", error.response?.data || error.message);
-      alert("Please Enter Correct OTP");
+      setAlertMessage("Please Enter Correct OTP");
+      setShowAlert(true);
     } finally {
       setVerifying(false);
     }
   };
 
   return (
-     <div className="temp-donate">
+    <div className="temp-donate">
       <Container className="temp-container">
         <h1>Extend Your Divine Support</h1>
         <p>
@@ -376,6 +389,11 @@ const ExtendYourDivine = () => {
           </Col>
         </Row>
       </Container>
+      <ModifyAlert
+        message={alertMessage}
+        show={showAlert}
+        setShow={setShowAlert}
+      />
 
       <OTPModel
         show={show}
@@ -383,7 +401,7 @@ const ExtendYourDivine = () => {
         otp={otp}
         setOtp={setOtp}
         handleVerifyOtp={handleVerifyOtp}
-        phone={formData.mobile_number}   
+        phone={formData.mobile_number}
         handleResendOtp={handleResendOtp}
       />
     </div>
