@@ -313,7 +313,7 @@ function PanditRegistration() {
     if (!formData.country) errors.country = "Country is required";
     if (!formData.state) errors.state = "State is required";
     if (!formData.city) errors.city = "City is required";
-    if (!formData.zipcode) errors.zipcode = "Zip code is required";
+    if (!formData.zipcode) errors.zipcode = "PIN code is required";
     if (!formData.temple_association)
       errors.temple_association = "Temple association is required";
 
@@ -769,11 +769,11 @@ function PanditRegistration() {
                             controlId="exampleForm.ControlInput1"
                           >
                             <Form.Label className="temp-label">
-                              ZIP Code <span className="temp-span-star">*</span>
+                              PIN Code <span className="temp-span-star">*</span>
                             </Form.Label>
                             <Form.Control
                               type="text"
-                              placeholder="ZIP Code"
+                              placeholder="Enter PIN Code"
                               className="temp-form-control"
                               name="zipcode"
                               value={formData.zipcode}
