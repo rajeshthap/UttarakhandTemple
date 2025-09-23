@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "../../CustomCss/custom.css";
 import "../../assets/CSS/ForgotPassword.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import ModifyAlert from "../Alert/ModifyAlert";
 
 const ForgotPassword = () => {
   const [step, setStep] = useState(1);
@@ -28,7 +29,8 @@ const ForgotPassword = () => {
 
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
-
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
   const navigate = useNavigate();
 
   const phoneRegex = /^\+?\d{10,15}$/;
@@ -196,26 +198,42 @@ const ForgotPassword = () => {
     setMessage("");
 
     try {
-      await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/forgetpassword/",
-        payload
-      );
-      switch (userType.toLowerCase()) {
-        case "temple":
-          navigate("/AuthorityLogin");
-          break;
-        case "pandit":
-          navigate("/PanditLogin");
-          break;
-        default:
-          navigate("/DevoteeLogin");
-      }
-    } catch (err) {
-      console.error(err);
-      setErrors("Error Resetting Password");
-    } finally {
-      setLoading(false);
-    }
+  await axios.post(
+    "https://brjobsedu.com/Temple_portal/api/forgetpassword/",
+    payload
+  );
+
+  switch (userType.toLowerCase()) {
+    case "temple":
+      setAlertMessage("Password reset successful! Redirecting to Temple login...");
+      setShowAlert(true);
+      setTimeout(() => {
+        navigate("/AuthorityLogin");
+      }, 1500);
+      break;
+
+    case "pandit":
+      setAlertMessage("Password reset successful! Redirecting to Pandit login...");
+      setShowAlert(true);
+      setTimeout(() => {
+        navigate("/PanditLogin");
+      }, 1500);
+      break;
+
+    default:
+      setAlertMessage("Password reset successful! Redirecting to Devotee login...");
+      setShowAlert(true);
+      setTimeout(() => {
+        navigate("/DevoteeLogin");
+      }, 1500);
+  }
+} catch (err) {
+  console.error(err);
+  setErrors("Error Resetting Password");
+} finally {
+  setLoading(false);
+}
+
   };
 
   const handleResendOtp = async () => {
@@ -475,6 +493,11 @@ const ForgotPassword = () => {
           </Row>
         </div>
       </Container>
+      <ModifyAlert
+        message={alertMessage}
+        show={showAlert}
+        setShow={setShowAlert}
+      />
     </div>
   );
 };
