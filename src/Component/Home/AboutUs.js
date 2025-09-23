@@ -3,7 +3,7 @@ import aboutimg from "../../assets/images/about-inner-img.png";
 import { Row, Col, Container } from 'react-bootstrap';
 function AboutUs() {
   return (
-    <div className='p-4'>
+     <div className='temp-donate'>
       <Container className='temp-container p-4'>
         <Row>
           <Col lg={7} md={7} sm={12}>
