@@ -3,6 +3,7 @@ import { Modal, Button, Col, Form } from "react-bootstrap";
 import "../../CustomCss/custom.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ModifyAlert from "../Alert/ModifyAlert";
 
 const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
   const [otp, setOtp] = useState("");
@@ -10,7 +11,8 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
   const [resending, setResending] = useState(false);
   const [timer, setTimer] = useState(60);       
   const [otpExpiry, setOtpExpiry] = useState(60); 
-
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
   const navigate = useNavigate();
   const phone = localStorage.getItem("phone");
 
@@ -36,19 +38,21 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
   useEffect(() => {
     if (show) {
       setTimer(60);
-      setOtpExpiry(120);
+      setOtpExpiry(60);
     }
   }, [show]);
 
   // Verify OTP 
   const verifyOtp = async () => {
     if (!otp.trim()) {
-      alert("Please enter the OTP");
+      setAlertMessage("Please enter the OTP");
+      setShowAlert(true);
       return;
     }
 
     if (!phone) {
-      alert("No phone number found. Please restart the process.");
+      setAlertMessage("No phone number found. Please restart the process.");
+      setShowAlert(true);
       return;
     }
 
@@ -61,19 +65,23 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
       );
 
       if (res.data.success) {
-        alert("OTP verified successfully");
-        navigate("/PaymentConfirmation");
+        setAlertMessage("OTP verified successfully");
+        setShowAlert(true);
+        setTimeout(() => {
+                  navigate("/PaymentConfirmation");
+        }, 1000);
         localStorage.setItem("otpVerified", "true");
 
         if (setIsOtpVerified) setIsOtpVerified(true);
 
         handleClose(); 
       } else {
-        alert(res.data.message || "Invalid OTP, please try again.");
+        setAlertMessage(res.data.message || "Invalid OTP, please try again.");
+        setShowAlert(true);
       }
     } catch (err) {
-      console.error("Error verifying OTP:", err.response?.data || err.message);
-      alert(err.response?.data?.message || "Verification failed.");
+      setAlertMessage(err.response?.data?.message || "Verification failed.");
+      setShowAlert(true);
     } finally {
       setLoading(false);
     }
@@ -82,7 +90,8 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
   // Resend OTP 
   const resendOtp = async () => {
     if (!phone) {
-      alert("No phone number found. Please restart the process.");
+      setAlertMessage("No phone number found. Please restart the process.");
+      setShowAlert(true);
       return;
     }
 
@@ -97,13 +106,15 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
       );
 
       if (res.data.success) {
-        alert("OTP resent successfully!");
+        setAlertMessage("OTP resent successfully!");
+        setShowAlert(true);
       } else {
-        alert(res.data.message || "Failed to resend OTP.");
+        setAlertMessage(res.data.message || "Failed to resend OTP.");
+        setShowAlert(true);
       }
     } catch (err) {
-      console.error("Error resending OTP:", err.response?.data || err.message);
-      alert(err.response?.data?.message || "Failed to resend OTP.");
+      setAlertMessage(err.response?.data?.message || "Failed to resend OTP.");
+      setShowAlert(true);
     } finally {
       setResending(false);
     }
@@ -111,7 +122,7 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
 
   const maskedPhone = phone ? `XXXXXX${phone.slice(-4)}` : "XXXXXXXXXX";
 
-  return (
+  return (<>
     <Modal show={show} onHide={handleClose} centered size="md" className="text-center">
       <Modal.Header closeButton>
         <Modal.Title className="otp-model">
@@ -158,6 +169,13 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
         </Button>
       </Modal.Footer>
     </Modal>
+    <ModifyAlert
+        message={alertMessage}
+        show={showAlert}
+        setShow={setShowAlert}
+      />
+      </>
+    
   );
 };
 

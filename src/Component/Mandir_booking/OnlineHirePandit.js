@@ -4,6 +4,7 @@ import Form from "react-bootstrap/Form";
 import axios from "axios";
 import SendOtpModal from "../OTPModel/SendOtpModal";
 import ModifyAlert from "../Alert/ModifyAlert";
+import { useNavigate } from "react-router-dom";
 
 const OnlineHirePandit = () => {
   const [show, setShow] = useState(false); // OTP modal
@@ -14,6 +15,9 @@ const OnlineHirePandit = () => {
   // alert state
   const [showModifyAlert, setShowModifyAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const navigate = useNavigate();
+
+  // Send OTP
 
   const handleShow = async () => {
     if (!formData.mobile_number) {
@@ -220,10 +224,11 @@ const OnlineHirePandit = () => {
         formData,
         { headers: { "Content-Type": "application/json" } }
       );
-
+      
+      setAlertMessage("Pandit booked successfully!");
+      setShowModifyAlert(true);
       setTimeout(() => {
-        setAlertMessage("Register Successfully!");
-        setShowModifyAlert(true);
+        navigate("/PaymentConfirmation");
         }, 1000);
 
       // Reset form
