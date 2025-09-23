@@ -156,7 +156,8 @@ function DevoteeRegistration() {
           JSON.stringify(err.response.data);
         setMessage(apiMsg);
       } else {
-        setMessage("Error while registering");
+        setAlertMessage("Error While Registering");
+        setShowAlert(true);
       }
     } finally {
       setLoading(false);
