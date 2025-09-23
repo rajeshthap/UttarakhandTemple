@@ -29,6 +29,8 @@ function TempleAuthority() {
   const [documentErrors, setDocumentErrors] = useState({});
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     state: "",
     country: "",
@@ -1140,7 +1142,8 @@ function TempleAuthority() {
                                     Choose file(s)
                                   </label>
                                   <p className="temp-upload-file">
-                                    Upload size up to 10KB to 2MB (jpg, png, jpeg)
+                                    Upload size up to 10KB to 2MB (jpg, png,
+                                    jpeg)
                                   </p>
                                   {fileErrors[doc.key] && (
                                     <div className="file-error-style">
@@ -1207,9 +1210,11 @@ function TempleAuthority() {
                           variant="primary"
                           className="temp-submit-btn mx-3"
                           type="submit"
+                          disabled={loading}
                         >
-                          Registration Now
+                          {loading ? "Registering..." : "Registration Now"}
                         </Button>
+
                         <Button
                           variant="secondary"
                           className="temp-cancle-btn"
