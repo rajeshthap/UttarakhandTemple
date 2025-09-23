@@ -257,7 +257,7 @@ const OnlineHirePandit = () => {
 
       setIsOtpVerified(false);
     } catch (err) {
-      console.error("Error booking pandit:", err.response?.data || err.message);
+      // console.error("Error booking pandit:", err.response?.data || err.message);
 
       if (err.response?.data) {
         const errors = err.response.data.booking_errors || err.response.data;
@@ -593,7 +593,7 @@ const OnlineHirePandit = () => {
                       value={formData.special_requirements}
                       onChange={handleChange}
                       className="temp-form-control"
-                      placeholder="Enter requirements"
+                      placeholder="Enter Requirements"
                     />
                     {newErrors.special_requirements && (
                       <small className="text-danger">

@@ -61,15 +61,22 @@ function LeftNav() {
     document.body.removeChild(a);
   };
 
-  const logout = () => {
-    const confirmLogout = window.confirm("Are you sure you want to logout?");
-    if (confirmLogout) {
-      localStorage.clear();
-        setAlertMessage(" Logout successfully!");
-         setShowModifyAlert(true);
-      window.location.href = "/"; // Redirect after logout
-    }
-  };
+ const logout = () => {
+  const confirmLogout = window.confirm("Are you sure you want to logout?");
+  if (confirmLogout) {
+    localStorage.clear();
+    setAlertMessage("Logout successfully!");
+    setShowModifyAlert(true);
+
+    // Clear alert after 3 seconds
+    setTimeout(() => {
+      setAlertMessage("");
+      setShowModifyAlert(false);
+    }, 2000);
+
+    window.location.href = "/"; // Redirect after logout
+  }
+};
 
   const navigationOptions = [
     { icon: <RiDashboard3Line />, label: "Dashboard", path: "/MainDashBoard" },
