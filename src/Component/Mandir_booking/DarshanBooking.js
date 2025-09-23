@@ -56,11 +56,18 @@ const DarshanBooking = () => {
       if (res.data.success) {
 
       } else {
-        alert("Failed to resend OTP. Try again.");
+         setAlertMessage("Failed to resend OTP. Try again.");
+        setShowAlert(true);
+        
+        
       }
     } catch (error) {
       console.error("Error resending OTP:", error);
-      alert("Something went wrong. Please try again.");
+       setAlertMessage("Something went wrong. Please try again.");
+        setShowAlert(true);
+        
+        
+    
     }
   };
 
@@ -244,8 +251,9 @@ const DarshanBooking = () => {
       }
     } catch (err) {
       console.error("OTP Send Error:", err);
-      alert("Error sending OTP");
-      setAgree(false);
+      setAlertMessage("Error sending OTP");
+        setShowAlert(true);
+        setAgree(false);
     }
   };
 
@@ -261,15 +269,21 @@ const DarshanBooking = () => {
 
       if (res.data.success) {
         setIsVerified(true);
-        alert("Phone number verified!");
+        setAlertMessage("Phone number verified!");
+        setShowAlert(true);
         handleClose(); // close modal
+
         //navigate("/PaymentConfirmation");
       } else {
-        alert(res.data.message || "Invalid OTP");
+         setAlertMessage(res.data.message || "Invalid OTP");
+        setShowAlert(true);
+        
       }
     } catch (err) {
       console.error("OTP Verify Error:", err);
-      alert("Error verifying OTP");
+      setAlertMessage("Error verifying OTP");
+        setShowAlert(true);
+    
     }
   };
 
@@ -315,11 +329,16 @@ const DarshanBooking = () => {
     e.preventDefault();
 
     if (!validateFields()) {
-      return alert("Please fill all required fields.");
+
+      setAlertMessage("Please fill all required fields.");
+        setShowAlert(true);
+      return 
     }
 
     if (!isVerified) {
-      alert("Please verify your phone number before submitting.");
+          setAlertMessage("Please verify your phone number before submitting.");
+        setShowAlert(true);
+      
       return;
     }
 
