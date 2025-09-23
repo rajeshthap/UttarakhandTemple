@@ -67,7 +67,6 @@ function PanditRegistration() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [formErrors] = useState({});
 
   const navigate = useNavigate();
   const handleInputChangeCity = (name, value) => {
@@ -89,6 +88,7 @@ function PanditRegistration() {
 
       case "country":
         if (!value) error = "Country is Required";
+        break;
 
       case "last_name":
         if (!value) error = "Last name is required";
@@ -304,12 +304,12 @@ function PanditRegistration() {
       errors.pandit_role = "Pandit Role is required";
     }
 
-    //  Address validations
+    //  Address validations - Fixed to use errors instead of formErrors
     if (!formData.permanent_address)
       errors.permanent_address = "Address is required";
-    if (!formData.country) formErrors.country = "Country is required";
-    if (!formData.state) formErrors.state = "State is required";
-    if (!formData.city) formErrors.city = "City is required";
+    if (!formData.country) errors.country = "Country is required";
+    if (!formData.state) errors.state = "State is required";
+    if (!formData.city) errors.city = "City is required";
     if (!formData.zipcode) errors.zipcode = "Zip code is required";
     if (!formData.temple_association)
       errors.temple_association = "Temple association is required";
@@ -751,7 +751,7 @@ function PanditRegistration() {
                         <LocationState
                           formData={formData}
                           handleInputChange={handleInputChangeCity}
-                          formErrors={formErrors}
+                          formErrors={errorReason_querys} // Pass errorReason_querys instead of formErrors
                         />
 
                         <Col lg={4} md={4} sm={12}>
