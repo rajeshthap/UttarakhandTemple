@@ -405,7 +405,7 @@ function TempleAuthority() {
       setShowAlert(true);
       return;
     }
-
+ setLoading(true);
     const payload = buildPayload();
     try {
       const registerResult = await Globaleapi(payload);
@@ -448,6 +448,10 @@ function TempleAuthority() {
       } else {
         alert("Error: " + error.message);
       }
+      
+    }
+    finally {
+      setLoading(false);
     }
   };
 
@@ -1150,11 +1154,7 @@ function TempleAuthority() {
                                       {fileErrors[doc.key]}
                                     </div>
                                   )}
-                                  {/* {documentErrors[doc.key] && (
-                                    <div className="text-danger mt-2">
-                                      {documentErrors[doc.key]}
-                                    </div>
-                                  )} */}
+                              
                                 </fieldset>
                               </Col>
                               <Col
@@ -1206,23 +1206,27 @@ function TempleAuthority() {
                         ))}
                       </Row>
                       <div className="gap-3 mt-3 Temp-btn-submit">
-                        <Button
-                          variant="primary"
-                          className="temp-submit-btn mx-3"
-                          type="submit"
-                          disabled={loading}
-                        >
-                          {loading ? "Registering..." : "Registration Now"}
-                        </Button>
-
-                        <Button
-                          variant="secondary"
-                          className="temp-cancle-btn"
-                          type="button"
-                        >
-                          Cancel
-                        </Button>
-                      </div>
+                                             <Button
+                                               variant="temp-submit-btn"
+                                               className="temp-submit-btn mx-3"
+                                               type="submit"
+                                               disabled={loading}
+                                               onClick={handleSubmit}
+                                             >
+                                               {loading ? (
+                                                 <>
+                                                   <span
+                                                     className="spinner-border spinner-border-sm me-2"
+                                                     role="status"
+                                                     aria-hidden="true"
+                                                   ></span>
+                                                   Submitting...
+                                                 </>
+                                               ) : (
+                                                 "Register Now"
+                                               )}
+                                             </Button>
+                                           </div>
                     </>
                   )}
                 </Row>
