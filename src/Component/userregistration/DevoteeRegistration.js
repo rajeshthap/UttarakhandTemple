@@ -132,7 +132,7 @@ function DevoteeRegistration() {
         }
       );
 
-      console.log("API Response:", res.data);
+      // console.log("API Response:", res.data);
 
       // Directly redirect after API response
       setDevoteeName("");

@@ -48,7 +48,7 @@ const UserVerifyOtp = () => {
             const data = await axios.post("https://brjobsedu.com/Temple_portal/api/Verify/", 
                 { "phone": phone, "otp": getotp });
 
-                console.log("Verify API response:", data);
+                // console.log("Verify API response:", data);
 
             setSuccess("OTP verified successfully!");
 
@@ -84,18 +84,18 @@ const handleResend = async () => {
           "https://brjobsedu.com/Temple_portal/api/Verify/",
           { phone, otp: response.data.otp }
         );
-        console.log("Auto Verify API response:", verifyRes);
+        // console.log("Auto Verify API response:", verifyRes);
 
         setSuccess("OTP verified successfully!");
        navigate("/PanditLogin", { replace: true }); // redirect to login page
       } catch (verifyErr) {
-        console.error("Auto-verify after resend failed:", verifyErr);
+        // console.error("Auto-verify after resend failed:", verifyErr);
         setError("Failed to auto-verify OTP. Please try manually.");
       }
     }
 
   } catch (err) {
-    console.error("Resend OTP Error:", err);
+    // console.error("Resend OTP Error:", err);
     setError("Failed to resend OTP. Try again.");
   }
 };

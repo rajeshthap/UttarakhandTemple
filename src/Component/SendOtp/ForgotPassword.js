@@ -168,8 +168,8 @@ const ForgotPassword = () => {
     }
 
     if (valid) {
-      // ✅ submit to API or continue
-      console.log("Form submitted", { password, confirmPassword });
+      //  submit to API or continue
+     // console.log("Form submitted", { password, confirmPassword });
     }
   };
 

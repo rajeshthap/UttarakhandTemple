@@ -312,7 +312,7 @@ const SevaRegistration = () => {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
 
-      console.log("Seva Registration Response:", res.data);
+      // console.log("Seva Registration Response:", res.data);
 
       if (res.data.message === "Seva booking created successfully") {
 

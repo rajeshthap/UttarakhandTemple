@@ -70,7 +70,7 @@ const EventParticipation = () => {
           setTemples(res.data.temples);
         }
       } catch (err) {
-        console.error("Error fetching temples:", err);
+        // console.error("Error fetching temples:", err);
       }
     };
     fetchTemples();

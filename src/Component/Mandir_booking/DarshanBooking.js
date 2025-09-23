@@ -357,7 +357,7 @@ const DarshanBooking = () => {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
 
-      console.log("Darshan Registration Response:", res.data);
+      // console.log("Darshan Registration Response:", res.data);
 
       if (res.data.message === "Darshan booking created") {
          setAlertMessage("Darshan Registration Successful!");

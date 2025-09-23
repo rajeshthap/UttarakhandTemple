@@ -418,7 +418,7 @@ function TempleAuthority() {
         }, 2000);
       }
     } catch (error) {
-      console.log(error.response?.data);
+      // console.log(error.response?.data);
       if (error.response && error.response.data) {
         const errorData = error.response.data;
         if (

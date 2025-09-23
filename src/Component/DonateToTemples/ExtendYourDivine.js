@@ -171,7 +171,7 @@ const ExtendYourDivine = () => {
         setShowAlert(true);
       }
     } catch (error) {
-      console.log(error.response?.data || error.message);
+      // console.log(error.response?.data || error.message);
       setAlertMessage(
         "Error: " +
           (error.response?.data?.message ||
