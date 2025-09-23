@@ -17,7 +17,8 @@ const OnlineHirePandit = () => {
 
   const handleShow = async () => {
     if (!formData.mobile_number) {
-      alert("all required feild fill please.");
+      setAlertMessage("all required feild fill please");
+      setShowModifyAlert(true);
       return;
     }
 
@@ -34,7 +35,8 @@ const OnlineHirePandit = () => {
       setShow(true);
     } catch (err) {
       console.error("Error sending OTP:", err.response?.data || err.message);
-      alert("Failed to send OTP. Try again.");
+      setAlertMessage("Failed to send OTP. Try again.");
+      setShowModifyAlert(true);
     } finally {
       setLoadingOtp(false);
     }
@@ -207,7 +209,9 @@ const OnlineHirePandit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateFields()) {
-      return alert("Please fill all required fields.");
+       setAlertMessage("Please fill all required fields.");
+        setShowModifyAlert(true);
+      return;
     }
 
     try {
@@ -217,8 +221,10 @@ const OnlineHirePandit = () => {
         { headers: { "Content-Type": "application/json" } }
       );
 
-      console.log("Booking Successful:", res.data);
-      alert("Register Successfully!");
+      setTimeout(() => {
+        setAlertMessage("Register Successfully!");
+        setShowModifyAlert(true);
+        }, 1000);
 
       // Reset form
       setFormData({
@@ -261,7 +267,8 @@ const OnlineHirePandit = () => {
           if (el) el.focus();
         }
       } else {
-        alert("Something went wrong. Please try again.");
+        setAlertMessage("Something went wrong. Please try again.");
+        setShowModifyAlert(true);
       }
     }
   };
