@@ -64,38 +64,31 @@ const DarshanBooking = () => {
 
 
 
-const handleInputChangeCity = (name, value) => {
-  setFormData((prev) => ({ ...prev, [name]: value }));
+  const handleInputChangeCity = (name, value) => {
+    // Update form data
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
-  // Remove validation error as soon as a valid value is entered
-  setErrors((prev) => {
-    const newErrors = { ...prev };
-    if (value && value.trim() !== "") {
-      delete newErrors[name]; // clear only that specific error
-    } else {
-      newErrors[name] = `${name.charAt(0).toUpperCase() + name.slice(1)} is required`;
+    // Remove validation error only for the current field if it has a valid value
+    setErrors((prev) => {
+      const newErrors = { ...prev };
+      if (value && value.trim() !== "") {
+        delete newErrors[name]; // Clear only the current field's error
+      } else {
+        newErrors[name] = `${name.charAt(0).toUpperCase() + name.slice(1)} is required`;
+      }
+      return newErrors;
+    });
+
+    // Reset dependent dropdowns
+    if (name === "country") {
+      setFormData((prev) => ({ ...prev, state: "", city: "" }));
+      // Only clear errors if the fields are not required anymore
+      // Don't clear state/city errors here - they should remain until filled
+    } else if (name === "state") {
+      setFormData((prev) => ({ ...prev, city: "" }));
+      // Don't clear city error here - it should remain until filled
     }
-    return newErrors;
-  });
-
-  // Reset dependent dropdowns
-  if (name === "country") {
-    setFormData((prev) => ({ ...prev, state: "", city: "" }));
-    setErrors((prev) => {
-      const newErrors = { ...prev };
-      delete newErrors.state;
-      delete newErrors.city;
-      return newErrors;
-    });
-  } else if (name === "state") {
-    setFormData((prev) => ({ ...prev, city: "" }));
-    setErrors((prev) => {
-      const newErrors = { ...prev };
-      delete newErrors.city;
-      return newErrors;
-    });
-  }
-};
+  };
 
 
 
