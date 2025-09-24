@@ -24,6 +24,7 @@ function DevoteeRegistration() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ function DevoteeRegistration() {
   const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+   const [confirmPassword, setConfirmPassword] = useState("");
 
   // Error states
   const [errors, setErrors] = useState({});
@@ -64,6 +66,10 @@ function DevoteeRegistration() {
           error =
             "Password must be 8+ chars, include uppercase, lowercase, number & special char";
         break;
+         case "confirmPassword": //  NEW
+        if (!value.trim()) error = "Confirm Password is required";
+        else if (value !== password) error = "Passwords do not match";
+        break;
       default:
         break;
     }
@@ -94,6 +100,13 @@ function DevoteeRegistration() {
     else if (!passwordRegex.test(password))
       newErrors.password =
         "Password must be 8+ chars, include uppercase, lowercase, number & special char";
+
+        
+    //  Confirm password check
+    if (!confirmPassword.trim())
+      newErrors.confirmPassword = "Confirm Password is required";
+    else if (confirmPassword !== password)
+      newErrors.confirmPassword = "Passwords do not match";
 
     return newErrors;
   };
@@ -139,6 +152,7 @@ function DevoteeRegistration() {
       setGender("");
       setEmail("");
       setPassword("");
+      setConfirmPassword(""); //  reset confirmPassword
       setErrors({});
       setMessage("");
       setAlertMessage("User Registered Successfully!");
@@ -315,6 +329,50 @@ function DevoteeRegistration() {
                           )}
                         </Form.Group>
                       </Col>
+
+
+                      {/* Confirm Password */}
+                      <Col lg={12}>
+                        <Form.Group className="mb-3">
+                          <Form.Label>
+                            Confirm Password{" "}
+                            <span className="temp-span-star">*</span>
+                          </Form.Label>
+                          <InputGroup>
+                            <Form.Control
+                              type={showConfirmPassword ? "text" : "password"}
+                              value={confirmPassword}
+                              onChange={(e) => {
+                                setConfirmPassword(e.target.value);
+                                validateField(
+                                  "confirmPassword",
+                                  e.target.value
+                                );
+                              }}
+                              placeholder="Re-enter Password"
+                              className="temp-form-control-bg"
+                            />
+                            <Button
+                              variant="outline-secondary"
+                              onClick={() =>
+                                setShowConfirmPassword(!showConfirmPassword)
+                              }
+                            >
+                              {showConfirmPassword ? (
+                                <FaEyeSlash />
+                              ) : (
+                                <FaEye />
+                              )}
+                            </Button>
+                          </InputGroup>
+                          {errors.confirmPassword && (
+                            <small className="alert-txt">
+                              {errors.confirmPassword}
+                            </small>
+                          )}
+                        </Form.Group>
+                      </Col>
+
 
                       {/* General Error/Success Message */}
                       {message && (
