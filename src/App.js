@@ -33,6 +33,7 @@ import DevoteeLogin from "./Component/userregistration/DevoteeLogin";
 import TempleFooter from "./Component/temple_footer/TempleFooter";
 import DonateTemples from "./Component/DonateToTemples/DonateTemples";
 import ExtendYourDivine from "./Component/DonateToTemples/ExtendYourDivine"
+import Login from "./Component/AllLogin/Login";
 import { BASE_URLL } from "./Component/BaseURL";
 // import OTPModel from "./Component/OTPModel/OTPModel";
 import PaymentConfirmation from "./Component/DonateToTemples/PaymentConfirmation"
@@ -88,6 +89,7 @@ function App() {
         <Route path="/AuthorityLogin" element={<AuthorityLogin />} />
         <Route path="/PanditRegistration" element={<PanditRegistration />} />
         <Route path="/DevoteeRegistration" element={<DevoteeRegistration />} />
+        <Route path="/Login" element={<Login />} />
         <Route path="/PanditLogin" element={<PanditLogin />} />
         <Route path="/DevoteeLogin" element={<DevoteeLogin />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
