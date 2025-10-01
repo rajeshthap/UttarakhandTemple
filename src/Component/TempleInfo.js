@@ -98,159 +98,169 @@ const TempleInfo = () => {
       : selectedCard?.price || 0;
 
   return (
-    <Container className="temp-container " > <Row><h1 className="text-center CommingSoon ">🚀 Coming Soon</h1>
-      <p className="CommingSoon-sub">We’re working hard to launch something amazing. Stay tuned!</p>
-    </Row>
-    </Container>
+<>
+ <div className="temp-donate">
+      <Container className="temp-container temp-container-details">
+        <h1>Mandir Booking With Pandit Booking</h1>
+        <p>Experienced Pandit Ji for every Puja, just a click away</p>
 
-    // <div className="temp-donate">
-    //   <Container className="temp-container temp-container-details">
-    //     <h1>Mandir Booking With Pandit Booking</h1>
-    //     <p>Experienced Pandit Ji for every Puja, just a click away</p>
+        <Row>
+          {/* Left Side Cards */}
+          <Col lg={7} md={7} sm={12} className="mt-2">
+            <Row className="g-4">
+              {currentCards.map((item) => (
+                <Col
+                  lg={4}
+                  md={6}
+                  sm={12}
+                  key={item.id}
+                  onClick={() => setSelectedCard(item)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <div
+                    className={`card-item ${
+                      selectedCard?.id === item.id ? "active-card" : ""
+                    }`}
+                  >
+                    <div className="card-image-wrapper">
+                      <img
+                        src={item.img}
+                        alt={item.title}
+                        className="card-image"
+                      />
+                    </div>
+                    <div className="card-text-temp">
+                      <h5>{item.title}</h5>
+                      <h6>{item.text}</h6>
+                    </div>
+                  </div>
+                </Col>
+              ))}
+            </Row>
 
-    //     <Row>
-    //       {/* Left Side Cards */}
-    //       <Col lg={7} md={7} sm={12} className="mt-2">
+            {/* Pagination */}
+            <PagingNation
+              totalItems={cardData.length}
+              itemsPerPage={itemsPerPage}
+              onPageChange={setCurrentPage}
+            />
+          </Col>
 
+          {/* Right Side – Ceremony Details */}
+          <Col lg={5} md={5} sm={12} className="mt-2">
+            <div className="tem-rhs-info">
+              <h1>Online Pandit Booking</h1>
 
-    //         <Row className="g-4">
-    //           {currentCards.map((item) => (
-    //             <Col
-    //               lg={4} // show 3 per row
-    //               md={6}
-    //               sm={12}
-    //               key={item.id}
-    //               onClick={() => setSelectedCard(item)}
-    //               style={{ cursor: "pointer" }}
-    //             >
-    //               <div
-    //                 className={`card-item ${selectedCard?.id === item.id ? "active-card" : ""
-    //                   }`}
-    //               >
-    //                 <div className="card-image-wrapper">
-    //                   <img src={item.img} alt={item.title} className="card-image" />
-    //                 </div>
-    //                 <div className="card-text-temp">
-    //                   <h5>{item.title}</h5>
-    //                   <h6>{item.text}</h6>
-    //                 </div>
-    //               </div>
-    //             </Col>
-    //           ))}
-    //         </Row>
+              {selectedCard ? (
+                <Accordion defaultActiveKey="0">
+                  <Accordion.Item eventKey="0">
+                    <Accordion.Header className="accordion-header-title">
+                      {selectedCard.title}{" "}
+                      <span className="temp-span-temple">
+                        (₹{selectedCard.price} per Pandit)
+                      </span>
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="temp-label">
+                          Required Pandit{" "}
+                          <span className="temp-span-star">*</span>
+                        </Form.Label>
+                        <Select
+                          isMulti
+                          options={options}
+                          placeholder="Select Available Pandits"
+                          closeMenuOnSelect={false}
+                          className="temp-form-control-input"
+                          value={selectedOptions}
+                          onChange={setSelectedOptions}
+                        />
 
-    //         {/* Pagination Component */}
-    //         <PagingNation
-    //           totalItems={cardData.length}
-    //           itemsPerPage={itemsPerPage}
-    //           onPageChange={setCurrentPage}
-    //         />
-    //       </Col>
+                        {/* Time */}
+                        <Form.Group className="mb-3 mt-3">
+                          <Form.Label className="temp-label mb-2">
+                            Time <span className="temp-span-star">*</span>
+                          </Form.Label>
+                          <Form.Select className="temp-form-control-option">
+                            <option value="">Select Your Time</option>
+                            <option value="Morning">Morning</option>
+                            <option value="Evening">Evening</option>
+                          </Form.Select>
+                        </Form.Group>
 
-    //       {/* Right Side — Only Selected Ceremony */}
-    //       <Col lg={5} md={5} sm={12} className="mt-2">
-    //         <div className="tem-rhs-info">
-    //           <h1>Online Pandit Booking</h1>
+                        {/* Date */}
+                        <Form.Group className="mb-3 mt-3">
+                          <Form.Label className="temp-label mb-2">
+                            Puja Date <span className="temp-span-star">*</span>
+                          </Form.Label>
+                          <Form.Control
+                            type="date"
+                            className="temp-form-control"
+                          />
+                        </Form.Group>
 
-    //           {selectedCard ? (
-    //             <Accordion defaultActiveKey="0">
-    //               <Accordion.Item eventKey="0">
-    //                 <Accordion.Header className="accordion-header-title">
-    //                   {selectedCard.title}{" "}
-    //                   <span className="temp-span-temple">
-    //                     (₹{selectedCard.price} per Pandit)
-    //                   </span>
-    //                 </Accordion.Header>
-    //                 <Accordion.Body>
-    //                   <Form.Group className="mb-3">
-    //                     <Form.Label className="temp-label">
-    //                       Required Pandit <span className="temp-span-star">*</span>
-    //                     </Form.Label>
-    //                     <Select
-    //                       isMulti
-    //                       options={options}
-    //                       placeholder="Select Available Pandits"
-    //                       closeMenuOnSelect={false}
-    //                       className="temp-form-control-input"
-    //                       value={selectedOptions}
-    //                       onChange={setSelectedOptions}
-    //                     />
+                        {/* Info */}
+                        <div className="mt-3">
+                          <p>
+                            <MdOutlineDateRange className="temple-icon" />{" "}
+                            {formattedDate}
+                          </p>
+                          <p>
+                            <FaUsersLine className="temple-icon" />{" "}
+                            {selectedOptions.length || 1}, Charges ₹
+                            {selectedCard.price} Per Person
+                          </p>
+                        </div>
 
-    //                     {/* Time */}
-    //                     <Form.Group className="mb-3 mt-3">
-    //                       <Form.Label className="temp-label mb-2">
-    //                         Time <span className="temp-span-star">*</span>
-    //                       </Form.Label>
-    //                       <Form.Select className="temp-form-control-option">
-    //                         <option value="">Select Your Time</option>
-    //                         <option value="Morning">Morning</option>
-    //                         <option value="Evening">Evening</option>
-    //                       </Form.Select>
-    //                     </Form.Group>
+                        {/* Amount */}
+                        <div className="text-end mt-2">
+                          <p>
+                            Applicable Amount:{" "}
+                            <span className="amount-span">
+                              ₹ {totalAmount}/-
+                            </span>
+                          </p>
+                        </div>
 
-    //                     {/* Date */}
-    //                     <Form.Group className="mb-3 mt-3">
-    //                       <Form.Label className="temp-label mb-2">
-    //                         Puja Date <span className="temp-span-star">*</span>
-    //                       </Form.Label>
-    //                       <Form.Control type="date" className="temp-form-control" />
-    //                     </Form.Group>
+                        {/* Cart */}
+                        <h2>Cart Total</h2>
+                        <p className="border-temp">{selectedCard.title}</p>
+                        <div className="d-flex justify-content-between">
+                          <p>Grand Total</p>
+                          <span className="amount-span">
+                            ₹ {totalAmount}/-
+                          </span>
+                        </div>
 
-    //                     {/* Info */}
-    //                     <div className="mt-3">
-    //                       <p>
-    //                         <MdOutlineDateRange className="temple-icon" /> {formattedDate}
-    //                       </p>
-    //                       <p>
-    //                         <FaUsersLine className="temple-icon" />{" "}
-    //                         {selectedOptions.length || 1},{" "}
-    //                         Charges ₹{selectedCard.price} Per Person
-    //                       </p>
-    //                     </div>
+                        {/* Button */}
+                        <div className="gap-3 mt-3 mb-3 Temp-btn-submit">
+                          <Link to="/MandirBooking">
+                            <Button
+                              variant="temp-submit-btn"
+                              className="temp-submit-btn mx-3"
+                              type="submit"
+                              onClick={handleShow}
+                            >
+                              <FaCheck /> Proceed for devotee details
+                            </Button>
+                          </Link>
+                        </div>
+                      </Form.Group>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
+              ) : (
+                <p className="text-muted">
+                  👉 Select a ceremony from the left to view details here.
+                </p>
+              )}
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    </div>
+</>
 
-    //                     {/* Amount */}
-    //                     <div className="text-end mt-2">
-    //                       <p>
-    //                         Applicable Amount:{" "}
-    //                         <span className="amount-span">₹ {totalAmount}/-</span>
-    //                       </p>
-    //                     </div>
-
-    //                     {/* Cart */}
-    //                     <h2>Cart Total</h2>
-    //                     <p className="border-temp">{selectedCard.title}</p>
-    //                     <div className="d-flex justify-content-between">
-    //                       <p>Grand Total</p>
-    //                       <span className="amount-span">₹ {totalAmount}/-</span>
-    //                     </div>
-
-    //                     {/* Button */}
-    //                     <div className="gap-3 mt-3 mb-3 Temp-btn-submit">
-    //                       <Link to="/MandirBooking">
-    //                         <Button
-    //                           variant="temp-submit-btn"
-    //                           className="temp-submit-btn mx-3"
-    //                           type="submit"
-    //                           onClick={handleShow}
-    //                         >
-    //                           <FaCheck /> Proceed for devotee details
-    //                         </Button>
-    //                       </Link>
-    //                     </div>
-    //                   </Form.Group>
-    //                 </Accordion.Body>
-    //               </Accordion.Item>
-    //             </Accordion>
-    //           ) : (
-    //             <p className="text-muted">
-    //               👉 Select a ceremony from the left to view details here.
-    //             </p>
-    //           )}
-    //         </div>
-    //       </Col>
-    //     </Row>
-    //   </Container>
-    // </div>
   );
 };
 
