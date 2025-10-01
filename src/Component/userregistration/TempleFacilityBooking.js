@@ -17,7 +17,7 @@ const TempleFacilityBooking = () => {
         <p className="CommingSoon-sub">We’re working hard to launch something amazing. Stay tuned!</p>
       </Row>
       </Container>
-      <Container className="temp-container1">
+      <Container className="temp-container">
 
 
         <h1>Temple Facility Booking</h1>
