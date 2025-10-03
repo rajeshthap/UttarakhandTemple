@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { Accordion, Button, Col, Container, Row, Form } from "react-bootstrap";
 import Select from "react-select";
 import { FaCheck, FaUsersLine } from "react-icons/fa6";
@@ -7,7 +9,18 @@ import { Link } from "react-router-dom";
 import Kedarnath from "../assets/images/Kedarnath-Temple.png";
 import Gangotri from "../assets/images/Gangotri-Temple.png";
 import Yamunotri from "../assets/images/yamunotri-temple.jpg";
-import Cermanay from "../assets/images/Ceremony_image.png"
+import Cermanay from "../assets/images/Ceremony_image.png";
+import Engagement from "../assets/images/Engagement.png";
+import Ganesh from "../assets/images/Ganesh.png";
+import Rudrabhishek from "../assets/images/Rudrabhishek.png";
+import Yagnopavit from "../assets/images/Yagnopavit.png";
+import Vishwakarma from "../assets/images/Vishwakarma.png";
+import NewOffice from "../assets/images/NewOffice.png";
+import Vivah from "../assets/images/Vivah.png";
+import Annaprashan from "../assets/images/Annaprashan.png";
+import Satyanarayan from "../assets/images/Satyanarayan.png";
+import Bhoomi from "../assets/images/Bhoomi.png";
+import Griha from "../assets/images/Griha.png";
 
 import PagingNation from "./paging/PagingNation";
 
@@ -49,17 +62,17 @@ const options = [
 
 const cardData = [
   { id: "0", title: "Naming Ceremony", text: "नामकरण समारोह", price: 1100, img: Cermanay },
-  { id: "1", title: "Engagement Ceremony", text: "सगाई समारोह", price: 2100, img: Kedarnath },
-  { id: "2", title: "Ganesh Chaturthi", text: "गणेश चतुर्थी", price: 1500, img: Gangotri },
-  { id: "3", title: "Yagnopavit Sanskar", text: "यज्ञोपवीत संस्ककार", price: 1800, img: Yamunotri },
-  { id: "4", title: "Vishwakarma Puja", text: "विश्वकर्मा पूजा", price: 1600, img: Yamunotri },
-  { id: "5", title: "New Office Puja", text: "नए कार्यालय उद्घाटन पूजा", price: 2500, img: Yamunotri },
-  { id: "6", title: "Vivah (Marriage)", text: "विवाह", price: 5100, img: Yamunotri },
-  { id: "7", title: "Vivah (Marriage)", text: "विवाह", price: 5100, img: Yamunotri },
-  { id: "8", title: "Vivah (Marriage)", text: "विवाह", price: 5100, img: Yamunotri },
-  { id: "9", title: "Vivah (Marriage)", text: "विवाह", price: 5100, img: Yamunotri },
-  { id: "10", title: "Vivah (Marriage)", text: "विवाह", price: 5100, img: Yamunotri },
-  { id: "11", title: "Vivah (Marriage)", text: "विवाह", price: 5100, img: Yamunotri },
+  { id: "1", title: "Engagement Ceremony", text: "सगाई समारोह", price: 2100, img: Engagement },
+  { id: "2", title: "Ganesh Chaturthi", text: "गणेश चतुर्थी", price: 1500, img: Ganesh },
+  { id: "3", title: "Rudrabhishek Puja", text: "रुद्राभिषेक पूजा", price: 1800, img: Rudrabhishek },
+  { id: "4", title: "Yagnopavit Sanskar", text: "यज्ञोपवीत संस्कार", price: 1600, img: Yagnopavit },
+  { id: "5", title: "Vishwakarma Puja", text: "विश्वकर्मा पूजा", price: 2500, img: Vishwakarma },
+  { id: "6", title: "New Office Opening Puja", text: "नए कार्यालय उद्घाटन पूजा", price: 5100, img: NewOffice},
+  { id: "7", title: "Vivah (Marriage)", text: "विवाह", price: 5100, img: Vivah },
+  { id: "8", title: "Annaprashan Sanskar Puja", text: "अन्नप्राशन संस्कार ", price: 5100, img: Annaprashan},
+  { id: "9", title: "Satyanarayan Puja", text: "सत्यनारायण व्रत कथा एवं पूजा", price: 5100, img: Satyanarayan}, 
+  { id: "10", title: "Bhoomi Puja", text: "नवीन भूमि पूजा", price: 5100, img: Bhoomi },
+  { id: "11", title: "Griha Pravesh Puja", text: "नवीन गृह प्रवेश पूजा", price: 5100, img: Griha},
   { id: "12", title: "Vivah (Marriage)", text: "विवाह", price: 5100, img: Yamunotri },
 ];
 
@@ -72,6 +85,7 @@ const TempleInfo = () => {
   const [, setShow] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [selectedDateTime, setSelectedDateTime] = useState(null);
 
   // pagination states
   const itemsPerPage = 8;
@@ -103,6 +117,15 @@ const TempleInfo = () => {
       <Container className="temp-container temp-container-details">
         <h1>Mandir Booking With Pandit Booking</h1>
         <p>Experienced Pandit Ji for every Puja, just a click away</p>
+             {/* Registration and Login Buttons */}
+              <div className="d-flex justify-content-end mb-3">
+                <Link to="/OnlineHirePandit">
+                  <Button variant="primary" className="mx-2">Registration</Button>
+                </Link>
+                <Link to="/DevoteeLogin">
+                  <Button variant="secondary" className="mx-2">Login</Button>
+                </Link>
+              </div>
 
         <Row>
           {/* Left Side Cards */}
@@ -110,7 +133,7 @@ const TempleInfo = () => {
             <Row className="g-4">
               {currentCards.map((item) => (
                 <Col
-                  lg={4}
+                  lg={3}
                   md={6}
                   sm={12}
                   key={item.id}
@@ -122,7 +145,7 @@ const TempleInfo = () => {
                       selectedCard?.id === item.id ? "active-card" : ""
                     }`}
                   >
-                    <div className="card-image-wrapper">
+                    <div className="card-image-wrapper-temple">
                       <img
                         src={item.img}
                         alt={item.title}
@@ -147,7 +170,8 @@ const TempleInfo = () => {
           </Col>
 
           {/* Right Side – Ceremony Details */}
-          <Col lg={5} md={5} sm={12} className="mt-2">
+          <Col lg={5} md={5} sm={12} className="mt-2 temp-right-side">
+         
             <div className="tem-rhs-info">
               <h1>Online Pandit Booking</h1>
 
@@ -179,17 +203,26 @@ const TempleInfo = () => {
                         {/* Time */}
                         <Form.Group className="mb-3 mt-3">
                           <Form.Label className="temp-label mb-2">
-                            Time <span className="temp-span-star">*</span>
+                            Pooja Date & Time <span className="temp-span-star">*</span>
                           </Form.Label>
-                          <Form.Select className="temp-form-control-option">
-                            <option value="">Select Your Time</option>
-                            <option value="Morning">Morning</option>
-                            <option value="Evening">Evening</option>
-                          </Form.Select>
+                          <div>
+                          <DatePicker
+                            selected={selectedDateTime}
+                            onChange={setSelectedDateTime}
+                            showTimeSelect
+                            timeFormat="hh:mm aa"
+                            timeIntervals={30}
+                            dateFormat="MMMM d, yyyy h:mm aa"
+                            placeholderText="Select Date and time"
+                            className="form-control temp-form-control-option w-100"
+                            minDate={new Date()}
+                            required
+                          />
+                          </div>
                         </Form.Group>
 
                         {/* Date */}
-                        <Form.Group className="mb-3 mt-3">
+                        {/* <Form.Group className="mb-3 mt-3">
                           <Form.Label className="temp-label mb-2">
                             Puja Date <span className="temp-span-star">*</span>
                           </Form.Label>
@@ -197,7 +230,7 @@ const TempleInfo = () => {
                             type="date"
                             className="temp-form-control"
                           />
-                        </Form.Group>
+                        </Form.Group> */}
 
                         {/* Info */}
                         <div className="mt-3">
