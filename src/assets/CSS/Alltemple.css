@@ -151,3 +151,18 @@
     color: var(--temp-primary);
     font-size: var(--temp-space-900);
 }
+.desktop-mobile {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .desktop-mobile {
+        display: inline-block;
+    }
+    .card-item
+    { padding: 0px !important;}
+
+.rhs-gob-mob{
+     display: none;
+}
+}
