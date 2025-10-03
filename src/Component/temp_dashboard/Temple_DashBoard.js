@@ -7,6 +7,7 @@ import Card from 'react-bootstrap/Card';
 import { FaHandsPraying } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import Temple_LeftNav from "./Temple_LeftNav";
+import "../../assets/CSS/Temple_DashBoard.css"
 
 const Temple_DashBoard = () => {
     return (
@@ -27,7 +28,7 @@ const Temple_DashBoard = () => {
                             <h2>Online Services</h2>
                             <Col lg={3} md={3} sm={12}>
 
-                                <Card className="shadow-sm mb-3 bg-body rounded temp-card-bg">
+                                <Card className="shadow-sm mb-3 bg-body rounded temp-card-bg-data">
                                     <Card.Body>
                                         <Card.Title className="temp-dash-icon"><FaHandsPraying /></Card.Title>
                                         <Card.Subtitle className="mb-2 text-muted">Book Puja</Card.Subtitle>
@@ -41,7 +42,7 @@ const Temple_DashBoard = () => {
                             </Col>
                             <Col lg={3} md={3} sm={12}>
 
-                                <Card className="shadow-sm mb-3 bg-body rounded temp-card-bg">
+                                <Card className="shadow-sm mb-3 bg-body rounded temp-card-bg-data">
                                     <Card.Body>
                                         <Card.Title className="temp-dash-icon"><FaHandsPraying /></Card.Title>
                                         <Card.Subtitle className="mb-2 text-muted">Donate to Temples</Card.Subtitle>
@@ -55,7 +56,7 @@ const Temple_DashBoard = () => {
                             </Col>
                             <Col lg={3} md={3} sm={12}>
 
-                                <Card className="shadow-sm mb-3 bg-body rounded temp-card-bg">
+                                <Card className="shadow-sm mb-3 bg-body rounded temp-card-bg-data">
                                     <Card.Body>
                                         <Card.Title className="temp-dash-icon"><FaHandsPraying /></Card.Title>
                                         <Card.Subtitle className="mb-2 text-muted">Darshan Booking</Card.Subtitle>
@@ -69,7 +70,7 @@ const Temple_DashBoard = () => {
                             </Col>
                             <Col lg={3} md={3} sm={12}>
 
-                                <Card className="shadow-sm mb-3 bg-body rounded temp-card-bg">
+                                <Card className="shadow-sm mb-3 bg-body rounded temp-card-bg-data">
                                     <Card.Body>
                                         <Card.Title className="temp-dash-icon"><FaHandsPraying /></Card.Title>
                                         <Card.Subtitle className="mb-2 text-muted">Pooja Booking</Card.Subtitle>
@@ -88,7 +89,7 @@ const Temple_DashBoard = () => {
                             <h2>Transaction History</h2>
 
                             <div class="col-md-12">
-                                <table class="rwd-table">
+                                <table class="temp-rwd-table">
                                     <tbody>
                                         <tr>
                                             <th>Supplier Code</th>

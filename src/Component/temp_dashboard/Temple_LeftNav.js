@@ -137,7 +137,7 @@ function Temple_LeftNav() {
         setShow={setShowModifyAlert}
       />
           <div className="nd-msg">User: {userName}</div>
-          <div className="dp" title="Click to logout" onClick={logout}>
+          <div className="temp-dp" title="Click to logout" onClick={logout}>
             <div className="nd-log-icon">
               <LuLogOut />
             </div>
@@ -153,7 +153,7 @@ function Temple_LeftNav() {
             <div className="nd-menu">
               <FaAlignLeft className="icn menuicn" onClick={toggleNav} />
               <div className="nd-user">User: {userName}</div>
-              <div className="nd-log-icon-mob" title="Logout" onClick={logout}>
+              <div className="nd-log-icon-mob-data" title="Logout" onClick={logout}>
                 <LuLogOut />
               </div>
             </div>
@@ -162,7 +162,7 @@ function Temple_LeftNav() {
               <React.Fragment key={index}>
                 {option.download ? (
                   <div
-                    className={`temp-nav-option option${index + 1} ${activePath === option.fileUrl ? "active-nav" : ""
+                    className={`temp-nav-option option${index + 1} ${activePath === option.fileUrl ? "active-nav-option" : ""
                       }`}
                     onClick={() => {
                       setActivePath(option.fileUrl);
@@ -177,7 +177,7 @@ function Temple_LeftNav() {
                 ) : (
                   <Link
                     to={option.path}
-                    className={`temp-nav-option option${index + 1} ${activePath === option.path ? "active-nav" : ""
+                    className={`temp-nav-option option${index + 1} ${activePath === option.path ? "active-nav-option" : ""
                       }`}
                     onClick={() => setActivePath(option.path)}
                   >

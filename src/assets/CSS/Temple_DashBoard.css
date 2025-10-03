@@ -1,0 +1,114 @@
+
+.temp-rwd-table {
+    margin: auto;
+    min-width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+}
+
+.temp-rwd-table tr:first-child {
+    border-top: none;
+    background: var(--temp-primary);
+    color: #fff;
+}
+
+.temp-rwd-table tr {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    background-color: #f5f9fc;
+}
+
+.temp-rwd-table tr:nth-child(odd):not(:first-child) {
+    background-color: #ebf3f9;
+}
+
+.temp-rwd-table th {
+    display: none;
+}
+
+.temp-rwd-table td {
+    display: block;
+}
+
+.temp-rwd-table td:first-child {
+    margin-top: .5em;
+}
+
+.temp-rwd-table td:last-child {
+    margin-bottom: .5em;
+}
+
+.temp-rwd-table td:before {
+    content: attr(data-th) ": ";
+
+    width: 120px;
+    display: inline-block;
+    color: #000;
+}
+.temp-card-bg-data {
+    background-color: var(--temp-black) !important;
+    color: var(--temp-white) !important;
+    text-align: center !important;
+}
+
+.temp-card-bg-data .card-subtitle {
+    color: var(--temp-white) !important;
+    font-size: var(--temp-space-500) !important;
+}
+.temp-rwd-table th,
+.temp-rwd-table td {
+    text-align: left;
+}
+
+.temp-rwd-table {
+    color: #333;
+    border-radius: .4em;
+    overflow: hidden;
+}
+
+.temp-rwd-table tr {
+    border-color: #bfbfbf;
+}
+
+.temp-rwd-table th,
+.temp-rwd-table td {
+    padding: .5em 1em;
+}
+
+@media screen and (max-width: 601px) {
+    .temp-rwd-table tr:nth-child(2) {
+        border-top: none;
+    }
+}
+
+@media screen and (min-width: 600px) {
+    .temp-rwd-table tr:hover:not(:first-child) {
+        background-color: #d8e7f3;
+    }
+
+    .temp-rwd-table td:before {
+        display: none;
+    }
+
+    .temp-rwd-table th,
+    .temp-rwd-table td {
+        display: table-cell;
+        padding: .25em .5em;
+    }
+
+    .temp-rwd-table th:first-child,
+    .temp-rwd-table td:first-child {
+        padding-left: 0;
+    }
+
+    .temp-rwd-table th:last-child,
+    .temp-rwd-table td:last-child {
+        padding-right: 0;
+    }
+
+    .temp-rwd-table th,
+    .temp-rwd-table td {
+        padding: 1em !important;
+        font-size: var(--temp-space-300);
+    }
+}

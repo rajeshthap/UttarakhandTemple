@@ -56,8 +56,8 @@
   margin-top: 64px;
 }
 
-.active-nav {
-  background-color: var(--temp-org);
+.active-nav-option {
+  background-color: black;
   color: #fff !important;
   border-left: 4px solid white;
 }
@@ -144,9 +144,9 @@
 
 
 
-.dp {
+.temp-dp {
   font-size: var(--nd-space-500);
-  background-color: var(--temp-org);
+  background-color:var(--temp-black) !important;
   border-radius: 50%;
   color: var(--nd-white);
 
@@ -228,8 +228,8 @@
 }
 
 .temp-nav-option:hover {
-  border-left: 2px solid var(--nd-white);
-  background-color:#0000;
+ border-left: 2px solid var(--nd-white);
+    background-color: #212529 !important;
   cursor: pointer;
 }
 
@@ -341,7 +341,7 @@ span.nav-label {
     justify-content:space-between;
   }
   
-  .nd-log-icon-mob {
+  .nd-log-icon-mob-data {
     background-color: var(--temp-org);
     width: 30px;
     height: 30px;
@@ -394,7 +394,7 @@ span.nav-label {
 }
 
 @media screen and (max-width: 768px) {
-  .nd-log-icon-mob {
+  .nd-log-icon-mob-data {
     background-color: var(--nd-blue-hover);
     width: 30px;
     height: 30px;
@@ -410,7 +410,7 @@ span.nav-label {
 
 @media screen and (max-width: 490px) {
 
-  .nd-log-icon-mob {
+  .nd-log-icon-mob-data {
     background-color: var(--temp-org);
     width: 30px;
     height: 30px;
