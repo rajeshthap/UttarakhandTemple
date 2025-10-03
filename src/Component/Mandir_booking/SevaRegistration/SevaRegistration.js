@@ -372,7 +372,7 @@ const SevaRegistration = () => {
   return (
     <div>
       <Container className="temp-container">
-        <h1>Mandri Seva Registration </h1>
+        <h1>Mandir Seva Registration </h1>
         <p>
           <i>
             Serve the Divine, Register Your Seva with Devotion{" "}
