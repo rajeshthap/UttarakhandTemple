@@ -7,24 +7,6 @@ const SendOtp = ({ phone, setPhone, onOtpSent }) => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const checkPhoneExistence = async () => {
-    try {
-      const res = await CheckPhoneApi();
-      const phoneList = res.data["Phone Number"] || [];
-
-      if (Array.isArray(phoneList) && phoneList.includes(phone)) {
-        setMessage("Phone number already exists!");
-        return true;
-      }
-      return false;
-    } catch (err) {
-      console.error("Error checking phone:", err);
-      setMessage("Could not verify phone number");
-      return true;
-    }
-  };
-
-
   const handleSendOtp = async () => {
     if (!phone || phone.length !== 10) {
       setMessage("Enter a valid 10-digit phone number");
@@ -35,16 +17,22 @@ const SendOtp = ({ phone, setPhone, onOtpSent }) => {
     setMessage("");
 
     try {
-      const exists = await checkPhoneExistence();
+      // ✅ now we pass phone to API
+      const exists = await CheckPhoneApi(phone);
+
       if (exists) {
+        setMessage("Phone number already exists!");
         setLoading(false);
         return; // stop here if phone exists
       }
 
-      //  Only send OTP if phone does NOT exist
+      // ✅ Only send OTP if phone does NOT exist
       const res = await axios.post(
         "https://brjobsedu.com/Temple_portal/api/send-otp/",
-        { phone }
+        { phone },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
       );
 
       if (res.data.success) {
@@ -54,7 +42,7 @@ const SendOtp = ({ phone, setPhone, onOtpSent }) => {
         setMessage(res.data.message || "Failed to send OTP");
       }
     } catch (err) {
-      console.error(err);
+      console.error("Error while sending OTP:", err);
       setMessage("Error while sending OTP");
     } finally {
       setLoading(false);
@@ -81,7 +69,9 @@ const SendOtp = ({ phone, setPhone, onOtpSent }) => {
             }}
           />
           {phone && phone.length !== 10 && (
-            <small className="text-danger">Mobile number must be 10 digits</small>
+            <small className="text-danger">
+              Mobile number must be 10 digits
+            </small>
           )}
         </Form.Group>
       </Col>

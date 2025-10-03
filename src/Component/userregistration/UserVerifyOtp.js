@@ -67,7 +67,7 @@ const handleResend = async () => {
 
   try {
     const response = await axios.post(
-      "https://brjobsedu.com/Temple_portal/api/Sentotp/",
+ "https://brjobsedu.com/Temple_portal/api/send-otp/",
       { phone }
     );
 
@@ -81,7 +81,7 @@ const handleResend = async () => {
       //  Auto verify OTP right after resend
       try {
         const verifyRes = await axios.post(
-          "https://brjobsedu.com/Temple_portal/api/Verify/",
+     "https://brjobsedu.com/Temple_portal/api/verify-otp/",
           { phone, otp: response.data.otp }
         );
         // console.log("Auto Verify API response:", verifyRes);

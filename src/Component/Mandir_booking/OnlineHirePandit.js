@@ -30,7 +30,7 @@ const OnlineHirePandit = () => {
       setLoadingOtp(true);
 
       await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/Sentotp/",
+   "https://brjobsedu.com/Temple_portal/api/send-otp/",
         { phone: formData.mobile_number },
         { headers: { "Content-Type": "application/json" } }
       );
