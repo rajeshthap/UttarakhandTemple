@@ -89,5 +89,11 @@ body {
 
 /* ----------------Drag & drop files Start ---------------------------  */
 
-
-@media (max-width: 575.98px) {}
+ .container-box-p{
+    padding: 0px !important;
+}
+@media (max-width: 575.98px) {
+  .container-box-p{
+    padding: 0px !important;
+}
+}

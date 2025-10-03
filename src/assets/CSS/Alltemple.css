@@ -3,7 +3,25 @@
     margin: auto;
 
 }
-
+.temp-detail-btn{
+    display: flex;
+    justify-content: space-between;
+}
+.temp-login-btn{
+    background-color: var(--temp-org);
+    width: 200px;
+    border-radius: var(--temp-space-300);
+    font-size: var(--temp-space-300);
+    border: 1px solid var(--temp-org)
+    ;
+}
+.temp-regis-btn{
+    background-color: var(--temp-primary);
+   width: 200px;
+     border-radius: var(--temp-space-300);
+       font-size: var(--temp-space-300);
+         border: 1px solid var(--temp-primary)
+}
 .password-wrapper {
     position: relative;
 }
@@ -60,6 +78,17 @@
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 }
 
+.card-image-wrapper-temple{
+ width: 152px;
+    height: 152px;
+    overflow: hidden;
+    border-radius: 50% !important;
+    /* border-radius: 12px 12px 0 0; */
+    margin: auto;
+    border: var(--temp-space-200) solid var(--temp-boader-gary);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+ 
+}
 .card-text h5 {
     color: var(--temp-org);
     margin-bottom: var(--temp-space-0);
@@ -90,7 +119,17 @@
     color: var(--temp-black);
 }
 
-
+.temp-accordin-btn .accordion-button::after {
+    background-image: url("../images//arrow_icon_2.svg") !important;
+    font-size: var(--temp-space-300);
+}
+.temp-container h2 {
+    font-size: var(--temp-space-450);
+    color: var(--temp-org);
+    margin-bottom: var(--temp-space-350);
+    border-bottom: 1px var(--temp-boader-gary) solid;
+    padding-bottom: 6px;
+}
 .Alltemple-wrapper {
     padding-top: var(--temp-space-600);
     padding-bottom: var(--temp-space-600);
