@@ -348,7 +348,7 @@ function PanditRegistration() {
         }
       }
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/pandit/",
+        "https://brjobsedu.com/Temple_portal/api/all-reg/",
         formDataToSend,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
