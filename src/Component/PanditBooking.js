@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Modal } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Accordion, Button, Col, Container, Row, Form } from "react-bootstrap";
@@ -23,6 +24,7 @@ import Bhoomi from "../assets/images/Bhoomi.png";
 import Griha from "../assets/images/Griha.png";
 
 import PagingNation from "./paging/PagingNation";
+import { BsInfoCircleFill } from "react-icons/bs";
 
 const options = [
   {
@@ -76,17 +78,18 @@ const cardData = [
   { id: "12", title: "Vivah (Marriage)", text: "विवाह", price: 5100, img: Yamunotri },
 ];
 
-const TempleInfo = () => {
+const PanditBooking = () => {
   const today = new Date();
   const formattedDate = `${String(today.getDate()).padStart(2, "0")}/${String(
     today.getMonth() + 1
   ).padStart(2, "0")}/${today.getFullYear()}`;
 
   const [, setShow] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
   const [selectedDateTime, setSelectedDateTime] = useState(null);
-
+const [isLoggedIn, setIsLoggedIn] = useState(false);
   // pagination states
   const itemsPerPage = 8;
   const [currentPage, setCurrentPage] = useState(1);
@@ -97,7 +100,7 @@ const TempleInfo = () => {
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
-
+const handleLoginRegister = () => setIsLoggedIn(true);
   // Default select the first ceremony on mount
   useEffect(() => {
     if (cardData.length > 0) {
@@ -115,17 +118,17 @@ const TempleInfo = () => {
 <>
  <div className="temp-donate">
       <Container className="temp-container temp-container-details">
-        <h1>Mandir Booking With Pandit Booking</h1>
+        <h1>Pandit Booking</h1>
         <p>Experienced Pandit Ji for every Puja, just a click away</p>
              {/* Registration and Login Buttons */}
-              <div className="d-flex justify-content-end mb-3">
+              {/* <div className="d-flex justify-content-end mb-3">
                 <Link to="/OnlineHirePandit">
                   <Button variant="primary" className="mx-2">Registration</Button>
                 </Link>
                 <Link to="/DevoteeLogin">
                   <Button variant="secondary" className="mx-2">Login</Button>
                 </Link>
-              </div>
+              </div> */}
 
         <Row>
           {/* Left Side Cards */}
@@ -137,7 +140,6 @@ const TempleInfo = () => {
                   md={6}
                   sm={12}
                   key={item.id}
-                  onClick={() => setSelectedCard(item)}
                   style={{ cursor: "pointer" }}
                 >
                   <div
@@ -150,6 +152,7 @@ const TempleInfo = () => {
                         src={item.img}
                         alt={item.title}
                         className="card-image"
+                        onClick={() => setShowPopup(true)}
                       />
                     </div>
                     <div className="card-text-temp">
@@ -157,6 +160,20 @@ const TempleInfo = () => {
                       <h6>{item.text}</h6>
                     </div>
                   </div>
+      {/* Popup Modal for Register/Login message */}
+      <Modal show={showPopup} onHide={() => setShowPopup(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Attention</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p className="text-center">Please register and login first</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={() => setShowPopup(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
                 </Col>
               ))}
             </Row>
@@ -170,9 +187,42 @@ const TempleInfo = () => {
           </Col>
 
           {/* Right Side – Ceremony Details */}
-          <Col lg={5} md={5} sm={12} className="mt-2 temp-right-side">
+          <Col lg={5} md={5} sm={12} className="mt-2 temp-right-side  ">
+                    <div 
+           className="text-center p-4 my-4 temp-regis"
+           
+         >
+           <h5>
+           
+             <BsInfoCircleFill className="temp-info-icon" />
+             <strong></strong>To continue with your Puja booking, please login or create an account.
+           </h5>
+           <p>Kindly click on the <strong>Login</strong> or <strong>Register</strong> button below to continue.</p>
+           <Row className="mb-3">
+           <Col xs={12} md={6} className="mb-2 mb-md-0">
+             <Link to="/Login">
+               <Button
+                 className="w-100 temp-login-btn"
+                 onClick={handleLoginRegister}
+               >
+                 Login
+               </Button>
+             </Link>
+           </Col>
+           <Col xs={12} md={6}>
+             <Link to="/DevoteeRegistration">
+               <Button
+                 className="w-100 temp-regis-btn"
+                 onClick={handleLoginRegister}
+               >
+                 Register
+               </Button>
+             </Link>
+           </Col>
+         </Row>
          
-            <div className="tem-rhs-info">
+         </div>
+            <div className="tem-rhs-info temp-right-side-style">
               <h1>Online Pandit Booking</h1>
 
               {selectedCard ? (
@@ -297,4 +347,4 @@ const TempleInfo = () => {
   );
 };
 
-export default TempleInfo;
+export default PanditBooking;

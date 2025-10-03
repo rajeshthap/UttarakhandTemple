@@ -18,7 +18,7 @@ const Footer = () => {
                 <div className="footer-section">
                     <h3>Information</h3>
                     <ul>
-                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/TempleInfo">Mandir Booking</a></li>
+                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/PanditBooking">Mandir Booking</a></li>
                         <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/PoojaBooking">Pooja & Seva</a></li>
                         <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/OnlineHirePandit">Pandit Booking</a></li>
                         <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/TempleFacilityBooking">Temple Facility Booking</a></li>

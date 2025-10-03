@@ -78,7 +78,7 @@ const TopNavBar = () => {
                     id="navbarScrollingDropdown"
                   >
 
-                    <NavDropdown.Item href="/OnlineHirePandit">
+                    <NavDropdown.Item href="/PanditBooking">
                       Hire a Pandit
                     </NavDropdown.Item>
                   </NavDropdown>
