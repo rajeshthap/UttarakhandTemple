@@ -5,7 +5,8 @@ import { MdOutlineDateRange } from "react-icons/md";
 import { FaUsersLine } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { BsInfoCircleFill } from "react-icons/bs";
- 
+ import DatePicker from "react-datepicker";
+
 // Correct image imports
 import Kedarnath from "../assets/images/Kedarnath-Temple.png";
 import Gangotri from "../assets/images/Gangotri-Temple.png";
@@ -13,7 +14,6 @@ import Yamunotri from "../assets/images/yamunotri-temple.jpg";
 import Badrinath from "../assets/images/Badrinath-Temple.png";
 import Diya from "../assets/images/Diya.png";
 import "../assets/CSS/TempleBooking.css";
-
 import PagingNation from "./paging/PagingNation";
 
 const cardData = [
@@ -65,7 +65,7 @@ const TempleBookingInfo = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentCards = cardData.slice(indexOfFirstItem, indexOfLastItem);
-
+  const [selectedDateTime, setSelectedDateTime] = useState(null);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 // const [, setPujaDate] = useState("");
@@ -204,9 +204,27 @@ const TempleBookingInfo = () => {
                             </option>
                           ))}
                         </Form.Select>
-
+   <Form.Group className="mb-3 mt-3">
+                          <Form.Label className="temp-label mb-2">
+                            Pooja Date & Time <span className="temp-span-star">*</span>
+                          </Form.Label>
+                          <div>
+                          <DatePicker
+                            selected={selectedDateTime}
+                            onChange={setSelectedDateTime}
+                            showTimeSelect
+                            timeFormat="hh:mm aa"
+                            timeIntervals={30}
+                            dateFormat="MMMM d, yyyy h:mm aa"
+                            placeholderText="Select Date and time"
+                            className="form-control temp-form-control-option w-100"
+                            minDate={new Date()}
+                            required
+                          />
+                          </div>
+                        </Form.Group>
                         {/* Time */}
-                        <Form.Group className="mb-3 mt-3">
+                        {/* <Form.Group className="mb-3 mt-3">
                           <Form.Label className="temp-label mb-2">
                             Time <span className="temp-span-star">*</span>
                           </Form.Label>
@@ -215,10 +233,10 @@ const TempleBookingInfo = () => {
                             <option value="Morning">Morning</option>
                             <option value="Evening">Evening</option>
                           </Form.Select>
-                        </Form.Group>
+                        </Form.Group> */}
 
                         {/* Date */}
-                        <Form.Group className="mb-3 mt-3">
+                        {/* <Form.Group className="mb-3 mt-3">
                           <Form.Label className="temp-label mb-2">
                             Puja Date <span className="temp-span-star">*</span>
                           </Form.Label>
@@ -226,7 +244,7 @@ const TempleBookingInfo = () => {
                             type="date"
                             className="temp-form-control"
                           />
-                        </Form.Group>
+                        </Form.Group> */}
 
                         {/* Info */}
                         <div className="mt-3">
