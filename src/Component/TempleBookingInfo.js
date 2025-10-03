@@ -57,7 +57,7 @@ const TempleBookingInfo = () => {
   const [selectedPersons, setSelectedPersons] = useState(1);
   const [selectedCard, setSelectedCard] = useState(null);
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // ✅ Login state
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Login state
 
   // pagination states
   const itemsPerPage = 8;
@@ -122,7 +122,7 @@ const TempleBookingInfo = () => {
                 </Col>
               ))}
             </Row>
-
+      
             {/* Pagination */}
             <PagingNation
               totalItems={cardData.length}
@@ -134,14 +134,12 @@ const TempleBookingInfo = () => {
           <Col lg={5} md={5} sm={12} className="mt-2 container-box-p">
              <div 
   className="text-center p-4 my-4 temp-regis"
-  
 >
   <h5>
-  
     <BsInfoCircleFill className="temp-info-icon" />
-   Please <strong>login</strong> first to coninue with Mandir booking.
+  To continue with your Mandir booking, please <strong>login</strong> or create an account.
   </h5>
-  <p>Kindly click on the <strong>Login</strong> or <strong>Register</strong> button to continue.</p>
+  <p>Click the <strong>Login</strong> or <strong>Register</strong> button below to proceed.</p>
   <Row className="mb-3">
   <Col xs={12} md={6} className="mb-2 mb-md-0">
     <Link to="/Login">

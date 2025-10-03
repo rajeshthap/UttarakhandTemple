@@ -45,7 +45,7 @@ import PoojaBooking from "./Component/Mandir_booking/PoojaBooking/PoojaBooking";
 import SevaRegistration from "./Component/Mandir_booking/SevaRegistration/SevaRegistration";
 import EventParticipation from "./Component/Mandir_booking/EventParticipation/EventParticipation";
 import OnlineHirePandit from "./Component/Mandir_booking/OnlineHirePandit";
-import TempleInfo from "./Component/TempleInfo";
+import PanditBooking from "./Component/PanditBooking";
 import UserVerifyOtp from "./Component/userregistration/UserVerifyOtp";
 import ForgetPassword from "./Component/userregistration/ForgetPassword";
 import ForgotPassword from "./Component/SendOtp/ForgotPassword";
@@ -66,6 +66,8 @@ import DarshanBookingDashBoard from "./Component/dashboard/innerpage_dashboard/D
 import MandirBookingDashBoard from "./Component/dashboard/innerpage_dashboard/MandirBookingDashBoard";
 import SevaRegistrationDashBoard from "./Component/dashboard/innerpage_dashboard/SevaRegistrationDashBoard";
 import ChangePassword from "./Component/dashboard/innerpage_dashboard/ChangePassword";
+import Temple_LeftNav from "./Component/temp_dashboard/Temple_LeftNav";
+import Temple_DashBoard from "./Component/temp_dashboard/Temple_DashBoard";
 
 import SendOtpModal from "./Component/OTPModel/SendOtpModal";
 // import DashBoard from "./Component/dashboard/DashBoard";
@@ -77,7 +79,7 @@ function App() {
 
   const location = useLocation
     ();
-  const hiddenPaths = new Set(["/DashBoard", "/MainDashBoard", "/DonateDashboard", "/PanditDashBoard", "/LeftNav", "/PoojaBookingDashBoard", "/MandirBookingDashBoard", "/DarshanBookingDashBoard", "/SevaRegistrationDashBoard", "/ChangePassword"]);
+  const hiddenPaths = new Set(["/DashBoard", "/MainDashBoard", "/DonateDashboard", "/PanditDashBoard", "/LeftNav", "/PoojaBookingDashBoard", "/MandirBookingDashBoard", "/DarshanBookingDashBoard", "/SevaRegistrationDashBoard", "/ChangePassword","/Temple_DashBoard", "/Temple_LeftNav"]);
   const shouldHideBars = hiddenPaths.has(location.pathname);
   const hideFooter = location.pathname === "/";
   return (
@@ -105,7 +107,7 @@ function App() {
         <Route path="/SevaRegistration" element={<SevaRegistration />} />
         <Route path="/EventParticipation" element={<EventParticipation />} />
         <Route path="/OnlineHirePandit" element={<OnlineHirePandit />} />
-        <Route path="/TempleInfo" element={<TempleInfo />} />
+         <Route path="/PanditBooking" element={<PanditBooking />} />
         <Route path="/UserVerifyOtp" element={<UserVerifyOtp />} />
         <Route path="/ForgetPassword" element={<ForgetPassword />} />
         <Route path="/MandirMahadevaya" element={<MandirMahadevaya />} />
@@ -128,6 +130,8 @@ function App() {
         <Route path="/ChangePassword" element={<ChangePassword />} />
         <Route path="/TempleBookingInfo" element={<TempleBookingInfo />} />
 
+        <Route path="/Temple_DashBoard" element={<Temple_DashBoard />} />
+        <Route path="/Temple_LeftNav" element={<Temple_LeftNav />} />
         <Route path="/LeftNav" element={<LeftNav />} />
         <Route path="/SendOtpModal" element={<SendOtpModal />} />
       </Routes>
