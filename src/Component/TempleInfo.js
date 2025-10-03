@@ -23,6 +23,7 @@ import Bhoomi from "../assets/images/Bhoomi.png";
 import Griha from "../assets/images/Griha.png";
 
 import PagingNation from "./paging/PagingNation";
+import { BsInfoCircleFill } from "react-icons/bs";
 
 const options = [
   {
@@ -86,7 +87,7 @@ const TempleInfo = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
   const [selectedDateTime, setSelectedDateTime] = useState(null);
-
+const [isLoggedIn, setIsLoggedIn] = useState(false);
   // pagination states
   const itemsPerPage = 8;
   const [currentPage, setCurrentPage] = useState(1);
@@ -97,7 +98,7 @@ const TempleInfo = () => {
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
-
+const handleLoginRegister = () => setIsLoggedIn(true);
   // Default select the first ceremony on mount
   useEffect(() => {
     if (cardData.length > 0) {
@@ -118,14 +119,14 @@ const TempleInfo = () => {
         <h1>Mandir Booking With Pandit Booking</h1>
         <p>Experienced Pandit Ji for every Puja, just a click away</p>
              {/* Registration and Login Buttons */}
-              <div className="d-flex justify-content-end mb-3">
+              {/* <div className="d-flex justify-content-end mb-3">
                 <Link to="/OnlineHirePandit">
                   <Button variant="primary" className="mx-2">Registration</Button>
                 </Link>
                 <Link to="/DevoteeLogin">
                   <Button variant="secondary" className="mx-2">Login</Button>
                 </Link>
-              </div>
+              </div> */}
 
         <Row>
           {/* Left Side Cards */}
@@ -170,9 +171,42 @@ const TempleInfo = () => {
           </Col>
 
           {/* Right Side – Ceremony Details */}
-          <Col lg={5} md={5} sm={12} className="mt-2 temp-right-side">
+          <Col lg={5} md={5} sm={12} className="mt-2 temp-right-side  ">
+                    <div 
+           className="text-center p-4 my-4 temp-regis"
+           
+         >
+           <h5>
+           
+             <BsInfoCircleFill className="temp-info-icon" />
+            Please <strong>login</strong> first to coninue with Mandir booking.
+           </h5>
+           <p>Kindly click on the <strong>Login</strong> or <strong>Register</strong> button to continue.</p>
+           <Row className="mb-3">
+           <Col xs={12} md={6} className="mb-2 mb-md-0">
+             <Link to="/Login">
+               <Button
+                 className="w-100 temp-login-btn"
+                 onClick={handleLoginRegister}
+               >
+                 Login
+               </Button>
+             </Link>
+           </Col>
+           <Col xs={12} md={6}>
+             <Link to="/DevoteeRegistration">
+               <Button
+                 className="w-100 temp-regis-btn"
+                 onClick={handleLoginRegister}
+               >
+                 Register
+               </Button>
+             </Link>
+           </Col>
+         </Row>
          
-            <div className="tem-rhs-info">
+         </div>
+            <div className="tem-rhs-info temp-right-side-style">
               <h1>Online Pandit Booking</h1>
 
               {selectedCard ? (
