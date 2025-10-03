@@ -17,16 +17,16 @@ const SendOtp = ({ phone, setPhone, onOtpSent }) => {
     setMessage("");
 
     try {
-      // ✅ now we pass phone to API
+      // now we pass phone to API
       const exists = await CheckPhoneApi(phone);
 
       if (exists) {
         setMessage("Phone number already exists!");
         setLoading(false);
-        return; // stop here if phone exists
+        return; 
       }
 
-      // ✅ Only send OTP if phone does NOT exist
+      // Only send OTP if phone does NOT exist
       const res = await axios.post(
         "https://brjobsedu.com/Temple_portal/api/send-otp/",
         { phone },
