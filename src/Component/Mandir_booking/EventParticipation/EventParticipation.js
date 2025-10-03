@@ -289,7 +289,7 @@ const EventParticipation = () => {
     <div className="temp-donate">
       <Container className="temp-container">
         <Form onSubmit={handleSubmit}>
-          <h1>Mandri Event Participation </h1>
+          <h1>Mandir Event Participation </h1>
           <p>
             <i>Join Sacred Gatherings and Be Part of Divine Celebrations </i>
           </p>
