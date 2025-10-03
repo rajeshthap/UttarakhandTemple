@@ -77,7 +77,7 @@ const cardData = [
   { id: "12", title: "Vivah (Marriage)", text: "विवाह", price: 5100, img: Yamunotri },
 ];
 
-const TempleInfo = () => {
+const PanditBooking = () => {
   const today = new Date();
   const formattedDate = `${String(today.getDate()).padStart(2, "0")}/${String(
     today.getMonth() + 1
@@ -116,7 +116,7 @@ const handleLoginRegister = () => setIsLoggedIn(true);
 <>
  <div className="temp-donate">
       <Container className="temp-container temp-container-details">
-        <h1>Mandir Booking With Pandit Booking</h1>
+        <h1>Pandit Booking</h1>
         <p>Experienced Pandit Ji for every Puja, just a click away</p>
              {/* Registration and Login Buttons */}
               {/* <div className="d-flex justify-content-end mb-3">
@@ -331,4 +331,4 @@ const handleLoginRegister = () => setIsLoggedIn(true);
   );
 };
 
-export default TempleInfo;
+export default PanditBooking;
