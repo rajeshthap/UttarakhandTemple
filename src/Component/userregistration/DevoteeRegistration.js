@@ -10,7 +10,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import ModifyAlert from "../Alert/ModifyAlert";
 import UploadFile from "../../assets/images/upload-icon.png";
-import { CheckPhoneApi } from "../GlobleAuth/Globleapi";
+import { CheckPhoneApi, Globaleapi } from "../GlobleAuth/Globleapi";
 
 function DevoteeRegistration() {
   const [phone, setPhone] = useState("");
@@ -202,13 +202,10 @@ function DevoteeRegistration() {
     formData.append("email", email);
     formData.append("password", password);
     formData.append("devotee_photo", formDataFiles.devotee_photo);
+    formData.append("role", "user");
 
     try {
-      const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/Userregistration/",
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
+      const res = await Globaleapi(formData);
 
       // Reset all
       setDevoteeName("");

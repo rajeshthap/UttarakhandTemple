@@ -3,7 +3,7 @@ import axios from "axios";
 // Temple register api function
 
 export const Globaleapi = (payload) => {
-  return axios.post("https://brjobsedu.com/Temple_portal/api/Temple_register/", payload, {
+  return axios.post("https://brjobsedu.com/Temple_portal/api/all-reg/", payload, {
     headers: { "Content-Type": "multipart/form-data" }
   });
 };
@@ -11,7 +11,7 @@ export const Globaleapi = (payload) => {
 
 const SendOtp = (otpPayload) => {
   return axios.post(
-    "https://brjobsedu.com/Temple_portal/api/Sentotp/",
+    "https://brjobsedu.com/Temple_portal/api/send-otp/",
     otpPayload, 
     {
       headers: { "Content-Type": "multipart/form-data" },
@@ -24,7 +24,7 @@ export const CheckPhoneApi = (phone) => {
   const formData = new FormData();
   formData.append("phone", phone); 
   return axios.get(
-    "https://brjobsedu.com/Temple_portal/api/users-phone/",
+    "https://brjobsedu.com/Temple_portal/api/all-reg/",
     formData,
     {
       headers: { "Content-Type": "multipart/form-data" },

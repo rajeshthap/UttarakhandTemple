@@ -43,7 +43,7 @@ const SendOtp = ({ phone, setPhone, onOtpSent }) => {
 
       //  Only send OTP if phone does NOT exist
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/Sentotp/",
+        "https://brjobsedu.com/Temple_portal/api/send-otp/",
         { phone }
       );
 
