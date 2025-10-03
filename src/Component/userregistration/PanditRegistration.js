@@ -42,6 +42,7 @@ function PanditRegistration() {
     temple_association: "",
     pandit_image: "",
     aadhar_document: "",
+    role: "pandit",
   });
   const [fileErrors, setFileErrors] = useState({
     pandit_image: "",
