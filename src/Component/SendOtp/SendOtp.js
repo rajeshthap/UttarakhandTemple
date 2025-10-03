@@ -8,22 +8,23 @@ const SendOtp = ({ phone, setPhone, onOtpSent }) => {
   const [message, setMessage] = useState("");
 
   const checkPhoneExistence = async () => {
-    try {
-      const res = await CheckPhoneApi();
-      const phoneList = res.data["Phone Number"] || [];
+  try {
+    const res = await CheckPhoneApi(); 
+    const users = res.data;
 
-      if (Array.isArray(phoneList) && phoneList.includes(phone)) {
-        setMessage("Phone number already exists!");
-        return true;
-      }
-      return false;
-    } catch (err) {
-      console.error("Error checking phone:", err);
-      setMessage("Could not verify phone number");
+    const phoneExists = Array.isArray(users) && users.some(u => u.phone === phone);
+
+    if (phoneExists) {
+      setMessage("Phone number already exists!");
       return true;
     }
-  };
-
+    return false;
+  } catch (err) {
+    console.error("Error checking phone:", err);
+    setMessage("Could not verify phone number");
+    return true; 
+  }
+};
 
   const handleSendOtp = async () => {
     if (!phone || phone.length !== 10) {
@@ -38,12 +39,12 @@ const SendOtp = ({ phone, setPhone, onOtpSent }) => {
       const exists = await checkPhoneExistence();
       if (exists) {
         setLoading(false);
-        return; // stop here if phone exists
+        return; 
       }
 
       //  Only send OTP if phone does NOT exist
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/Sentotp/",
+        "https://brjobsedu.com/Temple_portal/api/send-otp/",
         { phone }
       );
 

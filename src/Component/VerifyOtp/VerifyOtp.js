@@ -38,10 +38,9 @@ const VerifyOtp = ({ phone, onVerified }) => {
 
     setLoading(true);
     setMessage("");
-
     try {
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/Verify/",
+   "https://brjobsedu.com/Temple_portal/api/verify-otp/",
         { phone, otp }
       );
 
@@ -66,7 +65,7 @@ const VerifyOtp = ({ phone, onVerified }) => {
       setOtpExpiry(60); 
 
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/Sentotp/",
+   "https://brjobsedu.com/Temple_portal/api/send-otp/",
         { phone }
       );
 

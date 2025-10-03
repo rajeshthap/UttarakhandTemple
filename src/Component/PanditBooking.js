@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Modal } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Accordion, Button, Col, Container, Row, Form } from "react-bootstrap";
@@ -84,6 +85,7 @@ const PanditBooking = () => {
   ).padStart(2, "0")}/${today.getFullYear()}`;
 
   const [, setShow] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
   const [selectedDateTime, setSelectedDateTime] = useState(null);
@@ -138,7 +140,6 @@ const handleLoginRegister = () => setIsLoggedIn(true);
                   md={6}
                   sm={12}
                   key={item.id}
-                  onClick={() => setSelectedCard(item)}
                   style={{ cursor: "pointer" }}
                 >
                   <div
@@ -151,6 +152,7 @@ const handleLoginRegister = () => setIsLoggedIn(true);
                         src={item.img}
                         alt={item.title}
                         className="card-image"
+                        onClick={() => setShowPopup(true)}
                       />
                     </div>
                     <div className="card-text-temp">
@@ -158,6 +160,20 @@ const handleLoginRegister = () => setIsLoggedIn(true);
                       <h6>{item.text}</h6>
                     </div>
                   </div>
+      {/* Popup Modal for Register/Login message */}
+      <Modal show={showPopup} onHide={() => setShowPopup(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Attention</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p className="text-center">Please register and login first</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={() => setShowPopup(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
                 </Col>
               ))}
             </Row>
@@ -179,9 +195,9 @@ const handleLoginRegister = () => setIsLoggedIn(true);
            <h5>
            
              <BsInfoCircleFill className="temp-info-icon" />
-            Please <strong>login</strong> first to coninue with Mandir booking.
+             <strong></strong>To continue with your Puja booking, please login or create an account.
            </h5>
-           <p>Kindly click on the <strong>Login</strong> or <strong>Register</strong> button to continue.</p>
+           <p>Kindly click on the <strong>Login</strong> or <strong>Register</strong> button below to continue.</p>
            <Row className="mb-3">
            <Col xs={12} md={6} className="mb-2 mb-md-0">
              <Link to="/Login">

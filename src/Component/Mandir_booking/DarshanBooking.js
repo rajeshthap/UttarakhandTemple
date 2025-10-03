@@ -234,7 +234,7 @@ const DarshanBooking = () => {
     //  otherwise send OTP
     try {
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/Sentotp/",
+   "https://brjobsedu.com/Temple_portal/api/send-otp/",
         {
           phone: formData.mobile_number,
         }
@@ -260,7 +260,7 @@ const DarshanBooking = () => {
   const handleVerifyOtp = async () => {
     try {
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/Verify/",
+   "https://brjobsedu.com/Temple_portal/api/verify-otp/",
         {
           phone: formData.mobile_number,
           otp: otp,

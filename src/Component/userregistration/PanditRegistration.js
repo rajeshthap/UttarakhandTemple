@@ -42,6 +42,7 @@ function PanditRegistration() {
     temple_association: "",
     pandit_image: "",
     aadhar_document: "",
+    role: "pandit",
   });
   const [fileErrors, setFileErrors] = useState({
     pandit_image: "",
@@ -347,7 +348,7 @@ function PanditRegistration() {
         }
       }
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/pandit/",
+        "https://brjobsedu.com/Temple_portal/api/all-reg/",
         formDataToSend,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
