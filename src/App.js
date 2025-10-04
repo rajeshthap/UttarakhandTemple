@@ -66,8 +66,12 @@ import DarshanBookingDashBoard from "./Component/dashboard/innerpage_dashboard/D
 import MandirBookingDashBoard from "./Component/dashboard/innerpage_dashboard/MandirBookingDashBoard";
 import SevaRegistrationDashBoard from "./Component/dashboard/innerpage_dashboard/SevaRegistrationDashBoard";
 import ChangePassword from "./Component/dashboard/innerpage_dashboard/ChangePassword";
-import Temple_LeftNav from "./Component/temp_dashboard/Temple_LeftNav";
-import Temple_DashBoard from "./Component/temp_dashboard/Temple_DashBoard";
+import TempleLeftNav from "./Component/temp_dashboard/TempleLeftNav";
+import TempleDashBoard from "./Component/temp_dashboard/TempleDashBoard";
+import Pandit_DashBoard from "./Component/pandit_dashboard/Pandit_DashBoard";
+import PanditLeftNav from "./Component/pandit_dashboard/PanditLeftNav";
+import PanditDonateDashBoard from "./Component/pandit_dashboard/pandit_innerdashborad/PanditDonateDashBoard";
+import PanditBookDashBoard from "./Component/pandit_dashboard/pandit_innerdashborad/PanditBookDashBoard";
 
 import SendOtpModal from "./Component/OTPModel/SendOtpModal";
 // import DashBoard from "./Component/dashboard/DashBoard";
@@ -79,7 +83,8 @@ function App() {
 
   const location = useLocation
     ();
-  const hiddenPaths = new Set(["/DashBoard", "/MainDashBoard", "/DonateDashboard", "/PanditDashBoard", "/LeftNav", "/PoojaBookingDashBoard", "/MandirBookingDashBoard", "/DarshanBookingDashBoard", "/SevaRegistrationDashBoard", "/ChangePassword","/Temple_DashBoard", "/Temple_LeftNav"]);
+  const hiddenPaths = new Set(["/DashBoard", "/MainDashBoard", "/DonateDashboard", "/PanditDashBoard", "/LeftNav", "/PoojaBookingDashBoard", "/MandirBookingDashBoard", "/DarshanBookingDashBoard", "/SevaRegistrationDashBoard",
+     "/ChangePassword","/TempleDashBoard", "/TempleLeftNav","/PanditLeftNav","/Pandit_DashBoard","/PanditDonateDashBoard","/PanditBookDashBoard"]);
   const shouldHideBars = hiddenPaths.has(location.pathname);
   const hideFooter = location.pathname === "/";
   return (
@@ -130,8 +135,13 @@ function App() {
         <Route path="/ChangePassword" element={<ChangePassword />} />
         <Route path="/TempleBookingInfo" element={<TempleBookingInfo />} />
 
-        <Route path="/Temple_DashBoard" element={<Temple_DashBoard />} />
-        <Route path="/Temple_LeftNav" element={<Temple_LeftNav />} />
+        <Route path="/TempleDashBoard" element={<TempleDashBoard />} />
+        <Route path="/TempleLeftNav" element={<TempleLeftNav />} />
+        <Route path="/Pandit_DashBoard" element={<Pandit_DashBoard />} />
+        <Route path="/PanditLeftNav" element={<PanditLeftNav />} />
+        <Route path="/PanditDonateDashBoard" element={<PanditDonateDashBoard />} />
+        <Route path="/PanditBookDashBoard" element={<PanditBookDashBoard />} />
+        
         <Route path="/LeftNav" element={<LeftNav />} />
         <Route path="/SendOtpModal" element={<SendOtpModal />} />
       </Routes>

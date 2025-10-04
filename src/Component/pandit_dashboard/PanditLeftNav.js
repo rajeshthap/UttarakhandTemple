@@ -8,7 +8,7 @@ import { FaAlignLeft } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
 import CompanyLogo from "../../assets/images/company-logo.png";
 import MenuIcon from "../../assets/images/menu_icon.png";
-import "../../assets/CSS/LeftNav.css";
+import "../../assets/CSS/PanditLeftNav.css"
 import ModifyAlert from "../Alert/ModifyAlert";
 import { BiDonateHeart } from "react-icons/bi";
 import { GiByzantinTemple } from "react-icons/gi";
@@ -17,7 +17,7 @@ import { FaRegFileLines } from "react-icons/fa6";
 import { TbPasswordUser } from "react-icons/tb";
 import { IoCalendarClear } from "react-icons/io5";
 
-function Temple_LeftNav() {
+function PanditLeftNav() {
   const [isNavClosed, setIsNavClosed] = useState(false);
   const [userName, setUserName] = useState("Loading...");
   const [activePath, setActivePath] = useState("");
@@ -79,9 +79,9 @@ function Temple_LeftNav() {
 };
 
   const navigationOptions = [
-    { icon: <RiDashboard3Line />, label: "Dashboard", path: "/Temple_DashBoard" },
-    { icon: <BiDonateHeart />, label: "Donate", path: "/DonateDashboard" },
-    { icon: <LiaCalendarCheck />, label: "Pandit Booking", path: "/PanditDashBoard" },
+    { icon: <RiDashboard3Line />, label: "Dashboard", path: "/Pandit_DashBoard" },
+    { icon: <BiDonateHeart />, label: "Donate", path: "/PanditDonateDashBoard" },
+    { icon: <LiaCalendarCheck />, label: "Pandit Booking", path: "/PanditBookDashBoard" },
     { icon: <IoCalendarClear />, label: "Pooja Booking", path: "/PoojaBookingDashBoard" },
     {
       icon: <GiByzantinTemple />,
@@ -137,7 +137,7 @@ function Temple_LeftNav() {
         setShow={setShowModifyAlert}
       />
           <div className="nd-msg">User: {userName}</div>
-          <div className="temp-dp" title="Click to logout" onClick={logout}>
+          <div className="pandit-dp" title="Click to logout" onClick={logout}>
             <div className="nd-log-icon">
               <LuLogOut />
             </div>
@@ -147,13 +147,13 @@ function Temple_LeftNav() {
 
       {/* Sidebar Navigation */}
       <div className={`navcontainer ${isNavClosed ? "navclose" : ""}`}>
-        <nav className="temp-nav">
+        <nav className="pandit-nav">
           <div className="nav-upper-options">
 
             <div className="nd-menu">
               <FaAlignLeft className="icn menuicn" onClick={toggleNav} />
               <div className="nd-user">User: {userName}</div>
-              <div className="nd-log-icon-mob-data" title="Logout" onClick={logout}>
+              <div className="pandit-log-icon-mob-data" title="Logout" onClick={logout}>
                 <LuLogOut />
               </div>
             </div>
@@ -162,7 +162,7 @@ function Temple_LeftNav() {
               <React.Fragment key={index}>
                 {option.download ? (
                   <div
-                    className={`temp-nav-option option${index + 1} ${activePath === option.fileUrl ? "active-nav-option" : ""
+                    className={`pandit-nav-option option${index + 1} ${activePath === option.fileUrl ? "active-nav-option-pandit" : ""
                       }`}
                     onClick={() => {
                       setActivePath(option.fileUrl);
@@ -177,7 +177,7 @@ function Temple_LeftNav() {
                 ) : (
                   <Link
                     to={option.path}
-                    className={`temp-nav-option option${index + 1} ${activePath === option.path ? "active-nav-option" : ""
+                    className={`pandit-nav-option option${index + 1} ${activePath === option.path ? "active-nav-option-pandit" : ""
                       }`}
                     onClick={() => setActivePath(option.path)}
                   >
@@ -196,4 +196,4 @@ function Temple_LeftNav() {
   );
 }
 
-export default Temple_LeftNav;
+export default PanditLeftNav;

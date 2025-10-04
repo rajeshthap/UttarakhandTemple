@@ -2,10 +2,25 @@ import axios from "axios";
 
 // Temple register api function
 
-export const Globaleapi = (payload) => {
-  return axios.post("https://brjobsedu.com/Temple_portal/api/all-reg/", payload, {
-    headers: { "Content-Type": "multipart/form-data" }
-  });
+export const Globaleapi = async (payload) => {
+  try {
+    const res = await axios.post(
+      "https://brjobsedu.com/Temple_portal/api/all-reg/",
+      payload,
+      {
+        headers: { "Content-Type": "multipart/form-data" }
+      }
+    );
+    return res.data; 
+  } catch (error) {
+    if (error.response) {
+      
+      return error.response.data;
+    } else {
+    
+      return { error: error.message };
+    }
+  }
 };
 
 

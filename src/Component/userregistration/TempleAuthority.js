@@ -405,7 +405,7 @@ function TempleAuthority() {
       setShowAlert(true);
       return;
     }
- setLoading(true);
+    setLoading(true);
     const payload = buildPayload();
     try {
       const registerResult = await Globaleapi(payload);
@@ -448,9 +448,7 @@ function TempleAuthority() {
       } else {
         alert("Error: " + error.message);
       }
-      
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -610,6 +608,7 @@ function TempleAuthority() {
                             )}
                           </Form.Group>
                         </Col>
+                     
                         <Col lg={4} md={4} sm={12}>
                           <Form.Group
                             className="mb-3"
@@ -917,6 +916,34 @@ function TempleAuthority() {
                             )}
                           </Form.Group>
                         </Col>
+                           <Col lg={4} md={4} sm={12}>
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
+                            <Form.Label className="temp-label">
+                              Trust Committee Type{" "}
+                              <span className="temp-span-star">*</span>
+                            </Form.Label>
+                            <Form.Select
+                              className="temp-form-control-option"
+                              name="temple_type"
+                              value={formData.temple_type}
+                              onChange={handleChange}
+                            >
+                              <option value="">trust_committee_type</option>
+                              <option value="mandal">Mandal</option>
+                              <option value="samiti">Samiti</option>
+                              <option value="trust">Trust</option>
+                              <option value="society">Society</option>
+                            </Form.Select>
+                            {formErrors.trust_committee_type && (
+                              <p className="text-danger">
+                                {formErrors.trust_committee_type}
+                              </p>
+                            )}
+                          </Form.Group>
+                        </Col>
                         <Col lg={4} md={4} sm={12}>
                           <Form.Group
                             className="mb-3"
@@ -1154,7 +1181,6 @@ function TempleAuthority() {
                                       {fileErrors[doc.key]}
                                     </div>
                                   )}
-                              
                                 </fieldset>
                               </Col>
                               <Col
@@ -1206,27 +1232,27 @@ function TempleAuthority() {
                         ))}
                       </Row>
                       <div className="gap-3 mt-3 Temp-btn-submit">
-                                             <Button
-                                               variant="temp-submit-btn"
-                                               className="temp-submit-btn mx-3"
-                                               type="submit"
-                                               disabled={loading}
-                                               onClick={handleSubmit}
-                                             >
-                                               {loading ? (
-                                                 <>
-                                                   <span
-                                                     className="spinner-border spinner-border-sm me-2"
-                                                     role="status"
-                                                     aria-hidden="true"
-                                                   ></span>
-                                                   Submitting...
-                                                 </>
-                                               ) : (
-                                                 "Register Now"
-                                               )}
-                                             </Button>
-                                           </div>
+                        <Button
+                          variant="temp-submit-btn"
+                          className="temp-submit-btn mx-3"
+                          type="submit"
+                          disabled={loading}
+                          onClick={handleSubmit}
+                        >
+                          {loading ? (
+                            <>
+                              <span
+                                className="spinner-border spinner-border-sm me-2"
+                                role="status"
+                                aria-hidden="true"
+                              ></span>
+                              Submitting...
+                            </>
+                          ) : (
+                            "Register Now"
+                          )}
+                        </Button>
+                      </div>
                     </>
                   )}
                 </Row>

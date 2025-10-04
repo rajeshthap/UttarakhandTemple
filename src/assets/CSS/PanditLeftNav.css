@@ -56,8 +56,8 @@
   margin-top: 64px;
 }
 
-.active-nav-option {
-  background-color: black !important;
+.active-nav-option-pandit {
+  background-color: black;
   color: #fff !important;
   border-left: 4px solid white;
 }
@@ -141,10 +141,7 @@
   font-weight: 500;
 }
 
-
-
-
-.temp-dp {
+.pandit-dp {
   font-size: var(--nd-space-500);
   background-color:var(--temp-black) !important;
   border-radius: 50%;
@@ -179,11 +176,10 @@
   background-color: #9e9e9eb2;
 }
 
-
-.temp-nav {
+.pandit-nav {
   min-height: 100vh;
   width: 250px;
-  background-color: #4b76c0;
+  background-color: blue !important;
   position: absolute;
   top: 0px;
   left: 00;
@@ -217,7 +213,7 @@
   width: 68px;
 }
 
-.temp-nav-option {
+.pandit-nav-option {
   width: 250px;
   height: 60px;
 
@@ -227,7 +223,7 @@
   transition: all 0.1s ease-in-out;
 }
 
-.temp-nav-option:hover {
+.pandit-nav-option:hover {
  border-left: 2px solid var(--nd-white);
     background-color: #212529 !important;
   cursor: pointer;
@@ -262,7 +258,7 @@
   border-radius: 4px;
 }
 
-.temp-nav h3 {
+.pandit-nav h3 {
   font-size: var(--nd-space-300) !important;
 }
 
@@ -320,11 +316,11 @@ span.nav-label {
 
 
 
-  .temp-nav-option {
+  .pandit-nav-option {
     gap: 30px;
   }
 
-  .temp-nav-option h3 {
+  .pandit-nav-option h3 {
     font-size: 15px;
   }
 
@@ -341,7 +337,7 @@ span.nav-label {
     justify-content:space-between;
   }
   
-  .nd-log-icon-mob-data {
+  .pandit-log-icon-mob-data {
     background-color: var(--temp-org);
     width: 30px;
     height: 30px;
@@ -362,12 +358,12 @@ span.nav-label {
     margin-top: 1% !important;
   }
 
-  .temp-nav-option {
+  .pandit-nav-option {
     gap: 30px;
     width: 100%;
   }
 
-  .temp-nav-option h3 {
+  .pandit-nav-option h3 {
     font-size: 20px;
   }
 
@@ -379,7 +375,7 @@ span.nav-label {
     left: -100vw;
   }
 
-  .temp-nav {
+  .pandit-nav {
     width: 100%;
     position: absolute;
     z-index: 999;
@@ -394,7 +390,7 @@ span.nav-label {
 }
 
 @media screen and (max-width: 768px) {
-  .nd-log-icon-mob-data {
+  .pandit-log-icon-mob-data {
     background-color: var(--nd-blue-hover);
     width: 30px;
     height: 30px;
@@ -410,7 +406,7 @@ span.nav-label {
 
 @media screen and (max-width: 490px) {
 
-  .nd-log-icon-mob-data {
+  .pandit-log-icon-mob-data {
     background-color: var(--temp-org);
     width: 30px;
     height: 30px;
@@ -473,12 +469,12 @@ span.nav-label {
 
 
 
-  .temp-nav-option {
+  .pandit-nav-option {
     gap: 25px;
     width: 100%;
   }
 
-  .temp-nav-option h3 {
+  .pandit-nav-option h3 {
     font-size: 12px;
   }
 

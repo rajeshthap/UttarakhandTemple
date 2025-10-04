@@ -1,0 +1,114 @@
+
+.pandit-rwd-table {
+    margin: auto;
+    min-width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+}
+
+.pandit-rwd-table tr:first-child {
+    border-top: none;
+    background: var(--temp-primary);
+    color: #fff;
+}
+
+.pandit-rwd-table tr {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    background-color: #f5f9fc;
+}
+
+.pandit-rwd-table tr:nth-child(odd):not(:first-child) {
+    background-color: #ebf3f9;
+}
+
+.pandit-rwd-table th {
+    display: none;
+}
+
+.pandit-rwd-table td {
+    display: block;
+}
+
+.pandit-rwd-table td:first-child {
+    margin-top: .5em;
+}
+
+.pandit-rwd-table td:last-child {
+    margin-bottom: .5em;
+}
+
+.pandit-rwd-table td:before {
+    content: attr(data-th) ": ";
+
+    width: 120px;
+    display: inline-block;
+    color: #000;
+}
+.pandit-card-bg {
+    background-color: var(--temp-black) !important;
+    color: var(--temp-white) !important;
+    text-align: center !important;
+}
+
+.pandit-card-bg .card-subtitle {
+    color: var(--temp-white) !important;
+    font-size: var(--temp-space-500) !important;
+}
+.pandit-rwd-table th,
+.pandit-rwd-table td {
+    text-align: left;
+}
+
+.pandit-rwd-table {
+    color: #333;
+    border-radius: .4em;
+    overflow: hidden;
+}
+
+.pandit-rwd-table tr {
+    border-color: #bfbfbf;
+}
+
+.pandit-rwd-table th,
+.pandit-rwd-table td {
+    padding: .5em 1em;
+}
+
+@media screen and (max-width: 601px) {
+    .pandit-rwd-table tr:nth-child(2) {
+        border-top: none;
+    }
+}
+
+@media screen and (min-width: 600px) {
+    .pandit-rwd-table tr:hover:not(:first-child) {
+        background-color: #d8e7f3;
+    }
+
+    .pandit-rwd-table td:before {
+        display: none;
+    }
+
+    .pandit-rwd-table th,
+    .pandit-rwd-table td {
+        display: table-cell;
+        padding: .25em .5em;
+    }
+
+    .pandit-rwd-table th:first-child,
+    .pandit-rwd-table td:first-child {
+        padding-left: 0;
+    }
+
+    .pandit-rwd-table th:last-child,
+    .pandit-rwd-table td:last-child {
+        padding-right: 0;
+    }
+
+    .pandit-rwd-table th,
+    .pandit-rwd-table td {
+        padding: 1em !important;
+        font-size: var(--temp-space-300);
+    }
+}
