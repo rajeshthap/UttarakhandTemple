@@ -68,8 +68,8 @@
 }
 
 .card-image-wrapper {
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height:150px;
     overflow: hidden;
     border-radius: 50% !important;
     /* border-radius: 12px 12px 0 0; */

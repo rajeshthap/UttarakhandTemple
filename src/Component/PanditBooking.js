@@ -7,9 +7,9 @@ import Select from "react-select";
 import { FaCheck, FaUsersLine } from "react-icons/fa6";
 import { MdOutlineDateRange, MdStarRate } from "react-icons/md";
 import { Link } from "react-router-dom";
-import Kedarnath from "../assets/images/Kedarnath-Temple.png";
-import Gangotri from "../assets/images/Gangotri-Temple.png";
-import Yamunotri from "../assets/images/yamunotri-temple.jpg";
+//import Kedarnath from "../assets/images/Kedarnath-Temple.png";
+//import Gangotri from "../assets/images/Gangotri-Temple.png";
+//import Yamunotri from "../assets/images/yamunotri-temple.jpg";
 import Cermanay from "../assets/images/Ceremony_image.png";
 import Engagement from "../assets/images/Engagement.png";
 import Ganesh from "../assets/images/Ganesh.png";
@@ -75,7 +75,6 @@ const cardData = [
   { id: "9", title: "Satyanarayan Puja", text: "सत्यनारायण व्रत कथा एवं पूजा", price: 5100, img: Satyanarayan },
   { id: "10", title: "Bhoomi Puja", text: "नवीन भूमि पूजा", price: 5100, img: Bhoomi },
   { id: "11", title: "Griha Pravesh Puja", text: "नवीन गृह प्रवेश पूजा", price: 5100, img: Griha },
-  { id: "12", title: "Vivah (Marriage)", text: "विवाह", price: 5100, img: Yamunotri },
 ];
 
 const PanditBooking = () => {
@@ -120,51 +119,43 @@ const PanditBooking = () => {
         <Container className="temp-container temp-container-details">
           <h1>Pandit Booking</h1>
           <p>Experienced Pandit Ji for every Puja, just a click away</p>
-          {/* Registration and Login Buttons */}
-          {/* <div className="d-flex justify-content-end mb-3">
-                <Link to="/OnlineHirePandit">
-                  <Button variant="primary" className="mx-2">Registration</Button>
-                </Link>
-                <Link to="/DevoteeLogin">
-                  <Button variant="secondary" className="mx-2">Login</Button>
-                </Link>
-              </div> */}
-                 
+          
+
           <Row>
             {/* Left Side Cards */}
             <Col lg={7} md={7} sm={12} className="mt-2">
-               <div className="text-center p-4 my-4 temp-regis desktop-mobile "
->
-                          <h5>
+              <div className="text-center p-4 my-4 temp-regis desktop-mobile "
+              >
+                <h5>
 
-                            <BsInfoCircleFill className="temp-info-icon" />
-                            <strong></strong>To continue with your Puja booking, please login or create an account.
-                          </h5>
-                          <p>Kindly click on the <strong>Login</strong> or <strong>Register</strong> button below to continue.</p>
-                          <Row className="mb-3">
-                            <Col xs={12} md={6} className="mb-2 mb-md-0">
-                              <Link to="/Login">
-                                <Button
-                                  className="w-100 temp-login-btn"
-                                  onClick={handleLoginRegister}
-                                >
-                                  Login
-                                </Button>
-                              </Link>
-                            </Col>
-                            <Col xs={12} md={6}>
-                              <Link to="/DevoteeRegistration">
-                                <Button
-                                  className="w-100 temp-regis-btn"
-                                  onClick={handleLoginRegister}
-                                >
-                                  Register
-                                </Button>
-                              </Link>
-                            </Col>
-                          </Row>
+                  <BsInfoCircleFill className="temp-info-icon" />
+                  To continue with your Puja booking, please <strong>login</strong> or create an account.
+                </h5>
+                <p>Kindly click on the <strong>Login</strong> or <strong>Register</strong> button below to continue.</p>
+                <Row className="mb-3">
+                  <Col xs={12} md={6} className="mb-2 mb-md-0">
+                    <Link to="/Login">
+                      <Button
+                        className="w-100 temp-login-btn"
+                        onClick={handleLoginRegister}
+                      >
+                        Login
+                      </Button>
+                    </Link>
+                  </Col>
+                  <Col xs={12} md={6}>
+                    <Link to="/DevoteeRegistration">
+                      <Button
+                        className="w-100 temp-regis-btn"
+                        onClick={handleLoginRegister}
+                      >
+                        Register
+                      </Button>
+                    </Link>
+                  </Col>
+                </Row>
 
-                        </div>
+              </div>
               <Row className="g-4">
                 {currentCards.map((item) => (
                   <Col
@@ -195,7 +186,7 @@ const PanditBooking = () => {
                     {/* Popup Modal for Register/Login message */}
                     <Modal show={showPopup} onHide={() => setShowPopup(false)} centered>
                       <Modal.Header closeButton>
-                      
+
                       </Modal.Header>
                       <Modal.Body>
                         <div
@@ -261,7 +252,7 @@ const PanditBooking = () => {
                 <h5>
 
                   <BsInfoCircleFill className="temp-info-icon" />
-                  <strong></strong>To continue with your Puja booking, please login or create an account.
+                  To continue with your Puja booking, please <strong>login </strong>or create an account.
                 </h5>
                 <p>Kindly click on the <strong>Login</strong> or <strong>Register</strong> button below to continue.</p>
                 <Row className="mb-3">

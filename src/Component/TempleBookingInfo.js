@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Accordion, Button, Col, Container, Row, Form } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { FaCheck } from "react-icons/fa6";
 import { MdOutlineDateRange } from "react-icons/md";
 import { FaUsersLine } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { BsInfoCircleFill } from "react-icons/bs";
- import DatePicker from "react-datepicker";
+import DatePicker from "react-datepicker";
 
 // Correct image imports
 import Kedarnath from "../assets/images/Kedarnath-Temple.png";
@@ -62,14 +63,15 @@ const TempleBookingInfo = () => {
   // pagination states
   const itemsPerPage = 8;
   const [currentPage, setCurrentPage] = useState(1);
+  const [showPopup, setShowPopup] = useState(false);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentCards = cardData.slice(indexOfFirstItem, indexOfLastItem);
   const [selectedDateTime, setSelectedDateTime] = useState(null);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
-// const [, setPujaDate] = useState("");
-// const [, setPujaTime] = useState("");
+  // const [, setPujaDate] = useState("");
+  // const [, setPujaTime] = useState("");
   // Default select the first ceremony on mount
   useEffect(() => {
     if (cardData.length > 0) {
@@ -92,26 +94,59 @@ const TempleBookingInfo = () => {
         <Row>
           {/* Left Side Cards */}
           <Col lg={7} md={7} sm={12} className="mt-2">
+            <div className="text-center p-4 my-4 temp-regis desktop-mobile "
+            >
+              <h5>
+
+                <BsInfoCircleFill className="temp-info-icon" />
+                <strong></strong>To continue with your Mandir booking, please login or create an account.
+              </h5>
+              <p>Kindly click on the <strong>Login</strong> or <strong>Register</strong> button below to continue.</p>
+              <Row className="mb-3">
+                <Col xs={12} md={6} className="mb-2 mb-md-0">
+                  <Link to="/Login">
+                    <Button
+                      className="w-100 temp-login-btn"
+                      onClick={handleLoginRegister}
+                    >
+                      Login
+                    </Button>
+                  </Link>
+                </Col>
+                <Col xs={12} md={6}>
+                  <Link to="/DevoteeRegistration">
+                    <Button
+                      className="w-100 temp-regis-btn"
+                      onClick={handleLoginRegister}
+                    >
+                      Register
+                    </Button>
+                  </Link>
+                </Col>
+              </Row>
+
+            </div>
             <Row className="g-4">
               {currentCards.map((item) => (
                 <Col
-                  lg={4}
+                  lg={3}
                   md={6}
-                  sm={12}
+                  sm={6}
+                  xs={6}
                   key={item.id}
                   onClick={() => setSelectedCard(item)}
                   style={{ cursor: "pointer" }}
                 >
                   <div
-                    className={`card-item ${
-                      selectedCard?.id === item.id ? "active-card" : ""
-                    }`}
+                    className={`card-item ${selectedCard?.id === item.id ? "active-card" : ""
+                      }`}
                   >
                     <div className="card-image-wrapper">
                       <img
                         src={item.img}
                         alt={item.title}
                         className="card-image"
+                        onClick={() => setShowPopup(true)}
                       />
                     </div>
                     <div className="card-text-temp">
@@ -119,10 +154,59 @@ const TempleBookingInfo = () => {
                       <h6>{item.text}</h6>
                     </div>
                   </div>
+                  
+                     {/* Popup Modal for Register/Login message */}
+                    <Modal show={showPopup} onHide={() => setShowPopup(false)} centered>
+                      <Modal.Header closeButton>
+                      
+                      </Modal.Header>
+                      <Modal.Body>
+                        <div
+                          className="text-center p-4 my-4 temp-regis"
+
+                        >
+                          <h5>
+
+                            <BsInfoCircleFill className="temp-info-icon" />
+                            <strong></strong>To continue with your Puja booking, please login or create an account.
+                          </h5>
+                          <p>Kindly click on the <strong>Login</strong> or <strong>Register</strong> button below to continue.</p>
+                          <Row className="mb-3">
+                            <Col xs={12} md={6} className="mb-2 mb-md-0">
+                              <Link to="/Login">
+                                <Button
+                                  className="w-100 temp-login-btn"
+                                  onClick={handleLoginRegister}
+                                >
+                                  Login
+                                </Button>
+                              </Link>
+                            </Col>
+                            <Col xs={12} md={6}>
+                              <Link to="/DevoteeRegistration">
+                                <Button
+                                  className="w-100 temp-regis-btn"
+                                  onClick={handleLoginRegister}
+                                >
+                                  Register
+                                </Button>
+                              </Link>
+                            </Col>
+                          </Row>
+
+                        </div>
+                        {/* <p className="text-center">Please register and login first</p> */}
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button variant="primary" onClick={() => setShowPopup(false)}>
+                          Close
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
                 </Col>
               ))}
             </Row>
-      
+
             {/* Pagination */}
             <PagingNation
               totalItems={cardData.length}
@@ -131,46 +215,46 @@ const TempleBookingInfo = () => {
             />
           </Col>
 
-          <Col lg={5} md={5} sm={12} className="mt-2 container-box-p">
-             <div 
-  className="text-center p-4 my-4 temp-regis"
->
-  <h5>
-    <BsInfoCircleFill className="temp-info-icon" />
-  To continue with your Mandir booking, please <strong>login</strong> or create an account.
-  </h5>
-  <p>Click the <strong>Login</strong> or <strong>Register</strong> button below to proceed.</p>
-  <Row className="mb-3">
-  <Col xs={12} md={6} className="mb-2 mb-md-0">
-    <Link to="/Login">
-      <Button
-        className="w-100 temp-login-btn"
-        onClick={handleLoginRegister}
-      >
-        Login
-      </Button>
-    </Link>
-  </Col>
-  <Col xs={12} md={6}>
-    <Link to="/DevoteeRegistration">
-      <Button
-        className="w-100 temp-regis-btn"
-        onClick={handleLoginRegister}
-      >
-        Register
-      </Button>
-    </Link>
-  </Col>
-</Row>
+          <Col lg={5} md={5} sm={12} className="mt-2 temp-right-side rhs-gob-mob">
+            <div
+              className="text-center p-4 my-4 temp-regis"
+            >
+              <h5>
+                <BsInfoCircleFill className="temp-info-icon" />
+                To continue with your Mandir booking, please <strong>login</strong> or create an account.
+              </h5>
+              <p>Kindly click on the <strong>Login</strong> or <strong>Register</strong> button below to continue.</p>
+              <Row className="mb-3">
+                <Col xs={12} md={6} className="mb-2 mb-md-0">
+                  <Link to="/Login">
+                    <Button
+                      className="w-100 temp-login-btn"
+                      onClick={handleLoginRegister}
+                    >
+                      Login
+                    </Button>
+                  </Link>
+                </Col>
+                <Col xs={12} md={6}>
+                  <Link to="/DevoteeRegistration">
+                    <Button
+                      className="w-100 temp-regis-btn"
+                      onClick={handleLoginRegister}
+                    >
+                      Register
+                    </Button>
+                  </Link>
+                </Col>
+              </Row>
 
-</div>
+            </div>
 
             <div
               className="tem-rhs-info temp-right-side-style"
-              // style={{
-              //   pointerEvents: isLoggedIn ? "auto" : "none", 
-              //   opacity: isLoggedIn ? 1 : 0.5, 
-              // }}
+            // style={{
+            //   pointerEvents: isLoggedIn ? "auto" : "none", 
+            //   opacity: isLoggedIn ? 1 : 0.5, 
+            // }}
             >
               <h1>Temple Booking</h1>
 
@@ -202,23 +286,23 @@ const TempleBookingInfo = () => {
                             </option>
                           ))}
                         </Form.Select>
-   <Form.Group className="mb-3 mt-3">
+                        <Form.Group className="mb-3 mt-3">
                           <Form.Label className="temp-label mb-2">
                             Pooja Date & Time <span className="temp-span-star">*</span>
                           </Form.Label>
                           <div>
-                          <DatePicker
-                            selected={selectedDateTime}
-                            onChange={setSelectedDateTime}
-                            showTimeSelect
-                            timeFormat="hh:mm aa"
-                            timeIntervals={30}
-                            dateFormat="MMMM d, yyyy h:mm aa"
-                            placeholderText="Select Date and time"
-                            className="form-control temp-form-control-option w-100"
-                            minDate={new Date()}
-                            required
-                          />
+                            <DatePicker
+                              selected={selectedDateTime}
+                              onChange={setSelectedDateTime}
+                              showTimeSelect
+                              timeFormat="hh:mm aa"
+                              timeIntervals={30}
+                              dateFormat="MMMM d, yyyy h:mm aa"
+                              placeholderText="Select Date and time"
+                              className="form-control temp-form-control-option w-100"
+                              minDate={new Date()}
+                              required
+                            />
                           </div>
                         </Form.Group>
                         {/* Time */}
@@ -277,58 +361,58 @@ const TempleBookingInfo = () => {
 
                         {/* Button */}
                         <div className="gap-3 mt-3 mb-3 Temp-btn-submit">
-                         
-                            <Button
-                              variant="temp-submit-btn"
-                              className="temp-submit-btn mx-3"
-                              type="submit"
-                              onClick={handleShow}
-                            >
-                              <FaCheck /> Proceed for devotee details
-                            </Button>
-                        
+
+                          <Button
+                            variant="temp-submit-btn"
+                            className="temp-submit-btn mx-3"
+                            type="submit"
+                            onClick={handleShow}
+                          >
+                            <FaCheck /> Proceed for devotee details
+                          </Button>
+
                         </div>
 
-                          <Accordion alwaysOpen={false} className="temp-accordin-btn"> 
-      <Accordion.Item eventKey="0" className="temp-accordin-btn">
-        <Accordion.Header className="temp-accordin-btn">   <div>
-               <img src={Diya} alt="img not found" className="img-fluid temp-img-btn"></img>
-            </div> Ved Path <span>(₹2500 per Person)</span></Accordion.Header>
-        <Accordion.Body>
-          <Form.Group className="mb-3">
-          
-           Ved Path <span>(₹2500 per Person)</span>
-          </Form.Group>
-        </Accordion.Body>
-      </Accordion.Item>
-    </Accordion>
+                        <Accordion alwaysOpen={false} className="temp-accordin-btn">
+                          <Accordion.Item eventKey="0" className="temp-accordin-btn">
+                            <Accordion.Header className="temp-accordin-btn">   <div>
+                              <img src={Diya} alt="img not found" className="img-fluid temp-img-btn"></img>
+                            </div> Ved Path <span>(₹2500 per Person)</span></Accordion.Header>
+                            <Accordion.Body>
+                              <Form.Group className="mb-3">
 
-                      <Accordion alwaysOpen={false} className="temp-accordin-btn"> 
-      <Accordion.Item eventKey="0" className="temp-accordin-btn">
-        <Accordion.Header className="temp-accordin-btn">   <div>
-               <img src={Diya} alt="img not found" className="img-fluid temp-img-btn"></img>
-            </div> Ved Path <span>(₹2500 per Person)</span></Accordion.Header>
-        <Accordion.Body>
-          <Form.Group className="mb-3">
-          
-           Ved Path <span>(₹2500 per Person)</span>
-          </Form.Group>
-        </Accordion.Body>
-      </Accordion.Item>
-    </Accordion>
-                      <Accordion alwaysOpen={false} className="temp-accordin-btn"> 
-      <Accordion.Item eventKey="0" className="temp-accordin-btn">
-        <Accordion.Header className="temp-accordin-btn">   <div>
-               <img src={Diya} alt="img not found" className="img-fluid temp-img-btn"></img>
-            </div> Ved Path <span>(₹2500 per Person)</span></Accordion.Header>
-        <Accordion.Body>
-          <Form.Group className="mb-3">
-          
-           Ved Path <span>(₹2500 per Person)</span>
-          </Form.Group>
-        </Accordion.Body>
-      </Accordion.Item>
-    </Accordion>
+                                Ved Path <span>(₹2500 per Person)</span>
+                              </Form.Group>
+                            </Accordion.Body>
+                          </Accordion.Item>
+                        </Accordion>
+
+                        <Accordion alwaysOpen={false} className="temp-accordin-btn">
+                          <Accordion.Item eventKey="0" className="temp-accordin-btn">
+                            <Accordion.Header className="temp-accordin-btn">   <div>
+                              <img src={Diya} alt="img not found" className="img-fluid temp-img-btn"></img>
+                            </div> Ved Path <span>(₹2500 per Person)</span></Accordion.Header>
+                            <Accordion.Body>
+                              <Form.Group className="mb-3">
+
+                                Ved Path <span>(₹2500 per Person)</span>
+                              </Form.Group>
+                            </Accordion.Body>
+                          </Accordion.Item>
+                        </Accordion>
+                        <Accordion alwaysOpen={false} className="temp-accordin-btn">
+                          <Accordion.Item eventKey="0" className="temp-accordin-btn">
+                            <Accordion.Header className="temp-accordin-btn">   <div>
+                              <img src={Diya} alt="img not found" className="img-fluid temp-img-btn"></img>
+                            </div> Ved Path <span>(₹2500 per Person)</span></Accordion.Header>
+                            <Accordion.Body>
+                              <Form.Group className="mb-3">
+
+                                Ved Path <span>(₹2500 per Person)</span>
+                              </Form.Group>
+                            </Accordion.Body>
+                          </Accordion.Item>
+                        </Accordion>
                       </Form.Group>
                     </Accordion.Body>
                   </Accordion.Item>
