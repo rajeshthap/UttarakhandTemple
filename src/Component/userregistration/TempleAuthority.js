@@ -32,13 +32,13 @@ function TempleAuthority() {
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-    state: "",
-    country: "",
-    city: "",
+    state: "s",
+    country: "s",
+    city: "s",
     zip_code: "",
     temple_name: "",
     password: "",
-    confirm_password: "",
+    // confirm_password: "",
     temple_type: "",
     temple_facility: "",
     temple_address: "",
@@ -50,12 +50,13 @@ function TempleAuthority() {
     trust_committee_type: "",
     trust_committee_details: "",
     additional_details: "",
-    bank_name: "",
+    bank_name: "s",
     account_number: "",
-    confirm_account_number: "",
+    // confirm_account_number: "",
     account_type: "",
     account_name: "",
     ifsc_code: "",
+    role:"temple",
   });
 
   const [documents, setDocuments] = useState({
@@ -399,59 +400,64 @@ function TempleAuthority() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateForm()) {
-      setAlertMessage("Please fix validation errors before submitting");
+  e.preventDefault();
+  if (!validateForm()) {
+    setAlertMessage("Please fix validation errors before submitting");
+    setShowAlert(true);
+    return;
+  }
+
+  setLoading(true);
+  const payload = buildPayload();
+
+  try {
+    const registerResult = await Globaleapi(payload);
+    if (registerResult?.data?.success || registerResult?.status === 201) {
+      setAlertMessage("Temple Registered Successfully!");
       setShowAlert(true);
-      return;
+
+      setTimeout(() => {
+        setShowAlert(false);
+        navigate("/AuthorityLogin");
+      }, 2000);
+    } else {
+      setAlertMessage(
+        "Registration failed: " +
+          (registerResult?.data?.message || "Unknown error")
+      );
+      setShowAlert(true);
     }
-    setLoading(true);
-    const payload = buildPayload();
-    try {
-      const registerResult = await Globaleapi(payload);
-      if (registerResult?.data) {
-        setAlertMessage("Temple Registered Successfully!");
-        setShowAlert(true);
-        setTimeout(() => {
-          setShowAlert(false);
-          navigate("/AuthorityLogin");
-        }, 2000);
-      }
-    } catch (error) {
-      // console.log(error.response?.data);
-      if (error.response && error.response.data) {
-        const errorData = error.response.data;
-        if (
-          errorData.error &&
-          errorData.error.toLowerCase().includes("email")
-        ) {
-          setFormErrors((prev) => ({
-            ...prev,
-            email: errorData.error,
-          }));
-          document.getElementsByName("email")[0]?.focus();
-        } else if (
-          errorData.error &&
-          errorData.error.toLowerCase().includes("phone")
-        ) {
-          setFormErrors((prev) => ({
-            ...prev,
-            phone: errorData.error,
-          }));
-          document.getElementsByName("phone")[0]?.focus();
-        } else {
-          setAlertMessage(
-            "Error: " + (errorData.message || "Something went wrong")
-          );
-          setShowAlert(true);
-        }
+  } catch (error) {
+    if (error.response && error.response.data) {
+      const errorData = error.response.data;
+
+      if (
+        errorData.error &&
+        errorData.error.toLowerCase().includes("email")
+      ) {
+        setFormErrors((prev) => ({ ...prev, email: errorData.error }));
+        document.getElementsByName("email")[0]?.focus();
+      } else if (
+        errorData.error &&
+        errorData.error.toLowerCase().includes("phone")
+      ) {
+        setFormErrors((prev) => ({ ...prev, phone: errorData.error }));
+        document.getElementsByName("phone")[0]?.focus();
       } else {
-        alert("Error: " + error.message);
+        setAlertMessage(
+          "Error: " + (errorData.message || "Something went wrong")
+        );
+        setShowAlert(true);
       }
-    } finally {
-      setLoading(false);
+    } else {
+      setAlertMessage("Error: " + error.message);
+      setShowAlert(true);
     }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="temp-donate">
@@ -608,7 +614,6 @@ function TempleAuthority() {
                             )}
                           </Form.Group>
                         </Col>
-                     
                         <Col lg={4} md={4} sm={12}>
                           <Form.Group
                             className="mb-3"
@@ -916,7 +921,7 @@ function TempleAuthority() {
                             )}
                           </Form.Group>
                         </Col>
-                           <Col lg={4} md={4} sm={12}>
+                        <Col lg={4} md={4} sm={12}>
                           <Form.Group
                             className="mb-3"
                             controlId="exampleForm.ControlInput1"
@@ -927,11 +932,11 @@ function TempleAuthority() {
                             </Form.Label>
                             <Form.Select
                               className="temp-form-control-option"
-                              name="temple_type"
-                              value={formData.temple_type}
+                              name="trust_committee_type"
+                              value={formData.trust_committee_type}
                               onChange={handleChange}
                             >
-                              <option value="">trust_committee_type</option>
+                              <option value="">Select Trust Committee</option>
                               <option value="mandal">Mandal</option>
                               <option value="samiti">Samiti</option>
                               <option value="trust">Trust</option>
@@ -1181,6 +1186,7 @@ function TempleAuthority() {
                                       {fileErrors[doc.key]}
                                     </div>
                                   )}
+                              
                                 </fieldset>
                               </Col>
                               <Col
@@ -1232,27 +1238,27 @@ function TempleAuthority() {
                         ))}
                       </Row>
                       <div className="gap-3 mt-3 Temp-btn-submit">
-                        <Button
-                          variant="temp-submit-btn"
-                          className="temp-submit-btn mx-3"
-                          type="submit"
-                          disabled={loading}
-                          onClick={handleSubmit}
-                        >
-                          {loading ? (
-                            <>
-                              <span
-                                className="spinner-border spinner-border-sm me-2"
-                                role="status"
-                                aria-hidden="true"
-                              ></span>
-                              Submitting...
-                            </>
-                          ) : (
-                            "Register Now"
-                          )}
-                        </Button>
-                      </div>
+                                             <Button
+                                               variant="temp-submit-btn"
+                                               className="temp-submit-btn mx-3"
+                                               type="submit"
+                                               disabled={loading}
+                                               onClick={handleSubmit}
+                                             >
+                                               {loading ? (
+                                                 <>
+                                                   <span
+                                                     className="spinner-border spinner-border-sm me-2"
+                                                     role="status"
+                                                     aria-hidden="true"
+                                                   ></span>
+                                                   Submitting...
+                                                 </>
+                                               ) : (
+                                                 "Register Now"
+                                               )}
+                                             </Button>
+                                           </div>
                     </>
                   )}
                 </Row>
