@@ -103,9 +103,9 @@ function TempleAuthority() {
 
     // Zip Code
     if (!formData.zip_code) {
-      errors.zip_code = "PIN code is required";
+      errors.zip_code = "Pin code is required";
     } else if (!/^\d{6}$/.test(formData.zip_code)) {
-      errors.zip_code = "PIN code must be 6 digits";
+      errors.zip_code = "Pin code must be 6 digits";
     }
 
     // Temple Name
@@ -229,7 +229,7 @@ function TempleAuthority() {
         }
         break;
       case "zip_code":
-        if (!/^\d{6}$/.test(value)) error = "PIN Code must be 6 digits";
+        if (!/^\d{6}$/.test(value)) error = "Pin Code must be 6 digits";
         break;
       case "password":
         if (
@@ -721,14 +721,14 @@ function TempleAuthority() {
                             controlId="exampleForm.ControlInput1"
                           >
                             <Form.Label className="temp-label">
-                              PIN Code <span className="temp-span-star">*</span>
+                              Pin Code <span className="temp-span-star">*</span>
                             </Form.Label>
                             <Form.Control
                               type="number"
                               name="zip_code"
                               value={formData.zip_code}
                               onChange={handleChange}
-                              placeholder="Enter PIN Code"
+                              placeholder="Enter Pin Code"
                               className="temp-form-control"
                             />
                             {formErrors.zip_code && (

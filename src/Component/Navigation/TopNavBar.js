@@ -18,11 +18,7 @@ const TopNavBar = () => {
               </Navbar.Brand>
               <Navbar.Toggle aria-controls="navbarScroll" />
               <Navbar.Collapse id="navbarScroll">
-                <Nav
-                  className="me-auto my-2 my-lg-0 px-2"
-
-                  navbarScroll
-                >
+                <Nav className="me-auto my-2 my-lg-0 px-2" navbarScroll>
                   <NavDropdown title="Home" id="navbarScrollingDropdown">
                     <NavDropdown.Item href="/AboutUs">
                       About Us
@@ -37,7 +33,7 @@ const TopNavBar = () => {
                       Contact Info
                     </NavDropdown.Item>
                     <NavDropdown.Item href="/MandirMahadevaya">
-                      Mandir aur platform ka overview
+                      Mandir & Mahadevaya Platform Overview{" "}
                     </NavDropdown.Item>
                     <NavDropdown.Item href="/SpecialAnnouncements">
                       Special announcements / Upcoming Events
@@ -55,7 +51,6 @@ const TopNavBar = () => {
                     <NavDropdown.Item href="/DarshanBooking">
                       Darshan Booking
                     </NavDropdown.Item>
-
                   </NavDropdown>
 
                   <NavDropdown
@@ -77,13 +72,14 @@ const TopNavBar = () => {
                     title="Pandit Booking"
                     id="navbarScrollingDropdown"
                   >
-
                     <NavDropdown.Item href="/PanditBooking">
                       Hire a Pandit
                     </NavDropdown.Item>
                   </NavDropdown>
 
-                  <Nav.Link href="/TempleFacilityBooking">Temple Facility Booking</Nav.Link>
+                  <Nav.Link href="/TempleFacilityBooking">
+                    Temple Facility Booking
+                  </Nav.Link>
 
                   {/* <NavDropdown title="Temple Facilities" id="navbarScrollingDropdown">
                     <NavDropdown.Item href="#action3">
@@ -111,10 +107,13 @@ const TopNavBar = () => {
                 </Nav>
 
                 <Nav.Link href="/">
-
-                  <button type="button" class="solution-btn " fdprocessedid="1ue26e"><FaRocketchat /> परामर्श</button>
-
-
+                  <button
+                    type="button"
+                    class="solution-btn "
+                    fdprocessedid="1ue26e"
+                  >
+                    <FaRocketchat /> परामर्श
+                  </button>
                 </Nav.Link>
                 {/* <Form className="d-flex">
                   <div className="search">
