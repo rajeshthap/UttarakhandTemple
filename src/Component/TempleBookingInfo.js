@@ -129,7 +129,7 @@ const TempleBookingInfo = () => {
             <Row className="g-4">
               {currentCards.map((item) => (
                 <Col
-                  lg={3}
+                  lg={4}
                   md={6}
                   sm={6}
                   xs={6}

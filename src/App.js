@@ -72,6 +72,18 @@ import Pandit_DashBoard from "./Component/pandit_dashboard/Pandit_DashBoard";
 import PanditLeftNav from "./Component/pandit_dashboard/PanditLeftNav";
 import PanditDonateDashBoard from "./Component/pandit_dashboard/pandit_innerdashborad/PanditDonateDashBoard";
 import PanditBookDashBoard from "./Component/pandit_dashboard/pandit_innerdashborad/PanditBookDashBoard";
+import PanditPoojaBooking from "./Component/pandit_dashboard/pandit_innerdashborad/PanditPoojaBooking";
+import PanditBookingDashBoard from "./Component/pandit_dashboard/pandit_innerdashborad/PanditBookingDashBoard";
+import PanditDarshanBooking from "./Component/pandit_dashboard/pandit_innerdashborad/PanditDarshanBooking";
+import PanditChangePassword from "./Component/pandit_dashboard/pandit_innerdashborad/PanditChangePassword";
+import PanditSevaRegis from "./Component/pandit_dashboard/pandit_innerdashborad/PanditSevaRegis";
+import TempDonateDashBoard from "./Component/temp_dashboard/temp_innerdashboard/TempDonateDashBoard";
+import TempPanditBooking from "./Component/temp_dashboard/temp_innerdashboard/TempPanditBooking";
+import TempPoojaBooking from "./Component/temp_dashboard/temp_innerdashboard/TempPoojaBooking";
+import TempChangePassword from "./Component/temp_dashboard/temp_innerdashboard/TempChangePassword";
+import TempSevaRegis from "./Component/temp_dashboard/temp_innerdashboard/TempSevaRegis";
+import TempDarshnBooking from "./Component/temp_dashboard/temp_innerdashboard/TempDarshnBooking";
+import TempBookingDashBoard from "./Component/temp_dashboard/temp_innerdashboard/TempBookingDashBoard";
 
 import SendOtpModal from "./Component/OTPModel/SendOtpModal";
 // import DashBoard from "./Component/dashboard/DashBoard";
@@ -84,7 +96,7 @@ function App() {
   const location = useLocation
     ();
   const hiddenPaths = new Set(["/DashBoard", "/MainDashBoard", "/DonateDashboard", "/PanditDashBoard", "/LeftNav", "/PoojaBookingDashBoard", "/MandirBookingDashBoard", "/DarshanBookingDashBoard", "/SevaRegistrationDashBoard",
-     "/ChangePassword","/TempleDashBoard", "/TempleLeftNav","/PanditLeftNav","/Pandit_DashBoard","/PanditDonateDashBoard","/PanditBookDashBoard"]);
+     "/ChangePassword","/TempleDashBoard", "/TempleLeftNav","/PanditDarshanBooking","/PanditChangePassword","/PanditLeftNav","/Pandit_DashBoard","/PanditDonateDashBoard","/PanditBookDashBoard","/PanditPoojaBooking","/PanditBookingDashBoard","/PanditSevaRegis","/TempDonateDashBoard","/TempPanditBooking","/TempPoojaBooking","/TempChangePassword","/TempSevaRegis","/TempDarshnBooking","/TempBookingDashBoard"]);
   const shouldHideBars = hiddenPaths.has(location.pathname);
   const hideFooter = location.pathname === "/";
   return (
@@ -122,6 +134,7 @@ function App() {
         <Route path="/AboutUs" element={<AboutUs />} />
         <Route path="/PlatFormInfo" element={<PlatFormInfo />} />
         <Route path="/MandirBookingDashBoard" element={<MandirBookingDashBoard />} />
+        <Route path="/TempDarshnBooking" element={<TempDarshnBooking />} />
 
         <Route path="/BaseURL" element={<BASE_URLL />} />
         <Route path="*" element={<NotFound />} />
@@ -141,6 +154,18 @@ function App() {
         <Route path="/PanditLeftNav" element={<PanditLeftNav />} />
         <Route path="/PanditDonateDashBoard" element={<PanditDonateDashBoard />} />
         <Route path="/PanditBookDashBoard" element={<PanditBookDashBoard />} />
+        <Route path="/PanditPoojaBooking" element={<PanditPoojaBooking />} />
+        <Route path="/PanditBookingDashBoard" element={<PanditBookingDashBoard />} />
+        <Route path="/PanditDarshanBooking" element={<PanditDarshanBooking />} />
+        <Route path="/PanditDarshanBooking" element={<PanditDarshanBooking />} />
+        <Route path="/PanditChangePassword" element={<PanditChangePassword />} />
+        <Route path="/PanditSevaRegis" element={<PanditSevaRegis />} />
+        <Route path="/TempDonateDashBoard" element={<TempDonateDashBoard />} />
+        <Route path="/TempPanditBooking" element={<TempPanditBooking />} />
+        <Route path="/TempPoojaBooking" element={<TempPoojaBooking />} />
+        <Route path="/TempChangePassword" element={<TempChangePassword />} />
+        <Route path="/TempSevaRegis" element={<TempSevaRegis />} />
+        <Route path="/TempBookingDashBoard" element={<TempBookingDashBoard />} />
         
         <Route path="/LeftNav" element={<LeftNav />} />
         <Route path="/SendOtpModal" element={<SendOtpModal />} />

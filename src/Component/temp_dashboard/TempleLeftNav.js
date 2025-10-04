@@ -80,30 +80,30 @@ function TempleLeftNav() {
 
   const navigationOptions = [
     { icon: <RiDashboard3Line />, label: "Dashboard", path: "/TempleDashBoard" },
-    { icon: <BiDonateHeart />, label: "Donate", path: "/DonateDashboard" },
-    { icon: <LiaCalendarCheck />, label: "Pandit Booking", path: "/PanditDashBoard" },
-    { icon: <IoCalendarClear />, label: "Pooja Booking", path: "/PoojaBookingDashBoard" },
+    { icon: <BiDonateHeart />, label: "Donate", path: "/TempDonateDashBoard" },
+    { icon: <LiaCalendarCheck />, label: "Pandit Booking", path: "/TempPanditBooking" },
+    { icon: <IoCalendarClear />, label: "Pooja Booking", path: "/TempPoojaBooking" },
     {
       icon: <GiByzantinTemple />,
       label: "Mandir Booking",
-      path: "/MandirBookingDashBoard",
-      fileName: "praroop1_tutorial.pdf",
+      path: "/TempBookingDashBoard",
+  
     },
     {
       icon: <MdLibraryBooks />,
       label: "Darshan Booking",
 
-      path: "/DarshanBookingDashBoard",
-      fileName: "shashandesh_new.pdf",
+      path: "/TempDarshnBooking",
+     
     },
     {
-      path: "/SevaRegistrationDashBoard",
+      path: "/TempSevaRegis",
 
       icon: <FaRegFileLines />,
       label: "Seva Registration",
-      fileName: "praroop2_tutorial.pdf",
+     
     },
-    { icon: <TbPasswordUser />, label: "Change Password", path: "/ChangePassword" },
+    { icon: <TbPasswordUser />, label: "Change Password", path: "/TempChangePassword" },
   ];
 
   return (

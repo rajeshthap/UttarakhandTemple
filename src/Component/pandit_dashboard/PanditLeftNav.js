@@ -82,28 +82,26 @@ function PanditLeftNav() {
     { icon: <RiDashboard3Line />, label: "Dashboard", path: "/Pandit_DashBoard" },
     { icon: <BiDonateHeart />, label: "Donate", path: "/PanditDonateDashBoard" },
     { icon: <LiaCalendarCheck />, label: "Pandit Booking", path: "/PanditBookDashBoard" },
-    { icon: <IoCalendarClear />, label: "Pooja Booking", path: "/PoojaBookingDashBoard" },
+    { icon: <IoCalendarClear />, label: "Pooja Booking", path: "/PanditPoojaBooking" },
     {
       icon: <GiByzantinTemple />,
       label: "Mandir Booking",
-      path: "/MandirBookingDashBoard",
-      fileName: "praroop1_tutorial.pdf",
+      path: "/PanditBookingDashBoard",
     },
     {
       icon: <MdLibraryBooks />,
       label: "Darshan Booking",
-
-      path: "/DarshanBookingDashBoard",
-      fileName: "shashandesh_new.pdf",
+      path: "/PanditDarshanBooking",
+     
     },
     {
-      path: "/SevaRegistrationDashBoard",
+      path: "/PanditSevaRegis",
 
       icon: <FaRegFileLines />,
       label: "Seva Registration",
-      fileName: "praroop2_tutorial.pdf",
+ 
     },
-    { icon: <TbPasswordUser />, label: "Change Password", path: "/ChangePassword" },
+    { icon: <TbPasswordUser />, label: "Change Password", path: "/PanditChangePassword" },
   ];
 
   return (
