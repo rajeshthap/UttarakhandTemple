@@ -12,19 +12,25 @@ const SendOtp = ({ phone, setPhone, onOtpSent }) => {
     const res = await CheckPhoneApi(); 
     const users = res.data;
 
-    const phoneExists = Array.isArray(users) && users.some(u => u.phone === phone);
+    if (!Array.isArray(users) || users.length === 0) {
+      return false; 
+    }
+
+    const phoneExists = users.some(u => u.phone === phone);
 
     if (phoneExists) {
       setMessage("Phone number already exists!");
-      return true;
+      return true; 
     }
-    return false;
+
+    return false; 
   } catch (err) {
     console.error("Error checking phone:", err);
-    setMessage("Could not verify phone number");
-    return true; 
+    setMessage("Could not verify phone number, trying anyway...");
+    return false; 
   }
 };
+
 
   const handleSendOtp = async () => {
     if (!phone || phone.length !== 10) {
