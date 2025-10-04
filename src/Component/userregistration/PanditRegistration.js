@@ -314,7 +314,7 @@ function PanditRegistration() {
     if (!formData.country) errors.country = "Country is required";
     if (!formData.state) errors.state = "State is required";
     if (!formData.city) errors.city = "City is required";
-    if (!formData.zipcode) errors.zipcode = "PIN code is required";
+    if (!formData.zipcode) errors.zipcode = "Pin code is required";
     if (!formData.temple_association)
       errors.temple_association = "Temple association is required";
 
@@ -359,7 +359,6 @@ function PanditRegistration() {
         navigate("/Login");
       }, 2000);
 
-
       // redirect to login or dashboard page
 
       if (res.data.success === true || res.data.success === "true") {
@@ -383,8 +382,8 @@ function PanditRegistration() {
           pandit_role: [],
         });
       } else {
-       setAlertMessage(res.data.message || "Registration failed");
-       setShowAlert(true);
+        setAlertMessage(res.data.message || "Registration failed");
+        setShowAlert(true);
       }
     } catch (err) {
       // console.error(err);
@@ -696,7 +695,7 @@ function PanditRegistration() {
                           <Form.Group className="mb-3">
                             <Form.Label className="temp-label">
                               Pandit Role
-                              <span className="temp-span-star">*</span>
+                              <span className="temp-span-star"> *</span>
                             </Form.Label>
                             <Select
                               isMulti
@@ -770,11 +769,11 @@ function PanditRegistration() {
                             controlId="exampleForm.ControlInput1"
                           >
                             <Form.Label className="temp-label">
-                              PIN Code <span className="temp-span-star">*</span>
+                              Pin Code <span className="temp-span-star">*</span>
                             </Form.Label>
                             <Form.Control
                               type="text"
-                              placeholder="Enter PIN Code"
+                              placeholder="Enter Pin Code"
                               className="temp-form-control"
                               name="zipcode"
                               value={formData.zipcode}
@@ -861,7 +860,7 @@ function PanditRegistration() {
                                 }}
                               >
                                 <legend className="visually-hidden">
-                                  Pandit Image Upload
+                                  Pandit Identification Photo{" "}
                                 </legend>
                                 <img src={UploadFile} alt="upload-file" />
 
@@ -886,8 +885,7 @@ function PanditRegistration() {
                                   Choose file
                                 </label>
                                 <p className="temp-upload-file">
-                                   Upload size up to 10KB to 2MB (jpg, png,
-                                    jpeg)
+                                  Upload size up to 10KB to 2MB (jpg, png, jpeg)
                                   {fileErrors.pandit_image && (
                                     <div className="alert-txt">
                                       {fileErrors.pandit_image}
@@ -904,7 +902,7 @@ function PanditRegistration() {
                               className="temp-doc-subinfo mt-2"
                             >
                               <h3>
-                                Pandit Image Upload{" "}
+                                Pandit Identification Photo{" "}
                                 <span className="temp-span-star">*</span>
                               </h3>
                               {!formData.pandit_image &&
@@ -1002,8 +1000,7 @@ function PanditRegistration() {
                                   Choose file
                                 </label>
                                 <p className="temp-upload-file">
-                                   Upload size up to 10KB to 2MB (jpg, png,
-                                    jpeg)
+                                  Upload size up to 10KB to 2MB (jpg, png, jpeg)
                                   {fileErrors.aadhar_document && (
                                     <div className="alert-txt">
                                       {fileErrors.aadhar_document}
@@ -1020,7 +1017,7 @@ function PanditRegistration() {
                               className="temp-doc-subinfo mt-2"
                             >
                               <h3>
-                                Aadhar Card Documents{" "}
+                                Aadhar Card Document{" "}
                                 <span className="temp-span-star">*</span>
                               </h3>
                               {!formData.aadhar_document &&
@@ -1094,11 +1091,11 @@ function PanditRegistration() {
           </div>
         </div>
       </Container>
-       <ModifyAlert
-              message={alertMessage}
-              show={showAlert}
-              setShow={setShowAlert}
-            />
+      <ModifyAlert
+        message={alertMessage}
+        show={showAlert}
+        setShow={setShowAlert}
+      />
     </div>
   );
 }

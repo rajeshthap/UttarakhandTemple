@@ -966,11 +966,11 @@ const [alertMessage, setAlertMessage] = useState("");
                     <Col lg={6} md={6} sm={12}>
                       <Form.Group className="mb-3">
                         <Form.Label className="temp-label">
-                          PIN Code <span className="temp-span-star">*</span>
+                          Pin Code <span className="temp-span-star">*</span>
                         </Form.Label>
                         <Form.Control
                           type="text"
-                          placeholder="Enter PIN Code"
+                          placeholder="Enter Pin Code"
                           className="temp-form-control"
                           name="pin_code"
                           value={formData.pin_code}

@@ -549,7 +549,7 @@ function DevoteeRegistration() {
                               disabled={loading}
                               className="temp-submit-btn"
                             >
-                              {loading ? "Registering..." : "Register"}
+                              {loading ? "Registering..." : "Register Now"}
                             </Button>
                           </Col>
                         </Row>
