@@ -12,10 +12,11 @@ import axios from "axios";
 
 export default function Login() {
   const [formData, setFormData] = useState({
-    identifier: "",
-    password: "",
     role: "user",
+    email_or_password: "",
+    password: "",
   });
+
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showModifyAlert, setShowModifyAlert] = useState(false);
@@ -38,7 +39,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.identifier || !formData.password) {
+    if (!formData.email_or_password || !formData.password) {
       setAlertMessage("Please fill in all fields");
       setShowModifyAlert(true);
       return;
@@ -46,8 +47,13 @@ export default function Login() {
 
     setLoading(true);
     try {
-      const res = await axios.post("https://yourapi.com/login/", formData);
+      const res = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/login/",
+        formData
+      );
       const userData = res.data;
+
+      // Redirect based on role
       switch (formData.role.toLowerCase()) {
         case "admin":
           navigate("/DashBoard");
@@ -55,12 +61,11 @@ export default function Login() {
         case "pandit":
           navigate("/PanditDashBoard");
           break;
-        case "devotee":
         case "user":
           navigate("/MainDashBoard");
           break;
         case "temple":
-          navigate("/DonateDashBoard");
+          navigate("/MainDashBoard");
           break;
         default:
           navigate("/");
@@ -73,8 +78,9 @@ export default function Login() {
         err.response?.data?.detail || "Invalid username or password"
       );
       setShowModifyAlert(true);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const roleHeading = formData.role
@@ -91,6 +97,7 @@ export default function Login() {
           <Form onSubmit={handleSubmit}>
             <Row className="mt-3">
               <Col lg={6} md={6}>
+                {/* Role Selection */}
                 <Form.Group className="mb-3">
                   <Form.Label className="temp-label-lg-bg">
                     Login As <span className="temp-span-star">*</span>
@@ -98,7 +105,12 @@ export default function Login() {
                   <Form.Select
                     name="role"
                     value={formData.role}
-                    onChange={handleChange}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        role: e.target.value.toLowerCase(),
+                      })
+                    }
                   >
                     <option value="admin">Admin</option>
                     <option value="temple">Temple</option>
@@ -107,6 +119,7 @@ export default function Login() {
                   </Form.Select>
                 </Form.Group>
 
+                {/* Email / Mobile */}
                 <Form.Group className="mb-3">
                   <Form.Label className="temp-label-lg-bg">
                     Email or Mobile Number{" "}
@@ -114,14 +127,15 @@ export default function Login() {
                   </Form.Label>
                   <Form.Control
                     type="text"
-                    name="identifier"
-                    value={formData.identifier}
+                    name="email_or_password"
+                    value={formData.email_or_password}
                     onChange={handleChange}
                     placeholder="Registered Mobile No. / Email"
                     className="temp-form-control-bg"
                   />
                 </Form.Group>
 
+                {/* Password */}
                 <Form.Group className="mb-3">
                   <Form.Label className="temp-label">
                     Password <span className="temp-span-star">*</span>
@@ -154,6 +168,7 @@ export default function Login() {
                   </div>
                 </Form.Group>
 
+                {/* Buttons */}
                 <div className="d-grid gap-3 text-center mt-3">
                   <Button
                     variant="danger"
@@ -191,6 +206,7 @@ export default function Login() {
         </div>
       </Container>
 
+      {/* Alert */}
       <ModifyAlert
         message={alertMessage}
         show={showModifyAlert}

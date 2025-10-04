@@ -356,7 +356,7 @@ function PanditRegistration() {
       setShowAlert(true);
       setTimeout(() => {
         setShowAlert(false);
-        navigate("/PanditLogin");
+        navigate("/Login");
       }, 2000);
 
 

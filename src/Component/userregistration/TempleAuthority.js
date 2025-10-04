@@ -418,7 +418,7 @@ function TempleAuthority() {
 
       setTimeout(() => {
         setShowAlert(false);
-        navigate("/AuthorityLogin");
+        navigate("/Login");
       }, 2000);
     } else {
       setAlertMessage(

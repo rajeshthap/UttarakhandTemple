@@ -222,7 +222,7 @@ function DevoteeRegistration() {
 
       setTimeout(() => {
         setShowAlert(false);
-        navigate("/DevoteeLogin");
+        navigate("/Login");
       }, 2000);
     } catch (err) {
       console.error(err);
