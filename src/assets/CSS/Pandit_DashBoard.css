@@ -8,7 +8,7 @@
 
 .pandit-rwd-table tr:first-child {
     border-top: none;
-    background: var(--temp-primary);
+    background: #b04f45;
     color: #fff;
 }
 
@@ -46,13 +46,34 @@
     color: #000;
 }
 .pandit-card-bg {
-    background-color: var(--temp-black) !important;
+    background-color: rgb(70 11 47 / 33%) !important;
+   
+    text-align: center !important;
+}
+.pandit-dash-icon {
+    font-size: var(--temp-space-800) !important;
+    color: var(--temp-black);
+    margin-bottom: var(--temp-space-200);
+}
+.box-2-bg {
+    background-color: rgb(227 100 20 / 41%) !important;
     color: var(--temp-white) !important;
     text-align: center !important;
 }
 
-.pandit-card-bg .card-subtitle {
+.box-3-bg {
+    background-color: rgb(154 3 30 / 38%) !important;
     color: var(--temp-white) !important;
+    text-align: center !important;
+}
+
+.box-4-bg{
+    background-color: rgb(251 139 36 / 56%)!important;
+    color: var(--temp-white) !important;
+    text-align: center !important;
+}
+.pandit-card-bg .card-subtitle {
+    color: var(--temp-black) !important;
     font-size: var(--temp-space-500) !important;
 }
 .pandit-rwd-table th,

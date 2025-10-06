@@ -6,8 +6,28 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ModifyAlert from "../../Alert/ModifyAlert";
 import DatePicker from "react-datepicker";
+import { setHours, setMinutes } from "date-fns";
 
 const EventParticipation = () => {
+  // Move useState for selectedDateTime to the top before any logic uses it
+  const [selectedDateTime, setSelectedDateTime] = useState(null);
+  // Helper to round up to next 30 min interval
+  const getNextInterval = (date = new Date()) => {
+    let minutes = date.getMinutes();
+    let nextMinutes = minutes <= 30 ? 30 : 0;
+    let nextHour = nextMinutes === 0 ? date.getHours() + 1 : date.getHours();
+    return setMinutes(setHours(date, nextHour), nextMinutes);
+  };
+
+  const today = new Date();
+  const isToday =
+    selectedDateTime &&
+    selectedDateTime.getDate() === today.getDate() &&
+    selectedDateTime.getMonth() === today.getMonth() &&
+    selectedDateTime.getFullYear() === today.getFullYear();
+
+  const minTime = isToday ? getNextInterval(today) : setHours(setMinutes(today, 0), 6); // 6:00 AM
+  const maxTime = setHours(setMinutes(today, 30), 23); // 11:30 PM
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
   const [verifying, setVerifying] = useState(false);
@@ -19,7 +39,6 @@ const EventParticipation = () => {
   const [temples, setTemples] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
-  const [selectedDateTime, setSelectedDateTime] = useState(null);
 
   const [formData, setFormData] = useState({
     full_name: "",
@@ -574,32 +593,33 @@ const EventParticipation = () => {
                 </Col>
 
                   <Col lg={6} md={6} sm={12}>
-                  <Form.Group className="mb-3 ">
-                          <Form.Label className="temp-label mb-2">
-                            Event Date & Time <span className="temp-span-star">*</span>
-                          </Form.Label>
-                          <div>
-                            <DatePicker
-                              selected={selectedDateTime}
-                              onChange={setSelectedDateTime}
-                              showTimeSelect
-                              timeFormat="hh:mm aa"
-                              timeIntervals={30}
-                              dateFormat="MMMM d, yyyy h:mm aa"
-                              placeholderText="Select Date and time"
-                              className="form-control temp-form-control-option w-100"
-                              minDate={new Date()}
-                              required
-                            />
-                          </div>
-                         {errors.preferred_time_slot && (
-                      <small className="text-danger">
-                        {errors.preferred_time_slot}
-                      </small>
-                    )}
-                          
-                        </Form.Group>
-                        </Col>
+                    <Form.Group className="mb-3 ">
+                      <Form.Label className="temp-label mb-2">
+                        Event Date & Time <span className="temp-span-star">*</span>
+                      </Form.Label>
+                      <div>
+                        <DatePicker
+                          selected={selectedDateTime}
+                          onChange={setSelectedDateTime}
+                          showTimeSelect
+                          timeFormat="hh:mm aa"
+                          timeIntervals={30}
+                          dateFormat="MMMM d, yyyy h:mm aa"
+                          placeholderText="Select Date and time"
+                          className="form-control temp-form-control-option w-100"
+                          minDate={today}
+                          minTime={minTime}
+                          maxTime={maxTime}
+                          required
+                        />
+                      </div>
+                      {errors.preferred_time_slot && (
+                        <small className="text-danger">
+                          {errors.preferred_time_slot}
+                        </small>
+                      )}
+                    </Form.Group>
+                  </Col>
 
                 {/* <Col lg={6} md={6} sm={12}>
                   <Form.Group

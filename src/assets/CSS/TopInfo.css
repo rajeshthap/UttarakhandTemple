@@ -24,7 +24,11 @@
     margin-top: -20px;
     z-index: 999;
 }
-
+.temp-nandi{
+    width: 50px;
+    height: 50px;
+    margin-right: var(--temp-space-100);
+}
 .login-btn {
     background-color: transparent;
     color: var(--temp-white);

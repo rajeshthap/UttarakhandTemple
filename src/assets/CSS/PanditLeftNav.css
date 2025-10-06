@@ -38,6 +38,7 @@
   padding: 20px;
   background: #f4f6f8;
   margin: 0px 0px 0px 0px;
+   background-image: url("../images//temple_background.jpg")
 }
 
 .main-container-box {
@@ -57,7 +58,7 @@
 }
 
 .active-nav-option-pandit {
-  background-color: black;
+  background-color: #5c1b15;
   color: #fff !important;
   border-left: 4px solid white;
 }
@@ -143,9 +144,13 @@
 
 .pandit-dp {
   font-size: var(--nd-space-500);
-  background-color:var(--temp-black) !important;
-  border-radius: 50%;
-  color: var(--nd-white);
+    background-color: #5c1b15 !important;
+    border-radius: 50%;
+    color: var(--nd-white);
+    width: 46px;
+    height: 46px;
+    padding-top: 4px;
+    margin-right: 2px;
 
 }
 
@@ -179,7 +184,7 @@
 .pandit-nav {
   min-height: 100vh;
   width: 250px;
-  background-color: blue !important;
+  background-color: #c75347 !important;
   position: absolute;
   top: 0px;
   left: 00;
@@ -225,8 +230,11 @@
 
 .pandit-nav-option:hover {
  border-left: 2px solid var(--nd-white);
-    background-color: #212529 !important;
+    background-color: #a13a30 !important;
   cursor: pointer;
+}
+.temp-text{
+  color: var(--temp-black);
 }
 
 .nav-img {
@@ -284,13 +292,14 @@ span.nav-label {
   color: var(--nd-white);
 }
 
-.nd-log-icon {
-  margin-left: var(--nd-space-200);
-  width: 24px;
-  height: 32px;
+
+.dropdown-toggle::after {
+margin-top: 10px;
 }
-
-
+#user-dropdown{
+  display: flex !important;
+  color: var(--temp-white) !important;
+}
 /* Responsive CSS Here */
 @media only screen and (min-width: 992px) {
 
@@ -336,7 +345,20 @@ span.nav-label {
     display: flex;
     justify-content:space-between;
   }
-  
+
+  .pandit-dp-mob {
+    font-size: var(--nd-space-500);
+    background-color: #5c1b15 !important;
+    border-radius: 50%;
+    color: var(--nd-white);
+    width: 46px;
+   
+    padding-top: 4px;
+    margin-right: 12px;
+}
+  .nav-upper-options a {
+    color: black;
+  }
   .pandit-log-icon-mob-data {
     background-color: var(--temp-org);
     width: 30px;
@@ -474,12 +496,25 @@ span.nav-label {
     width: 100%;
   }
 
+.nav-upper-options a {
+    color: black;
+    text-decoration: none;
+}
   .pandit-nav-option h3 {
     font-size: 12px;
   }
 
 
-
+.pandit-dp-mob {
+    font-size: var(--nd-space-500);
+    background-color: #5c1b15 !important;
+    border-radius: 50%;
+    color: var(--nd-white);
+    width: 46px;
+    height: 46px;
+   padding-top: 4px;
+    margin-right: 2px;
+}
 
 
 }
