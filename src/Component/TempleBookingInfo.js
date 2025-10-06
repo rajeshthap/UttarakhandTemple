@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { BsInfoCircleFill } from "react-icons/bs";
 import DatePicker from "react-datepicker";
 
+
 // Correct image imports
 import Kedarnath from "../assets/images/Kedarnath-Temple.png";
 import Gangotri from "../assets/images/Gangotri-Temple.png";
@@ -93,7 +94,7 @@ const TempleBookingInfo = () => {
         </div>
         <Row>
           {/* Left Side Cards */}
-          <Col lg={7} md={7} sm={12} className="mt-2">
+          <Col lg={7} md={7} sm={12} className="">
             <div className="text-center p-4 my-4 temp-regis desktop-mobile "
             >
               <h5>
@@ -197,11 +198,15 @@ const TempleBookingInfo = () => {
                         </div>
                         {/* <p className="text-center">Please register and login first</p> */}
                       </Modal.Body>
-                      <Modal.Footer>
-                        <Button variant="primary" onClick={() => setShowPopup(false)}>
-                          Close
-                        </Button>
-                      </Modal.Footer>
+                     <Modal.Footer className="">
+  <Button className="modal-cloce-btn"
+    
+    onClick={() => setShowPopup(false)}
+  >
+    Close
+  </Button>
+</Modal.Footer>
+
                     </Modal>
                 </Col>
               ))}

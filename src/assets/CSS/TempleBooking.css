@@ -61,12 +61,12 @@ button.accordion-button.collapsed {
 
 .temp-container-box ul li {
     font-size: var(--temp-space-300);
-    color: var(--temp-blacky);
-    line-height: 1.6;
+    color: var(--temp-black);
+    line-height: 30px;
 }
 .temp-regis {
     border: 2px dashed #ffc107;
-    border-radius: 12px;
+    border-radius: var(--temp-space-300);
     background-color: #fff8e1;
     color: #856404;
     margin: var(--temp-space-200);
@@ -84,3 +84,11 @@ button.accordion-button.collapsed {
   opacity: 1;
 }
 
+.modal-close-btn {
+  background-color: #6c757d !important;
+  border-color: #6c757d !important;
+  color: #fff;
+}
+.modal-close-btn:hover {
+  background-color: #5a6268;
+}

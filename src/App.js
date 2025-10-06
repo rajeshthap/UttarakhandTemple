@@ -24,12 +24,11 @@ import {
 import Home from "./Pages/Home";
 import InfoBar from "./Component/Navigation/InfoBar";
 import TopNavBar from "./Component/Navigation/TopNavBar";
-import AuthorityLogin from "./Component/userregistration/AuthorityLogin";
+
 import PanditRegistration from "./Component/userregistration/PanditRegistration";
 import DevoteeRegistration from "./Component/userregistration/DevoteeRegistration";
 import NotFound from "./Component/notfound/NotFound";
-import PanditLogin from "./Component/userregistration/PanditLogin";
-import DevoteeLogin from "./Component/userregistration/DevoteeLogin";
+
 import TempleFooter from "./Component/temple_footer/TempleFooter";
 import DonateTemples from "./Component/DonateToTemples/DonateTemples";
 import ExtendYourDivine from "./Component/DonateToTemples/ExtendYourDivine"
@@ -106,12 +105,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/TempleAuthority" element={<TempleAuthority />} />
-        <Route path="/AuthorityLogin" element={<AuthorityLogin />} />
+
         <Route path="/PanditRegistration" element={<PanditRegistration />} />
         <Route path="/DevoteeRegistration" element={<DevoteeRegistration />} />
         <Route path="/Login" element={<Login />} />
-        <Route path="/PanditLogin" element={<PanditLogin />} />
-        <Route path="/DevoteeLogin" element={<DevoteeLogin />} />
+       
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
         <Route path="/DonateTemples" element={<DonateTemples />} />
         <Route path="/ExtendYourDivine" element={<ExtendYourDivine />} />

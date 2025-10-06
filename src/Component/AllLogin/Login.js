@@ -59,13 +59,13 @@ export default function Login() {
           navigate("/DashBoard");
           break;
         case "pandit":
-          navigate("/PanditDashBoard");
+          navigate("/Pandit_DashBoard");
           break;
         case "user":
           navigate("/MainDashBoard");
           break;
         case "temple":
-          navigate("/MainDashBoard");
+          navigate("/TempleDashBoard");
           break;
         default:
           navigate("/");

@@ -40,12 +40,11 @@ const InfoBar = () => {
                   Login
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item href="#/action-1">Admin</Dropdown.Item>
-                  <Dropdown.Item href="/AuthorityLogin">
-                    Temple Authority
+                  {/* <Dropdown.Item href="#/action-1">Admin</Dropdown.Item> */}
+                  <Dropdown.Item href="/Login">
+                    Login
                   </Dropdown.Item>
-                  <Dropdown.Item href="/PanditLogin">Pandit ji </Dropdown.Item>
-                  <Dropdown.Item href="/DevoteeLogin">Devotee</Dropdown.Item>
+                 
                 </Dropdown.Menu>
               </Dropdown>
 

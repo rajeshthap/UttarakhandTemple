@@ -123,7 +123,7 @@ const PanditBooking = () => {
 
           <Row>
             {/* Left Side Cards */}
-            <Col lg={7} md={7} sm={12} className="mt-2">
+            <Col lg={7} md={7} sm={12} className="">
               <div className="text-center p-4 my-4 temp-regis desktop-mobile "
               >
                 <h5>
