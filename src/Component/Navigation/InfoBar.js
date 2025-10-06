@@ -1,9 +1,10 @@
 import React from "react";
-import { Col, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import "../../assets/CSS/TopInfo.css"; // Importing the CSS file for styling
 import Dropdown from "react-bootstrap/Dropdown";
 import { IoKeySharp } from "react-icons/io5";
 import { FaUserGroup } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const InfoBar = () => {
   return (
@@ -29,23 +30,21 @@ const InfoBar = () => {
           <Col xs={12} md={6} lg={6} className="text-center text-md-end">
             <div className="d-inline-flex align-items-center flex-wrap justify-content-center">
               <Dropdown className="px-2">
-                <Dropdown.Toggle
-                  variant=""
-                  className="login-btn"
-                  id="login-dropdown"
-                >
-                  <span className="top-icon">
-                    <IoKeySharp />
-                  </span>{" "}
-                  Login
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  {/* <Dropdown.Item href="#/action-1">Admin</Dropdown.Item> */}
+                <Link to="/Login" className="px-2 text-decoration-none">
+      <Button variant="" className="login-btn" id="login-dropdown">
+        <span className="top-icon">
+          <IoKeySharp />
+        </span>{" "}
+        Login
+      </Button>
+    </Link>
+                {/* <Dropdown.Menu>
+            
                   <Dropdown.Item href="/Login">
                     Login
                   </Dropdown.Item>
                  
-                </Dropdown.Menu>
+                </Dropdown.Menu> */}
               </Dropdown>
 
               <Dropdown className="px-2">

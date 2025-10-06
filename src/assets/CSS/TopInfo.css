@@ -28,7 +28,7 @@
 .login-btn {
     background-color: transparent;
     color: var(--temp-white);
-    padding: var(--temp-space-100) var(--temp-space-300);
+    padding: var(--temp-space-50) var(--temp-space-200) var(--temp-space-100) var(--temp-space-200);
     font-size: var(--temp-space-300);
     border-radius: var(--temp-space-100);
     transition: background-color 0.3s ease;
