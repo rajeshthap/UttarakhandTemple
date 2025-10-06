@@ -16,6 +16,7 @@ import { LiaCalendarCheck } from "react-icons/lia";
 import { FaRegFileLines } from "react-icons/fa6";
 import { TbPasswordUser } from "react-icons/tb";
 import { IoCalendarClear } from "react-icons/io5";
+import { Dropdown } from "react-bootstrap";
 
 function PanditLeftNav() {
   const [isNavClosed, setIsNavClosed] = useState(false);
@@ -134,12 +135,35 @@ function PanditLeftNav() {
         show={showModifyAlert}
         setShow={setShowModifyAlert}
       />
+     
           <div className="nd-msg">User: {userName}</div>
-          <div className="pandit-dp" title="Click to logout" onClick={logout}>
-            <div className="nd-log-icon">
-              <LuLogOut />
-            </div>
-          </div>
+          <Dropdown align="end" className="pandit-dp">
+     
+      <Dropdown.Toggle
+        variant=""
+        id="user-dropdown"
+        className=" border-0 bg-transparent"
+        title="Account Menu"
+      >
+        <div className="nd-log-icon-pandit">
+          <LuLogOut />
+        </div>
+      </Dropdown.Toggle>
+
+      {/* Dropdown menu */}
+      <Dropdown.Menu>
+        <Dropdown.Item as={Link} to="/Profile">
+          My Profile
+        </Dropdown.Item>
+        <Dropdown.Item as={Link} to="/Dashboard">
+          Dashboard
+        </Dropdown.Item>
+        <Dropdown.Divider />
+        <Dropdown.Item onClick={logout} className="text-danger">
+          Logout
+        </Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
         </div>
       </header>
 
@@ -148,13 +172,39 @@ function PanditLeftNav() {
         <nav className="pandit-nav">
           <div className="nav-upper-options">
 
-            <div className="nd-menu">
-              <FaAlignLeft className="icn menuicn" onClick={toggleNav} />
-              <div className="nd-user">User: {userName}</div>
-              <div className="pandit-log-icon-mob-data" title="Logout" onClick={logout}>
-                <LuLogOut />
-              </div>
-            </div>
+          <div className="nd-menu">
+      <FaAlignLeft className="icn menuicn" onClick={toggleNav} />
+      <div className="nd-user">User: {userName}</div>
+
+      {/*  Dropdown Wrapper (same structure, just wrapped) */}
+        <Dropdown align="end" className="pandit-dp-mob ">
+     
+      <Dropdown.Toggle
+        variant=""
+        id="user-dropdown"
+        className=" border-0 bg-transparent"
+        title="Account Menu"
+      >
+        <div className="nd-log-icon-pandit">
+          <LuLogOut />
+        </div>
+      </Dropdown.Toggle>
+
+      {/* Dropdown menu */}
+      <Dropdown.Menu>
+        <Dropdown.Item as={Link} to="/Profile">
+          My Profile
+        </Dropdown.Item>
+        <Dropdown.Item as={Link} to="/Dashboard">
+          Dashboard
+        </Dropdown.Item>
+        <Dropdown.Divider />
+        <Dropdown.Item onClick={logout} className="text-danger">
+          Logout
+        </Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
+    </div>
 
             {navigationOptions.map((option, index) => (
               <React.Fragment key={index}>

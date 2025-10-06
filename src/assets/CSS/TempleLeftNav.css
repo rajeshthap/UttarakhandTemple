@@ -146,9 +146,13 @@
 
 .temp-dp {
   font-size: var(--nd-space-500);
-  background-color:var(--temp-black) !important;
-  border-radius: 50%;
-  color: var(--nd-white);
+    background-color: var(--temp-black) !important;
+    border-radius: 50%;
+    color: var(--nd-white);
+    width: 46px;
+    height: 46px;
+    padding-top: 4px;
+    margin-right: 2px;
 
 }
 
@@ -185,7 +189,7 @@
   width: 250px;
   background-color: #4b76c0;
   position: absolute;
-  top: 0px;
+  top: -7px;
   left: 00;
   box-shadow: 1px 1px 10px rgba(198, 189, 248, 0.825);
   display: flex;

@@ -6,6 +6,8 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import "../../assets/CSS/TopInfo.css"; // Importing the CSS file for styling
 import logo from "../../assets/images/company-logo.png";
 import { FaRocketchat } from "react-icons/fa6";
+import Nandi from "../../assets/images/askNandi.gif";
+
 const TopNavBar = () => {
   return (
     <>
@@ -105,7 +107,11 @@ const TopNavBar = () => {
                     </NavDropdown.Item>
                   </NavDropdown>
                 </Nav>
-
+ <Nav.Link href="/">
+                <div>
+                  <img src={Nandi} alt="not found" className="img-fluid temp-nandi" ></img>
+                  </div>
+                </Nav.Link>
                 <Nav.Link href="/">
                   <button
                     type="button"

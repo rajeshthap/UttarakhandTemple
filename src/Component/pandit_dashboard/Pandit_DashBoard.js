@@ -5,7 +5,6 @@ import { Col, Row } from "react-bootstrap";
 import Card from 'react-bootstrap/Card';
 
 import { FaHandsPraying } from "react-icons/fa6";
-import { Link } from "react-router-dom";
 
 import "../../assets/CSS/Pandit_DashBoard.css";
 import PanditLeftNav from "./PanditLeftNav";
@@ -30,7 +29,7 @@ const Pandit_DashBoard = () => {
 
                                 <Card className="shadow-sm mb-3 bg-body rounded pandit-card-bg">
                                     <Card.Body>
-                                        <Card.Title className="temp-dash-icon"><FaHandsPraying /></Card.Title>
+                                        <Card.Title className="pandit-dash-icon"><FaHandsPraying /></Card.Title>
                                         <Card.Subtitle className="mb-2 text-muted">Book Puja</Card.Subtitle>
                                         {/* <Card.Text>
 
@@ -42,10 +41,11 @@ const Pandit_DashBoard = () => {
                             </Col>
                             <Col lg={3} md={3} sm={12}>
 
-                                <Card className="shadow-sm mb-3 bg-body rounded pandit-card-bg">
+                                <Card className="shadow-sm mb-3 bg-body rounded box-2-bg
+">
                                     <Card.Body>
-                                        <Card.Title className="temp-dash-icon"><FaHandsPraying /></Card.Title>
-                                        <Card.Subtitle className="mb-2 text-muted">Donate to Temples</Card.Subtitle>
+                                        <Card.Title className="pandit-dash-icon"><FaHandsPraying /></Card.Title>
+                                        <Card.Subtitle className="mb-2 temp-text ">Donate to Temples</Card.Subtitle>
                                         {/* <Card.Text>
 
                                         </Card.Text> */}
@@ -56,9 +56,9 @@ const Pandit_DashBoard = () => {
                             </Col>
                             <Col lg={3} md={3} sm={12}>
 
-                                <Card className="shadow-sm mb-3 bg-body rounded pandit-card-bg">
+                                <Card className="shadow-sm mb-3 bg-body rounded pandit-card-bg box-3-bg ">
                                     <Card.Body>
-                                        <Card.Title className="temp-dash-icon"><FaHandsPraying /></Card.Title>
+                                        <Card.Title className="pandit-dash-icon"><FaHandsPraying /></Card.Title>
                                         <Card.Subtitle className="mb-2 text-muted">Darshan Booking</Card.Subtitle>
                                         {/* <Card.Text>
 
@@ -70,9 +70,9 @@ const Pandit_DashBoard = () => {
                             </Col>
                             <Col lg={3} md={3} sm={12}>
 
-                                <Card className="shadow-sm mb-3 bg-body rounded pandit-card-bg">
+                                <Card className="shadow-sm mb-3 bg-body rounded pandit-card-bg box-4-bg">
                                     <Card.Body>
-                                        <Card.Title className="temp-dash-icon"><FaHandsPraying /></Card.Title>
+                                        <Card.Title className="pandit-dash-icon"><FaHandsPraying /></Card.Title>
                                         <Card.Subtitle className="mb-2 text-muted">Pooja Booking</Card.Subtitle>
                                         {/* <Card.Text>
 
