@@ -78,7 +78,28 @@ const cardData = [
 ];
 
 const PanditBooking = () => {
+  // Move selectedDateTime useState to the top before any logic uses it
+  const [selectedDateTime, setSelectedDateTime] = useState(null);
+  // Helper to round up to next 30 min interval
+  const getNextInterval = (date = new Date()) => {
+    let minutes = date.getMinutes();
+    let nextMinutes = minutes <= 30 ? 30 : 0;
+    let nextHour = nextMinutes === 0 ? date.getHours() + 1 : date.getHours();
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate(), nextHour, nextMinutes);
+  };
+
   const today = new Date();
+  const isToday =
+    selectedDateTime &&
+    selectedDateTime.getDate() === today.getDate() &&
+    selectedDateTime.getMonth() === today.getMonth() &&
+    selectedDateTime.getFullYear() === today.getFullYear();
+
+  // 6:00 AM
+  const minTime = isToday ? getNextInterval(today) : new Date(today.getFullYear(), today.getMonth(), today.getDate(), 6, 0);
+  // 11:30 PM
+  const maxTime = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 30);
+
   const formattedDate = `${String(today.getDate()).padStart(2, "0")}/${String(
     today.getMonth() + 1
   ).padStart(2, "0")}/${today.getFullYear()}`;
@@ -87,7 +108,6 @@ const PanditBooking = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
-  const [selectedDateTime, setSelectedDateTime] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   // pagination states
   const itemsPerPage = 8;
@@ -322,7 +342,9 @@ const PanditBooking = () => {
                                 dateFormat="MMMM d, yyyy h:mm aa"
                                 placeholderText="Select Date and time"
                                 className="form-control temp-form-control-option w-100"
-                                minDate={new Date()}
+                                minDate={today}
+                                minTime={minTime}
+                                maxTime={maxTime}
                                 required
                               />
                             </div>
