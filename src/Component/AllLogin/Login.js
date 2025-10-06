@@ -153,9 +153,8 @@ export default function Login() {
                       className="temp-form-control-bg"
                     />
                     <i
-                      className={`fa ${
-                        showPassword ? "fa-eye-slash" : "fa-eye"
-                      } toggle-password`}
+                      className={`fa ${showPassword ? "fa-eye-slash" : "fa-eye"
+                        } toggle-password`}
                       onClick={() => setShowPassword(!showPassword)}
                       style={{
                         position: "absolute",
@@ -170,22 +169,24 @@ export default function Login() {
 
                 {/* Buttons */}
                 <div className="d-grid gap-3 text-center mt-3">
-                  <Button
+                  <div className=""><Button
                     variant="danger"
                     type="submit"
                     disabled={loading}
                     className="temp-submit-btn"
                   >
                     {loading ? "Logging in..." : "Login"}
-                  </Button>
-                  <Button
+                  </Button></div>
+                  <div className="">    <Button
                     variant="danger"
                     className="temp-submit-btn-login"
                     type="button"
                     onClick={() => navigate("/ForgotPassword")}
                   >
                     Forgot Password ?
-                  </Button>
+                  </Button></div>
+
+
                 </div>
               </Col>
 
