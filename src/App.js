@@ -57,6 +57,7 @@ import PlatFormInfo from "./Component/Home/PlatFormInfo";
 import DashBoard from "./Component/dashboard/DashBoard";
 import LeftNav from "./Component/dashboard/LeftNav";
 import TempleBookingInfo from "./Component/TempleBookingInfo";
+import BadrinathInfo from "./Component/BadrinathInfo";
 import MainDashBoard from "./Component/dashboard/innerpage_dashboard/MainDashBoard";
 import DonateDashBoard from "./Component/dashboard/innerpage_dashboard/DonateDashBoard";
 import PanditDashBoard from "./Component/dashboard/innerpage_dashboard/PanditDashBoard";
@@ -145,6 +146,7 @@ function App() {
         <Route path="/SevaRegistrationDashBoard" element={<SevaRegistrationDashBoard />} />
         <Route path="/ChangePassword" element={<ChangePassword />} />
         <Route path="/TempleBookingInfo" element={<TempleBookingInfo />} />
+        <Route path="/BadrinathInfo" element={<BadrinathInfo/>} />
 
         <Route path="/TempleDashBoard" element={<TempleDashBoard />} />
         <Route path="/TempleLeftNav" element={<TempleLeftNav />} />
