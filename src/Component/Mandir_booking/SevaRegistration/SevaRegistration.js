@@ -6,6 +6,7 @@ import OTPModel from "../../OTPModel/OTPModel";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ModifyAlert from "../../Alert/ModifyAlert";
+import DatePicker from "react-datepicker";
 
 const SevaRegistration = () => {
   const [show, setShow] = useState(false);
@@ -19,6 +20,7 @@ const SevaRegistration = () => {
   const [temples, setTemples] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const [selectedDateTime, setSelectedDateTime] = useState(null);
 
   const navigate = useNavigate();
 
@@ -218,7 +220,7 @@ const SevaRegistration = () => {
     if (!formData.preferred_dates)
       newErrors.preferred_dates = "Preferred date is required";
 
-    if (!formData.time_slot) newErrors.time_slot = " Time slot is required";
+    if (!formData.time_slot) newErrors.time_slot = " Date and Time is required";
 
     if (!formData.frequency) newErrors.frequency = " Frequency is required";
 
@@ -661,7 +663,36 @@ const SevaRegistration = () => {
                   </Form.Group>
                 </Col>
 
-                <Col lg={6} md={6} sm={12}>
+
+                 <Col lg={6} md={6} sm={12}>
+                                  <Form.Group className="mb-3 ">
+                                          <Form.Label className="temp-label mb-2">
+                                            Seva Date & Time <span className="temp-span-star">*</span>
+                                          </Form.Label>
+                                          <div>
+                                            <DatePicker
+                                              selected={selectedDateTime}
+                                              onChange={setSelectedDateTime}
+                                              showTimeSelect
+                                              timeFormat="hh:mm aa"
+                                              timeIntervals={30}
+                                              dateFormat="MMMM d, yyyy h:mm aa"
+                                              placeholderText="Select Date and time"
+                                              className="form-control temp-form-control-option w-100"
+                                              minDate={new Date()}
+                                              required
+                                            />
+                                          </div>
+                                         {errors.time_slot && (
+                                      <small className="text-danger">
+                                        {errors.time_slot}
+                                      </small>
+                                    )}
+                                          
+                                        </Form.Group>
+                                        </Col>
+
+                {/* <Col lg={6} md={6} sm={12}>
                   <Form.Group
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
@@ -685,9 +716,9 @@ const SevaRegistration = () => {
                       </small>
                     )}
                   </Form.Group>
-                </Col>
+                </Col> */}
 
-                <Col lg={6} md={6} sm={12}>
+                {/* <Col lg={6} md={6} sm={12}>
                   <Form.Group
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
@@ -711,7 +742,7 @@ const SevaRegistration = () => {
                       <small className="text-danger">{errors.time_slot}</small>
                     )}
                   </Form.Group>
-                </Col>
+                </Col> */}
 
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
@@ -760,7 +791,7 @@ const SevaRegistration = () => {
                       <option value="">Select Mode of Participation</option>
                       <option value="online">Online </option>
                       <option value="offline">Offline</option>
-                      <option value="both">Both</option>
+                    
                     </Form.Select>
                     {errors.participation_mode && (
                       <small className="text-danger">

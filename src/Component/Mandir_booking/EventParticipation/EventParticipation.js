@@ -5,6 +5,7 @@ import OTPModel from "../../OTPModel/OTPModel";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ModifyAlert from "../../Alert/ModifyAlert";
+import DatePicker from "react-datepicker";
 
 const EventParticipation = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const EventParticipation = () => {
   const [temples, setTemples] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const [selectedDateTime, setSelectedDateTime] = useState(null);
 
   const [formData, setFormData] = useState({
     full_name: "",
@@ -122,7 +124,7 @@ const EventParticipation = () => {
     if (!formData.preferred_dates)
       newErrors.preferred_dates = "Preferred date is required";
     if (!formData.preferred_time_slot)
-      newErrors.preferred_time_slot = "Preferred time slot is required";
+      newErrors.preferred_time_slot = "Date and Time is required";
     if (!formData.gotra.trim()) newErrors.gotra = "Gotra is required";
     if (!formData.nakshatra_rashi.trim())
       newErrors.nakshatra_rashi = "Nakshatra/Rashi is required";
@@ -537,7 +539,7 @@ const EventParticipation = () => {
                       <option value="">Select Participation </option>
                       <option value="online">Online </option>
                       <option value="offline">Offline </option>
-                      <option value="both">Both </option>
+                    
                     </Form.Select>
                     {errors.participation_type && (
                       <small className="text-danger">
@@ -571,7 +573,35 @@ const EventParticipation = () => {
                   </Form.Group>
                 </Col>
 
-                <Col lg={6} md={6} sm={12}>
+                  <Col lg={6} md={6} sm={12}>
+                  <Form.Group className="mb-3 ">
+                          <Form.Label className="temp-label mb-2">
+                            Event Date & Time <span className="temp-span-star">*</span>
+                          </Form.Label>
+                          <div>
+                            <DatePicker
+                              selected={selectedDateTime}
+                              onChange={setSelectedDateTime}
+                              showTimeSelect
+                              timeFormat="hh:mm aa"
+                              timeIntervals={30}
+                              dateFormat="MMMM d, yyyy h:mm aa"
+                              placeholderText="Select Date and time"
+                              className="form-control temp-form-control-option w-100"
+                              minDate={new Date()}
+                              required
+                            />
+                          </div>
+                         {errors.preferred_time_slot && (
+                      <small className="text-danger">
+                        {errors.preferred_time_slot}
+                      </small>
+                    )}
+                          
+                        </Form.Group>
+                        </Col>
+
+                {/* <Col lg={6} md={6} sm={12}>
                   <Form.Group
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
@@ -594,9 +624,9 @@ const EventParticipation = () => {
                       </small>
                     )}
                   </Form.Group>
-                </Col>
+                </Col> */}
 
-                <Col lg={6} md={6} sm={12}>
+                {/* <Col lg={6} md={6} sm={12}>
                   <Form.Group
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
@@ -622,7 +652,7 @@ const EventParticipation = () => {
                       </small>
                     )}
                   </Form.Group>
-                </Col>
+                </Col> */}
 
                 <h2>Additional Details</h2>
 
