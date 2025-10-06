@@ -7,8 +7,31 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import LocationState from "../userregistration/LocationState";
 import ModifyAlert from "../Alert/ModifyAlert"
+import DatePicker from "react-datepicker";
 
 const DarshanBooking = () => {
+  // Move selectedDateTime useState to the top before any logic uses it
+  const [selectedDateTime, setSelectedDateTime] = useState(null);
+  // Helper to round up to next 30 min interval
+  const getNextInterval = (date = new Date()) => {
+    let minutes = date.getMinutes();
+    let nextMinutes = minutes <= 30 ? 30 : 0;
+    let nextHour = nextMinutes === 0 ? date.getHours() + 1 : date.getHours();
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate(), nextHour, nextMinutes);
+  };
+
+  const today = new Date();
+  const isToday =
+    selectedDateTime &&
+    selectedDateTime.getDate() === today.getDate() &&
+    selectedDateTime.getMonth() === today.getMonth() &&
+    selectedDateTime.getFullYear() === today.getFullYear();
+
+  // 6:00 AM
+  const minTime = isToday ? getNextInterval(today) : new Date(today.getFullYear(), today.getMonth(), today.getDate(), 6, 0);
+  // 11:30 PM
+  const maxTime = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 30);
+
   const [show, setShow] = useState(false);
   const [temples, setTemples] = useState([]);
   const handleClose = () => setShow(false);
@@ -162,7 +185,7 @@ const DarshanBooking = () => {
       newErrors.date_of_darshan = "Date of Darshan is required";
 
     if (!formData.time_slot)
-      newErrors.time_slot = "Time Slot is required";
+      newErrors.time_slot = "Date and Time is required";
 
     if (
       !formData.number_of_devotees ||
@@ -640,7 +663,7 @@ const DarshanBooking = () => {
                 </Col>
 
 
-                <Col lg={6} md={6} sm={12}>
+                {/* <Col lg={6} md={6} sm={12}>
                   <Form.Group
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
@@ -663,7 +686,7 @@ const DarshanBooking = () => {
                       </small>
                     )}
                   </Form.Group>
-                </Col>
+                </Col> */}
 
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
@@ -690,8 +713,38 @@ const DarshanBooking = () => {
                   </Form.Group>
                 </Col>
 
+                   <Col lg={6} md={6} sm={12}>
+                  <Form.Group className="mb-3 ">
+                          <Form.Label className="temp-label mb-2">
+                            Darshan Date & Time <span className="temp-span-star">*</span>
+                          </Form.Label>
+                          <div>
+                            <DatePicker
+                              selected={selectedDateTime}
+                              onChange={setSelectedDateTime}
+                              showTimeSelect
+                              timeFormat="hh:mm aa"
+                              timeIntervals={30}
+                              dateFormat="MMMM d, yyyy h:mm aa"
+                              placeholderText="Select Date and time"
+                              className="form-control temp-form-control-option w-100"
+                              minDate={today}
+                              minTime={minTime}
+                              maxTime={maxTime}
+                              required
+                            />
+                          </div>
+                          {errors.time_slot && (
+                      <small className="text-danger">
+                        {errors.time_slot}
+                      </small>
+                    )}
+                          
+                        </Form.Group>
+                        </Col>
 
-                <Col lg={6} md={6} sm={12}>
+
+                {/* <Col lg={6} md={6} sm={12}>
                   <Form.Group controlId="donationFor">
                     <Form.Label>
                       Time Slot{" "}
@@ -715,7 +768,7 @@ const DarshanBooking = () => {
                       </small>
                     )}
                   </Form.Group>
-                </Col>
+                </Col> */}
 
                 <h2 className="pt-4">Address Details</h2>
 

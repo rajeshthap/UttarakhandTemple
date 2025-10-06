@@ -26,7 +26,7 @@ const SendOtp = ({ phone, setPhone, onOtpSent }) => {
     return false; 
   } catch (err) {
     console.error("Error checking phone:", err);
-    setMessage("Could not verify phone number, trying anyway...");
+    setMessage("Please Try Again Server Error");
     return false; 
   }
 };
