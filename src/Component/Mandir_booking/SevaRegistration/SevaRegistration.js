@@ -7,6 +7,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ModifyAlert from "../../Alert/ModifyAlert";
 import DatePicker from "react-datepicker";
+import LoginPopup from "../../OTPModel/LoginPopup";
 
 const SevaRegistration = () => {
   const [show, setShow] = useState(false);
@@ -21,6 +22,7 @@ const SevaRegistration = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [selectedDateTime, setSelectedDateTime] = useState(null);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -34,8 +36,7 @@ const SevaRegistration = () => {
     id_proof_number: "",
     temple_name: "",
     type_of_seva: "",
-    preferred_dates: "",
-    time_slot: "",
+    seva_date_and_time: "",
     frequency: "",
     participation_mode: "",
     gotra: "",
@@ -47,28 +48,28 @@ const SevaRegistration = () => {
 
   const handleResendOtp = async () => {
     try {
-
-      const res = await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
-        phone: formData.mobile_number,
-      });
+      const res = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/Sentotp/",
+        {
+          phone: formData.mobile_number,
+        }
+      );
 
       if (res.data.success) {
         setAlertMessage("OTP sent successfully!");
         setShowAlert(true);
         setAgree(false);
-
       } else {
-         setAlertMessage("Failed to resend OTP. Try again.");
+        setAlertMessage("Failed to resend OTP. Try again.");
         setShowAlert(true);
         setAgree(false);
-        
       }
     } catch (error) {
       console.error("Error resending OTP:", error);
 
-       setAlertMessage("Something went wrong. Please try again.");
-        setShowAlert(true);
-        setAgree(false);
+      setAlertMessage("Something went wrong. Please try again.");
+      setShowAlert(true);
+      setAgree(false);
     }
   };
 
@@ -76,10 +77,10 @@ const SevaRegistration = () => {
     const fetchTemples = async () => {
       try {
         const res = await axios.get(
-          "https://brjobsedu.com/Temple_portal/api/temples-for-divine/"
+          "https://brjobsedu.com/Temple_portal/api/temple-names-list/"
         );
-        if (res.data && Array.isArray(res.data.temples)) {
-          setTemples(res.data.temples);
+        if (res.data && Array.isArray(res.data.temple_names)) {
+          setTemples(res.data.temple_names);
         }
       } catch (err) {
         console.error("Error fetching temples:", err);
@@ -98,12 +99,13 @@ const SevaRegistration = () => {
 
     //  validate required fields before OTP
     if (!validateFields()) {
-      setAlertMessage("Please fill all required fields correctly before verifying OTP.");
+      setAlertMessage(
+        "Please fill all required fields correctly before verifying OTP."
+      );
       setShowAlert(true);
       setAgree(false);
       return;
     }
-
 
     //  if OTP already verified, no need to resend
     if (isVerified) {
@@ -114,7 +116,7 @@ const SevaRegistration = () => {
     //  otherwise send OTP
     try {
       const res = await axios.post(
-   "https://brjobsedu.com/Temple_portal/api/send-otp/",
+        "https://brjobsedu.com/Temple_portal/api/send-otp/",
         {
           phone: formData.mobile_number,
         }
@@ -124,26 +126,23 @@ const SevaRegistration = () => {
         setOtpSent(true);
         setShow(true); // open modal
         setAgree(true);
-
       } else {
         setAlertMessage(res.data.message || "Failed to send OTP");
         setShowAlert(true);
         setAgree(false);
-       
       }
     } catch (err) {
       console.error("OTP Send Error:", err);
-         setAlertMessage("Error sending OTP");
-        setShowAlert(true);
-        setAgree(false);
-    
+      setAlertMessage("Error sending OTP");
+      setShowAlert(true);
+      setAgree(false);
     }
   };
 
   const handleVerifyOtp = async () => {
     try {
       const res = await axios.post(
-   "https://brjobsedu.com/Temple_portal/api/verify-otp/",
+        "https://brjobsedu.com/Temple_portal/api/verify-otp/",
         {
           phone: formData.mobile_number,
           otp: otp,
@@ -155,15 +154,12 @@ const SevaRegistration = () => {
         setAlertMessage("Phone number verified!");
         setShowAlert(true);
         setAgree(true);
-        handleClose(); // close modal
+        handleClose();
 
-        setTimeout(() => {
-          navigate("/PaymentConfirmation");
-        }, 2000);
-
-
+        // setTimeout(() => {
+        //   navigate("/PaymentConfirmation");
+        // }, 2000);
       } else {
-
         setAlertMessage(res.data.message || "Invalid OTP");
         setShowAlert(true);
         setAgree(false);
@@ -217,10 +213,8 @@ const SevaRegistration = () => {
     if (!formData.type_of_seva)
       newErrors.type_of_seva = "Type of Seva is required";
 
-    if (!formData.preferred_dates)
-      newErrors.preferred_dates = "Preferred date is required";
-
-    if (!formData.time_slot) newErrors.time_slot = " Date and Time is required";
+    if (!formData.seva_date_and_time)
+      newErrors.seva_date_and_time = "Seva Date & Time is required";
 
     if (!formData.frequency) newErrors.frequency = " Frequency is required";
 
@@ -254,15 +248,14 @@ const SevaRegistration = () => {
     }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
 
-    if (name === "mobile_number") {
-      let errorMsg = "";
-      if (!/^\d*$/.test(value)) {
-        errorMsg = "Only digits allowed";
-      } else if (value.length > 0 && !/^\d{10}$/.test(value)) {
-        errorMsg = "Enter a valid 10-digit mobile number";
-      }
-      setErrors((prev) => ({ ...prev, mobile_number: errorMsg }));
+    if (name === "mobile_number" && value.length === 10) {
+      checkUserExists(value, "mobile_number");
     }
+
+    if (name === "email" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      checkUserExists(value, "email");
+    }
+
     if (name === "id_proof_number") {
       let errorMsg = "";
       if (value.length > 16) {
@@ -270,115 +263,118 @@ const SevaRegistration = () => {
       }
       setErrors((prev) => ({ ...prev, id_proof_number: errorMsg }));
     }
+  };
 
-    if (name === "email") {
-      let errorMsg = "";
-      if (value.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-        errorMsg = "Enter a valid email address";
+  const checkUserExists = async (fieldValue, fieldName) => {
+    try {
+      const res = await axios.get(
+        "https://brjobsedu.com/Temple_portal/api/all-reg/"
+      );
+
+      const userExists = res.data.some((user) => {
+        if (fieldName === "mobile_number") return user.phone === fieldValue;
+        if (fieldName === "email") return user.email === fieldValue;
+        return false;
+      });
+
+      if (userExists) {
+        setShowLoginModal(true);
+        setAgree(false);
       }
-      setErrors((prev) => ({ ...prev, email: errorMsg }));
+    } catch (err) {
+      console.error("Error checking user:", err);
     }
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!validateFields()) {
-      setAlertMessage("Please fill all required fields.");
+  if (!validateFields()) {
+    setAlertMessage("Please fill all required fields.");
+    setShowAlert(true);
+    setAgree(false);
+    return;
+  }
+
+  if (!isVerified) {
+    setAlertMessage("Please verify your phone number before submitting.");
+    setShowAlert(true);
+    setAgree(false);
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const formDataToSend = new FormData();
+    for (let key in formData) {
+      formDataToSend.append(key, formData[key]);
+    }
+
+    const username = "9058423148";
+    const password = "Test@123";
+    const authHeader = "Basic " + btoa(username + ":" + password);
+
+    const res = await axios.post(
+      "https://brjobsedu.com/Temple_portal/api/seva-booking/",
+      formDataToSend,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: authHeader, 
+        },
+      }
+    );
+
+    if (res.data.message === "Seva booking created successfully") {
+      setAlertMessage("Seva Registration Successful!");
       setShowAlert(true);
       setAgree(false);
-      return
-    }
 
-    if (!isVerified) {
-
-      setAlertMessage("Please verify your phone number before submitting.");
+      setFormData({
+        full_name: "",
+        gender: "",
+        age: "",
+        mobile_number: "",
+        email: "",
+        id_proof_type: "",
+        id_proof_number: "",
+        temple_name: "",
+        type_of_seva: "",
+        preferred_dates: "",
+        time_slot: "",
+        frequency: "",
+        participation_mode: "",
+        gotra: "",
+        nakshatra_rashi: "",
+        special_instructions: "",
+        seva_donation_amount: "",
+        payment_mode: "",
+      });
+    } else {
+      setAlertMessage(res.data.message || "Seva Registration failed");
       setShowAlert(true);
       setAgree(false);
-
-      return;
     }
+  } catch (err) {
+    console.error(err);
+    const errorMsg =
+      err.response?.data?.message || err.message || "Something went wrong!";
+    setAlertMessage(errorMsg);
+    setShowAlert(true);
+    setAgree(false);
+  } finally {
+    setLoading(false);
+  }
+};
 
-    setLoading(true);
-
-    try {
-      const formDataToSend = new FormData();
-
-      for (let key in formData) {
-        formDataToSend.append(key, formData[key]);
-      }
-
-      const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/Sevabooking/",
-        formDataToSend,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-
-      // console.log("Seva Registration Response:", res.data);
-
-      if (res.data.message === "Seva booking created successfully") {
-
-        setAlertMessage("Seva Registration Successful!");
-        setShowAlert(true);
-        setAgree(false);
-
-
-
-        //navigate("/PaymentConfirmation");
-        setFormData({
-          full_name: "",
-          gender: "",
-          age: "",
-          mobile_number: "",
-          email: "",
-          id_proof_type: "",
-          id_proof_number: "",
-          temple_name: "",
-          type_of_seva: "",
-          preferred_dates: "",
-          time_slot: "",
-          frequency: "",
-          participation_mode: "",
-          gotra: "",
-          nakshatra_rashi: "",
-          special_instructions: "",
-          seva_donation_amount: "",
-          payment_mode: "",
-        });
-      } else {
-        setAlertMessage(res.data.message || "Seva Registration failed");
-        setShowAlert(true);
-        setAgree(false);
-
-      }
-    } catch (err) {
-      console.error(err);
-
-      if (err.response && err.response.data) {
-        const errorData = err.response.data;
-
-        setAlertMessage(errorData.message || "Something went wrong!");
-        setShowAlert(true);
-        setAgree(false);
-      } else {
-
-        setAlertMessage(err.message || "Something went wrong!");
-        setShowAlert(true);
-        setAgree(false);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div>
       <Container className="temp-container">
         <h1>Mandir Seva Registration </h1>
         <p>
-          <i>
-            Serve the Divine, Register Your Seva with Devotion{" "}
-          </i>
+          <i>Serve the Divine, Register Your Seva with Devotion </i>
         </p>
         <Form onSubmit={handleSubmit}>
           <Row>
@@ -418,7 +414,6 @@ const SevaRegistration = () => {
                       <small className="text-danger">{errors.full_name}</small>
                     )}
                   </Form.Group>
-
                 </Col>
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
@@ -504,7 +499,10 @@ const SevaRegistration = () => {
 
                           // Remove error if input becomes valid
                           if (value.length === 10) {
-                            setErrors((prev) => ({ ...prev, mobile_number: "" }));
+                            setErrors((prev) => ({
+                              ...prev,
+                              mobile_number: "",
+                            }));
                           } else {
                             setErrors((prev) => ({
                               ...prev,
@@ -514,13 +512,14 @@ const SevaRegistration = () => {
                         } else {
                           setErrors((prev) => ({
                             ...prev,
-
                           }));
                         }
                       }}
                     />
                     {errors.mobile_number && (
-                      <small className="text-danger">{errors.mobile_number}</small>
+                      <small className="text-danger">
+                        {errors.mobile_number}
+                      </small>
                     )}
                   </Form.Group>
                 </Col>
@@ -616,9 +615,9 @@ const SevaRegistration = () => {
                       onChange={handleInputChange}
                     >
                       <option value="">Select Temple Name</option>
-                      {temples.map((temple) => (
-                        <option key={temple.id} value={temple.temple_name}>
-                          {temple.temple_name} – {temple.city}, {temple.state}
+                      {temples.map((temple, index) => (
+                        <option key={index} value={temple}>
+                          {temple}
                         </option>
                       ))}
                     </Form.Select>
@@ -663,86 +662,40 @@ const SevaRegistration = () => {
                   </Form.Group>
                 </Col>
 
-
-                 <Col lg={6} md={6} sm={12}>
-                                  <Form.Group className="mb-3 ">
-                                          <Form.Label className="temp-label mb-2">
-                                            Seva Date & Time <span className="temp-span-star">*</span>
-                                          </Form.Label>
-                                          <div>
-                                            <DatePicker
-                                              selected={selectedDateTime}
-                                              onChange={setSelectedDateTime}
-                                              showTimeSelect
-                                              timeFormat="hh:mm aa"
-                                              timeIntervals={30}
-                                              dateFormat="MMMM d, yyyy h:mm aa"
-                                              placeholderText="Select Date and time"
-                                              className="form-control temp-form-control-option w-100"
-                                              minDate={new Date()}
-                                              required
-                                            />
-                                          </div>
-                                         {errors.time_slot && (
-                                      <small className="text-danger">
-                                        {errors.time_slot}
-                                      </small>
-                                    )}
-                                          
-                                        </Form.Group>
-                                        </Col>
-
-                {/* <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="temp-label">
-                      Preferred Date{" "}
-                      <span className="temp-span-star">*</span>
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="temp-label mb-2">
+                      Seva Date & Time <span className="temp-span-star">*</span>
                     </Form.Label>
-                    <Form.Control
-                      type="date"
-                      placeholder="Preferred Dates"
-                      className="temp-form-control"
-                      name="preferred_dates"
-                      value={formData.preferred_dates}
-                      onChange={handleInputChange}
-                      min={new Date().toISOString().split("T")[0]}
+                    <DatePicker
+                      selected={selectedDateTime}
+                      onChange={(date) => {
+                        setSelectedDateTime(date);
+                        setFormData((prev) => ({
+                          ...prev,
+                          seva_date_and_time: date.toISOString(),
+                        }));
+                        setErrors((prev) => ({
+                          ...prev,
+                          seva_date_and_time: "",
+                        }));
+                      }}
+                      showTimeSelect
+                      timeFormat="hh:mm aa"
+                      timeIntervals={30}
+                      dateFormat="MMMM d, yyyy h:mm aa"
+                      placeholderText="Select Date and time"
+                      className="form-control temp-form-control-option w-100"
+                      minDate={new Date()}
+                      required
                     />
-                    {errors.preferred_dates && (
+                    {errors.seva_date_and_time && (
                       <small className="text-danger">
-                        {errors.preferred_dates}
+                        {errors.seva_date_and_time}
                       </small>
                     )}
                   </Form.Group>
-                </Col> */}
-
-                {/* <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="temp-label">
-                      Time Slot <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Select
-                      className="temp-form-control-option"
-                      name="time_slot"
-                      placeholder="Enter Time Slot"
-                      value={formData.time_slot}
-                      onChange={handleInputChange}
-                    >
-                      <option value="">Select Time Slot</option>
-                      <option value="Morning">Morning </option>
-                      <option value="Afternoon">Afternoon </option>
-                      <option value="Evening">Evening </option>
-                    </Form.Select>
-                    {errors.time_slot && (
-                      <small className="text-danger">{errors.time_slot}</small>
-                    )}
-                  </Form.Group>
-                </Col> */}
+                </Col>
 
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
@@ -791,7 +744,6 @@ const SevaRegistration = () => {
                       <option value="">Select Mode of Participation</option>
                       <option value="online">Online </option>
                       <option value="offline">Offline</option>
-                    
                     </Form.Select>
                     {errors.participation_mode && (
                       <small className="text-danger">
@@ -1026,6 +978,20 @@ const SevaRegistration = () => {
           </Row>
         </Form>
       </Container>
+      <LoginPopup
+        show={showLoginModal}
+        mobileNumber={formData.mobile_number}
+        email={formData.email}
+        handleClose={() => {
+          setShowLoginModal(false);
+          setFormData((prev) => ({
+            ...prev,
+            mobile_number: "",
+            email: "",
+          }));
+        }}
+      />
+
       <ModifyAlert
         message={alertMessage}
         show={showAlert}
@@ -1040,7 +1006,6 @@ const SevaRegistration = () => {
         handleVerifyOtp={handleVerifyOtp}
         phone={formData.mobile_number}
         handleResendOtp={handleResendOtp}
-
       />
     </div>
   );
