@@ -8,13 +8,13 @@ const LoginPopup = ({ show, handleClose, handleLoginRegister }) => {
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Mandir Seva Booking</Modal.Title>
+        <Modal.Title>Booking</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div className="text-center p-4 my-4 temp-regis">
           <h5>
             <BsInfoCircleFill className="temp-info-icon" />
-            To continue with your Mandir Seva booking, please{" "}
+            To continue with your Booking, please{" "}
             <strong>login</strong>
           </h5>
           <p>
@@ -24,7 +24,7 @@ const LoginPopup = ({ show, handleClose, handleLoginRegister }) => {
             <Col xs={12} md={6} className="mb-2 mb-md-0">
               <Link to="/Login">
                 <Button
-                  className="w-100 temp-login-btn"
+                  className="w-100 temp-login-btn text-center"
                   onClick={handleLoginRegister}
                 >
                   Login

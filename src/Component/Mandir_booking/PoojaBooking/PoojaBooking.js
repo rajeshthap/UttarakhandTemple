@@ -9,6 +9,7 @@ import LocationState from "../../userregistration/LocationState";
 import ModifyAlert from "../../Alert/ModifyAlert";
 import DatePicker from "react-datepicker";
 import { setHours, setMinutes } from "date-fns";
+import LoginPopup from "../../OTPModel/LoginPopup";
 
 const PoojaBooking = () => {
   const [show, setShow] = useState(false);
@@ -23,6 +24,7 @@ const PoojaBooking = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [selectedDateTime, setSelectedDateTime] = useState(null);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   // Helper to round up to next 30 min interval
   const getNextInterval = (date = new Date()) => {
@@ -39,9 +41,10 @@ const PoojaBooking = () => {
     selectedDateTime.getMonth() === today.getMonth() &&
     selectedDateTime.getFullYear() === today.getFullYear();
 
-  const minTime = isToday ? getNextInterval(today) : setHours(setMinutes(today, 0), 6); // 6:00 AM
-  const maxTime = setHours(setMinutes(today, 30), 23); // 11:30 PM
-
+  const minTime = isToday
+    ? getNextInterval(today)
+    : setHours(setMinutes(today, 0), 6);
+  const maxTime = setHours(setMinutes(today, 30), 23);
 
   const navigate = useNavigate();
 
@@ -55,8 +58,7 @@ const PoojaBooking = () => {
     id_proof_number: "",
     temple_name: "",
     pooja_name: "",
-    date_of_pooja: "",
-    preferred_time_slot: "",
+    pooja_date_and_time: "",
     mode_of_participation: "",
     number_of_participants: "",
     gotra: "",
@@ -76,10 +78,31 @@ const PoojaBooking = () => {
     donation_amount: "",
   });
 
+  const checkUserExists = async (fieldValue, fieldName) => {
+    try {
+      const res = await axios.get(
+        "https://brjobsedu.com/Temple_portal/api/all-reg/"
+      );
+
+      const userExists = res.data.some((user) => {
+        if (fieldName === "mobile_number") return user.phone === fieldValue;
+        if (fieldName === "email") return user.email === fieldValue;
+        return false;
+      });
+
+      if (userExists) {
+        setShowLoginModal(true);
+        setAgree(false);
+      }
+    } catch (err) {
+      console.error("Error checking user:", err);
+    }
+  };
+
   const handleResendOtp = async () => {
     try {
       const res = await axios.post(
-   "https://brjobsedu.com/Temple_portal/api/send-otp/",
+        "https://brjobsedu.com/Temple_portal/api/send-otp/",
         {
           phone: formData.mobile_number,
         }
@@ -87,15 +110,13 @@ const PoojaBooking = () => {
 
       if (res.data.success) {
       } else {
-          setAlertMessage("Failed to resend OTP. Try again.");
-        setShowAlert(true)
-        
+        setAlertMessage("Failed to resend OTP. Try again.");
+        setShowAlert(true);
       }
     } catch (error) {
       console.error("Error resending OTP:", error);
-        setAlertMessage("Something went wrong. Please try again.");
-        setShowAlert(true)
-    
+      setAlertMessage("Something went wrong. Please try again.");
+      setShowAlert(true);
     }
   };
 
@@ -115,10 +136,10 @@ const PoojaBooking = () => {
     const fetchTemples = async () => {
       try {
         const res = await axios.get(
-          "https://brjobsedu.com/Temple_portal/api/temples-for-divine/"
+          "https://brjobsedu.com/Temple_portal/api/temple-names-list/"
         );
-        if (res.data && Array.isArray(res.data.temples)) {
-          setTemples(res.data.temples);
+        if (res.data && Array.isArray(res.data.temple_names)) {
+          setTemples(res.data.temple_names);
         }
       } catch (err) {
         console.error("Error fetching temples:", err);
@@ -166,11 +187,8 @@ const PoojaBooking = () => {
 
     if (!formData.pooja_name) newErrors.pooja_name = "Pooja Name is required";
 
-    if (!formData.date_of_pooja)
-      newErrors.date_of_pooja = "Date of Pooja is required";
-
-    if (!formData.preferred_time_slot)
-      newErrors.preferred_time_slot = "Date and Time is required";
+    if (!formData.pooja_date_and_time)
+      newErrors.seva_date_and_time = "Pooja Date & Time is required";
 
     if (!formData.mode_of_participation)
       newErrors.mode_of_participation = "Mode of Participation is required";
@@ -242,12 +260,13 @@ const PoojaBooking = () => {
 
     //  validate required fields before OTP
     if (!validateFields()) {
-  setAlertMessage("Please fill all required fields correctly before verifying OTP.");
-  setShowAlert(true);
-  setAgree(false);
-  return;
-}
-
+      setAlertMessage(
+        "Please fill all required fields correctly before verifying OTP."
+      );
+      setShowAlert(true);
+      setAgree(false);
+      return;
+    }
 
     //  if OTP already verified, no need to resend
     if (isVerified) {
@@ -258,7 +277,7 @@ const PoojaBooking = () => {
     //  otherwise send OTP
     try {
       const res = await axios.post(
-   "https://brjobsedu.com/Temple_portal/api/send-otp/",
+        "https://brjobsedu.com/Temple_portal/api/send-otp/",
         {
           phone: formData.mobile_number,
         }
@@ -269,14 +288,14 @@ const PoojaBooking = () => {
         setShow(true); // open modal
         setAgree(true);
       } else {
-         setAlertMessage(res.data.message || "Failed to send OTP");
-        setShowAlert(true)
+        setAlertMessage(res.data.message || "Failed to send OTP");
+        setShowAlert(true);
         setAgree(false);
       }
     } catch (err) {
       console.error("OTP Send Error:", err);
-       setAlertMessage("Error sending OTP");
-        setShowAlert(true)
+      setAlertMessage("Error sending OTP");
+      setShowAlert(true);
       setAgree(false);
     }
   };
@@ -284,7 +303,7 @@ const PoojaBooking = () => {
   const handleVerifyOtp = async () => {
     try {
       const res = await axios.post(
-   "https://brjobsedu.com/Temple_portal/api/verify-otp/",
+        "https://brjobsedu.com/Temple_portal/api/verify-otp/",
         {
           phone: formData.mobile_number,
           otp: otp,
@@ -294,19 +313,18 @@ const PoojaBooking = () => {
       if (res.data.success) {
         setIsVerified(true);
         setAlertMessage("Phone number verified!");
-        setShowAlert(true)
-      
+        setShowAlert(true);
+
         handleClose(); // close modal
         navigate("/PaymentConfirmation");
       } else {
-         setAlertMessage(res.data.message || "Invalid OTP");
-        setShowAlert(true)
+        setAlertMessage(res.data.message || "Invalid OTP");
+        setShowAlert(true);
       }
     } catch (err) {
       //console.error("OTP Verify Error:", err);
       setAlertMessage("Error verifying OTP");
-        setShowAlert(true)
-    
+      setShowAlert(true);
     }
   };
 
@@ -319,27 +337,12 @@ const PoojaBooking = () => {
     }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
 
-    if (name === "mobile_number") {
-      let newValue = value.replace(/\D/g, ""); // remove non-digits
-      if (newValue.length > 10) {
-        newValue = newValue.slice(0, 10); // allow max 10 digits
-      }
-
-      let errorMsg = "";
-      if (newValue.length > 0 && newValue.length < 10) {
-        errorMsg = "Enter a valid 10-digit mobile number";
-      }
-
-      setFormData((prev) => ({ ...prev, mobile_number: newValue }));
-      setErrors((prev) => ({ ...prev, mobile_number: errorMsg }));
+    if (name === "mobile_number" && value.length === 10) {
+      checkUserExists(value, "mobile_number");
     }
 
-    if (name === "email") {
-      let errorMsg = "";
-      if (value.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-        errorMsg = "Enter a valid email address";
-      }
-      setErrors((prev) => ({ ...prev, email: errorMsg }));
+    if (name === "email" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      checkUserExists(value, "email");
     }
   };
 
@@ -347,14 +350,16 @@ const PoojaBooking = () => {
     e.preventDefault();
 
     if (!validateFields()) {
-     setAlertMessage("Please fill all required fields.");
-        setShowAlert(true)
-      return 
+      setAlertMessage("Please fill all required fields.");
+      setShowAlert(true);
+      setAgree(false);
+      return;
     }
 
     if (!isVerified) {
-     setAlertMessage("Please verify your phone number before submitting.");
-        setShowAlert(true)
+      setAlertMessage("Please verify your phone number before submitting.");
+      setShowAlert(true);
+      setAgree(false);
       return;
     }
 
@@ -367,50 +372,62 @@ const PoojaBooking = () => {
         formDataToSend.append(key, formData[key]);
       }
 
+      const username = "9058423148";
+      const password = "Test@123";
+      const authHeader = "Basic " + btoa(username + ":" + password);
+
       const res = await axios.post(
         "https://brjobsedu.com/Temple_portal/api/Pooja_booking/",
         formDataToSend,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: authHeader,
+          },
+        }
       );
 
       console.log("Pooja Registration Response:", res.data);
 
-      
-
-       if (res.data.message === "Temple booking created successfully") {
+      if (res.data.message === "Temple booking created successfully") {
         setAlertMessage("Pooja Registration Successful!");
         setShowAlert(true);
         setAgree(false);
 
-        // delay navigation by 3 seconds
+        setFormData({
+          full_name: "",
+          gender: "",
+          age: "",
+          mobile_number: "",
+          email: "",
+          id_proof_type: "",
+          id_proof_number: "",
+          temple_name: "",
+          pooja_type: "",
+          pooja_date_and_time: "",
+          special_requests: "",
+          donation_amount: "",
+          payment_mode: "",
+        });
 
         setTimeout(() => {
           navigate("/PaymentConfirmation");
         }, 3000);
-
       } else {
         setAlertMessage(res.data.message || "Pooja Registration failed");
         setShowAlert(true);
         setAgree(false);
-
       }
     } catch (err) {
-      console.error(err);
+      console.error("Pooja Booking Error:", err);
 
-   
-
-    if (err.response && err.response.data) {
-        const errorData = err.response.data;
-
-        setAlertMessage(errorData.message || "Pooja Registration failed");
-        setShowAlert(true);
-        setAgree(false);
-
-      } else {
-        setAlertMessage(err.message || "Pooja Registration failed");
-        setShowAlert(true);
-        setAgree(false);
-      }
+      const errorMsg =
+        err.response?.data?.message ||
+        err.message ||
+        "Something went wrong while booking!";
+      setAlertMessage(errorMsg);
+      setShowAlert(true);
+      setAgree(false);
     } finally {
       setLoading(false);
     }
@@ -644,12 +661,13 @@ const PoojaBooking = () => {
                       onChange={handleInputChange}
                     >
                       <option value="">Select Temple Name</option>
-                      {temples.map((temple) => (
-                        <option key={temple.id} value={temple.temple_name}>
-                          {temple.temple_name} – {temple.city}, {temple.state}
+                      {temples.map((temple, index) => (
+                        <option key={index} value={temple}>
+                          {temple}
                         </option>
                       ))}
                     </Form.Select>
+
                     {errors.temple_name && (
                       <small className="text-danger">
                         {errors.temple_name}
@@ -685,60 +703,6 @@ const PoojaBooking = () => {
                   </Form.Group>
                 </Col>
 
-                {/* <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="temp-label">
-                      Date of Pooja <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="date"
-                      placeholder="Date Of Pooja"
-                      className="temp-form-control"
-                      name="date_of_pooja"
-                      value={formData.date_of_pooja}
-                      onChange={handleInputChange}
-                      min={new Date().toISOString().split("T")[0]}
-                    />
-                    {errors.date_of_pooja && (
-                      <small className="text-danger">
-                        {errors.date_of_pooja}
-                      </small>
-                    )}
-                  </Form.Group>
-                </Col> */}
-
-                {/* <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="temp-label">
-                      Preferred Time Slot{" "}
-                      <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Select
-                      className="temp-form-control-option"
-                      placeholder="Preferred Time Slot"
-                      name="preferred_time_slot"
-                      value={formData.preferred_time_slot}
-                      onChange={handleInputChange}
-                    >
-                      <option value="">Select Time Slot</option>
-                      <option value="Morning ">Morning </option>
-                      <option value="Afternoon ">Afternoon </option>
-                      <option value="Evening">Evening </option>
-                    </Form.Select>
-                    {errors.preferred_time_slot && (
-                      <small className="text-danger">
-                        {errors.preferred_time_slot}
-                      </small>
-                    )}
-                  </Form.Group>
-                </Col> */}
-
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
                     className="mb-3"
@@ -758,7 +722,6 @@ const PoojaBooking = () => {
                       <option value="">Select Mode of Participation</option>
                       <option value="online">Online</option>
                       <option value="offline">Offline</option>
-                    
                     </Form.Select>
                     {errors.mode_of_participation && (
                       <small className="text-danger">
@@ -768,34 +731,35 @@ const PoojaBooking = () => {
                   </Form.Group>
                 </Col>
 
-                  <Col lg={6} md={6} sm={12}>
-                    <Form.Group className="mb-3 ">
-                      <Form.Label className="temp-label mb-2">
-                        Pooja Date & Time <span className="temp-span-star">*</span>
-                      </Form.Label>
-                      <div>
-                        <DatePicker
-                          selected={selectedDateTime}
-                          onChange={setSelectedDateTime}
-                          showTimeSelect
-                          timeFormat="hh:mm aa"
-                          timeIntervals={30}
-                          dateFormat="MMMM d, yyyy h:mm aa"
-                          placeholderText="Select Date and time"
-                          className="form-control temp-form-control-option w-100"
-                          minDate={today}
-                          minTime={minTime}
-                          maxTime={maxTime}
-                          required
-                        />
-                      </div>
-                      {errors.preferred_time_slot && (
-                        <small className="text-danger">
-                          {errors.preferred_time_slot}
-                        </small>
-                      )}
-                    </Form.Group>
-                  </Col>
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group className="mb-3 ">
+                    <Form.Label className="temp-label mb-2">
+                      Pooja Date & Time{" "}
+                      <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <div>
+                      <DatePicker
+                        selected={selectedDateTime}
+                        onChange={setSelectedDateTime}
+                        showTimeSelect
+                        timeFormat="hh:mm aa"
+                        timeIntervals={30}
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        placeholderText="Select Date and time"
+                        className="form-control temp-form-control-option w-100"
+                        minDate={today}
+                        minTime={minTime}
+                        maxTime={maxTime}
+                        required
+                      />
+                    </div>
+                    {errors.pooja_date_and_time && (
+                      <small className="text-danger">
+                        {errors.pooja_date_and_time}
+                      </small>
+                    )}
+                  </Form.Group>
+                </Col>
 
                 <h2 className="mb-3 mt-2">Additional Details</h2>
 
@@ -939,7 +903,7 @@ const PoojaBooking = () => {
                       value={formData.special_requests}
                       onChange={handleInputChange}
                     />
-                     {errors.special_requests && (
+                    {errors.special_requests && (
                       <small className="text-danger">
                         {errors.special_requests}
                       </small>
@@ -1160,6 +1124,20 @@ const PoojaBooking = () => {
           </Row>
         </Form>
       </Container>
+      <LoginPopup
+        show={showLoginModal}
+        mobileNumber={formData.mobile_number}
+        email={formData.email}
+        handleClose={() => {
+          setShowLoginModal(false);
+          setFormData((prev) => ({
+            ...prev,
+            mobile_number: "",
+            email: "",
+          }));
+        }}
+      />
+
       <ModifyAlert
         message={alertMessage}
         show={showAlert}

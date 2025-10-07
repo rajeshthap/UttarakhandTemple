@@ -49,7 +49,7 @@ const SevaRegistration = () => {
   const handleResendOtp = async () => {
     try {
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/Sentotp/",
+        "https://brjobsedu.com/Temple_portal/api/send-otp/",
         {
           phone: formData.mobile_number,
         }
