@@ -1,23 +1,65 @@
 .Badri-img{
-    border: 2px solid red;
-    padding: 10px;
+    border-radius: var(--temp-space-200) !important;
 }
 
 .Badri-card{
-    margin: 5px;
-    padding: 10px;
-    border: 2px solid blue;
-    border-radius: 10px;
-    display: flex;
-    justify-content: space-between;
+    margin: var(--temp-space-150);
+    padding: var(--temp-space-250);
+    border: 1px solid #EDEDED;
+    border-radius: var(--temp-space-200);
+   
+    background: #F6F5F5;
+    width: 100%;
+
     
 }
-.carditem-1 h1{
+.temp-route{
+ display: flex;
+    justify-content: space-between;
+    margin-top: var(--temp-space-200);
+}
+.temp-card{
+    padding-left: var(--temp-space-0);
+}
+.carditem-1 h3{
     font-size: var(--temp-space-350);
     font-weight: 500;
+     color: #F74F22;
+     padding-bottom: var(--temp-space-0) !important;
+     margin-bottom: var(--temp-space-50) !important;
 
 }
-.carditem-1 h5{
-    font-size: 10px;
+.carditem-1 p{
+    font-size: var(--temp-space-300)
 
+}
+.temp-icon{
+    color: #F74F22;
+}
+.temp-view-more-btn{
+    background-color: #F74F22;
+    border-radius: var(--temp-space-200);
+    text-align: center;
+     border: 1px solid #F74F22;
+     font-size: var(--temp-space-300);
+    
+}
+
+.text-color{
+    color:#F74F22;
+}
+
+.temp-view-more-btn:hover{
+    background-color: #6e2713;
+    border: 1px solid #F74F22;
+    color: white;}
+
+
+
+@media only screen and (max-width: 568px) {
+
+.temp-card-mob{
+    padding-top: var(--temp-space-300);
+    margin-top: var(--temp-space-300);
+}
 }
