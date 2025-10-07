@@ -6,9 +6,13 @@ import OTPModel from "../OTPModel/OTPModel";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import LocationState from "../userregistration/LocationState";
-import ModifyAlert from "../Alert/ModifyAlert"
+import ModifyAlert from "../Alert/ModifyAlert";
+import DatePicker from "react-datepicker";
+import { setHours, setMinutes } from "date-fns";
+import LoginPopup from "../OTPModel/LoginPopup";
+import { useLocation } from "react-router-dom";
 
-const MandirBooking  = () => {
+const MandirBooking = () => {
   const [show, setShow] = useState(false);
   const [temples, setTemples] = useState([]);
   const handleClose = () => setShow(false);
@@ -20,7 +24,62 @@ const MandirBooking  = () => {
   const [errors, setErrors] = useState({});
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const [selectedDateTime, setSelectedDateTime] = useState(null);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
   const navigate = useNavigate();
+  const location = useLocation();
+  const { temple_name, no_of_persons, mandir_book_date_and_time, grand_total } =
+    location.state || {};
+
+  // Helper to round up to next 30 min interval
+  const getNextInterval = (date = new Date()) => {
+    let minutes = date.getMinutes();
+    let nextMinutes = minutes <= 30 ? 30 : 0;
+    let nextHour = nextMinutes === 0 ? date.getHours() + 1 : date.getHours();
+    return setMinutes(setHours(date, nextHour), nextMinutes);
+  };
+
+  const today = new Date();
+  const isToday =
+    selectedDateTime &&
+    selectedDateTime.getDate() === today.getDate() &&
+    selectedDateTime.getMonth() === today.getMonth() &&
+    selectedDateTime.getFullYear() === today.getFullYear();
+
+  const minTime = isToday
+    ? getNextInterval(today)
+    : setHours(setMinutes(today, 0), 6);
+  const maxTime = setHours(setMinutes(today, 30), 23);
+
+  const handleDateChange = (date) => {
+    setSelectedDateTime(date);
+    setFormData((prev) => ({
+      ...prev,
+      mandir_book_date_and_time: date ? date.toISOString() : "",
+    }));
+    setErrors((prev) => ({ ...prev, mandir_book_date_and_time: "" }));
+  };
+
+  // Populate formData from props if available
+useEffect(() => {
+  if (temple_name || no_of_persons || mandir_book_date_and_time || grand_total) {
+    setFormData((prev) => ({
+      ...prev,
+      temple_name: temple_name || prev.temple_name,
+      no_of_persons: no_of_persons || prev.no_of_persons,
+      mandir_book_date_and_time:
+        mandir_book_date_and_time || prev.mandir_book_date_and_time,
+      grand_total: grand_total || prev.grand_total,
+    }));
+
+    // If mandir_book_date_and_time exists, also set DatePicker value
+    if (mandir_book_date_and_time) {
+      setSelectedDateTime(new Date(mandir_book_date_and_time));
+    }
+  }
+}, [temple_name, no_of_persons, mandir_book_date_and_time, grand_total]);
+
 
   const [formData, setFormData] = useState({
     full_name: "",
@@ -32,47 +91,39 @@ const MandirBooking  = () => {
     id_proof_number: "",
     temple_name: "",
     darshan_type: "",
-    date_of_darshan: "",
-    time_slot: "",
-    number_of_devotees: "",
+    mandir_book_date_and_time: "",
+    accommodation_required: "",
     prasad_delivery: "",
     special_seva_or_puja: "",
     state: "",
     country: "",
     city: "",
     pin_code: "",
-    donation_amount: "",
+    grand_total: "",
     payment_mode: "",
+    no_of_persons: "",
   });
-
 
   const handleResendOtp = async () => {
     try {
-
-      const res = await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
-        phone: formData.mobile_number,
-      });
+      const res = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/send-otp/",
+        {
+          phone: formData.mobile_number,
+        }
+      );
 
       if (res.data.success) {
-
       } else {
-         setAlertMessage("Failed to resend OTP. Try again.");
+        setAlertMessage("Failed to resend OTP. Try again.");
         setShowAlert(true);
-        
-        
       }
     } catch (error) {
       console.error("Error resending OTP:", error);
-       setAlertMessage("Something went wrong. Please try again.");
-        setShowAlert(true);
-        
-        
-    
+      setAlertMessage("Something went wrong. Please try again.");
+      setShowAlert(true);
     }
   };
-
-
-
 
   const handleInputChangeCity = (name, value) => {
     // Update form data
@@ -84,7 +135,9 @@ const MandirBooking  = () => {
       if (value && value.trim() !== "") {
         delete newErrors[name]; // Clear only the current field's error
       } else {
-        newErrors[name] = `${name.charAt(0).toUpperCase() + name.slice(1)} is required`;
+        newErrors[name] = `${
+          name.charAt(0).toUpperCase() + name.slice(1)
+        } is required`;
       }
       return newErrors;
     });
@@ -100,16 +153,14 @@ const MandirBooking  = () => {
     }
   };
 
-
-
   useEffect(() => {
     const fetchTemples = async () => {
       try {
         const res = await axios.get(
-          "https://brjobsedu.com/Temple_portal/api/temples-for-divine/"
+          "https://brjobsedu.com/Temple_portal/api/temple-names-list/"
         );
-        if (res.data && Array.isArray(res.data.temples)) {
-          setTemples(res.data.temples);
+        if (res.data && Array.isArray(res.data.temple_names)) {
+          setTemples(res.data.temple_names);
         }
       } catch (err) {
         console.error("Error fetching temples:", err);
@@ -152,28 +203,17 @@ const MandirBooking  = () => {
     }
 
     // Darshan Booking Details
-    if (!formData.temple_name)
-      newErrors.temple_name = "Temple Name is required";
+    // if (!formData.temple_name)
+    //   newErrors.temple_name = "Temple Name is required";
 
     if (!formData.darshan_type)
       newErrors.darshan_type = "Darshan Type is required";
 
-    if (!formData.date_of_darshan)
-      newErrors.date_of_darshan = "Date of Darshan is required";
-
-    if (!formData.time_slot)
-      newErrors.time_slot = "Time Slot is required";
-
-    if (
-      !formData.number_of_devotees ||
-      isNaN(formData.number_of_devotees) ||
-      formData.number_of_devotees <= 0
-    )
-      newErrors.number_of_devotees = "Enter valid number of devotees";
+    if (!formData.mandir_book_date_and_time)
+      newErrors.mandir_book_date_and_time = "Date of Mandir is required";
 
     if (!formData.special_seva_or_puja.trim())
       newErrors.special_seva_or_puja = "Special Seva / Puja is required";
-
 
     // Prasad Delivery (Required field)
     if (formData.prasad_delivery === "" || formData.prasad_delivery === null) {
@@ -181,11 +221,11 @@ const MandirBooking  = () => {
     }
 
     // Address Details (validate only if prasad_delivery is true)
-    if (formData.prasad_delivery === true || formData.prasad_delivery === "yes") {
-      if (!formData.state.trim()) newErrors.state = "State is required";
-      if (!formData.country.trim()) newErrors.country = "Country is required";
-      if (!formData.city.trim()) newErrors.city = "City is required";
-      if (!formData.pin_code.trim()) {
+    if (String(formData.prasad_delivery).toLowerCase() === "yes") {
+      if (!formData.state?.trim()) newErrors.state = "State is required";
+      if (!formData.country?.trim()) newErrors.country = "Country is required";
+      if (!formData.city?.trim()) newErrors.city = "City is required";
+      if (!formData.pin_code?.trim()) {
         newErrors.pin_code = "Pin Code is required";
       } else if (!/^\d{6}$/.test(formData.pin_code)) {
         newErrors.pin_code = "Enter a valid 6-digit Pin Code";
@@ -194,11 +234,11 @@ const MandirBooking  = () => {
 
     // Payment Details
     if (
-      !formData.donation_amount ||
-      isNaN(formData.donation_amount) ||
-      formData.donation_amount <= 0
+      !formData.grand_total ||
+      isNaN(formData.grand_total) ||
+      formData.grand_total <= 0
     )
-      newErrors.donation_amount = "Valid Donation Amount is required";
+      newErrors.grand_total = "Valid Donation Amount is required";
 
     if (!formData.payment_mode)
       newErrors.payment_mode = "Payment Mode is required";
@@ -207,7 +247,26 @@ const MandirBooking  = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const checkUserExists = async (fieldValue, fieldName) => {
+    try {
+      const res = await axios.get(
+        "https://brjobsedu.com/Temple_portal/api/all-reg/"
+      );
 
+      const userExists = res.data.some((user) => {
+        if (fieldName === "mobile_number") return user.phone === fieldValue;
+        if (fieldName === "email") return user.email === fieldValue;
+        return false;
+      });
+
+      if (userExists) {
+        setShowLoginModal(true);
+        setAgree(false);
+      }
+    } catch (err) {
+      console.error("Error checking user:", err);
+    }
+  };
 
   const handleAgreeChange = async (e) => {
     const checked = e.target.checked;
@@ -218,12 +277,14 @@ const MandirBooking  = () => {
     }
 
     //  validate required fields before OTP
-     if (!validateFields()) {
-  setAlertMessage("Please fill all required fields correctly before verifying OTP.");
-  setShowAlert(true);
-  setAgree(false);
-  return;
-}
+    if (!validateFields()) {
+      setAlertMessage(
+        "Please fill all required fields correctly before verifying OTP."
+      );
+      setShowAlert(true);
+      setAgree(false);
+      return;
+    }
 
     //  if OTP already verified, no need to resend
     if (isVerified) {
@@ -234,7 +295,7 @@ const MandirBooking  = () => {
     //  otherwise send OTP
     try {
       const res = await axios.post(
-   "https://brjobsedu.com/Temple_portal/api/send-otp/",
+        "https://brjobsedu.com/Temple_portal/api/send-otp/",
         {
           phone: formData.mobile_number,
         }
@@ -244,23 +305,22 @@ const MandirBooking  = () => {
         setOtpSent(true);
         setShow(true); // open modal
         setAgree(true);
-
       } else {
         setAlertMessage(res.data.message || "Failed to send OTP");
-        setShowAlert(true)
+        setShowAlert(true);
       }
     } catch (err) {
       console.error("OTP Send Error:", err);
       setAlertMessage("Error sending OTP");
-        setShowAlert(true);
-        setAgree(false);
+      setShowAlert(true);
+      setAgree(false);
     }
   };
 
   const handleVerifyOtp = async () => {
     try {
       const res = await axios.post(
-   "https://brjobsedu.com/Temple_portal/api/verify-otp/",
+        "https://brjobsedu.com/Temple_portal/api/verify-otp/",
         {
           phone: formData.mobile_number,
           otp: otp,
@@ -273,17 +333,15 @@ const MandirBooking  = () => {
         setShowAlert(true);
         handleClose(); // close modal
 
-        navigate("/PaymentConfirmation");
+        // navigate("/PaymentConfirmation");
       } else {
-         setAlertMessage(res.data.message || "Invalid OTP");
+        setAlertMessage(res.data.message || "Invalid OTP");
         setShowAlert(true);
-        
       }
     } catch (err) {
       console.error("OTP Verify Error:", err);
       setAlertMessage("Error verifying OTP");
-        setShowAlert(true);
-    
+      setShowAlert(true);
     }
   };
 
@@ -298,47 +356,31 @@ const MandirBooking  = () => {
     // Clear error if value is valid
     setErrors((prev) => ({
       ...prev,
-      [name]:
-        value && value.trim() !== ""
-          ? ""
-          : prev[name], // keep error if value empty
+      [name]: value && value.trim() !== "" ? "" : prev[name], // keep error if value empty
     }));
 
     // Specific validations
-    if (name === "mobile_number") {
-      let errorMsg = "";
-      if (!/^\d*$/.test(value)) {
-        errorMsg = "Only digits allowed";
-      } else if (value.length > 0 && !/^\d{10}$/.test(value)) {
-        errorMsg = "Enter a valid 10-digit mobile number";
-      }
-      setErrors((prev) => ({ ...prev, mobile_number: errorMsg }));
+    if (name === "mobile_number" && value.length === 10) {
+      checkUserExists(value, "mobile_number");
     }
 
-    if (name === "email") {
-      let errorMsg = "";
-      if (value.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-        errorMsg = "Enter a valid email address";
-      }
-      setErrors((prev) => ({ ...prev, email: errorMsg }));
+    if (name === "email" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      checkUserExists(value, "email");
     }
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validateFields()) {
-
       setAlertMessage("Please fill all required fields.");
-        setShowAlert(true);
-      return 
+      setShowAlert(true);
+      return;
     }
 
     if (!isVerified) {
-          setAlertMessage("Please verify your phone number before submitting.");
-        setShowAlert(true);
-      
+      setAlertMessage("Please verify your phone number before submitting.");
+      setShowAlert(true);
       return;
     }
 
@@ -351,46 +393,60 @@ const MandirBooking  = () => {
         formDataToSend.append(key, formData[key]);
       }
 
+      // Basic Auth credentials
+      const username = "9058423148";
+      const password = "Test@123";
+      const authHeader = "Basic " + btoa(username + ":" + password);
+
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/darshan-booking/",
+        "https://brjobsedu.com/Temple_portal/api/mandir-booking/ ",
         formDataToSend,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: authHeader,
+          },
+        }
       );
 
-      // console.log("Darshan Registration Response:", res.data);
-
       if (res.data.message === "Darshan booking created") {
-         setAlertMessage("Darshan Registration Successful!");
-  setShowAlert(true);
-   setAgree(false);
+        setAlertMessage("Darshan Registration Successful!");
+        setShowAlert(true);
+        setAgree(false);
 
-   // delay navigation by 3 seconds
- 
-  setTimeout(() => {
-        navigate("/PaymentConfirmation");
-      }, 2000);
-      
+        setFormData({
+          full_name: "",
+          gender: "",
+          age: "",
+          mobile_number: "",
+          email: "",
+          id_proof_type: "",
+          id_proof_number: "",
+          temple_name: "",
+          darshan_date_and_time: "",
+          special_requests: "",
+          grand_total: "",
+          payment_mode: "",
+        });
+
+        // setTimeout(() => {
+        //   navigate("/PaymentConfirmation");
+        // }, 2000);
       } else {
-         setAlertMessage(res.data.message || "Darshan Registration failed");
-             setShowAlert(true);
-            setAgree(false);
-      
+        setAlertMessage(res.data.message || "Darshan Registration failed");
+        setShowAlert(true);
+        setAgree(false);
       }
     } catch (err) {
-      console.error(err);
+      console.error("Darshan Booking Error:", err);
 
-      if (err.response && err.response.data) {
-        const errorData = err.response.data;
-
-        setAlertMessage(errorData.message || "Darshan Registration failed");
-             setShowAlert(true);
-            setAgree(false);
-      
-      } else {
-          setAlertMessage(err.message ||"Darshan Registration failed");
-             setShowAlert(true);
-            setAgree(false);
-      }
+      const errorMsg =
+        err.response?.data?.message ||
+        err.message ||
+        "Something went wrong while booking!";
+      setAlertMessage(errorMsg);
+      setShowAlert(true);
+      setAgree(false);
     } finally {
       setLoading(false);
     }
@@ -401,9 +457,7 @@ const MandirBooking  = () => {
       <Container className="temp-container">
         <h1>Mandir Booking</h1>
         <p>
-          <i>
-            Book Your Sacred Mandir and Connect with the Divine{" "}
-          </i>
+          <i>Book Your Sacred Mandir and Connect with the Divine </i>
         </p>
         <Form onSubmit={handleSubmit}>
           <Row>
@@ -521,7 +575,6 @@ const MandirBooking  = () => {
                         {errors.mobile_number}
                       </small>
                     )}
-
                   </Form.Group>
                 </Col>
 
@@ -551,7 +604,6 @@ const MandirBooking  = () => {
                         {errors.id_proof_type}
                       </small>
                     )}
-
                   </Form.Group>
                 </Col>
                 <Col lg={6} md={6} sm={12}>
@@ -578,6 +630,30 @@ const MandirBooking  = () => {
                     )}
                   </Form.Group>
                 </Col>
+
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label className="temp-label">
+                      Number Of Persons{" "}
+                      <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="no_of_persons"
+                      className="temp-form-control"
+                      value={formData.no_of_persons || no_of_persons || ""}
+                      readOnly
+                    />
+                    {errors.no_of_persons && (
+                      <small className="text-danger">
+                        {errors.no_of_persons}
+                      </small>
+                    )}
+                  </Form.Group>
+                </Col>
               </Row>
               <h2>Mandir Booking Details</h2>
 
@@ -585,23 +661,20 @@ const MandirBooking  = () => {
                 {/* Booking Details */}
 
                 <Col lg={6} md={6} sm={12}>
-                  <Form.Group className="mb-3" controlId="templeType">
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
                     <Form.Label className="temp-label">
                       Temple Name <span className="temp-span-star">*</span>
                     </Form.Label>
-                    <Form.Select
-                      className="temp-form-control-option"
+                    <Form.Control
+                      type="text"
                       name="temple_name"
-                      value={formData.temple_name}
-                      onChange={handleInputChange}
-                    >
-                      <option value="">Select Temple Name</option>
-                      {temples.map((temple) => (
-                        <option key={temple.id} value={temple.temple_name}>
-                          {temple.temple_name} – {temple.city}, {temple.state}
-                        </option>
-                      ))}
-                    </Form.Select>
+                      value={formData.temple_name || temple_name || ""}
+                      readOnly
+                      className="temp-form-control-option"
+                    />
                     {errors.temple_name && (
                       <small className="text-danger">
                         {errors.temple_name}
@@ -613,7 +686,7 @@ const MandirBooking  = () => {
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group className="mb-3" controlId="darshanType">
                     <Form.Label className="temp-label">
-                     Type of Booking<span className="temp-span-star">*</span>
+                      Type of Booking<span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Select
                       className="temp-form-control-option"
@@ -639,56 +712,35 @@ const MandirBooking  = () => {
                   </Form.Group>
                 </Col>
 
-
                 <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="temp-label">
-                      Date Of Darshan <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="date"
-                      placeholder="Date Of Darshan"
-                      className="temp-form-control"
-                      name="date_of_darshan"
-                      value={formData.date_of_darshan}
-                      onChange={handleInputChange}
-                      min={new Date().toISOString().split("T")[0]}
-                    />
-                    {errors.date_of_darshan && (
-                      <small className="text-danger">
-                        {errors.date_of_darshan}
-                      </small>
-                    )}
-                  </Form.Group>
-                </Col>
-
-                
-
-
-                <Col lg={6} md={6} sm={12}>
-                  <Form.Group controlId="donationFor">
-                    <Form.Label>
-                      Time Slot{" "}
+                  <Form.Group className="mb-3 ">
+                    <Form.Label className="temp-label mb-2">
+                      Mandir Date & Time{" "}
                       <span className="temp-span-star">*</span>
                     </Form.Label>
-                    <Form.Select
-                      className="temp-form-control-option"
-                      placeholder="Time Slot"
-                      name="time_slot"
-                      value={formData.time_slot}
-                      onChange={handleInputChange}
-                    >
-                      <option value="">Select Time Slot</option>
-                      <option value="Morning ">Morning </option>
-                      <option value="Afternoon ">Afternoon </option>
-                      <option value="Evening">Evening </option>
-                    </Form.Select>
-                    {errors.time_slot && (
+                    <div>
+                      <DatePicker
+                        selected={
+                          selectedDateTime ||
+                          (mandir_book_date_and_time
+                            ? new Date(mandir_book_date_and_time)
+                            : null)
+                        }
+                        onChange={handleDateChange}
+                        showTimeSelect
+                        timeFormat="hh:mm aa"
+                        timeIntervals={30}
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        placeholderText="Select Date and time"
+                        className="form-control temp-form-control-option w-100"
+                        minDate={today}
+                        minTime={minTime}
+                        maxTime={maxTime}
+                      />
+                    </div>
+                    {errors.mandir_book_date_and_time && (
                       <small className="text-danger">
-                        {errors.time_slot}
+                        {errors.mandir_book_date_and_time}
                       </small>
                     )}
                   </Form.Group>
@@ -697,7 +749,10 @@ const MandirBooking  = () => {
                 <h2 className="pt-4">Address Details</h2>
 
                 <Col lg={6} md={6} sm={12}>
-                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
                     <Form.Label className="temp-label">
                       Prasad Delivery <span className="temp-span-star">*</span>
                     </Form.Label>
@@ -709,7 +764,7 @@ const MandirBooking  = () => {
                     >
                       <option value="">Select option</option>
                       <option value="yes">Yes</option>
-                      {/* <option value="no">No</option> */}
+                      <option value="no">No</option>
                     </Form.Select>
                     {errors.prasad_delivery && (
                       <small className="text-danger">
@@ -718,7 +773,6 @@ const MandirBooking  = () => {
                     )}
                   </Form.Group>
                 </Col>
-
 
                 {formData.prasad_delivery === "yes" && (
                   <>
@@ -748,30 +802,29 @@ const MandirBooking  = () => {
                             {errors.pin_code}
                           </small>
                         )}
-
                       </Form.Group>
                     </Col>
                   </>
                 )}
-  <Col lg={6} md={6} sm={12}>
+                <Col lg={6} md={6} sm={12}>
                   <Form.Group className="mb-3" controlId="darshanType">
                     <Form.Label className="temp-label">
-                      Select Accommodation Required <span className="temp-span-star">*</span>
+                      Select Accommodation Required{" "}
+                      <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Select
                       className="temp-form-control-option"
-                      name="payment_mode"
-                      value={formData.payment_mode}
+                      name="accommodation_required"
+                      value={formData.accommodation_required}
                       onChange={handleInputChange}
                     >
                       <option value="">Select Accommodation</option>
-                      <option value="upi">Yes</option>
-                      <option value="card">No</option>
-
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
                     </Form.Select>
-                    {errors.payment_mode && (
+                    {errors.accommodation_required && (
                       <small className="text-danger">
-                        {errors.payment_mode}
+                        {errors.accommodation_required}
                       </small>
                     )}
                   </Form.Group>
@@ -798,15 +851,12 @@ const MandirBooking  = () => {
                         {errors.special_seva_or_puja}
                       </small>
                     )}
-
                   </Form.Group>
                 </Col>
 
                 <h2>Payment Details</h2>
 
                 {/* Payment Details */}
-
-
 
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group className="mb-3" controlId="darshanType">
@@ -822,7 +872,6 @@ const MandirBooking  = () => {
                       <option value="">Select Payment Type</option>
                       <option value="upi">UPI</option>
                       <option value="card">Card</option>
-
                     </Form.Select>
                     {errors.payment_mode && (
                       <small className="text-danger">
@@ -832,23 +881,22 @@ const MandirBooking  = () => {
                   </Form.Group>
                 </Col>
 
-
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group className="mb-3" controlId="amount">
                     <Form.Label className="temp-label">
-                      Donation Amount (Rs.) <span className="temp-span-star">*</span>
+                      Grand Total (Rs.){" "}
+                      <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Enter the Amount"
+                      name="grand_total"
                       className="temp-form-control"
-                      name="donation_amount"
-                      value={formData.donation_amount}
-                      onChange={handleInputChange}
+                      value={formData.grand_total || grand_total || ""}
+                      readOnly
                     />
-                    {errors.donation_amount && (
+                    {errors.grand_total && (
                       <small className="text-danger">
-                        {errors.donation_amount}
+                        {errors.grand_total}
                       </small>
                     )}
                   </Form.Group>
@@ -873,7 +921,6 @@ const MandirBooking  = () => {
                   className="temp-submit-btn mx-3"
                   type="submit"
                   disabled={!agree || !isVerified}
-
                 >
                   Registration Now
                 </Button>
@@ -887,7 +934,6 @@ const MandirBooking  = () => {
                 </Button>
               </div>
             </Col>
-
 
             <Col lg={4} md={4} sm={12} className="mt-2 ">
               <div className="tem-rhs">
@@ -955,7 +1001,20 @@ const MandirBooking  = () => {
           </Row>
         </Form>
       </Container>
-       <ModifyAlert
+      <LoginPopup
+        show={showLoginModal}
+        mobileNumber={formData.mobile_number}
+        email={formData.email}
+        handleClose={() => {
+          setShowLoginModal(false);
+          setFormData((prev) => ({
+            ...prev,
+            mobile_number: "",
+            email: "",
+          }));
+        }}
+      />
+      <ModifyAlert
         message={alertMessage}
         show={showAlert}
         setShow={setShowAlert}
@@ -968,10 +1027,9 @@ const MandirBooking  = () => {
         handleVerifyOtp={handleVerifyOtp}
         phone={formData.mobile_number}
         handleResendOtp={handleResendOtp}
-
       />
     </div>
   );
 };
 
-export default MandirBooking ;
+export default MandirBooking;
