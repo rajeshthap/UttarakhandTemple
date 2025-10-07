@@ -7,6 +7,7 @@ import { FaUsersLine } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { BsInfoCircleFill } from "react-icons/bs";
 import DatePicker from "react-datepicker";
+import { useNavigate } from "react-router-dom";
 
 // Correct image imports
 import Kedarnath from "../assets/images/Kedarnath-Temple.png";
@@ -64,6 +65,8 @@ const TempleBookingInfo = () => {
     );
   };
 
+  const navigate = useNavigate();
+
   const today = new Date();
   const isToday =
     selectedDateTime &&
@@ -108,13 +111,13 @@ const TempleBookingInfo = () => {
     }
   }, []);
   // Correct total calculation
-  const totalAmount = selectedCard
-    ? selectedCard.price * selectedPersons
-    : 0;
+  const totalAmount = selectedCard ? selectedCard.price * selectedPersons : 0;
   //  Login/Register button handler
   const handleLoginRegister = () => setIsLoggedIn(true);
 
-  const formattedDate = `${String(today.getDate()).padStart(2, "0")}/${String(today.getMonth() + 1).padStart(2, "0")}/${today.getFullYear()}`;
+  const formattedDate = `${String(today.getDate()).padStart(2, "0")}/${String(
+    today.getMonth() + 1
+  ).padStart(2, "0")}/${today.getFullYear()}`;
 
   return (
     <div className="temp-donate">
@@ -128,8 +131,8 @@ const TempleBookingInfo = () => {
             <div className="text-center p-4 my-4 temp-regis desktop-mobile ">
               <h5>
                 <BsInfoCircleFill className="temp-info-icon" />
-                <strong></strong>To continue with your Mandir booking, please login
-                or create an account.
+                <strong></strong>To continue with your Mandir booking, please
+                login or create an account.
               </h5>
               <p>
                 Kindly click on the <strong>Login</strong> or{" "}
@@ -190,15 +193,13 @@ const TempleBookingInfo = () => {
 
                   {/* Popup Modal for Register/Login message */}
                   <Modal
-                    show={showPopup}
+                    // show={showPopup}
                     onHide={() => setShowPopup(false)}
                     centered
                   >
                     <Modal.Header closeButton></Modal.Header>
                     <Modal.Body>
-                      <div
-                        className="text-center p-4 my-4 temp-regis"
-                      >
+                      <div className="text-center p-4 my-4 temp-regis">
                         <h5>
                           <BsInfoCircleFill className="temp-info-icon" />
                           <strong></strong>To continue with your Puja booking,
@@ -254,7 +255,12 @@ const TempleBookingInfo = () => {
             />
           </Col>
 
-          <Col lg={5} md={5} sm={12} className="mt-2 temp-right-side rhs-gob-mob">
+          <Col
+            lg={5}
+            md={5}
+            sm={12}
+            className="mt-2 temp-right-side rhs-gob-mob"
+          >
             <div className="text-center p-4 my-4 temp-regis">
               <h5>
                 <BsInfoCircleFill className="temp-info-icon" />
@@ -322,7 +328,7 @@ const TempleBookingInfo = () => {
                         </Form.Select>
                         <Form.Group className="mb-3 mt-3">
                           <Form.Label className="temp-label mb-2">
-                            Pooja Date & Time{" "}
+                            Temple Booking Date & Time{" "}
                             <span className="temp-span-star">*</span>
                           </Form.Label>
                           <div>
@@ -343,28 +349,6 @@ const TempleBookingInfo = () => {
                           </div>
                         </Form.Group>
                         {/* Time */}
-                        {/* <Form.Group className="mb-3 mt-3">
-                          <Form.Label className="temp-label mb-2">
-                            Time <span className="temp-span-star">*</span>
-                          </Form.Label>
-                          <Form.Select className="temp-form-control-option">
-                            <option value="">Select Your Time</option>
-                            <option value="Morning">Morning</option>
-                            <option value="Evening">Evening</option>
-                          </Form.Select>
-                        </Form.Group> */}
-
-                        {/* Date */}
-                        {/* <Form.Group className="mb-3 mt-3">
-                          <Form.Label className="temp-label mb-2">
-                            Puja Date <span className="temp-span-star">*</span>
-                          </Form.Label>
-                          <Form.Control
-                            type="date"
-                            className="temp-form-control"
-                          />
-                        </Form.Group> */}
-
                         {/* Info */}
                         <div className="mt-3">
                           <p>
@@ -382,7 +366,9 @@ const TempleBookingInfo = () => {
                         <div className="text-end mt-2">
                           <p>
                             Applicable Amount:{" "}
-                            <span className="amount-span">₹ {totalAmount}/-</span>
+                            <span className="amount-span">
+                              ₹ {totalAmount}/-
+                            </span>
                           </p>
                         </div>
 
@@ -401,15 +387,30 @@ const TempleBookingInfo = () => {
                           <Button
                             variant="temp-submit-btn"
                             className="temp-submit-btn mx-3"
-                            type="submit"
-                            onClick={handleShow}
+                            type="button"
+                            onClick={() => {
+                              navigate("/MandirBooking", {
+                                state: {
+                                  temple_name: selectedCard.title,
+                                  no_of_persons: selectedPersons,
+                                  mandir_book_date_and_time: selectedDateTime,
+                                  grand_total: totalAmount,
+                                },
+                              });
+                            }}
                           >
                             <FaCheck /> Proceed for devotee details
                           </Button>
                         </div>
 
-                        <Accordion alwaysOpen={false} className="temp-accordin-btn">
-                          <Accordion.Item eventKey="0" className="temp-accordin-btn">
+                        <Accordion
+                          alwaysOpen={false}
+                          className="temp-accordin-btn"
+                        >
+                          <Accordion.Item
+                            eventKey="0"
+                            className="temp-accordin-btn"
+                          >
                             <Accordion.Header className="temp-accordin-btn">
                               {" "}
                               <div>
@@ -429,8 +430,14 @@ const TempleBookingInfo = () => {
                           </Accordion.Item>
                         </Accordion>
 
-                        <Accordion alwaysOpen={false} className="temp-accordin-btn">
-                          <Accordion.Item eventKey="0" className="temp-accordin-btn">
+                        <Accordion
+                          alwaysOpen={false}
+                          className="temp-accordin-btn"
+                        >
+                          <Accordion.Item
+                            eventKey="0"
+                            className="temp-accordin-btn"
+                          >
                             <Accordion.Header className="temp-accordin-btn">
                               {" "}
                               <div>
@@ -449,8 +456,14 @@ const TempleBookingInfo = () => {
                             </Accordion.Body>
                           </Accordion.Item>
                         </Accordion>
-                        <Accordion alwaysOpen={false} className="temp-accordin-btn">
-                          <Accordion.Item eventKey="0" className="temp-accordin-btn">
+                        <Accordion
+                          alwaysOpen={false}
+                          className="temp-accordin-btn"
+                        >
+                          <Accordion.Item
+                            eventKey="0"
+                            className="temp-accordin-btn"
+                          >
                             <Accordion.Header className="temp-accordin-btn">
                               {" "}
                               <div>

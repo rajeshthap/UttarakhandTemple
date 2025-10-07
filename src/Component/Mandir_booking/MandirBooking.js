@@ -10,6 +10,7 @@ import ModifyAlert from "../Alert/ModifyAlert";
 import DatePicker from "react-datepicker";
 import { setHours, setMinutes } from "date-fns";
 import LoginPopup from "../OTPModel/LoginPopup";
+import { useLocation } from "react-router-dom";
 
 const MandirBooking = () => {
   const [show, setShow] = useState(false);
@@ -27,6 +28,9 @@ const MandirBooking = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const { temple_name, no_of_persons, mandir_book_date_and_time, grand_total } =
+    location.state || {};
 
   // Helper to round up to next 30 min interval
   const getNextInterval = (date = new Date()) => {
@@ -77,6 +81,7 @@ const MandirBooking = () => {
     pin_code: "",
     donation_amount: "",
     payment_mode: "",
+    no_of_persons: "",
   });
 
   const handleResendOtp = async () => {
@@ -196,16 +201,16 @@ const MandirBooking = () => {
     }
 
     // Address Details (validate only if prasad_delivery is true)
-   if (String(formData.prasad_delivery).toLowerCase() === "yes") {
-  if (!formData.state?.trim()) newErrors.state = "State is required";
-  if (!formData.country?.trim()) newErrors.country = "Country is required";
-  if (!formData.city?.trim()) newErrors.city = "City is required";
-  if (!formData.pin_code?.trim()) {
-    newErrors.pin_code = "Pin Code is required";
-  } else if (!/^\d{6}$/.test(formData.pin_code)) {
-    newErrors.pin_code = "Enter a valid 6-digit Pin Code";
-  }
-}
+    if (String(formData.prasad_delivery).toLowerCase() === "yes") {
+      if (!formData.state?.trim()) newErrors.state = "State is required";
+      if (!formData.country?.trim()) newErrors.country = "Country is required";
+      if (!formData.city?.trim()) newErrors.city = "City is required";
+      if (!formData.pin_code?.trim()) {
+        newErrors.pin_code = "Pin Code is required";
+      } else if (!/^\d{6}$/.test(formData.pin_code)) {
+        newErrors.pin_code = "Enter a valid 6-digit Pin Code";
+      }
+    }
 
     // Payment Details
     if (
@@ -605,6 +610,30 @@ const MandirBooking = () => {
                     )}
                   </Form.Group>
                 </Col>
+
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label className="temp-label">
+                      Number Of Persons{" "}
+                      <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="no_of_persons"
+                      className="temp-form-control"
+                      value={formData.no_of_persons || no_of_persons || ""}
+                      readOnly
+                    />
+                    {errors.no_of_persons && (
+                      <small className="text-danger">
+                        {errors.no_of_persons}
+                      </small>
+                    )}
+                  </Form.Group>
+                </Col>
               </Row>
               <h2>Mandir Booking Details</h2>
 
@@ -619,20 +648,13 @@ const MandirBooking = () => {
                     <Form.Label className="temp-label">
                       Temple Name <span className="temp-span-star">*</span>
                     </Form.Label>
-                    <Form.Select
-                      className="temp-form-control-option"
+                    <Form.Control
+                      type="text"
                       name="temple_name"
-                      value={formData.temple_name}
-                      onChange={handleInputChange}
-                    >
-                      <option value="">Select Temple Name</option>
-                      {temples.map((temple, index) => (
-                        <option key={index} value={temple}>
-                          {temple}
-                        </option>
-                      ))}
-                    </Form.Select>
-
+                      value={formData.temple_name || temple_name || ""}
+                      readOnly
+                      className="temp-form-control-option"
+                    />
                     {errors.temple_name && (
                       <small className="text-danger">
                         {errors.temple_name}
@@ -678,7 +700,12 @@ const MandirBooking = () => {
                     </Form.Label>
                     <div>
                       <DatePicker
-                        selected={selectedDateTime}
+                        selected={
+                          selectedDateTime ||
+                          (mandir_book_date_and_time
+                            ? new Date(mandir_book_date_and_time)
+                            : null)
+                        }
                         onChange={handleDateChange}
                         showTimeSelect
                         timeFormat="hh:mm aa"
@@ -691,9 +718,9 @@ const MandirBooking = () => {
                         maxTime={maxTime}
                       />
                     </div>
-                    {errors.mandir_book__date_and_time && (
+                    {errors.mandir_book_date_and_time && (
                       <small className="text-danger">
-                        {errors.mandir_book__date_and_time}
+                        {errors.mandir_book_date_and_time}
                       </small>
                     )}
                   </Form.Group>
@@ -837,20 +864,19 @@ const MandirBooking = () => {
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group className="mb-3" controlId="amount">
                     <Form.Label className="temp-label">
-                      Donation Amount (Rs.){" "}
+                      Grand Total (Rs.){" "}
                       <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Enter the Amount"
+                      name="grand_total"
                       className="temp-form-control"
-                      name="donation_amount"
-                      value={formData.donation_amount}
-                      onChange={handleInputChange}
+                      value={formData.grand_total || grand_total || ""}
+                      readOnly
                     />
-                    {errors.donation_amount && (
+                    {errors.grand_total && (
                       <small className="text-danger">
-                        {errors.donation_amount}
+                        {errors.grand_total}
                       </small>
                     )}
                   </Form.Group>

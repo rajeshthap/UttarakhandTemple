@@ -74,7 +74,7 @@ button.accordion-button.collapsed {
 .temp-info-icon{
     margin-right: var(--temp-space-200);
 }
-.temp-right-side-style {
+/* .temp-right-side-style {
   pointer-events: none;
   opacity: 0.5;
 }
@@ -82,7 +82,7 @@ button.accordion-button.collapsed {
 .temp-right-side-style.active {
   pointer-events: auto;
   opacity: 1;
-}
+} */
 
 .modal-close-btn {
   background-color: #6c757d !important;
