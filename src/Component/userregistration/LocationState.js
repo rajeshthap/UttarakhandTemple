@@ -43,7 +43,6 @@ const LocationState = ({
     };
     fetchStates();
   }, [formData.country, countries]);
-
   // Fetch cities when state changes
   useEffect(() => {
     if (!formData.state) return;

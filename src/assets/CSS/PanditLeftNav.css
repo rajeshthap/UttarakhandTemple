@@ -184,7 +184,7 @@
 .pandit-nav {
   min-height: 100vh;
   width: 250px;
-  background-color: #c75347 !important;
+  background-color: var(--temp-light-org) !important;
   position: absolute;
   top: 0px;
   left: 00;
@@ -230,7 +230,7 @@
 
 .pandit-nav-option:hover {
  border-left: 2px solid var(--nd-white);
-    background-color: #a13a30 !important;
+    background-color:var(--temp-light-org-hover) !important;
   cursor: pointer;
 }
 .temp-text{
@@ -348,7 +348,7 @@ margin-top: 10px;
 
   .pandit-dp-mob {
     font-size: var(--nd-space-500);
-    background-color: #5c1b15 !important;
+    background-color: var(--temp-light-org-active) !important;
     border-radius: 50%;
     color: var(--nd-white);
     width: 46px;

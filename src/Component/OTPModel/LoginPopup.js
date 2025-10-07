@@ -21,10 +21,10 @@ const LoginPopup = ({ show, handleClose, handleLoginRegister }) => {
             Kindly click on the <strong>Login</strong> button below to continue.
           </p>
           <Row className="mb-3">
-            <Col xs={12} md={6} className="mb-2 mb-md-0">
+            <Col lg={12} md={6} className="mb-2 mb-md-0">
               <Link to="/Login">
                 <Button
-                  className="w-100 temp-login-btn text-center"
+                  className=" temp-login-btn text-center"
                   onClick={handleLoginRegister}
                 >
                   Login

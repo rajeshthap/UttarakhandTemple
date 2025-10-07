@@ -969,6 +969,30 @@ function TempleAuthority() {
                         <h1>Temple Account No</h1>
                       </div>
                       <Row>
+                         <Col lg={4} md={4} sm={12}>
+                          <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlInput1"
+                          >
+                            <Form.Label className="temp-label">
+                              IFSC Code{" "}
+                              <span className="temp-span-star">*</span>
+                            </Form.Label>
+                            <Form.Control
+                              type="text"
+                              name="ifsc_code"
+                              value={formData.ifsc_code}
+                              onChange={handleChange}
+                              placeholder="IFSC Code"
+                              className="temp-form-control"
+                            />
+                            {formErrors.ifsc_code && (
+                              <p className="text-danger">
+                                {formErrors.ifsc_code}
+                              </p>
+                            )}
+                          </Form.Group>
+                        </Col>
                         <Col lg={4} md={4} sm={12}>
                           <Form.Group
                             className="mb-3"
@@ -1097,30 +1121,7 @@ function TempleAuthority() {
                             )}
                           </Form.Group>
                         </Col>
-                        <Col lg={4} md={4} sm={12}>
-                          <Form.Group
-                            className="mb-3"
-                            controlId="exampleForm.ControlInput1"
-                          >
-                            <Form.Label className="temp-label">
-                              IFSC Code{" "}
-                              <span className="temp-span-star">*</span>
-                            </Form.Label>
-                            <Form.Control
-                              type="text"
-                              name="ifsc_code"
-                              value={formData.ifsc_code}
-                              onChange={handleChange}
-                              placeholder="IFSC Code"
-                              className="temp-form-control"
-                            />
-                            {formErrors.ifsc_code && (
-                              <p className="text-danger">
-                                {formErrors.ifsc_code}
-                              </p>
-                            )}
-                          </Form.Group>
-                        </Col>
+                       
                       </Row>
                       <div className="temple-registration-heading">
                         <h1>Supporting Documents</h1>

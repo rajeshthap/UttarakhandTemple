@@ -84,7 +84,7 @@ import TempChangePassword from "./Component/temp_dashboard/temp_innerdashboard/T
 import TempSevaRegis from "./Component/temp_dashboard/temp_innerdashboard/TempSevaRegis";
 import TempDarshnBooking from "./Component/temp_dashboard/temp_innerdashboard/TempDarshnBooking";
 import TempBookingDashBoard from "./Component/temp_dashboard/temp_innerdashboard/TempBookingDashBoard";
-
+import PanditProfile from "./Component/pandit_dashboard/PanditProfile";
 import SendOtpModal from "./Component/OTPModel/SendOtpModal";
 // import DashBoard from "./Component/dashboard/DashBoard";
 // import LeftNav from "./Component/dashboard/LeftNav";
@@ -96,7 +96,7 @@ function App() {
   const location = useLocation
     ();
   const hiddenPaths = new Set(["/DashBoard", "/MainDashBoard", "/DonateDashboard", "/PanditDashBoard", "/LeftNav", "/PoojaBookingDashBoard", "/MandirBookingDashBoard", "/DarshanBookingDashBoard", "/SevaRegistrationDashBoard",
-     "/ChangePassword","/TempleDashBoard", "/TempleLeftNav","/PanditDarshanBooking","/PanditChangePassword","/PanditLeftNav","/Pandit_DashBoard","/PanditDonateDashBoard","/PanditBookDashBoard","/PanditPoojaBooking","/PanditBookingDashBoard","/PanditSevaRegis","/TempDonateDashBoard","/TempPanditBooking","/TempPoojaBooking","/TempChangePassword","/TempSevaRegis","/TempDarshnBooking","/TempBookingDashBoard"]);
+     "/ChangePassword","/TempleDashBoard", "/TempleLeftNav","/PanditDarshanBooking","/PanditChangePassword","/PanditLeftNav","/Pandit_DashBoard","/PanditDonateDashBoard","/PanditBookDashBoard","/PanditPoojaBooking","/PanditBookingDashBoard","/PanditSevaRegis","/TempDonateDashBoard","/TempPanditBooking","/TempPoojaBooking","/TempChangePassword","/TempSevaRegis","/TempDarshnBooking","/TempBookingDashBoard","/PanditProfile"]);
   const shouldHideBars = hiddenPaths.has(location.pathname);
   const hideFooter = location.pathname === "/";
   return (
@@ -166,6 +166,7 @@ function App() {
         <Route path="/TempChangePassword" element={<TempChangePassword />} />
         <Route path="/TempSevaRegis" element={<TempSevaRegis />} />
         <Route path="/TempBookingDashBoard" element={<TempBookingDashBoard />} />
+        <Route path="/PanditProfile" element={<PanditProfile />} />
         
         <Route path="/LeftNav" element={<LeftNav />} />
         <Route path="/SendOtpModal" element={<SendOtpModal />} />

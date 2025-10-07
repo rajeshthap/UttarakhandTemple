@@ -1,0 +1,83 @@
+
+.pandit-profile-page {
+  background: linear-gradient(180deg, #fff8e1 0%, #ffffff 100%);
+  min-height: 100vh;
+}
+
+.pandit-profile-card {
+  border: none;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+/* Profile Image */
+.profile-avatar {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 4px solid #ffc107;
+  padding: 3px;
+  background-color: #fff;
+}
+
+/* Name and Role */
+.pandit-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.pandit-role {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+/* Labels and Values */
+.info-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 3px;
+}
+
+.info-value {
+  font-size: 15px;
+  color: #333;
+  margin-left: 25px;
+}
+
+/* Bio */
+.bio-text {
+  font-size: 15px;
+  color: #444;
+  line-height: 1.6;
+}
+
+/* Edit Button */
+.edit-btn {
+  border-radius: 25px;
+  font-weight: 500;
+  color: #fff !important;
+}
+
+.edit-btn:hover {
+  background-color: #e0a800 !important;
+  border-color: #e0a800 !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .pandit-profile-card {
+    text-align: center;
+  }
+
+  .profile-avatar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .info-value {
+    margin-left: 0;
+  }
+}

@@ -152,10 +152,10 @@ function PanditLeftNav() {
 
       {/* Dropdown menu */}
       <Dropdown.Menu>
-        <Dropdown.Item as={Link} to="/Profile">
+        <Dropdown.Item as={Link} to="/PanditProfile">
           My Profile
         </Dropdown.Item>
-        <Dropdown.Item as={Link} to="/Dashboard">
+        <Dropdown.Item as={Link} to="/Pandit_DashBoard">
           Dashboard
         </Dropdown.Item>
         <Dropdown.Divider />
@@ -169,6 +169,7 @@ function PanditLeftNav() {
 
       {/* Sidebar Navigation */}
       <div className={`navcontainer ${isNavClosed ? "navclose" : ""}`}>
+
         <nav className="pandit-nav">
           <div className="nav-upper-options">
 
@@ -192,10 +193,10 @@ function PanditLeftNav() {
 
       {/* Dropdown menu */}
       <Dropdown.Menu>
-        <Dropdown.Item as={Link} to="/Profile">
+        <Dropdown.Item as={Link} to="/PanditProfile">
           My Profile
         </Dropdown.Item>
-        <Dropdown.Item as={Link} to="/Dashboard">
+        <Dropdown.Item as={Link} to="/Pandit_DashBoard">
           Dashboard
         </Dropdown.Item>
         <Dropdown.Divider />
@@ -239,6 +240,7 @@ function PanditLeftNav() {
             ))}
           </div>
         </nav>
+
       </div>
     </>
   );

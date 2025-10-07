@@ -17,6 +17,10 @@
     border-bottom: 1px solid #ddd;
     background-color: #f5f9fc;
 }
+.pandit-rwd-table tr:hover td {
+  background-color: #e2c0bc !important; 
+ 
+}
 
 .pandit-rwd-table tr:nth-child(odd):not(:first-child) {
     background-color: #ebf3f9;
@@ -56,13 +60,13 @@
     margin-bottom: var(--temp-space-200);
 }
 .box-2-bg {
-    background-color: rgb(227 100 20 / 41%) !important;
+    background-color:var(--temp-light-yellow) !important;
     color: var(--temp-white) !important;
     text-align: center !important;
 }
 
 .box-3-bg {
-    background-color: rgb(154 3 30 / 38%) !important;
+    background-color: var(--temp-dark-yellow) !important;
     color: var(--temp-white) !important;
     text-align: center !important;
 }
