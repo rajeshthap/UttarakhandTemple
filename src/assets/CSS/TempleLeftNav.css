@@ -57,7 +57,7 @@
 }
 
 .active-nav-option {
-  background-color: black !important;
+  background-color: #d43d15 !important;
   color: #fff !important;
   border-left: 4px solid white;
 }
@@ -146,13 +146,13 @@
 
 .temp-dp {
   font-size: var(--nd-space-500);
-    background-color: var(--temp-black) !important;
-    border-radius: 50%;
-    color: var(--nd-white);
-    width: 46px;
-    height: 46px;
-    padding-top: 4px;
-    margin-right: 2px;
+  background-color: var(--temp-black) !important;
+  border-radius: 50%;
+  color: var(--nd-white);
+  width: 46px;
+  height: 46px;
+  padding-top: 4px;
+  margin-right: 2px;
 
 }
 
@@ -187,7 +187,7 @@
 .temp-nav {
   min-height: 100vh;
   width: 250px;
-  background-color: #4b76c0;
+  background-color: #022147;
   position: absolute;
   top: -7px;
   left: 00;
@@ -232,8 +232,8 @@
 }
 
 .temp-nav-option:hover {
- border-left: 2px solid var(--nd-white);
-    background-color: #212529 !important;
+  border-left: 2px solid var(--nd-white);
+  background-color: #f74f22 !important;
   cursor: pointer;
 }
 
@@ -338,13 +338,13 @@ span.nav-label {
 
 @media screen and (max-width: 850px) {
 
- .nd-menu {
+  .nd-menu {
     font-size: 22px;
     padding: 18px 0px 10px 35px;
     display: flex;
-    justify-content:space-between;
+    justify-content: space-between;
   }
-  
+
   .nd-log-icon-mob-data {
     background-color: var(--temp-org);
     width: 30px;
@@ -354,13 +354,15 @@ span.nav-label {
     margin-right: var(--nd-space-300);
     color: var(--temp-white);
   }
-.nd-user{
-  color: var(--temp-white);
-  font-size: var(--nd-space-350);
-}
-.menuicn {
-  color: var(--temp-white);
-}
+
+  .nd-user {
+    color: var(--temp-white);
+    font-size: var(--nd-space-350);
+  }
+
+  .menuicn {
+    color: var(--temp-white);
+  }
 
   .option1 {
     margin-top: 1% !important;
@@ -406,7 +408,7 @@ span.nav-label {
     padding-left: var(--nd-space-150);
     margin-right: var(--nd-space-150);
   }
- 
+
 
 }
 
@@ -444,7 +446,7 @@ span.nav-label {
     text-align: right;
     font-size: 16px;
     color: var(--temp-white);
-    
+
   }
 
   .message {

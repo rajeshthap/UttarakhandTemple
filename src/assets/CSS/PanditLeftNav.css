@@ -38,7 +38,7 @@
   padding: 20px;
   background: #f4f6f8;
   margin: 0px 0px 0px 0px;
-   background-image: url("../images//temple_background.jpg")
+  background-image: url("../images//temple_background.jpg")
 }
 
 .main-container-box {
@@ -58,7 +58,7 @@
 }
 
 .active-nav-option-pandit {
-  background-color: #5c1b15;
+  background-color: #6a0c11;
   color: #fff !important;
   border-left: 4px solid white;
 }
@@ -144,13 +144,13 @@
 
 .pandit-dp {
   font-size: var(--nd-space-500);
-    background-color: #5c1b15 !important;
-    border-radius: 50%;
-    color: var(--nd-white);
-    width: 46px;
-    height: 46px;
-    padding-top: 4px;
-    margin-right: 2px;
+  background-color: #5c1b15 !important;
+  border-radius: 50%;
+  color: var(--nd-white);
+  width: 46px;
+  height: 46px;
+  padding-top: 4px;
+  margin-right: 2px;
 
 }
 
@@ -229,11 +229,12 @@
 }
 
 .pandit-nav-option:hover {
- border-left: 2px solid var(--nd-white);
-    background-color:var(--temp-light-org-hover) !important;
+  border-left: 2px solid var(--nd-white);
+  background-color: var(--temp-light-org-hover) !important;
   cursor: pointer;
 }
-.temp-text{
+
+.temp-text {
   color: var(--temp-black);
 }
 
@@ -294,12 +295,14 @@ span.nav-label {
 
 
 .dropdown-toggle::after {
-margin-top: 10px;
+  margin-top: 10px;
 }
-#user-dropdown{
+
+#user-dropdown {
   display: flex !important;
   color: var(--temp-white) !important;
 }
+
 /* Responsive CSS Here */
 @media only screen and (min-width: 992px) {
 
@@ -339,11 +342,11 @@ margin-top: 10px;
 
 @media screen and (max-width: 850px) {
 
- .nd-menu {
+  .nd-menu {
     font-size: 22px;
     padding: 18px 0px 10px 35px;
     display: flex;
-    justify-content:space-between;
+    justify-content: space-between;
   }
 
   .pandit-dp-mob {
@@ -352,13 +355,15 @@ margin-top: 10px;
     border-radius: 50%;
     color: var(--nd-white);
     width: 46px;
-   
+
     padding-top: 4px;
     margin-right: 12px;
-}
+  }
+
   .nav-upper-options a {
     color: black;
   }
+
   .pandit-log-icon-mob-data {
     background-color: var(--temp-org);
     width: 30px;
@@ -368,13 +373,15 @@ margin-top: 10px;
     margin-right: var(--nd-space-300);
     color: var(--temp-white);
   }
-.nd-user{
-  color: var(--temp-white);
-  font-size: var(--nd-space-350);
-}
-.menuicn {
-  color: var(--temp-white);
-}
+
+  .nd-user {
+    color: var(--temp-white);
+    font-size: var(--nd-space-350);
+  }
+
+  .menuicn {
+    color: var(--temp-white);
+  }
 
   .option1 {
     margin-top: 1% !important;
@@ -420,7 +427,7 @@ margin-top: 10px;
     padding-left: var(--nd-space-150);
     margin-right: var(--nd-space-150);
   }
- 
+
 
 }
 
@@ -458,7 +465,7 @@ margin-top: 10px;
     text-align: right;
     font-size: 16px;
     color: var(--temp-white);
-    
+
   }
 
   .message {
@@ -496,25 +503,26 @@ margin-top: 10px;
     width: 100%;
   }
 
-.nav-upper-options a {
+  .nav-upper-options a {
     color: black;
     text-decoration: none;
-}
+  }
+
   .pandit-nav-option h3 {
     font-size: 12px;
   }
 
 
-.pandit-dp-mob {
+  .pandit-dp-mob {
     font-size: var(--nd-space-500);
     background-color: #5c1b15 !important;
     border-radius: 50%;
     color: var(--nd-white);
     width: 46px;
     height: 46px;
-   padding-top: 4px;
+    padding-top: 4px;
     margin-right: 2px;
-}
+  }
 
 
 }
