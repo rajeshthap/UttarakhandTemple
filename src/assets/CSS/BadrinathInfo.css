@@ -1,0 +1,23 @@
+.Badri-img{
+    border: 2px solid red;
+    padding: 10px;
+}
+
+.Badri-card{
+    margin: 5px;
+    padding: 10px;
+    border: 2px solid blue;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    
+}
+.carditem-1 h1{
+    font-size: var(--temp-space-350);
+    font-weight: 500;
+
+}
+.carditem-1 h5{
+    font-size: 10px;
+
+}
