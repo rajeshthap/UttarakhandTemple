@@ -146,7 +146,7 @@
 
 .temp-dp {
   font-size: var(--nd-space-500);
-  background-color: var(--temp-black) !important;
+  background-color: #f74f22 !important;
   border-radius: 50%;
   color: var(--nd-white);
   width: 46px;
@@ -187,7 +187,7 @@
 .temp-nav {
   min-height: 100vh;
   width: 250px;
-  background-color: #022147;
+  background-color: var(--temp-drak-blue);
   position: absolute;
   top: -7px;
   left: 00;
@@ -297,7 +297,6 @@ span.nav-label {
   width: 24px;
   height: 32px;
 }
-
 
 /* Responsive CSS Here */
 @media only screen and (min-width: 992px) {

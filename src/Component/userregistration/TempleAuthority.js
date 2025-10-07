@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import "../../assets/CSS/TempleAuthority.css";
 import { FaCheckCircle } from "react-icons/fa";
@@ -50,7 +50,7 @@ function TempleAuthority() {
     trust_committee_type: "",
     trust_committee_details: "",
     additional_details: "",
-    bank_name: "s",
+    bank_name: "",
     account_number: "",
     // confirm_account_number: "",
     account_type: "",
@@ -74,23 +74,41 @@ function TempleAuthority() {
     trust_cert: useRef(null),
   };
 
-  useEffect(() => {
-    const fetchBanks = async () => {
+ useEffect(() => {
+  const fetchBankByIfsc = async () => {
+    if (formData.ifsc_code.length === 11) {
+      setLoading(true);
       try {
         const response = await axios.get(
-          "https://brjobsedu.com/Nandagora/api2/Bankdetails/"
+          `https://brjobsedu.com/Temple_portal/api/get-bank-details/?ifsc_code=${formData.ifsc_code}`
         );
-        const bankOptions = response.data.map((bank) => ({
-          value: bank.bank_name,
-          label: bank.bank_name,
-        }));
-        setBanks(bankOptions);
+        console.log("response", response);
+
+        if (response.data && response.data.Bank) {
+          setFormData((prev) => ({
+            ...prev,
+            bank_name: response.data.Bank, 
+          }));
+        } 
+        else {
+          setFormData((prev) => ({ ...prev, bank_name: "" }));
+          alert("Bank name not found for this IFSC code.");
+        }
       } catch (error) {
-        console.error("Error fetching banks:", error);
+        console.error("Error fetching bank name:", error);
+        alert("Invalid IFSC code or server error.");
+      } finally {
+        setLoading(false);
       }
-    };
-    fetchBanks();
-  }, []);
+    } else {
+    
+      setFormData((prev) => ({ ...prev, bank_name: "" }));
+    }
+  };
+
+  fetchBankByIfsc();
+}, [formData.ifsc_code]);
+
 
   // Full form validation
   const validateForm = () => {
@@ -412,7 +430,7 @@ function TempleAuthority() {
 
   try {
     const registerResult = await Globaleapi(payload);
-    if (registerResult?.data?.success || registerResult?.status === 201) {
+    if (registerResult || registerResult?.status === 201) {
       setAlertMessage("Temple Registered Successfully!");
       setShowAlert(true);
 
@@ -969,59 +987,45 @@ function TempleAuthority() {
                         <h1>Temple Account No</h1>
                       </div>
                       <Row>
-                         <Col lg={4} md={4} sm={12}>
-                          <Form.Group
-                            className="mb-3"
-                            controlId="exampleForm.ControlInput1"
-                          >
-                            <Form.Label className="temp-label">
-                              IFSC Code{" "}
-                              <span className="temp-span-star">*</span>
-                            </Form.Label>
-                            <Form.Control
-                              type="text"
-                              name="ifsc_code"
-                              value={formData.ifsc_code}
-                              onChange={handleChange}
-                              placeholder="IFSC Code"
-                              className="temp-form-control"
-                            />
-                            {formErrors.ifsc_code && (
-                              <p className="text-danger">
-                                {formErrors.ifsc_code}
-                              </p>
-                            )}
-                          </Form.Group>
-                        </Col>
-                        <Col lg={4} md={4} sm={12}>
-                          <Form.Group
-                            className="mb-3"
-                            controlId="exampleForm.ControlInput1"
-                          >
-                            <Form.Label className="temp-label">
-                              Bank Name{" "}
-                              <span className="temp-span-star">*</span>
-                            </Form.Label>
-                            <Form.Select
-                              className="temp-form-control-option"
-                              name="bank_name"
-                              value={formData.bank_name}
-                              onChange={handleChange}
-                            >
-                              <option value="">Select Bank Name</option>
-                              {banks.map((bank, index) => (
-                                <option key={index} value={bank.value}>
-                                  {bank.label}
-                                </option>
-                              ))}
-                            </Form.Select>
-                            {formErrors.bank_name && (
-                              <p className="text-danger">
-                                {formErrors.bank_name}
-                              </p>
-                            )}
-                          </Form.Group>
-                        </Col>
+                     
+      <Col lg={4} md={4} sm={12}>
+        <Form.Group className="mb-3" controlId="ifscCode">
+          <Form.Label className="temp-label">
+            IFSC Code <span className="temp-span-star">*</span>
+          </Form.Label>
+          <Form.Control
+            type="text"
+  name="ifsc_code"
+  value={formData.ifsc_code}
+  onChange={handleChange}
+  placeholder="Enter IFSC Code"
+  className="temp-form-control"
+  maxLength={11}
+          />
+          {formErrors.ifsc_code && (
+            <p className="text-danger">{formErrors.ifsc_code}</p>
+          )}
+        </Form.Group>
+      </Col>
+
+      <Col lg={4} md={4} sm={12}>
+        <Form.Group className="mb-3" controlId="bankName">
+          <Form.Label className="temp-label">
+            Bank Name <span className="temp-span-star">*</span>
+          </Form.Label>
+          <Form.Control
+           type="text"
+  name="bank_name"
+  value={formData.bank_name}
+  readOnly
+  placeholder={loading ? "Fetching bank name..." : "Bank Name"}
+  className="temp-form-control"
+          />
+          {loading && (
+            <Spinner animation="border" size="sm" className="mt-2" />
+          )}
+        </Form.Group>
+      </Col>
                         <Col lg={4} md={4} sm={12}>
                           <Form.Group
                             className="mb-3"
