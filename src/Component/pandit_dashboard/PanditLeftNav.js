@@ -97,7 +97,6 @@ function PanditLeftNav() {
     },
     {
       path: "/PanditSevaRegis",
-
       icon: <FaRegFileLines />,
       label: "Seva Registration",
  
@@ -120,7 +119,6 @@ function PanditLeftNav() {
             <img src={CompanyLogo} alt="Manadavaaya" title="MAHADAVAAYA" className="logo" />
           </Link>
 
-
           {/* <div className="nd-title">
             <span className="nd-subtitle">उत्तराखंड सरकार | Gov.t of Uttarakhand</span>
             <span className="subtitle">
@@ -135,7 +133,6 @@ function PanditLeftNav() {
         show={showModifyAlert}
         setShow={setShowModifyAlert}
       />
-     
           <div className="nd-msg">User: {userName}</div>
           <Dropdown align="end" className="pandit-dp">
      

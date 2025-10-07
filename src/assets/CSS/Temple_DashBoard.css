@@ -8,7 +8,7 @@
 
 .temp-rwd-table tr:first-child {
     border-top: none;
-    background: var(--temp-primary);
+    background-color: var(--temp-drak-blue);
     color: #fff;
 }
 
@@ -40,15 +40,31 @@
 
 .temp-rwd-table td:before {
     content: attr(data-th) ": ";
-
     width: 120px;
     display: inline-block;
     color: #000;
 }
 .temp-card-bg-data {
-    background-color: var(--temp-black) !important;
     color: var(--temp-white) !important;
     text-align: center !important;
+}
+.temp-box-1 {
+ 
+    background-color: var(--primary-red) !important;
+
+  
+}
+.box-2 {
+  background-color: var(--primary-blue) !important;
+  
+}
+.box-3 {
+    background-color: var(--primary-green) !important;
+  
+}
+.box-4 {
+   background-color: var(--primary-dark-red) !important;
+  
 }
 
 .temp-card-bg-data .card-subtitle {

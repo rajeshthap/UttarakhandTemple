@@ -28,7 +28,7 @@ const TempleDashBoard = () => {
                             <h2>Online Services</h2>
                             <Col lg={3} md={3} sm={12}>
 
-                                <Card className="shadow-sm mb-3 bg-body rounded temp-card-bg-data">
+                                <Card className="shadow-sm mb-3 bg-body rounded temp-box-1 temp-card-bg-data">
                                     <Card.Body>
                                         <Card.Title className="temp-dash-icon"><FaHandsPraying /></Card.Title>
                                         <Card.Subtitle className="mb-2 text-muted">Book Puja</Card.Subtitle>
@@ -42,7 +42,7 @@ const TempleDashBoard = () => {
                             </Col>
                             <Col lg={3} md={3} sm={12}>
 
-                                <Card className="shadow-sm mb-3 bg-body rounded temp-card-bg-data">
+                                <Card className="shadow-sm mb-3 bg-body rounded box-2 temp-card-bg-data">
                                     <Card.Body>
                                         <Card.Title className="temp-dash-icon"><FaHandsPraying /></Card.Title>
                                         <Card.Subtitle className="mb-2 text-muted">Donate to Temples</Card.Subtitle>
@@ -56,7 +56,7 @@ const TempleDashBoard = () => {
                             </Col>
                             <Col lg={3} md={3} sm={12}>
 
-                                <Card className="shadow-sm mb-3 bg-body rounded temp-card-bg-data">
+                                <Card className="shadow-sm mb-3 bg-body rounded box-3 temp-card-bg-data">
                                     <Card.Body>
                                         <Card.Title className="temp-dash-icon"><FaHandsPraying /></Card.Title>
                                         <Card.Subtitle className="mb-2 text-muted">Darshan Booking</Card.Subtitle>
@@ -70,7 +70,7 @@ const TempleDashBoard = () => {
                             </Col>
                             <Col lg={3} md={3} sm={12}>
 
-                                <Card className="shadow-sm mb-3 bg-body rounded temp-card-bg-data">
+                                <Card className="shadow-sm mb-3 bg-body rounded box-4 temp-card-bg-data">
                                     <Card.Body>
                                         <Card.Title className="temp-dash-icon"><FaHandsPraying /></Card.Title>
                                         <Card.Subtitle className="mb-2 text-muted">Pooja Booking</Card.Subtitle>
