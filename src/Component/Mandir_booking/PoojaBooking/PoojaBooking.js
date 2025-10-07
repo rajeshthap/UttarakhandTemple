@@ -70,9 +70,9 @@ const PoojaBooking = () => {
     prasad_delivery: "",
 
     //  Delivery Address (only if prasad_delivery = "yes")
-    country: "",
-    state: "",
-    city: "",
+    country: "s",
+    state: "s",
+    city: "s",
     pin_code: "",
 
     donation_amount: "",
@@ -188,7 +188,7 @@ const PoojaBooking = () => {
     if (!formData.pooja_name) newErrors.pooja_name = "Pooja Name is required";
 
     if (!formData.pooja_date_and_time)
-      newErrors.seva_date_and_time = "Pooja Date & Time is required";
+      newErrors.pooja_date_and_time = "Pooja Date & Time is required";
 
     if (!formData.mode_of_participation)
       newErrors.mode_of_participation = "Mode of Participation is required";
@@ -230,13 +230,19 @@ const PoojaBooking = () => {
     if (!formData.prasad_delivery)
       newErrors.prasad_delivery = "Prasad Delivery option is required";
 
-    if (!formData.country) newErrors.country = "Country is required";
+    if (formData.prasad_delivery === "yes") {
+      if (!formData.country || !formData.country.trim())
+        newErrors.country = "Country is required";
 
-    if (!formData.state) newErrors.state = "State is required";
+      if (!formData.state || !formData.state.trim())
+        newErrors.state = "State is required";
 
-    if (!formData.city) newErrors.city = "City is required";
+      if (!formData.city || !formData.city.trim())
+        newErrors.city = "City is required";
 
-    if (!formData.pin_code) newErrors.pin_code = "Pin Code is required";
+      if (!formData.pin_code || !formData.pin_code.trim())
+        newErrors.pin_code = "Pin Code is required";
+    }
 
     // Payment Details
     if (
@@ -299,6 +305,14 @@ const PoojaBooking = () => {
       setAgree(false);
     }
   };
+  const handleDateChange = (date) => {
+    setSelectedDateTime(date);
+    setFormData((prev) => ({
+      ...prev,
+      pooja_date_and_time: date ? date.toISOString() : "",
+    }));
+    setErrors((prev) => ({ ...prev, pooja_date_and_time: "" }));
+  };
 
   const handleVerifyOtp = async () => {
     try {
@@ -316,7 +330,7 @@ const PoojaBooking = () => {
         setShowAlert(true);
 
         handleClose(); // close modal
-        navigate("/PaymentConfirmation");
+        // navigate("/PaymentConfirmation");
       } else {
         setAlertMessage(res.data.message || "Invalid OTP");
         setShowAlert(true);
@@ -377,7 +391,7 @@ const PoojaBooking = () => {
       const authHeader = "Basic " + btoa(username + ":" + password);
 
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/Pooja_booking/",
+        "https://brjobsedu.com/Temple_portal/api/pooja-booking/",
         formDataToSend,
         {
           headers: {
@@ -410,9 +424,9 @@ const PoojaBooking = () => {
           payment_mode: "",
         });
 
-        setTimeout(() => {
-          navigate("/PaymentConfirmation");
-        }, 3000);
+        // setTimeout(() => {
+        //   navigate("/PaymentConfirmation");
+        // }, 3000);
       } else {
         setAlertMessage(res.data.message || "Pooja Registration failed");
         setShowAlert(true);
@@ -740,7 +754,7 @@ const PoojaBooking = () => {
                     <div>
                       <DatePicker
                         selected={selectedDateTime}
-                        onChange={setSelectedDateTime}
+                        onChange={handleDateChange} 
                         showTimeSelect
                         timeFormat="hh:mm aa"
                         timeIntervals={30}
@@ -750,7 +764,6 @@ const PoojaBooking = () => {
                         minDate={today}
                         minTime={minTime}
                         maxTime={maxTime}
-                        required
                       />
                     </div>
                     {errors.pooja_date_and_time && (
@@ -957,7 +970,7 @@ const PoojaBooking = () => {
                     >
                       <option value="">Select option</option>
                       <option value="yes">Yes</option>
-                      {/* <option value="no">No</option> */}
+                      <option value="no">No</option>
                     </Form.Select>
                     {errors.prasad_delivery && (
                       <small className="text-danger">
@@ -975,6 +988,7 @@ const PoojaBooking = () => {
                       formData={formData}
                       handleInputChange={handleInputChangeCity}
                       formErrors={errors}
+                      showRequired={true}
                     />
 
                     <Col lg={6} md={6} sm={12}>
