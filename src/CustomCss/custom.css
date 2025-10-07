@@ -10,7 +10,7 @@
 body {
     background-color: #E9ECEF !important;
     font-family: var(--temp-font-family);
-   
+
 }
 
 :root {
@@ -45,14 +45,14 @@ body {
     --temp-gray-light-black: #4D5959;
     --temp-gray-dark-blue: #032F64;
     --temp-gray-dark-gray: #59595A;
-    --temp-light-org: #c75347;
-    --temp-light-org-hover: #a13a30;
-    --temp-light-org-active: #5c1b15;
+    --temp-light-org: #921004;
+    --temp-light-org-hover: #6a0c11;
+    --temp-light-org-active: #6a0c11;
     --temp-red-dark: rgb(70 11 47 / 33%);
     --temp-light-yellow: rgb(227 100 20 / 41%);
     --temp-dark-yellow: rgb(154 3 30 / 38%);
-    --temp-yellow:rgb(251 139 36 / 56%);
-  
+    --temp-yellow: rgb(251 139 36 / 56%);
+
 
 
 
@@ -254,7 +254,7 @@ input[type=number] {
     padding-bottom: 15%;
 }
 
-.react-datepicker-wrapper{
+.react-datepicker-wrapper {
     width: 100% !important;
 }
 

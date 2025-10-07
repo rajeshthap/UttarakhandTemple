@@ -1,4 +1,3 @@
-
 .pandit-rwd-table {
     margin: auto;
     min-width: 100%;
@@ -17,9 +16,10 @@
     border-bottom: 1px solid #ddd;
     background-color: #f5f9fc;
 }
+
 .pandit-rwd-table tr:hover td {
-  background-color: #e2c0bc !important; 
- 
+    background-color: #e2c0bc !important;
+
 }
 
 .pandit-rwd-table tr:nth-child(odd):not(:first-child) {
@@ -49,37 +49,44 @@
     display: inline-block;
     color: #000;
 }
+
 .pandit-card-bg {
-    background-color: rgb(70 11 47 / 33%) !important;
-   
+    background-color: rgba(70, 11, 47, .1490196078) !important;
+    border: 0px;
     text-align: center !important;
 }
+
 .pandit-dash-icon {
     font-size: var(--temp-space-800) !important;
     color: var(--temp-black);
     margin-bottom: var(--temp-space-200);
 }
+
 .box-2-bg {
-    background-color:var(--temp-light-yellow) !important;
+    background-color: rgba(227, 100, 20, .1490196078) !important;
     color: var(--temp-white) !important;
     text-align: center !important;
+    border: 0px;
 }
 
 .box-3-bg {
-    background-color: var(--temp-dark-yellow) !important;
+    background-color: rgba(154, 3, 30, .1490196078) !important;
+    color: var(--temp-white) !important;
+    text-align: center !important;
+    border: 0px;
+}
+
+.box-4-bg {
+    background-color: rgba(251, 139, 36, .1490196078) !important;
     color: var(--temp-white) !important;
     text-align: center !important;
 }
 
-.box-4-bg{
-    background-color: rgb(251 139 36 / 56%)!important;
-    color: var(--temp-white) !important;
-    text-align: center !important;
-}
 .pandit-card-bg .card-subtitle {
     color: var(--temp-black) !important;
     font-size: var(--temp-space-500) !important;
 }
+
 .pandit-rwd-table th,
 .pandit-rwd-table td {
     text-align: left;
