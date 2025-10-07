@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import ModifyAlert from "../../Alert/ModifyAlert";
 import DatePicker from "react-datepicker";
 import { setHours, setMinutes } from "date-fns";
+import LoginPopup from "../../OTPModel/LoginPopup";
 
 const EventParticipation = () => {
   // Move useState for selectedDateTime to the top before any logic uses it
@@ -26,7 +27,9 @@ const EventParticipation = () => {
     selectedDateTime.getMonth() === today.getMonth() &&
     selectedDateTime.getFullYear() === today.getFullYear();
 
-  const minTime = isToday ? getNextInterval(today) : setHours(setMinutes(today, 0), 6); // 6:00 AM
+  const minTime = isToday
+    ? getNextInterval(today)
+    : setHours(setMinutes(today, 0), 6); // 6:00 AM
   const maxTime = setHours(setMinutes(today, 30), 23); // 11:30 PM
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
@@ -39,6 +42,7 @@ const EventParticipation = () => {
   const [temples, setTemples] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const [formData, setFormData] = useState({
     full_name: "",
@@ -52,8 +56,7 @@ const EventParticipation = () => {
     event_name: "",
     participation_type: "",
     number_of_participants: "",
-    preferred_dates: "",
-    preferred_time_slot: "",
+    event_date_and_time: "",
     gotra: "",
     nakshatra_rashi: "",
     special_instructions: "",
@@ -61,10 +64,19 @@ const EventParticipation = () => {
     payment_mode: "",
   });
 
+  const handleDateChange = (date) => {
+    setSelectedDateTime(date);
+    setFormData((prev) => ({
+      ...prev,
+      event_date_and_time: date ? date.toISOString() : "",
+    }));
+    setErrors((prev) => ({ ...prev, event_date_and_time: "" }));
+  };
+
   const handleResendOtp = async () => {
     try {
       const res = await axios.post(
-   "https://brjobsedu.com/Temple_portal/api/send-otp/",
+        "https://brjobsedu.com/Temple_portal/api/send-otp/",
         {
           phone: formData.mobile_number,
         }
@@ -85,17 +97,38 @@ const EventParticipation = () => {
     const fetchTemples = async () => {
       try {
         const res = await axios.get(
-          "https://brjobsedu.com/Temple_portal/api/temples-for-divine/"
+          "https://brjobsedu.com/Temple_portal/api/temple-names-list/"
         );
-        if (res.data && Array.isArray(res.data.temples)) {
-          setTemples(res.data.temples);
+        if (res.data && Array.isArray(res.data.temple_names)) {
+          setTemples(res.data.temple_names);
         }
       } catch (err) {
-        // console.error("Error fetching temples:", err);
+        console.error("Error fetching temples:", err);
       }
     };
     fetchTemples();
   }, []);
+
+  const checkUserExists = async (fieldValue, fieldName) => {
+    try {
+      const res = await axios.get(
+        "https://brjobsedu.com/Temple_portal/api/all-reg/"
+      );
+
+      const userExists = res.data.some((user) => {
+        if (fieldName === "mobile_number") return user.phone === fieldValue;
+        if (fieldName === "email") return user.email === fieldValue;
+        return false;
+      });
+
+      if (userExists) {
+        setShowLoginModal(true);
+        setAgreeTerms(false);
+      }
+    } catch (err) {
+      console.error("Error checking user:", err);
+    }
+  };
 
   //  Validation logic
   const validateFields = () => {
@@ -140,10 +173,9 @@ const EventParticipation = () => {
     )
       newErrors.number_of_participants =
         "Valid number of participants required";
-    if (!formData.preferred_dates)
-      newErrors.preferred_dates = "Preferred date is required";
-    if (!formData.preferred_time_slot)
-      newErrors.preferred_time_slot = "Date and Time is required";
+    if (!formData.event_date_and_time)
+      newErrors.event_date_and_time = "Event Date & Time is required";
+
     if (!formData.gotra.trim()) newErrors.gotra = "Gotra is required";
     if (!formData.nakshatra_rashi.trim())
       newErrors.nakshatra_rashi = "Nakshatra/Rashi is required";
@@ -173,22 +205,12 @@ const EventParticipation = () => {
       }));
     }
 
-    if (name === "mobile_number") {
-      let errorMsg = "";
-      if (!/^\d*$/.test(value)) {
-        errorMsg = "Only digits allowed";
-      } else if (value.length > 0 && !/^\d{10}$/.test(value)) {
-        errorMsg = "Enter a valid 10-digit mobile number";
-      }
-      setErrors((prev) => ({ ...prev, mobile_number: errorMsg }));
+    if (name === "mobile_number" && value.length === 10) {
+      checkUserExists(value, "mobile_number");
     }
 
-    if (name === "email") {
-      let errorMsg = "";
-      if (value.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-        errorMsg = "Enter a valid email address";
-      }
-      setErrors((prev) => ({ ...prev, email: errorMsg }));
+    if (name === "email" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      checkUserExists(value, "email");
     }
   };
 
@@ -216,7 +238,7 @@ const EventParticipation = () => {
 
     try {
       setSendingOtp(true);
-      await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
+      await axios.post("https://brjobsedu.com/Temple_portal/api/send-otp/", {
         phone: formData.mobile_number,
       });
       setShow(true);
@@ -229,7 +251,6 @@ const EventParticipation = () => {
     }
   };
 
-  //  Submit only if OTP verified
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -240,22 +261,32 @@ const EventParticipation = () => {
     }
 
     if (!otpVerified) {
-       setAlertMessage("Please verify OTP before registering.");
-        setShowAlert(true);
+      setAlertMessage("Please verify OTP before registering.");
+      setShowAlert(true);
+      return; // Make sure to stop submission if OTP not verified
     }
 
     try {
+      // Add Basic Auth
+      const username = "9058423148";
+      const password = "Test@123";
+      const authHeader = "Basic " + btoa(username + ":" + password);
+
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/TempleEventBooking/",
-        formData
+        "https://brjobsedu.com/Temple_portal/api/event-booking/",
+        formData,
+        {
+          headers: {
+            Authorization: authHeader,
+          },
+        }
       );
 
       if (res.status === 200 || res.status === 201) {
         setTimeout(() => {
-        setAlertMessage("Event Registered Successfully!");
-        setShowAlert(true);
+          setAlertMessage("Event Registered Successfully!");
+          setShowAlert(true);
         }, 2000);
-        
       }
     } catch (err) {
       if (err.response && err.response.data) {
@@ -266,14 +297,14 @@ const EventParticipation = () => {
         console.error("Error:", err);
         setAlertMessage("Something went wrong. Please try again.");
         setShowAlert(true);
-
       }
     }
   };
 
   //  Verify OTP
   const handleVerifyOtp = async () => {
-    if (!otp) { setAlertMessage("Enter OTP");
+    if (!otp) {
+      setAlertMessage("Enter OTP");
       setShowAlert(true);
       return;
     }
@@ -281,7 +312,7 @@ const EventParticipation = () => {
     setVerifying(true);
     try {
       const res = await axios.post(
-   "https://brjobsedu.com/Temple_portal/api/verify-otp/",
+        "https://brjobsedu.com/Temple_portal/api/verify-otp/",
         { phone: formData.mobile_number, otp }
       );
 
@@ -289,11 +320,12 @@ const EventParticipation = () => {
         setOtpVerified(true);
         setAlertMessage("OTP Verified Successfully!");
         setShowAlert(true);
-        setTimeout(() => {
-                  navigate("/PaymentConfirmation");
+        setShow(false);
+        //         setTimeout(() => {
+        //         navigate("/PaymentConfirmation");
 
-        }
-, 2000);
+        //         }
+        // , 2000);
       } else {
         setAlertMessage("Invalid OTP, try again.");
         setShowAlert(true);
@@ -500,12 +532,13 @@ const EventParticipation = () => {
                       onChange={handleChange}
                     >
                       <option value="">Select Temple Name</option>
-                      {temples.map((temple) => (
-                        <option key={temple.id} value={temple.temple_name}>
-                          {temple.temple_name} – {temple.city}, {temple.state}
+                      {temples.map((temple, index) => (
+                        <option key={index} value={temple}>
+                          {temple}
                         </option>
                       ))}
                     </Form.Select>
+
                     {errors.temple_name && (
                       <small className="text-danger">
                         {errors.temple_name}
@@ -558,7 +591,6 @@ const EventParticipation = () => {
                       <option value="">Select Participation </option>
                       <option value="online">Online </option>
                       <option value="offline">Offline </option>
-                    
                     </Form.Select>
                     {errors.participation_type && (
                       <small className="text-danger">
@@ -592,87 +624,34 @@ const EventParticipation = () => {
                   </Form.Group>
                 </Col>
 
-                  <Col lg={6} md={6} sm={12}>
-                    <Form.Group className="mb-3 ">
-                      <Form.Label className="temp-label mb-2">
-                        Event Date & Time <span className="temp-span-star">*</span>
-                      </Form.Label>
-                      <div>
-                        <DatePicker
-                          selected={selectedDateTime}
-                          onChange={setSelectedDateTime}
-                          showTimeSelect
-                          timeFormat="hh:mm aa"
-                          timeIntervals={30}
-                          dateFormat="MMMM d, yyyy h:mm aa"
-                          placeholderText="Select Date and time"
-                          className="form-control temp-form-control-option w-100"
-                          minDate={today}
-                          minTime={minTime}
-                          maxTime={maxTime}
-                          required
-                        />
-                      </div>
-                      {errors.preferred_time_slot && (
-                        <small className="text-danger">
-                          {errors.preferred_time_slot}
-                        </small>
-                      )}
-                    </Form.Group>
-                  </Col>
-
-                {/* <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="temp-label">
-                      Preferred Date <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="date"
-                      placeholder="Preferred Dates"
-                      className="temp-form-control"
-                      name="preferred_dates"
-                      value={formData.preferred_dates}
-                      onChange={handleChange}
-                      min={new Date().toISOString().split("T")[0]}
-                    />
-                    {errors.preferred_dates && (
-                      <small className="text-danger">
-                        {errors.preferred_dates}
-                      </small>
-                    )}
-                  </Form.Group>
-                </Col> */}
-
-                {/* <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="temp-label">
-                      Preferred Time Slot{" "}
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group className="mb-3 ">
+                    <Form.Label className="temp-label mb-2">
+                      Event Date & Time{" "}
                       <span className="temp-span-star">*</span>
                     </Form.Label>
-                    <Form.Select
-                      className="temp-form-control-option"
-                      name="preferred_time_slot"
-                      value={formData.preferred_time_slot}
-                      onChange={handleChange}
-                    >
-                      <option value="">Select Time Slot</option>
-                      <option value="Morning">Morning </option>
-                      <option value="Afternoon">Afternoon </option>
-                      <option value="Evening">Evening </option>
-                    </Form.Select>
-                    {errors.preferred_time_slot && (
+                    <div>
+                      <DatePicker
+                        selected={selectedDateTime}
+                        onChange={handleDateChange}
+                        showTimeSelect
+                        timeFormat="hh:mm aa"
+                        timeIntervals={30}
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        placeholderText="Select Date and time"
+                        className="form-control temp-form-control-option w-100"
+                        minDate={today}
+                        minTime={minTime}
+                        maxTime={maxTime}
+                      />
+                    </div>
+                    {errors.event_date_and_time && (
                       <small className="text-danger">
-                        {errors.preferred_time_slot}
+                        {errors.event_date_and_time}
                       </small>
                     )}
                   </Form.Group>
-                </Col> */}
+                </Col>
 
                 <h2>Additional Details</h2>
 
@@ -898,6 +877,20 @@ const EventParticipation = () => {
             </Col>
           </Row>
         </Form>
+        <LoginPopup
+          show={showLoginModal}
+          mobileNumber={formData.mobile_number}
+          email={formData.email}
+          handleClose={() => {
+            setShowLoginModal(false);
+            setFormData((prev) => ({
+              ...prev,
+              mobile_number: "",
+              email: "",
+            }));
+          }}
+        />
+
         <ModifyAlert
           message={alertMessage}
           show={showAlert}
