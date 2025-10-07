@@ -1,65 +1,89 @@
-.Badri-img{
+.Badri-img {
     border-radius: var(--temp-space-200) !important;
 }
 
-.Badri-card{
+.Badri-card {
     margin: var(--temp-space-150);
     padding: var(--temp-space-250);
     border: 1px solid #EDEDED;
     border-radius: var(--temp-space-200);
-   
+
     background: #F6F5F5;
     width: 100%;
 
-    
+
 }
-.temp-route{
- display: flex;
+
+.temp-route {
+    display: flex;
     justify-content: space-between;
     margin-top: var(--temp-space-200);
 }
-.temp-card{
+
+.temp-card {
     padding-left: var(--temp-space-0);
 }
-.carditem-1 h3{
+
+.carditem-1 h3 {
     font-size: var(--temp-space-350);
     font-weight: 500;
-     color: #F74F22;
-     padding-bottom: var(--temp-space-0) !important;
-     margin-bottom: var(--temp-space-50) !important;
+    color: #F74F22;
+    padding-bottom: var(--temp-space-0) !important;
+    margin-bottom: var(--temp-space-50) !important;
 
 }
-.carditem-1 p{
+
+.carditem-1 p {
     font-size: var(--temp-space-300)
-
 }
-.temp-icon{
+
+.temp-icon {
     color: #F74F22;
 }
-.temp-view-more-btn{
+
+.temp-icon-2 {
+    margin-top: var(--temp-space-400);
+    color: #F74F22;
+    font-size: var(--temp-space-500) !important;
+}
+
+.temp-view-more-btn {
     background-color: #F74F22;
     border-radius: var(--temp-space-200);
     text-align: center;
-     border: 1px solid #F74F22;
-     font-size: var(--temp-space-300);
-    
+    border: 1px solid #F74F22;
+    font-size: var(--temp-space-300);
+
 }
 
-.text-color{
-    color:#F74F22;
+.text-color {
+    color: var(--temp-org);
+    font-weight: 600;
 }
 
-.temp-view-more-btn:hover{
+.temp-view-more-btn:hover {
     background-color: #6e2713;
     border: 1px solid #F74F22;
-    color: white;}
+    color: white;
+}
 
+.temp-weather {
+    color: var(--temp-black);
+    font-weight: 600;
+    text-decoration: none;
+    font-size: var(--temp-space-350);
+    margin-bottom: var(--temp-space-300);
+}
 
+.temp-weather:hover {
+    color: var(--temp-org);
+
+}
 
 @media only screen and (max-width: 568px) {
 
-.temp-card-mob{
-    padding-top: var(--temp-space-300);
-    margin-top: var(--temp-space-300);
-}
+    .temp-card-mob {
+        padding-top: var(--temp-space-300);
+        margin-top: var(--temp-space-300);
+    }
 }

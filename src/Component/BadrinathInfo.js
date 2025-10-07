@@ -138,11 +138,11 @@ const BadrinathInfo = () => {
 
 
                                 </div>
-                                <Row>
-                                    <Col lg={4} md={4} sm={6} xs={6} className="">
+                                <Row className="text-center Badri-link align-items-center">
+                                    <Col className="">
                                         <div className="nav-link">
 
-                                            <TiWeatherPartlySunny />
+                                            <TiWeatherPartlySunny className="temp-icon-2" />
                                             <div>
                                                 <Link to="https://www.accuweather.com/en/in/badrinathpuri/3001096/weather-forecast/3001096" className="temp-weather">Weather</Link>
 
@@ -150,13 +150,13 @@ const BadrinathInfo = () => {
                                         </div>
 
                                     </Col>
-                                   
-                                    <Col lg={4} md={4} sm={6} xs={6} className="">
+
+                                    <Col className="">
                                         <div className="nav-link">
 
-                                          <SiGooglemaps />
+                                            <SiGooglemaps className="temp-icon-2" />
                                             <div>
-                                                   <Link to="https://maps.app.goo.gl/NS5netSzRbWipeNr8" className="temp-weather">Google Maps</Link>
+                                                <Link to="https://maps.app.goo.gl/NS5netSzRbWipeNr8" className="temp-weather">Google Maps</Link>
                                             </div>
                                         </div>
 
@@ -255,46 +255,46 @@ const BadrinathInfo = () => {
                                 </div>
 
                             </Col>
-                               <Container>
+                            <Container className="mt-4">
                                 <p>
-                                   Badrinath is one of the most sacred shrines for Vaishnavites and holds a divine place among the <span className="text-color"> 108 Divya Desams</span>, the holy abodes of Lord Vishnu. The town of Badrinath is also part of the revered <span className="text-color">Panch Badri temples</span>, which include <span className="text-color">Yog Dhyan Badri, Bhavishya Badri, Adi Badri</span>, and <span className="text-color">Vriddha Badri</span>, along with the main <span className="text-color">Badrinath Temple</span>.
-                                   <br/>
-                                   <br/>
-                                   Nestled in the lap of the Himalayas,<span className="text-color"> Badrinath</span> is one of the most sacred pilgrimage destinations in India and a vital part of the <span className="text-color">Char Dham Yatra</span>. Dedicated to <span className="text-color">Lord Vishnu</span>, this holy town radiates divine energy and spiritual serenity, attracting devotees and travelers from around the world.
+                                    Badrinath is one of the most sacred shrines for Vaishnavites and holds a divine place among the <span className="text-color"> 108 Divya Desams</span>, the holy abodes of Lord Vishnu. The town of Badrinath is also part of the revered <span className="text-color">Panch Badri temples</span>, which include <span className="text-color">Yog Dhyan Badri, Bhavishya Badri, Adi Badri</span>, and <span className="text-color">Vriddha Badri</span>, along with the main <span className="text-color">Badrinath Temple</span>.
+                                    <br />
+                                    <br />
+                                    Nestled in the lap of the Himalayas,<span className="text-color"> Badrinath</span> is one of the most sacred pilgrimage destinations in India and a vital part of the <span className="text-color">Char Dham Yatra</span>. Dedicated to <span className="text-color">Lord Vishnu</span>, this holy town radiates divine energy and spiritual serenity, attracting devotees and travelers from around the world.
                                 </p>
-                               </Container>
+                            </Container>
 
-                               <Container>
+                            <Container>
                                 <h1>History</h1>
                                 <h3>The Divine Origin and Significance of Badrinath Dham</h3>
                                 <p>
                                     The sacred name Badrinath finds its origin in the local word <span className="text-color">“Badari”</span>, referring to a wild berry that grows abundantly in this region. As legend goes, when <span className="text-color">Lord Vishnu</span> meditated amidst the Himalayas, His consort <span className="text-color">Goddess Lakshmi</span> assumed the form of a Badari tree to shield Him from the harsh sun. Thus, this divine land came to be known as <span className="text-color">Badarika-Ashram</span>, the eternal abode of Lord Vishnu.
-                                    <br/>
-                                   <br/>
+                                    <br />
+                                    <br />
 
-                                   Badrinath is not merely a temple — it is a <span className="text-color">spiritual haven</span>, home to countless saints, sages, and pilgrims who come here seeking inner peace and enlightenment.
-                                    <br/>
-                                   <br/>
-                                   According to the <span className="text-color">Skanda Purana</span>, the sacred idol of <span className="text-color">Lord Badrinarayan</span> was discovered by <span className="text-color">Adi Guru Shankaracharya</span> in <span className="text-color">Narad Kund</span> and later <span className="text-color">re-enshrined in the 8th century A.D</span>. It is believed that Adi Shankaracharya re-established this holy shrine to <span className="text-color">revive the fading glory of Sanatan Dharma</span> and unite the nation under one divine bond. During that era, when Buddhism was spreading across the Himalayas, his mission was to <span className="text-color">restore the strength and sanctity of Hinduism</span>.
-                                     <br/>
-                                   <br/>
-                                   The temple of Badrinath, also revered as <span className="text-color">Badari Vishal</span>, stands as a timeless testament to this spiritual resurgence. Infused with the essence of ancient scriptures, the shrine is mentioned in numerous Puranas and epics. From the <span className="text-color">Pandavas’ final pilgrimage to Swargarohini – the ascent to heaven</span>, to the divine visits of Lord Krishna and revered sages, Badrinath has been the silent witness to countless sacred tales.
-                                     <br/>
-                                   <br/>
-                                    
+                                    Badrinath is not merely a temple — it is a <span className="text-color">spiritual haven</span>, home to countless saints, sages, and pilgrims who come here seeking inner peace and enlightenment.
+                                    <br />
+                                    <br />
+                                    According to the <span className="text-color">Skanda Purana</span>, the sacred idol of <span className="text-color">Lord Badrinarayan</span> was discovered by <span className="text-color">Adi Guru Shankaracharya</span> in <span className="text-color">Narad Kund</span> and later <span className="text-color">re-enshrined in the 8th century A.D</span>. It is believed that Adi Shankaracharya re-established this holy shrine to <span className="text-color">revive the fading glory of Sanatan Dharma</span> and unite the nation under one divine bond. During that era, when Buddhism was spreading across the Himalayas, his mission was to <span className="text-color">restore the strength and sanctity of Hinduism</span>.
+                                    <br />
+                                    <br />
+                                    The temple of Badrinath, also revered as <span className="text-color">Badari Vishal</span>, stands as a timeless testament to this spiritual resurgence. Infused with the essence of ancient scriptures, the shrine is mentioned in numerous Puranas and epics. From the <span className="text-color">Pandavas’ final pilgrimage to Swargarohini – the ascent to heaven</span>, to the divine visits of Lord Krishna and revered sages, Badrinath has been the silent witness to countless sacred tales.
+                                    <br />
+                                    <br />
+
                                     The <span className="text-color">Skanda Purana</span> beautifully extols its glory, declaring:
-                                         <br/>
-                                   <br/>
-                                            <span className="text-color">“There are several sacred shrines in heaven, on earth, and in hell; but there is no shrine like Badrinath.”</span>
+                                    <br />
+                                    <br />
+                                    <span className="text-color">“There are several sacred shrines in heaven, on earth, and in hell; but there is no shrine like Badrinath.”</span>
 
-                                              <br/>
-                                   <br/>
-                                   As described in the <span className="text-color">Vamana Purana</span>, this is the very place where the twin sages <span className="text-color">Nara and Narayana</span>, the fifth incarnation of Lord Vishnu, performed intense penance. Over the ages, great sages like <span className="text-color">Kapila Muni, Gautama, Kashyapa</span>, and <span className="text-color">Bhakta Narada</span> attained divine realization here. The land also attracted revered scholars and spiritual luminaries such as <span className="text-color">Adi Shankaracharya, Ramanujacharya, Madhavacharya</span>, and <span className="text-color">Sri Nityananda</span>, who came here in search of higher wisdom and divine grace — a tradition that continues unbroken even today.
+                                    <br />
+                                    <br />
+                                    As described in the <span className="text-color">Vamana Purana</span>, this is the very place where the twin sages <span className="text-color">Nara and Narayana</span>, the fifth incarnation of Lord Vishnu, performed intense penance. Over the ages, great sages like <span className="text-color">Kapila Muni, Gautama, Kashyapa</span>, and <span className="text-color">Bhakta Narada</span> attained divine realization here. The land also attracted revered scholars and spiritual luminaries such as <span className="text-color">Adi Shankaracharya, Ramanujacharya, Madhavacharya</span>, and <span className="text-color">Sri Nityananda</span>, who came here in search of higher wisdom and divine grace — a tradition that continues unbroken even today.
 
                                 </p>
-                               </Container>
+                            </Container>
                         </Row>
-                      
+
 
                         {/* Pagination */}
                         <PagingNation
