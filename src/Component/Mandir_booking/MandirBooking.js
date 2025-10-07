@@ -56,10 +56,30 @@ const MandirBooking = () => {
     setSelectedDateTime(date);
     setFormData((prev) => ({
       ...prev,
-      mandir_book__date_and_time: date ? date.toISOString() : "",
+      mandir_book_date_and_time: date ? date.toISOString() : "",
     }));
-    setErrors((prev) => ({ ...prev, mandir_book__date_and_time: "" }));
+    setErrors((prev) => ({ ...prev, mandir_book_date_and_time: "" }));
   };
+
+  // Populate formData from props if available
+useEffect(() => {
+  if (temple_name || no_of_persons || mandir_book_date_and_time || grand_total) {
+    setFormData((prev) => ({
+      ...prev,
+      temple_name: temple_name || prev.temple_name,
+      no_of_persons: no_of_persons || prev.no_of_persons,
+      mandir_book_date_and_time:
+        mandir_book_date_and_time || prev.mandir_book_date_and_time,
+      grand_total: grand_total || prev.grand_total,
+    }));
+
+    // If mandir_book_date_and_time exists, also set DatePicker value
+    if (mandir_book_date_and_time) {
+      setSelectedDateTime(new Date(mandir_book_date_and_time));
+    }
+  }
+}, [temple_name, no_of_persons, mandir_book_date_and_time, grand_total]);
+
 
   const [formData, setFormData] = useState({
     full_name: "",
@@ -71,7 +91,7 @@ const MandirBooking = () => {
     id_proof_number: "",
     temple_name: "",
     darshan_type: "",
-    mandir_book__date_and_time: "",
+    mandir_book_date_and_time: "",
     accommodation_required: "",
     prasad_delivery: "",
     special_seva_or_puja: "",
@@ -79,7 +99,7 @@ const MandirBooking = () => {
     country: "",
     city: "",
     pin_code: "",
-    donation_amount: "",
+    grand_total: "",
     payment_mode: "",
     no_of_persons: "",
   });
@@ -183,14 +203,14 @@ const MandirBooking = () => {
     }
 
     // Darshan Booking Details
-    if (!formData.temple_name)
-      newErrors.temple_name = "Temple Name is required";
+    // if (!formData.temple_name)
+    //   newErrors.temple_name = "Temple Name is required";
 
     if (!formData.darshan_type)
       newErrors.darshan_type = "Darshan Type is required";
 
-    if (!formData.mandir_book__date_and_time)
-      newErrors.mandir_book__date_and_time = "Date of Mandir is required";
+    if (!formData.mandir_book_date_and_time)
+      newErrors.mandir_book_date_and_time = "Date of Mandir is required";
 
     if (!formData.special_seva_or_puja.trim())
       newErrors.special_seva_or_puja = "Special Seva / Puja is required";
@@ -214,11 +234,11 @@ const MandirBooking = () => {
 
     // Payment Details
     if (
-      !formData.donation_amount ||
-      isNaN(formData.donation_amount) ||
-      formData.donation_amount <= 0
+      !formData.grand_total ||
+      isNaN(formData.grand_total) ||
+      formData.grand_total <= 0
     )
-      newErrors.donation_amount = "Valid Donation Amount is required";
+      newErrors.grand_total = "Valid Donation Amount is required";
 
     if (!formData.payment_mode)
       newErrors.payment_mode = "Payment Mode is required";
@@ -405,7 +425,7 @@ const MandirBooking = () => {
           temple_name: "",
           darshan_date_and_time: "",
           special_requests: "",
-          donation_amount: "",
+          grand_total: "",
           payment_mode: "",
         });
 
