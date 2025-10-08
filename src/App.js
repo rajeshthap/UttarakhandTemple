@@ -86,6 +86,10 @@ import TempDarshnBooking from "./Component/temp_dashboard/temp_innerdashboard/Te
 import TempBookingDashBoard from "./Component/temp_dashboard/temp_innerdashboard/TempBookingDashBoard";
 import PanditProfile from "./Component/pandit_dashboard/PanditProfile";
 import SendOtpModal from "./Component/OTPModel/SendOtpModal";
+import KedarnathInfo from "./Component/KedarnathInfo";
+import GangotriInfo from "./Component/GangotriInfo";
+import YamunotriInfo from "./Component/YamunotriInfo";
+// import BASE_URLL from "./Component/BaseURL";
 // import DashBoard from "./Component/dashboard/DashBoard";
 // import LeftNav from "./Component/dashboard/LeftNav";
 
@@ -147,6 +151,9 @@ function App() {
         <Route path="/ChangePassword" element={<ChangePassword />} />
         <Route path="/TempleBookingInfo" element={<TempleBookingInfo />} />
         <Route path="/BadrinathInfo" element={<BadrinathInfo/>} />
+        <Route path="/KedarnathInfo" element={<KedarnathInfo/>} />
+        <Route path="/GangotriInfo" element={<GangotriInfo/>} />
+        <Route path="/YamunotriInfo" element={<YamunotriInfo/>} />
 
         <Route path="/TempleDashBoard" element={<TempleDashBoard />} />
         <Route path="/TempleLeftNav" element={<TempleLeftNav />} />
