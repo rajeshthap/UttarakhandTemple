@@ -67,8 +67,7 @@ const ForgotPassword = () => {
     return;
   }
 
-  const payload = getContactPayload();
-  if (!payload) {
+  if (!contact.trim() || !phoneRegex.test(contact)) {
     setErrors("Enter a valid phone number");
     return;
   }
@@ -76,6 +75,8 @@ const ForgotPassword = () => {
   setLoading(true);
   setErrors("");
   setMessage("");
+
+  const payload = { phone: contact.trim(), role: userType.trim() };
 
   try {
     const res = await axios.post(
@@ -97,6 +98,7 @@ const ForgotPassword = () => {
     setLoading(false);
   }
 };
+
 
 
   const handleChange = (e) => {
@@ -177,6 +179,10 @@ const ForgotPassword = () => {
 
  const handleResetPassword = async () => {
   if (!password || !confirmPassword) return;
+  if (!contact || !userType) {
+    setErrors("Phone and role are required.");
+    return;
+  }
   if (password !== confirmPassword) {
     setErrors("Passwords do not match");
     return;
@@ -190,7 +196,7 @@ const ForgotPassword = () => {
 
   const payload = {
     phone: contact.trim(),
-    password: password.trim(),
+    new_password: password.trim(), // <-- API expects `new_password`
     role: userType.trim(),
   };
 
@@ -204,7 +210,9 @@ const ForgotPassword = () => {
       payload
     );
 
-    setAlertMessage(`Password reset successful! Redirecting to ${userType} login...`);
+    setAlertMessage(
+      `Password reset successful! Redirecting to ${userType} login...`
+    );
     setShowAlert(true);
 
     setTimeout(() => {
@@ -226,6 +234,7 @@ const ForgotPassword = () => {
     setLoading(false);
   }
 };
+
 
   const handleResendOtp = async () => {
     const payload = getContactPayload();
@@ -296,9 +305,9 @@ const ForgotPassword = () => {
                         className="option-type"
                       >
                         <option value="">Select type</option>
-                        <option value="Temple">Temple</option>
-                        <option value="Pandit">Pandit</option>
-                        <option value="Devotee">Devotee</option>
+                        <option value="temple">Temple</option>
+                        <option value="pandit">Pandit</option>
+                        <option value="user">Devotee</option>
                       </Form.Select>
                     </Form.Group>
 
