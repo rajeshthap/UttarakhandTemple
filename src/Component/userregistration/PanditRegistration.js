@@ -34,9 +34,9 @@ function PanditRegistration() {
     phone: "",
     aadhar_number: "",
     permanent_address: "",
-    country: "",
-    state: "",
-    city: "",
+    country: "s",
+    state: "s",
+    city: "s",
     zipcode: "",
     pandit_role: "",
     temple_association: "",
@@ -329,99 +329,83 @@ function PanditRegistration() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!validateForm()) return;
+  if (!validateForm()) return;
 
-    setLoading(true);
+  setLoading(true);
 
-    try {
-      const formDataToSend = new FormData();
+  try {
+    const formDataToSend = new FormData();
 
-      for (let key in formData) {
-        if (key === "pandit_role" && formData[key].length > 0) {
-          formData[key].forEach((role) =>
-            formDataToSend.append("pandit_role", role)
-          );
-        } else {
-          formDataToSend.append(key, formData[key]);
-        }
+    for (let key in formData) {
+      if (key === "pandit_role") {
+        formDataToSend.append("pandit_role", JSON.stringify(formData[key]));
+      } else {
+        formDataToSend.append(key, formData[key]);
       }
-      const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/all-reg/",
-        formDataToSend,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
+    }
+
+    const res = await axios.post(
+      "https://brjobsedu.com/Temple_portal/api/all-reg/",
+      formDataToSend,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+
+    if (res.data.success === true || res.data.success === "true" || res.status === 201) {
       setAlertMessage("Pandit Registered Successfully!");
       setShowAlert(true);
-      setTimeout(() => {
-        setShowAlert(false);
-        navigate("/Login");
-      }, 2000);
 
-      // redirect to login or dashboard page
+      setFormData({
+        first_name: "",
+        last_name: "",
+        father_name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        phone: "",
+        aadhar_number: "",
+        permanent_address: "",
+        country: "",
+        state: "",
+        city: "",
+        zipcode: "",
+        temple_association: "",
+        pandit_image: "",
+        aadhar_document: "",
+        pandit_role: [],
+      });
 
-      if (res.data.success === true || res.data.success === "true") {
-        setFormData({
-          first_name: "",
-          last_name: "",
-          father_name: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-          phone: "",
-          aadhar_number: "",
-          permanent_address: "",
-          country: "",
-          state: "",
-          city: "",
-          zipcode: "",
-          temple_association: "",
-          pandit_image: "",
-          aadhar_document: "",
-          pandit_role: [],
-        });
-      } else {
-        setAlertMessage(res.data.message || "Registration failed");
-        setShowAlert(true);
-      }
-    } catch (err) {
-      // console.error(err);
-
-      if (err.response && err.response.data) {
-        const errorData = err.response.data;
-
-        if (errorData.error?.toLowerCase().includes("email")) {
-          setErrorReason_querys((prev) => ({
-            ...prev,
-            email: errorData.error,
-          }));
-          document.getElementsByName("email")[0]?.focus();
-        } else if (errorData.error?.toLowerCase().includes("phone")) {
-          setErrorReason_querys((prev) => ({
-            ...prev,
-            phone: errorData.error,
-          }));
-          document.getElementsByName("phone")[0]?.focus();
-        } else if (errorData.error?.toLowerCase().includes("aadhar")) {
-          setErrorReason_querys((prev) => ({
-            ...prev,
-            aadhar_number: errorData.error,
-          }));
-          document.getElementsByName("aadhar_number")[0]?.focus();
-        } else {
-          setAlertMessage(errorData.message || "Something went wrong");
-          setShowAlert(true);
-        }
-      } else {
-        setAlertMessage(err.message || "Something went wrong");
-        setShowAlert(true);
-      }
-    } finally {
-      setLoading(false);
+      setTimeout(() => navigate("/Login"), 1500);
+    } else {
+      setAlertMessage(res.data.message || "Registration failed");
+      setShowAlert(true);
     }
-  };
+  } catch (err) {
+    if (err.response && err.response.data) {
+      const errorData = err.response.data;
 
+      if (errorData.error?.toLowerCase().includes("email")) {
+        setErrorReason_querys(prev => ({ ...prev, email: errorData.error }));
+        document.getElementsByName("email")[0]?.focus();
+      } else if (errorData.error?.toLowerCase().includes("phone")) {
+        setErrorReason_querys(prev => ({ ...prev, phone: errorData.error }));
+        document.getElementsByName("phone")[0]?.focus();
+      } else if (errorData.error?.toLowerCase().includes("aadhar")) {
+        setErrorReason_querys(prev => ({ ...prev, aadhar_number: errorData.error }));
+        document.getElementsByName("aadhar_number")[0]?.focus();
+      } else {
+        setAlertMessage(errorData.message || "Something went wrong");
+        setShowAlert(true);
+      }
+    } else {
+      setAlertMessage(err.message || "Something went wrong");
+      setShowAlert(true);
+    }
+  } finally {
+    setLoading(false);
+  }
+};
   return (
     <div className="temp-donate">
       <Container className="temp-container">
