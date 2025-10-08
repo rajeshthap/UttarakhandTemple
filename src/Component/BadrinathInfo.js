@@ -169,11 +169,11 @@ const BadrinathInfo = () => {
                                     <Row className="temp-route">
                                         <Col lg={6} md={12} sm={12} xs={12} >
                                             <Row>
-                                                <Col lg={2} md={2} sm={1} xs={1} className="temp-book-icon" >
+                                                <Col lg={2} md={2} sm={2} xs={2} className="temp-book-icon" >
                                                     <div className="icon-big text-center temp-icon">
                                                         <FaCalendarAlt /></div>
                                                 </Col>
-                                                <Col lg={10} md={10} sm={11} xs={11} className="temp-card" >
+                                                <Col lg={10} md={10} sm={10} xs={10} className="temp-card" >
                                                     <div className="carditem-1">
                                                         <h3>Best time to visit Badrinath</h3>
                                                         <p class="card-title">May, Jun, Jul, Aug, Sep, Oct, Nov</p>
@@ -181,11 +181,11 @@ const BadrinathInfo = () => {
                                         </Col>
                                         <Col lg={6} md={12} sm={12} xs={12}  >
                                             <Row className="temp-card-mob">
-                                                <Col lg={2} md={2} sm={1} xs={1}  >
+                                                <Col lg={2} md={2} sm={2} xs={2}  >
                                                     <div className="icon-big text-center temp-icon">
                                                         <MdLocationPin /></div>
                                                 </Col>
-                                                <Col lg={10} md={10} sm={11} xs={11} className="temp-card" >
+                                                <Col lg={10} md={10} sm={10} xs={10} className="temp-card" >
                                                     <div className="carditem-1">
                                                         <h3>Located in</h3>
                                                         <p class="card-title">Chamoli, Garhwal Uttarakhand</p>
@@ -198,11 +198,11 @@ const BadrinathInfo = () => {
                                     <Row className="temp-route">
                                         <Col lg={6} md={12} sm={12} xs={12} >
                                             <Row>
-                                                <Col lg={2} md={2} sm={1} xs={1} className="temp-book-icon" >
+                                                <Col lg={2} md={2} sm={2} xs={2} className="temp-book-icon" >
                                                     <div className="icon-big text-center temp-icon">
                                                         <FaCalendarAlt /></div>
                                                 </Col>
-                                                <Col lg={10} md={10} sm={11} xs={11} className="temp-card" >
+                                                <Col lg={10} md={10} sm={10} xs={10} className="temp-card" >
                                                     <div className="carditem-1">
                                                         <h3>Recommended Stay</h3>
                                                         <p class="card-title">1 days</p>
@@ -210,11 +210,11 @@ const BadrinathInfo = () => {
                                         </Col>
                                         <Col lg={6} md={12} sm={12} xs={12}  >
                                             <Row className="temp-card-mob">
-                                                <Col lg={2} md={2} sm={1} xs={1}  >
+                                                <Col lg={2} md={2} sm={2} xs={2} >
                                                     <div className="icon-big text-center temp-icon">
                                                         <FaTrainSubway /></div>
                                                 </Col>
-                                                <Col lg={10} md={10} sm={11} xs={11} className="temp-card" >
+                                                <Col lg={10} md={10} sm={10} xs={10} className="temp-card" >
                                                     <div className="carditem-1">
                                                         <h3>Nearest Railway Station</h3>
                                                         <p class="card-title">Rishikesh, 295 kms</p>
@@ -226,11 +226,11 @@ const BadrinathInfo = () => {
                                     <Row className="temp-route">
                                         <Col lg={6} md={12} sm={12} xs={12} >
                                             <Row>
-                                                <Col lg={2} md={2} sm={1} xs={1} className="temp-book-icon" >
+                                                <Col lg={2} md={2} sm={2} xs={2} className="temp-book-icon" >
                                                     <div className="icon-big text-center temp-icon">
                                                         <PiAirplaneTiltFill /></div>
                                                 </Col>
-                                                <Col lg={10} md={10} sm={11} xs={11} className="temp-card" >
+                                                <Col lg={10} md={10} sm={10} xs={10} className="temp-card" >
                                                     <div className="carditem-1">
                                                         <h3>Nearest Airport</h3>
                                                         <p class="card-title">Jolly Grant Airport, 314 kms</p>
@@ -238,11 +238,11 @@ const BadrinathInfo = () => {
                                         </Col>
                                         <Col lg={6} md={12} sm={12} xs={12}  >
                                             <Row className="temp-card-mob">
-                                                <Col lg={2} md={2} sm={1} xs={1}  >
+                                                <Col lg={2} md={2} sm={2} xs={2}  >
                                                     <div className="icon-big text-center temp-icon">
                                                         <HiSpeakerWave /></div>
                                                 </Col>
-                                                <Col lg={10} md={10} sm={11} xs={11} className="temp-card" >
+                                                <Col lg={10} md={10} sm={10} xs={10} className="temp-card" >
                                                     <div className="carditem-1">
                                                         <h3>Famous for</h3>
                                                         <p class="card-title">Badrinath temple, Char Dham Yatra, Pilgrimage, Temple</p>

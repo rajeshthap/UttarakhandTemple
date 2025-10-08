@@ -7,11 +7,7 @@
     padding: var(--temp-space-250);
     border: 1px solid #EDEDED;
     border-radius: var(--temp-space-200);
-
     background: #F6F5F5;
-    width: 100%;
-
-
 }
 
 .temp-route {
@@ -27,9 +23,10 @@
 .carditem-1 h3 {
     font-size: var(--temp-space-350);
     font-weight: 500;
-    color: #F74F22;
+    color: var(--temp-org);
     padding-bottom: var(--temp-space-0) !important;
     margin-bottom: var(--temp-space-50) !important;
+    padding-top: var(--temp-space-100);
 
 }
 
@@ -38,20 +35,21 @@
 }
 
 .temp-icon {
-    color: #F74F22;
+    color: var(--temp-org);
+    font-size: var(--temp-space-500) !important;
 }
 
 .temp-icon-2 {
     margin-top: var(--temp-space-400);
-    color: #F74F22;
+    color: var(--temp-org);
     font-size: var(--temp-space-500) !important;
 }
 
 .temp-view-more-btn {
-    background-color: #F74F22;
+    background-color: var(--temp-org);
     border-radius: var(--temp-space-200);
     text-align: center;
-    border: 1px solid #F74F22;
+    border: var(--temp-space-25) solid var(--temp-org);
     font-size: var(--temp-space-300);
 
 }
@@ -63,7 +61,7 @@
 
 .temp-view-more-btn:hover {
     background-color: #6e2713;
-    border: 1px solid #F74F22;
+    border: 1px solid var(--temp-org);
     color: white;
 }
 

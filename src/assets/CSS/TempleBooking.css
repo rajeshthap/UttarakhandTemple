@@ -22,17 +22,18 @@
     padding-bottom: 6px;
 
 
-     
-   
-  
-  
+
+
+
+
 }
+
 button.accordion-button.collapsed {
     font-size: var(--temp-space-350) !important;
     height: 50px;
 }
 
-.temp-accordin-btn span{
+.temp-accordin-btn span {
     color: var(--temp-org);
     font-size: var(--temp-space-300);
 }
@@ -42,19 +43,22 @@ button.accordion-button.collapsed {
     color: var(--temp-blacky);
     line-height: 1.6;
 }
+
 .temp-container-box h6 {
     font-size: var(--temp-space-300);
     color: var(--temp-blacky);
     font-weight: 600;
     line-height: 1.6;
 }
+
 .temp-container-box {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: var(--temp-space-400);
     background-color: var(--temp-white);
     padding: var(--temp-space-300);
 }
-.temp-img-btn{
+
+.temp-img-btn {
     width: 24px;
     margin-right: 4px;
 }
@@ -62,8 +66,8 @@ button.accordion-button.collapsed {
 .temp-container-box ul li {
     font-size: var(--temp-space-300);
     color: var(--temp-black);
-    line-height: 30px;
 }
+
 .temp-regis {
     border: 2px dashed #ffc107;
     border-radius: var(--temp-space-300);
@@ -71,9 +75,11 @@ button.accordion-button.collapsed {
     color: #856404;
     margin: var(--temp-space-200);
 }
-.temp-info-icon{
+
+.temp-info-icon {
     margin-right: var(--temp-space-200);
 }
+
 /* .temp-right-side-style {
   pointer-events: none;
   opacity: 0.5;
@@ -85,10 +91,11 @@ button.accordion-button.collapsed {
 } */
 
 .modal-close-btn {
-  background-color: #6c757d !important;
-  border-color: #6c757d !important;
-  color: #fff;
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
+    color: #fff;
 }
+
 .modal-close-btn:hover {
-  background-color: #5a6268;
+    background-color: #5a6268;
 }
