@@ -61,7 +61,7 @@ const ForgetPassword = () => {
 
     try {
       setLoading(true);
-      const response = await axios.put("https://brjobsedu.com/Temple_portal/api/forgetpassword/", payload);
+      const response = await axios.put("https://brjobsedu.com/Temple_portal/api/change-password/", payload);
 
       setMessage(response.data.message || "Password reset successful.");
       setFormData({ phone: "", password: "", confirm_password: "" });
