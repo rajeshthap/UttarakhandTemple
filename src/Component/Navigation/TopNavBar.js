@@ -13,8 +13,8 @@ const TopNavBar = () => {
     <>
       <div className="menu-wrapper menubar">
         <div>
-          <Navbar expand="lg" className="bg-body-tertiary nav-temp">
-            <Container fluid>
+          <Navbar expand="lg" className="bg-body-tertiary nav-temp ">
+            <Container fluid className="temp-container-p">
               <Navbar.Brand href="/">
                 <img src={logo} alt="Company Logo" className="img-fluid"></img>
               </Navbar.Brand>
@@ -107,9 +107,13 @@ const TopNavBar = () => {
                     </NavDropdown.Item>
                   </NavDropdown>
                 </Nav>
- <Nav.Link href="/">
-                <div>
-                  <img src={Nandi} alt="not found" className="img-fluid temp-nandi" ></img>
+                <Nav.Link href="/">
+                  <div>
+                    <img
+                      src={Nandi}
+                      alt="not found"
+                      className="img-fluid temp-nandi"
+                    ></img>
                   </div>
                 </Nav.Link>
                 <Nav.Link href="/">
