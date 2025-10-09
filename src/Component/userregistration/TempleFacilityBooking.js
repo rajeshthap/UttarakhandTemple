@@ -13,11 +13,11 @@ const TempleFacilityBooking = () => {
 
     <div className="temp-donate">
 
-      <Container className="temp-container " > <Row><h1 className="text-center CommingSoon ">🚀 Coming Soon</h1>
+      {/* <Container className="temp-container " > <Row><h1 className="text-center CommingSoon ">🚀 Coming Soon</h1>
         <p className="CommingSoon-sub">We’re working hard to launch something amazing. Stay tuned!</p>
       </Row>
-      </Container>
-      <Container className="temp-container1">
+      </Container> */}
+      <Container className="temp-container">
 
 
         <h1>Temple Facility Booking</h1>
