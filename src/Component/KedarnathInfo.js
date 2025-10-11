@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Accordion, Button, Col, Container, Row, Form } from "react-bootstrap";
-import { Modal } from "react-bootstrap";
 import { FaCheck } from "react-icons/fa6";
 import { MdOutlineDateRange } from "react-icons/md";
 import { FaUsersLine } from "react-icons/fa6";
@@ -20,7 +19,7 @@ import { SiGooglemaps } from "react-icons/si";
 import Kedarnath from "../assets/images/KedarnathInfo.jpg";
 import Diya from "../assets/images/Diya.png";
 import "../assets/CSS/TempleBooking.css";
-import PagingNation from "./paging/PagingNation";
+
 
 
 const KedarnathInfo = () => {
@@ -59,19 +58,16 @@ const KedarnathInfo = () => {
         30
     );
 
-    const [show, setShow] = useState(false);
+    const [, setShow] = useState(false);
     const [selectedPersons, setSelectedPersons] = useState(1);
-    const [selectedCard, setSelectedCard] = useState(null);
+    const [selectedCard, ] = useState(null);
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // Login state
+    const [, setIsLoggedIn] = useState(false); // Login state
 
-    // pagination states
-    const itemsPerPage = 8;
-
-    const [showPopup, setShowPopup] = useState(false);
+  
 
     const handleShow = () => setShow(true);
-    const handleClose = () => setShow(false);
+    
     // const [, setPujaDate] = useState("");
     // const [, setPujaTime] = useState("");
     // Default select the first ceremony on mount
@@ -132,9 +128,9 @@ const KedarnathInfo = () => {
                         <Row className="g-4">
                             <Col lg={5} md={5} sm={12} xs={12} className="pl-2" >
 
-                                <div className="Badri-img">
+                                <div className="temp-img">
                                     <img src={Kedarnath} alt="Kedarnath Info"
-                                        className="img-fluid Badri-img" />
+                                        className="img-fluid temp-img" />
 
 
                                 </div>
@@ -217,7 +213,7 @@ const KedarnathInfo = () => {
                                                 <Col lg={10} md={10} sm={10} xs={10} className="temp-card" >
                                                     <div className="carditem-1">
                                                         <h3>Nearest Railway Station</h3>
-                                                        <p class="card-title">Rishikesh, 228 kms</p>
+                                                        <p class="card-title">Rishikesh, 210-216 kms</p>
                                                     </div></Col></Row>
                                         </Col>
                                     </Row>
@@ -233,7 +229,7 @@ const KedarnathInfo = () => {
                                                 <Col lg={10} md={10} sm={10} xs={10} className="temp-card" >
                                                     <div className="carditem-1">
                                                         <h3>Nearest Airport</h3>
-                                                        <p class="card-title">Jolly Grant Airport, 248 kms</p>
+                                                        <p class="card-title">Jolly Grant Airport,238-244 kms</p>
                                                     </div></Col></Row>
                                         </Col>
                                         <Col lg={6} md={12} sm={12} xs={12}  >
@@ -257,49 +253,92 @@ const KedarnathInfo = () => {
                             </Col>
                             <Container className="mt-4">
                                 <p>
-                                    Badrinath is one of the most sacred shrines for Vaishnavites and holds a divine place among the <span className="text-color"> 108 Divya Desams</span>, the holy abodes of Lord Vishnu. The town of Badrinath is also part of the revered <span className="text-color">Panch Badri temples</span>, which include <span className="text-color">Yog Dhyan Badri, Bhavishya Badri, Adi Badri</span>, and <span className="text-color">Vriddha Badri</span>, along with the main <span className="text-color">Badrinath Temple</span>.
+                                    <span className="text-color">Kedarnath Temple</span> is one of the most revered pilgrimage destinations in Northern India, nestled amidst the majestic Himalayas on the banks of the sacred <span className="text-color"> Mandakini River</span>. Situated at an altitude of <span className="text-color">3,584 meters above sea level</span>, this ancient temple stands as a symbol of unwavering faith and devotion to  <span className="text-color">Lord Shiva</span>.
                                     <br />
                                     <br />
-                                    Nestled in the lap of the Himalayas,<span className="text-color"> Badrinath</span> is one of the most sacred pilgrimage destinations in India and a vital part of the <span className="text-color">Char Dham Yatra</span>. Dedicated to <span className="text-color">Lord Vishnu</span>, this holy town radiates divine energy and spiritual serenity, attracting devotees and travelers from around the world.
+                                    The region, historically known as  <span className="text-color">“Kedar Khand”</span>, holds immense spiritual significance and is deeply rooted in Hindu mythology. <span className="text-color">Kedarnath</span> forms an integral part of both the <span className="text-color">Char Dham Yatra</span> and the <span className="text-color">Panch Kedar circuit</span> of Uttarakhand. It is also one of the <span className="text-color">twelve Jyotirlingas</span> of <span className="text-color">Lord Shiva</span> spread across India, making it one of the holiest shrines for devotees.
+                                    <br />
+                                    <br />
+                                    Nestled amidst the snow-clad peaks of the Garhwal Himalayas, <span className="text-color">Kedarnath Temple</span> stands as one of the holiest and most revered shrines dedicated to <span className="text-color">Lord Shiva</span>. Situated in the <span className="text-color">Chamoli district of Uttarakhand</span>, the region itself is home to over <span className="text-color">200 Shiva temples</span>, with Kedarnath being the most significant and spiritually powerful among them.
+                                    <br />
+
+                                    According to Hindu mythology, after the <span className="text-color">Kurukshetra War</span>, the <span className="text-color">Pandavas</span>, burdened by guilt for killing their own kin, sought Lord Shiva’s blessings for redemption. The Lord, wishing to avoid them, took the form of a <span className="text-color">bull (Nandi)</span> and fled towards the Himalayas. When the Pandavas finally found him at <span className="text-color">Kedarnath</span>, Shiva dived into the earth, leaving behind his <span className="text-color">hump</span> on the surface — which is worshipped here.
+                                    <br />
+                                    The <span className="text-color">other parts of Lord Shiva’s body</span> appeared in four different places:
+                                    <br/>
+                                    <ul>
+                                        <li>Arms at <span className="text-color">Tungnath</span></li>
+                                        <li>Face at <span className="text-color">Rudranath</span></li>
+                                        <li>Navel at <span className="text-color">Madhmaheshwar</span></li>
+                                        <li>Hair and head at <span className="text-color">Kalpeshwar</span></li>
+                                    </ul>
+
+                                    Together with Kedarnath, these five sacred sites are known as the <span className="text-color">Panch Kedar </span>(meaning “Five Kedars” in Sanskrit), each representing a divine manifestation of Lord Shiva.
+                                    <br />
+
+                                    The temple itself presents a majestic sight, standing tall on a vast plateau surrounded by towering, snow-covered peaks. The original shrine was rebuilt in the <span className="text-color">8th century AD</span> by <span className="text-color">Jagad Guru Adi Shankaracharya</span>, close to the site of an even older temple said to have been constructed by the <span className="text-color">Pandavas</span>.
+                                    <br />
+                                    Architecturally, the temple is an awe-inspiring masterpiece. Built from <span className="text-color">massive, evenly cut grey stone slabs</span>, it raises wonder as to how such heavy stones were transported and assembled centuries ago in this remote mountain terrain. The temple comprises a <span className="text-color">Garbha Griha</span> (sanctum) that houses the sacred Jyotirlinga and a <span className="text-color">Mandapa</span> (assembly hall) adorned with intricate carvings of deities and mythological scenes. Outside the entrance, a grand <span className="text-color">statue of Nandi</span>, the divine bull and Lord Shiva’s mount, stands guard.
+                                    <br />
+
+                                    The conical rock formation inside the sanctum is worshipped as <span className="text-color">Lord Shiva in his Sadashiva form</span>, symbolizing eternal truth and divine energy.
+                                    <br />
+
+                                    Encircled by serene beauty and the chants of devotees, <span className="text-color">Kedarnath</span> is not just a temple — it is an experience of faith, resilience, and spiritual awakening amidst the Himalayan silence.
+
                                 </p>
                             </Container>
 
                             <Container>
                                 <h1>History</h1>
-                                <h3>The Divine Origin and Significance of Badrinath Dham</h3>
+                                <h3>Kedarnath Temple – The Eternal Abode of Lord Shiva</h3>
                                 <p>
-                                    The sacred name Badrinath finds its origin in the local word <span className="text-color">“Badari”</span>, referring to a wild berry that grows abundantly in this region. As legend goes, when <span className="text-color">Lord Vishnu</span> meditated amidst the Himalayas, His consort <span className="text-color">Goddess Lakshmi</span> assumed the form of a Badari tree to shield Him from the harsh sun. Thus, this divine land came to be known as <span className="text-color">Badarika-Ashram</span>, the eternal abode of Lord Vishnu.
+
+
+                                    Perched majestically at an altitude of <span className="text-color">3,581 meters</span> in the <span className="text-color">Rudra Himalaya range</span> of Uttarakhand, <span className="text-color">Kedarnath Temple </span>stands as one of the holiest and most awe-inspiring shrines of Lord Shiva. It is believed that Lord Shiva manifested here in the form of a <span className="text-color">Jyotirlinga</span>, a pillar of divine cosmic light. Among the <span className="text-color">twelve Jyotirlingas</span> spread across India, <span className="text-color">Kedarnath</span> is the highest and one of the most spiritually significant.
                                     <br />
                                     <br />
 
-                                    Badrinath is not merely a temple — it is a <span className="text-color">spiritual haven</span>, home to countless saints, sages, and pilgrims who come here seeking inner peace and enlightenment.
+                                    Built over a thousand years ago by <span className="text-color">Jagad Guru Adi Shankaracharya</span>, this ancient stone temple stands as a timeless symbol of devotion, strength, and architectural brilliance. It is located near the <span className="text-color">origin of the Mandakini River</span> and can be reached after a <span className="text-color">16 km trek from Gaurikund</span>, surrounded by snow-clad Himalayan peaks and serene natural beauty.
                                     <br />
                                     <br />
-                                    According to the <span className="text-color">Skanda Purana</span>, the sacred idol of <span className="text-color">Lord Badrinarayan</span> was discovered by <span className="text-color">Adi Guru Shankaracharya</span> in <span className="text-color">Narad Kund</span> and later <span className="text-color">re-enshrined in the 8th century A.D</span>. It is believed that Adi Shankaracharya re-established this holy shrine to <span className="text-color">revive the fading glory of Sanatan Dharma</span> and unite the nation under one divine bond. During that era, when Buddhism was spreading across the Himalayas, his mission was to <span className="text-color">restore the strength and sanctity of Hinduism</span>.
-                                    <br />
-                                    <br />
-                                    The temple of Badrinath, also revered as <span className="text-color">Badari Vishal</span>, stands as a timeless testament to this spiritual resurgence. Infused with the essence of ancient scriptures, the shrine is mentioned in numerous Puranas and epics. From the <span className="text-color">Pandavas’ final pilgrimage to Swargarohini – the ascent to heaven</span>, to the divine visits of Lord Krishna and revered sages, Badrinath has been the silent witness to countless sacred tales.
-                                    <br />
+                                    <h3>Architecture and Sanctity </h3>
+                                    The temple is constructed from <span className="text-color">massive grey stone slabs</span> resting on a large rectangular platform. A broad flight of steps leads devotees to the sanctum, where inscriptions in the <span className="text-color">ancient Pali language</span> can still be seen on the stones. The <span className="text-color">inner walls</span> of the shrine are beautifully adorned with carvings of deities and scenes from sacred Hindu mythology.
                                     <br />
 
-                                    The <span className="text-color">Skanda Purana</span> beautifully extols its glory, declaring:
+                                    Inside the <span className="text-color">Garbha Griha </span>(sanctum) lies a <span className="text-color">natural conical rock formation</span>, revered as the divine manifestation of <span className="text-color">Lord Shiva in his Sadashiva form</span>. This sacred rock represents the <span className="text-color">hump of the Lord</span>, believed to have appeared when He disappeared into the ground to evade the Pandavas. The <span className="text-color">priests and devotees</span> perform daily pujas and archanas here with deep reverence. Alongside the main form, there is also a <span className="text-color">portable idol of Lord Shiva (Utsava Murti)</span> that is used during special rituals and processions.
                                     <br />
-                                    <br />
-                                    <span className="text-color">“There are several sacred shrines in heaven, on earth, and in hell; but there is no shrine like Badrinath.”</span>
+
+                                    Standing guard outside the temple is the grand <span className="text-color">statue of Nandi</span>, the divine bull and faithful vehicle of Lord Shiva — a symbol of eternal devotion and strength.
+
 
                                     <br />
                                     <br />
-                                    As described in the <span className="text-color">Vamana Purana</span>, this is the very place where the twin sages <span className="text-color">Nara and Narayana</span>, the fifth incarnation of Lord Vishnu, performed intense penance. Over the ages, great sages like <span className="text-color">Kapila Muni, Gautama, Kashyapa</span>, and <span className="text-color">Bhakta Narada</span> attained divine realization here. The land also attracted revered scholars and spiritual luminaries such as <span className="text-color">Adi Shankaracharya, Ramanujacharya, Madhavacharya</span>, and <span className="text-color">Sri Nityananda</span>, who came here in search of higher wisdom and divine grace — a tradition that continues unbroken even today.
+                                    <h3>Legend and Divine Origin </h3>
 
-                                </p>
+                                    The <span className="text-color">origin of Kedarnath Temple</span> is deeply rooted in the epic Mahabharata. After the great war of Kurukshetra, the <span className="text-color">Pandavas</span>, burdened with guilt for having slain their kin, sought forgiveness from Lord Shiva. To test their devotion, Shiva took the form of a <span className="text-color">bull (Nandi)</span> and eluded them repeatedly through the Himalayas. When He finally appeared at Kedarnath, He dived into the earth, leaving behind His hump on the surface — which is now enshrined in the temple.
+                                    <br />
+
+                                    <span className="text-color">The other parts of Lord Shiva’s body</span> appeared in four sacred places — Tungnath (arms), Rudranath (face), Madhmaheshwar (navel), and Kalpeshwar (hair and head) — collectively known as the <span className="text-color">Panch Kedar</span>, the five holy abodes of Lord Shiva.
+                                    <br />
+                                    <br />
+                                    <h3>Seasonal Worship and Rituals </h3>
+                                    Due to <span className="text-color">extreme winters</span> and heavy snowfall from <span className="text-color">November to April</span>, the temple remains closed during these months. Before the onset of winter, on an auspicious day announced by the <span className="text-color">Badrinath-Kedarnath Temple Committee (BKTC)</span>, the <span className="text-color">Utsava Murti (symbolic idol)</span> of Lord Shiva is ceremoniously carried from Kedarnath to <span className="text-color">Ukhimath</span>, where it is worshipped throughout the winter.
+                                       <br />
+
+                                    In <span className="text-color">May</span>, as the snow melts and the paths reopen, the idol is reverently brought back to Kedarnath amid chants, prayers, and hymns, marking the reopening of the temple for pilgrims. The shrine usually closes on the <span className="text-color">first day of Kartik (October–November)</span> and reopens in <span className="text-color">Vaishakh (April–May)</span> each year.
+
+                                    <br />
+                                    <br />
+                                    <h3>A Journey of Faith </h3>
+                                    The pilgrimage to Kedarnath is not merely a physical journey through the mountains — it is a spiritual voyage into the heart of divinity. Surrounded by the <span className="text-color">awe-inspiring silence of the Himalayas</span>, the temple stands as a living symbol of faith, resilience, and the eternal presence of Lord Shiva. 
+
+                                    </p>
                             </Container>
                         </Row>
 
 
-                        {/* Pagination */}
-                        <PagingNation
-
-                        />
+                        
                     </Col>
 
                     <Col lg={5} md={5} sm={12} className="mt-2 temp-right-side rhs-gob-mob">
@@ -390,28 +429,7 @@ const KedarnathInfo = () => {
                                                         />
                                                     </div>
                                                 </Form.Group>
-                                                {/* Time */}
-                                                {/* <Form.Group className="mb-3 mt-3">
-                          <Form.Label className="temp-label mb-2">
-                            Time <span className="temp-span-star">*</span>
-                          </Form.Label>
-                          <Form.Select className="temp-form-control-option">
-                            <option value="">Select Your Time</option>
-                            <option value="Morning">Morning</option>
-                            <option value="Evening">Evening</option>
-                          </Form.Select>
-                        </Form.Group> */}
-
-                                                {/* Date */}
-                                                {/* <Form.Group className="mb-3 mt-3">
-                          <Form.Label className="temp-label mb-2">
-                            Puja Date <span className="temp-span-star">*</span>
-                          </Form.Label>
-                          <Form.Control
-                            type="date"
-                            className="temp-form-control"
-                          />
-                        </Form.Group> */}
+                                            
 
                                                 {/* Info */}
                                                 <div className="mt-3">

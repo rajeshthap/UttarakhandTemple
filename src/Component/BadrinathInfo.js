@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Accordion, Button, Col, Container, Row, Form } from "react-bootstrap";
-import { Modal } from "react-bootstrap";
 import { FaCheck } from "react-icons/fa6";
 import { MdOutlineDateRange } from "react-icons/md";
 import { FaUsersLine } from "react-icons/fa6";
@@ -20,7 +19,7 @@ import { SiGooglemaps } from "react-icons/si";
 import Badrinath from "../assets/images/BadrinathInfo.png";
 import Diya from "../assets/images/Diya.png";
 import "../assets/CSS/TempleBooking.css";
-import PagingNation from "./paging/PagingNation";
+
 
 
 const BadrinathInfo = () => {
@@ -59,19 +58,15 @@ const BadrinathInfo = () => {
         30
     );
 
-    const [show, setShow] = useState(false);
+    const [, setShow] = useState(false);
     const [selectedPersons, setSelectedPersons] = useState(1);
-    const [selectedCard, setSelectedCard] = useState(null);
+    const [selectedCard,] = useState(null);
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // Login state
+    const [, setIsLoggedIn] = useState(false); // Login state
 
-    // pagination states
-    const itemsPerPage = 8;
-
-    const [showPopup, setShowPopup] = useState(false);
+   
 
     const handleShow = () => setShow(true);
-    const handleClose = () => setShow(false);
     // const [, setPujaDate] = useState("");
     // const [, setPujaTime] = useState("");
     // Default select the first ceremony on mount
@@ -132,9 +127,9 @@ const BadrinathInfo = () => {
                         <Row className="g-4">
                             <Col lg={5} md={5} sm={12} xs={12} className="pl-2" >
 
-                                <div className="Badri-img">
+                                <div className="temp-img">
                                     <img src={Badrinath} alt="Badrinath Info"
-                                        className="img-fluid Badri-img" />
+                                        className="img-fluid temp-img" />
 
 
                                 </div>
@@ -296,10 +291,7 @@ const BadrinathInfo = () => {
                         </Row>
 
 
-                        {/* Pagination */}
-                        <PagingNation
-
-                        />
+                    
                     </Col>
 
                     <Col lg={5} md={5} sm={12} className="mt-2 temp-right-side rhs-gob-mob">
@@ -390,29 +382,7 @@ const BadrinathInfo = () => {
                                                         />
                                                     </div>
                                                 </Form.Group>
-                                                {/* Time */}
-                                                {/* <Form.Group className="mb-3 mt-3">
-                          <Form.Label className="temp-label mb-2">
-                            Time <span className="temp-span-star">*</span>
-                          </Form.Label>
-                          <Form.Select className="temp-form-control-option">
-                            <option value="">Select Your Time</option>
-                            <option value="Morning">Morning</option>
-                            <option value="Evening">Evening</option>
-                          </Form.Select>
-                        </Form.Group> */}
-
-                                                {/* Date */}
-                                                {/* <Form.Group className="mb-3 mt-3">
-                          <Form.Label className="temp-label mb-2">
-                            Puja Date <span className="temp-span-star">*</span>
-                          </Form.Label>
-                          <Form.Control
-                            type="date"
-                            className="temp-form-control"
-                          />
-                        </Form.Group> */}
-
+                                              
                                                 {/* Info */}
                                                 <div className="mt-3">
                                                     <p>

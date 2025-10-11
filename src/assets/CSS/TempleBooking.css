@@ -16,26 +16,35 @@
 .temp-container-box h2 {
     font-size: var(--temp-space-450);
     color: var(--temp-org);
-
-
     border-bottom: 1px var(--temp-boader-gary) solid;
     padding-bottom: 6px;
 
+}
 
 
-
-
-
+.card-shadow {
+    border: 0px !important;
+    text-align: center;
 }
 
 button.accordion-button.collapsed {
     font-size: var(--temp-space-350) !important;
-    height: 50px;
+    height: 62px;
+}
+
+.temp-accor-font {
+    font-size: var(--temp-space-300);
+}
+
+.temp-accor-heading {
+    font-size: var(--temp-space-350);
+
 }
 
 .temp-accordin-btn span {
     color: var(--temp-org);
     font-size: var(--temp-space-300);
+
 }
 
 .temp-container-box p {
@@ -89,6 +98,17 @@ button.accordion-button.collapsed {
   pointer-events: auto;
   opacity: 1;
 } */
+.temp-click-btn-read {
+
+    color: #d97706 !important;
+    padding: var(--temp-space-200) var(--temp-space-400);
+    border-radius: var(--temp-space-100);
+    font-size: var(--temp-space-400);
+    margin-top: var(--temp-space-300);
+    display: inline-block;
+    transition: all 0.3s ease;
+    border: 0px;
+}
 
 .modal-close-btn {
     background-color: #6c757d !important;

@@ -395,7 +395,7 @@ useEffect(() => {
 
       // Basic Auth credentials
       const username = "9058423148";
-      const password = "Test@123";
+      const password = "Ritik@123";
       const authHeader = "Basic " + btoa(username + ":" + password);
 
       const res = await axios.post(

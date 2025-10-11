@@ -43,7 +43,9 @@ function PanditRegistration() {
     pandit_image: "",
     aadhar_document: "",
     role: "pandit",
+    poojas: [{ pooja_name: "", price: "" }],
   });
+
   const [fileErrors, setFileErrors] = useState({
     pandit_image: "",
     aadhar_document: "",
@@ -66,6 +68,11 @@ function PanditRegistration() {
     pandit_image: null,
     aadhar_document: null,
   });
+  const poojaOptions = [
+    { pooja_name: "Satyanarayan Pooja", price: 1500 },
+    { pooja_name: "Griha Pravesh", price: 2000 },
+    { pooja_name: "Vivah Sanskar", price: 5000 },
+  ];
 
   const [errorReason_querys, setErrorReason_querys] = useState({});
   const [showPassword, setShowPassword] = useState(false);
@@ -76,6 +83,37 @@ function PanditRegistration() {
   const handleInputChangeCity = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
     validateField(name, value); // live validation on custom handler
+  };
+
+  const addPooja = () => {
+    setFormData((prev) => ({
+      ...prev,
+      poojas: [...prev.poojas, { pooja_name: "", price: "" }],
+    }));
+  };
+
+  const removePooja = (index) => {
+    const newPoojas = [...formData.poojas];
+    if (index === 0) {
+      newPoojas[0] = { pooja_name: "", price: "" };
+    } else {
+      newPoojas.splice(index, 1);
+    }
+    setFormData((prev) => ({ ...prev, poojas: newPoojas }));
+  };
+
+  const handlePoojaChange = (index, poojaName) => {
+    const newPoojas = [...formData.poojas];
+
+    const selectedPooja = poojaOptions.find((p) => p.pooja_name === poojaName);
+
+    newPoojas[index] = {
+      ...newPoojas[index],
+      pooja_name: poojaName,
+      price: "",
+    };
+
+    setFormData((prev) => ({ ...prev, poojas: newPoojas }));
   };
 
   // Validate individual fields
@@ -329,83 +367,99 @@ function PanditRegistration() {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!validateForm()) return;
+    if (!validateForm()) return;
 
-  setLoading(true);
+    setLoading(true);
 
-  try {
-    const formDataToSend = new FormData();
+    try {
+      const formDataToSend = new FormData();
 
-    for (let key in formData) {
-      if (key === "pandit_role") {
-        formDataToSend.append("pandit_role", JSON.stringify(formData[key]));
-      } else {
-        formDataToSend.append(key, formData[key]);
+      for (let key in formData) {
+        if (key === "pandit_role" || key === "poojas") {
+          formDataToSend.append(key, JSON.stringify(formData[key]));
+        } else {
+          formDataToSend.append(key, formData[key]);
+        }
       }
-    }
 
-    const res = await axios.post(
-      "https://brjobsedu.com/Temple_portal/api/all-reg/",
-      formDataToSend,
-      { headers: { "Content-Type": "multipart/form-data" } }
-    );
+      const res = await axios.post(
+        "https://brjobsedu.com/Temple_portal/api/all-reg/",
+        formDataToSend,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
 
-    if (res.data.success === true || res.data.success === "true" || res.status === 201) {
-      setAlertMessage("Pandit Registered Successfully!");
-      setShowAlert(true);
+      if (
+        res.data.success === true ||
+        res.data.success === "true" ||
+        res.status === 201
+      ) {
+        setAlertMessage("Pandit Registered Successfully!");
+        setShowAlert(true);
 
-      setFormData({
-        first_name: "",
-        last_name: "",
-        father_name: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-        phone: "",
-        aadhar_number: "",
-        permanent_address: "",
-        country: "",
-        state: "",
-        city: "",
-        zipcode: "",
-        temple_association: "",
-        pandit_image: "",
-        aadhar_document: "",
-        pandit_role: [],
-      });
+        setFormData({
+          first_name: "",
+          last_name: "",
+          father_name: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+          phone: "",
+          aadhar_number: "",
+          permanent_address: "",
+          country: "",
+          state: "",
+          city: "",
+          zipcode: "",
+          temple_association: "",
+          pandit_image: "",
+          aadhar_document: "",
+          pandit_role: [],
+          pandit_pooja_name: "",
+          pandit_pooja_price: "",
+          role: "pandit",
+        });
 
-      setTimeout(() => navigate("/Login"), 1500);
-    } else {
-      setAlertMessage(res.data.message || "Registration failed");
-      setShowAlert(true);
-    }
-  } catch (err) {
-    if (err.response && err.response.data) {
-      const errorData = err.response.data;
-
-      if (errorData.error?.toLowerCase().includes("email")) {
-        setErrorReason_querys(prev => ({ ...prev, email: errorData.error }));
-        document.getElementsByName("email")[0]?.focus();
-      } else if (errorData.error?.toLowerCase().includes("phone")) {
-        setErrorReason_querys(prev => ({ ...prev, phone: errorData.error }));
-        document.getElementsByName("phone")[0]?.focus();
-      } else if (errorData.error?.toLowerCase().includes("aadhar")) {
-        setErrorReason_querys(prev => ({ ...prev, aadhar_number: errorData.error }));
-        document.getElementsByName("aadhar_number")[0]?.focus();
+        setTimeout(() => navigate("/Login"), 1500);
       } else {
-        setAlertMessage(errorData.message || "Something went wrong");
+        setAlertMessage(res.data.message || "Registration failed");
         setShowAlert(true);
       }
-    } else {
-      setAlertMessage(err.message || "Something went wrong");
-      setShowAlert(true);
+    } catch (err) {
+      if (err.response && err.response.data) {
+        const errorData = err.response.data;
+
+        if (errorData.error?.toLowerCase().includes("email")) {
+          setErrorReason_querys((prev) => ({
+            ...prev,
+            email: errorData.error,
+          }));
+          document.getElementsByName("email")[0]?.focus();
+        } else if (errorData.error?.toLowerCase().includes("phone")) {
+          setErrorReason_querys((prev) => ({
+            ...prev,
+            phone: errorData.error,
+          }));
+          document.getElementsByName("phone")[0]?.focus();
+        } else if (errorData.error?.toLowerCase().includes("aadhar")) {
+          setErrorReason_querys((prev) => ({
+            ...prev,
+            aadhar_number: errorData.error,
+          }));
+          document.getElementsByName("aadhar_number")[0]?.focus();
+        } else {
+          setAlertMessage(errorData.message || "Something went wrong");
+          setShowAlert(true);
+        }
+      } else {
+        setAlertMessage(err.message || "Something went wrong");
+        setShowAlert(true);
+      }
+    } finally {
+      setLoading(false);
     }
-  } finally {
-    setLoading(false);
-  }
-};
+  };
   return (
     <div className="temp-donate">
       <Container className="temp-container">
@@ -713,6 +767,97 @@ function PanditRegistration() {
                               </div>
                             )}
                           </Form.Group>
+                        </Col>
+
+                        <Col lg={12} md={12} sm={12} className="mt-2">
+                          <Form.Label className="temp-label">
+                            Select Pooja & Price
+                            <span className="alert-txt mx-5">
+                              नोट: पंडित लॉगिन के बाद और पूजा जोड़ सकते हैं
+                            </span>
+                          </Form.Label>
+
+                          {formData.poojas.map((pooja, index) => (
+                            <Row key={index} className="align-items-end">
+                              <Col md={5}>
+                                <Form.Group
+                                  className="mb-3"
+                                  controlId={`poojaName-${index}`}
+                                >
+                                  <Form.Select
+                                    className="temp-form-control"
+                                    value={pooja.pooja_name}
+                                    onChange={(e) =>
+                                      handlePoojaChange(index, e.target.value)
+                                    }
+                                  >
+                                    <option value="">Select Pooja Name</option>
+                                    {poojaOptions
+                                      .filter(
+                                        (opt) =>
+                                          !formData.poojas.some(
+                                            (p, i) =>
+                                              p.pooja_name === opt.pooja_name &&
+                                              i !== index
+                                          )
+                                      )
+                                      .map((opt) => (
+                                        <option
+                                          key={opt.pooja_name}
+                                          value={opt.pooja_name}
+                                        >
+                                          {opt.pooja_name}
+                                        </option>
+                                      ))}
+                                  </Form.Select>
+                                </Form.Group>
+                              </Col>
+
+                              <Col md={5}>
+                                <Form.Group
+                                  className="mb-3"
+                                  controlId={`poojaPrice-${index}`}
+                                >
+                                  <Form.Control
+                                    type="number"
+                                    placeholder="Enter Price"
+                                    className="temp-form-control"
+                                    value={pooja.price}
+                                    onChange={(e) => {
+                                      const newPoojas = [...formData.poojas];
+                                      newPoojas[index].price = e.target.value;
+                                      setFormData((prev) => ({
+                                        ...prev,
+                                        poojas: newPoojas,
+                                      }));
+                                    }}
+                                  />
+                                </Form.Group>
+                              </Col>
+
+                              <Col
+                                md={2}
+                                className="d-flex align-items-end mb-4"
+                              >
+                                <Button
+                                  variant="danger"
+                                  onClick={() => removePooja(index)}
+                                >
+                                  {index === 0 ? "Clear" : "Remove"}
+                                </Button>
+                              </Col>
+                            </Row>
+                          ))}
+
+                          {formData.poojas.length < poojaOptions.length && (
+                            <Button
+                              variant="primary"
+                              className="mb-2"
+                              onClick={addPooja}
+                            >
+                              Add Pooja
+                            </Button>
+                          )}
                         </Col>
 
                         <Col lg={4} md={4} sm={12}>

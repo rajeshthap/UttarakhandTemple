@@ -3,95 +3,76 @@
     margin: auto;
 
 }
-.temp-detail-btn{
-    display: flex;
-    justify-content: space-between;
-}
-.temp-login-btn{
-    background-color: var(--temp-org);
-    width: 200px;
-    border-radius: var(--temp-space-300);
-    font-size: var(--temp-space-300);
-    border: 1px solid var(--temp-org)
-    ;
-}
-.temp-regis-btn{
-    background-color: var(--temp-primary);
-   width: 200px;
-     border-radius: var(--temp-space-300);
-       font-size: var(--temp-space-300);
-         border: 1px solid var(--temp-primary)
-}
-.password-wrapper {
-    position: relative;
+
+.Alltemple-wrapper {
+    padding: var(--temp-space-600) 0;
+    background-color: var(--temp-boader-gary);
 }
 
-.password-wrapper .form-control {
-    padding-right: 40px;
-    /* space for eye */
-}
-
-.p-l-0 {
-    padding-left: 0 !important;
-}
-
-
-.toggle-eye {
-    position: absolute;
-    top: 50%;
-    right: 12px;
-    transform: translateY(-50%);
-    cursor: pointer;
-    font-size: var(--temp-space-350);
-    color: #666;
-    user-select: none;
-}
-
-.text-danger {
-    color: var(--temp-org) !important;
-    font-size: var(--temp-space-300);
-}
-
-.t .toggle-eye:hover {
-    color: #000;
-}
-
-.card-item {
-    padding: var(--temp-space-250);
+.Alltemple-wrapper h2 {
     text-align: center;
-    text-align: center !important;
-    transition: transform 0.3s ease-in-out;
+    color: var(--temp-primary);
 }
 
-.card-item:hover {
-    transform: translateY(-5px);
-}
-
-.card-image-wrapper {
-    width: 150px;
-    height:150px;
-    overflow: hidden;
-    border-radius: 50% !important;
-    /* border-radius: 12px 12px 0 0; */
-    margin: auto;
-    border: var(--temp-space-200) solid var(--temp-boader-gary);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-}
-
-.card-image-wrapper-temple{
- width: 152px;
-    height: 152px;
-    overflow: hidden;
-    border-radius: 50% !important;
-    /* border-radius: 12px 12px 0 0; */
-    margin: auto;
-    border: var(--temp-space-200) solid var(--temp-boader-gary);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
- 
-}
-.card-text h5 {
+.Alltemple-wrapper h3 {
+    text-align: center;
     color: var(--temp-org);
-    margin-bottom: var(--temp-space-0);
+    font-size: var(--temp-space-600);
+}
+
+/* Carousel Container */
+.carousel-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Fix Slick overflow */
+.slick-list {
+    overflow: hidden !important;
+}
+
+.slick-slide>div {
+    margin: 0 10px;
+}
+
+.slick-track {
+    display: flex !important;
+    align-items: stretch !important;
+}
+
+/* Card Layout */
+.card-item {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.card-content {
+    width: 100%;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card-content:hover {
+    transform: translateY(-6px);
+}
+
+/* Image styling */
+.card-image-wrapper-temple {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: var(--temp-space-200) solid var(--temp-boader-gary);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 }
 
 .card-image {
@@ -100,69 +81,57 @@
     object-fit: cover;
 }
 
-.card-text {
-    padding: 15px;
-}
-
-.card-text h4 {
+/* Text styling */
+.card-text h5 {
+    color: var(--temp-org);
     margin-bottom: 8px;
-    font-size: 18px;
-    color: #333;
-}
-
-.about-wrapper .card-text p {
-    text-align: center !important;
 }
 
 .card-text p {
-    font-size: var(--temp-space-300);
     color: var(--temp-black);
-}
-
-.temp-accordin-btn .accordion-button::after {
-    background-image: url("../images//arrow_icon_2.svg") !important;
     font-size: var(--temp-space-300);
-}
-.temp-container h2 {
-    font-size: var(--temp-space-450);
-    color: var(--temp-org);
-    margin-bottom: var(--temp-space-350);
-    border-bottom: 1px var(--temp-boader-gary) solid;
-    padding-bottom: 6px;
-}
-.Alltemple-wrapper {
-    padding-top: var(--temp-space-600);
-    padding-bottom: var(--temp-space-600);
-    background-color: var(--temp-boader-gary);
+    margin: 0;
+    max-width: 250px;
+    line-height: 1.4;
 }
 
-.Alltemple-wrapper h2 {
-    text-align: center !important;
-}
-
-.Alltemple-wrapper h3 {
-    text-align: center !important;
-    font-size: var(--temp-space-600);
-    color: var(--temp-org);
-}
-
+/* Slick arrow fix */
 .slick-prev:before,
 .slick-next:before {
     color: var(--temp-primary);
-    font-size: var(--temp-space-900);
+    font-size: var(--temp-space-800);
 }
-.desktop-mobile {
-    display: none;
+
+/* ✅ Responsive Fixes */
+@media (max-width: 992px) {
+    .card-image-wrapper-temple {
+        width: 150px;
+        height: 150px;
+    }
 }
 
 @media (max-width: 768px) {
-    .desktop-mobile {
-        display: inline-block;
+    .carousel-container {
+        padding: 0;
     }
-    .card-item
-    { padding: 0px !important;}
 
-.rhs-gob-mob{
-     display: none;
+    .card-content {
+        padding: 15px;
+    }
+
+    .card-image-wrapper-temple {
+        width: 140px;
+        height: 140px;
+    }
 }
+
+@media (max-width: 576px) {
+    .card-image-wrapper-temple {
+        width: 120px;
+        height: 120px;
+    }
+
+    .card-text p {
+        font-size: 0.85rem;
+    }
 }

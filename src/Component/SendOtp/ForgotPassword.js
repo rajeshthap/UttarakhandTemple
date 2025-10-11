@@ -40,14 +40,14 @@ const ForgotPassword = () => {
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
   const getContactPayload = () => {
-    const trimmedContact = contact.trim();
-    const trimmedUserType = userType.trim();
-    if (phoneRegex.test(trimmedContact))
-      return { phone: trimmedContact, type: trimmedUserType };
-    if (emailRegex.test(trimmedContact))
-      return { email: trimmedContact, type: trimmedUserType };
-    return null;
-  };
+  const trimmedContact = contact.trim();
+  const trimmedRole = userType.trim();
+  if (phoneRegex.test(trimmedContact)) {
+    return { phone: trimmedContact, role: trimmedRole };
+  }
+  return null; 
+};
+
 
   const maskContact = (contact) => {
     if (phoneRegex.test(contact)) {
@@ -62,42 +62,44 @@ const ForgotPassword = () => {
   };
 
   const handleSendOtp = async () => {
-    if (!userType.trim()) {
-      setErrors("Please select user type");
-      return;
-    }
+  if (!userType.trim()) {
+    setErrors("Please select user type");
+    return;
+  }
 
-    const payload = getContactPayload();
-    if (!payload) {
-      setErrors("Enter a valid phone number or email");
-      return;
-    }
+  if (!contact.trim() || !phoneRegex.test(contact)) {
+    setErrors("Enter a valid phone number");
+    return;
+  }
 
-    setLoading(true);
-    setErrors("");
-    setMessage("");
+  setLoading(true);
+  setErrors("");
+  setMessage("");
 
-    try {
-      const res = await axios.post(
-   "https://brjobsedu.com/Temple_portal/api/send-otp/",
-        payload
-      );
-      if (res.data.success) {
-        // setMessage("OTP Sent Successfully!");
-        setStep(2);
-        setOtpExpiry(60);
-        setResendTimer(60);
-        setMaskedContact(maskContact(contact));
-      } else {
-        setErrors(res.data.message || "Failed to send OTP");
-      }
-    } catch (err) {
-      console.error(err);
-      setErrors("Error while sending OTP");
-    } finally {
-      setLoading(false);
+  const payload = { phone: contact.trim(), role: userType.trim() };
+
+  try {
+    const res = await axios.post(
+      "https://brjobsedu.com/Temple_portal/api/send-otp/",
+      payload
+    );
+    if (res.data.success) {
+      setStep(2);
+      setOtpExpiry(60);
+      setResendTimer(60);
+      setMaskedContact(maskContact(contact));
+    } else {
+      setErrors(res.data.message || "Failed to send OTP");
     }
-  };
+  } catch (err) {
+    console.error(err);
+    setErrors("Error while sending OTP");
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -109,40 +111,40 @@ const ForgotPassword = () => {
     }
   };
 
-  const handleVerifyOtp = async () => {
-    if (!otp) return setErrors("Enter the OTP sent to your contact");
+ const handleVerifyOtp = async () => {
+  if (!otp) return setErrors("Enter the OTP sent to your phone");
 
-    const payload = { ...getContactPayload(), otp };
-    if (!payload) return setErrors("Invalid contact");
+  const payload = { ...getContactPayload(), otp };
+  if (!payload) return setErrors("Invalid phone number");
 
-    if (otpExpiry <= 0) {
-      setErrors("OTP expired, please resend");
-      return;
+  if (otpExpiry <= 0) {
+    setErrors("OTP expired, please resend");
+    return;
+  }
+
+  setLoading(true);
+  setErrors("");
+  setMessage("");
+
+  try {
+    const res = await axios.post(
+      "https://brjobsedu.com/Temple_portal/api/verify-otp/",
+      payload
+    );
+
+    if (res.data.success) {
+      setStep(3);
+    } else {
+      setErrors(res.data.message || "Invalid OTP");
     }
+  } catch (err) {
+    console.error(err);
+    setErrors("Error verifying OTP");
+  } finally {
+    setLoading(false);
+  }
+};
 
-    setLoading(true);
-    setErrors("");
-    setMessage("");
-
-    try {
-      const res = await axios.post(
-   "https://brjobsedu.com/Temple_portal/api/verify-otp/",
-        payload
-      );
-
-      if (res.data.success) {
-        // setMessage("OTP Verified! Now reset your password.");
-        setStep(3);
-      } else {
-        setErrors(res.data.message || "Invalid OTP");
-      }
-    } catch (err) {
-      console.error(err);
-      setErrors("Error verifying OTP");
-    } finally {
-      setLoading(false);
-    }
-  };
   const handleSubmit = (e) => {
     e.preventDefault();
     let valid = true;
@@ -175,66 +177,64 @@ const ForgotPassword = () => {
     }
   };
 
-  const handleResetPassword = async () => {
-    if (!password || !confirmPassword) {
-      // setErrors("Enter both password fields");
-      return;
-    }
-    if (password !== confirmPassword) {
-      setErrors("Passwords do not match");
-      return;
-    }
-    if (!strongPasswordRegex.test(password)) {
-      setErrors(
-        "Password must be at least 8 characters, include uppercase, lowercase, number, and special character."
-      );
-      return;
-    }
-
-    const payload = { ...getContactPayload(), otp, password };
-
-    setLoading(true);
-    setErrors("");
-    setMessage("");
-
-    try {
-  await axios.post(
-    "https://brjobsedu.com/Temple_portal/api/forgetpassword/",
-    payload
-  );
-
-  switch (userType.toLowerCase()) {
-    case "temple":
-      setAlertMessage("Password reset successful! Redirecting to Temple login...");
-      setShowAlert(true);
-      setTimeout(() => {
-        navigate("/AuthorityLogin");
-      }, 1500);
-      break;
-
-    case "pandit":
-      setAlertMessage("Password reset successful! Redirecting to Pandit login...");
-      setShowAlert(true);
-      setTimeout(() => {
-        navigate("/PanditLogin");
-      }, 1500);
-      break;
-
-    default:
-      setAlertMessage("Password reset successful! Redirecting to Devotee login...");
-      setShowAlert(true);
-      setTimeout(() => {
-        navigate("/DevoteeLogin");
-      }, 1500);
+ const handleResetPassword = async () => {
+  if (!password || !confirmPassword) return;
+  if (!contact || !userType) {
+    setErrors("Phone and role are required.");
+    return;
   }
-} catch (err) {
-  console.error(err);
-  setErrors("Error Resetting Password");
-} finally {
-  setLoading(false);
-}
+  if (password !== confirmPassword) {
+    setErrors("Passwords do not match");
+    return;
+  }
+  if (!strongPasswordRegex.test(password)) {
+    setErrors(
+      "Password must be at least 8 characters, include uppercase, lowercase, number, and special character."
+    );
+    return;
+  }
 
+  const payload = {
+    phone: contact.trim(),
+    new_password: password.trim(), // <-- API expects `new_password`
+    role: userType.trim(),
   };
+
+  setLoading(true);
+  setErrors("");
+  setMessage("");
+
+  try {
+    await axios.post(
+      "https://brjobsedu.com/Temple_portal/api/change-password/",
+      payload
+    );
+
+    setAlertMessage(
+      `Password reset successful! Redirecting to ${userType} login...`
+    );
+    setShowAlert(true);
+
+    setTimeout(() => {
+      switch (userType.toLowerCase()) {
+        case "temple":
+          navigate("/AuthorityLogin");
+          break;
+        case "pandit":
+          navigate("/PanditLogin");
+          break;
+        default:
+          navigate("/DevoteeLogin");
+      }
+    }, 1500);
+  } catch (err) {
+    console.error(err);
+    setErrors("Error Resetting Password");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const handleResendOtp = async () => {
     const payload = getContactPayload();
@@ -305,9 +305,9 @@ const ForgotPassword = () => {
                         className="option-type"
                       >
                         <option value="">Select type</option>
-                        <option value="Temple">Temple</option>
-                        <option value="Pandit">Pandit</option>
-                        <option value="Devotee">Devotee</option>
+                        <option value="temple">Temple</option>
+                        <option value="pandit">Pandit</option>
+                        <option value="user">Devotee</option>
                       </Form.Select>
                     </Form.Group>
 
