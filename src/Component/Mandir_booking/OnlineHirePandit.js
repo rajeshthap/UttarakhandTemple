@@ -31,7 +31,7 @@ const OnlineHirePandit = () => {
       setLoadingOtp(true);
 
       await axios.post(
-   "${BASE_URLL}api/send-otp/",
+   `${BASE_URLL}api/send-otp/`,
         { phone: formData.mobile_number },
         { headers: { "Content-Type": "application/json" } }
       );

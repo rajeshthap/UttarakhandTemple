@@ -9,6 +9,7 @@ import TempleImg from "../../assets/images/temple-img.jpg";
 import AdminImg from "../../assets/images/about-img.png";
 import DefaultImg from "../../assets/images/about-inner-img.png";
 import axios from "axios";
+import { BASE_URLL } from "../BaseURL";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -48,7 +49,7 @@ export default function Login() {
     setLoading(true);
     try {
       const res = await axios.post(
-        "${BASE_URLL}api/login/",
+        `${BASE_URLL}api/login/`,
         formData
       );
       const userData = res.data;

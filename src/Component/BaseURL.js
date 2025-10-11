@@ -1,1 +1,1 @@
-export const BASE_URLL = "https://brjobsedu.com/Brjobsedu/";
+export const BASE_URLL = "https://c29ce1509da7.ngrok-free.app/";
