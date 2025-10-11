@@ -13,17 +13,18 @@ const LocationState = ({
   const [cities, setCities] = useState([]);
 
   // Fetch countries once
-  useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        const res = await axios.get(`${BASE_URLL}api5/countries/`);
-        setCountries(res.data);
-      } catch (err) {
-        console.error("Error fetching countries:", err);
-      }
-    };
-    fetchCountries();
-  }, []);
+ useEffect(() => {
+  const fetchCountries = async () => {
+    try {
+      const res = await axios.get(`${BASE_URLL}api5/countries/`);
+      // Ensure it's an array
+      setCountries(Array.isArray(res.data) ? res.data : []);
+    } catch (err) {
+      console.error("Error fetching countries:", err);
+    }
+  };
+  fetchCountries();
+}, []);
 
   // Fetch states when country changes
   useEffect(() => {
@@ -76,6 +77,7 @@ const LocationState = ({
   return (
     <>
       {/* Country */}
+      
       <Col md={4}>
         <Form.Group className="mb-3" controlId="countrySelect">
           <Form.Label className="temp-label">
