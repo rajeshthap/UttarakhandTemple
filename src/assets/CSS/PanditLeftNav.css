@@ -294,9 +294,9 @@ span.nav-label {
 }
 
 
-.dropdown-toggle::after {
+/* .dropdown-toggle::after {
   margin-top: 10px;
-}
+} */
 
 #user-dropdown {
   display: flex !important;

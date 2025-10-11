@@ -23,7 +23,6 @@ import Badrinath from "../assets/images/Badrinath-Temple.png";
 import Diya from "../assets/images/Diya.png";
 import "../assets/CSS/TempleBooking.css";
 import PagingNation from "./paging/PagingNation";
-import { FaRegClock } from "react-icons/fa";
 
 // =================== Temple and Pooja Data ===================
 const templePoojas = {
@@ -216,6 +215,7 @@ const TempleBookingInfo = () => {
   // const [selectedTemple, setSelectedTemple] = useState(null);
   const [activeAccordion, setActiveAccordion] = useState(null);
   const [formResetKey, setFormResetKey] = useState(0);
+
   const handleAccordionChange = (eventKey) => {
     if (activeAccordion !== eventKey) {
       // Reset form states when switching to a new accordion
@@ -276,8 +276,9 @@ const TempleBookingInfo = () => {
     <div className="temp-donate">
       <Container className="temp-container-box temp-container-details">
         <div className="temp-detail-btn">
-          <h1>Mandir Visitor Booking</h1>
+          <h1>Temple Booking</h1>
         </div>
+
         <Row>
           {/* Left side temple cards */}
           <Col lg={7} md={7} sm={12}>
@@ -323,33 +324,31 @@ const TempleBookingInfo = () => {
                   className="d-flex"
                 >
                   <div
-                    className={`card-item flex-fill card card-shadow ${
-                      selectedCard?.id === item.id ? "active-card" : ""
-                    }`}
+                    className={`card-item flex-fill card card-shadow d-flex flex-column ${selectedCard?.id === item.id ? "active-card" : ""}`}
                   >
-                    <div className="card-image-wrapper ">
+                    <div className="card-image-wrapper">
                       <img
                         src={item.img}
                         alt={item.title}
                         className="card-image"
+                        style={{ height: "200px", objectFit: "cover" }}
                       />
                     </div>
-                    <div className="card-text-temp">
+                    <div className="card-text-temp flex-grow-1 d-flex flex-column">
                       <h5>{item.title}</h5>
-                      <h6>
-                        {item.text}{" "}
-                       
-                      </h6>
-                      <Row className="mb-3">
-                        <Col lg={12} md={6} className="mb-2">
-                          <Button
-                            className="click-btn"
-                            onClick={() => navigate(item.path)}
-                          >
-                            {item.link}
-                          </Button>
-                        </Col>
-                      </Row>
+                      <h6 className="mb-3">{item.text}</h6>
+                      <div className="mt-auto">
+                        <Row className="mb-1">
+                          <Col lg={12} md={6} className="mb-2">
+                            <Button
+                              className="click-btn"
+                              onClick={() => navigate(item.path)}
+                            >
+                              {item.link}
+                            </Button>
+                          </Col>
+                        </Row>
+                      </div>
                     </div>
                   </div>
                   {/* Popup Modal for Register/Login message */}
@@ -504,55 +503,35 @@ const TempleBookingInfo = () => {
                               setSelectedPersons(Number(e.target.value))
                             }
                           >
-                           {Array.from({ length: 11 }, (_, i) => (
-  <option key={i} value={i}>
-    {i}
-  </option>
-))}
+                            {Array.from({ length: 10 }, (_, i) => (
+                              <option key={i + 1} value={i + 1}>
+                                {i + 1}
+                              </option>
+                            ))}
                           </Form.Select>
 
-                       <Form.Group className="mb-3 mt-3">
-  <Form.Label className="temp-label mb-2">
-    Temple Booking Date & Time <span className="temp-span-star">*</span>
-  </Form.Label>
-
-  <div className="position-relative">
-    {/* Calendar icon */}
-    <MdOutlineDateRange
-      className="position-absolute"
-      style={{
-        top: "50%",
-        left: "10px",
-        transform: "translateY(-50%)",
-        color: "#555",
-        fontSize: "20px",
-      }}
-    />
-
-    {/* Date Picker Input */}
-    <DatePicker
-      selected={selectedDateTime}
-      onChange={setSelectedDateTime}
-      showTimeSelect
-      timeFormat="hh:mm aa"
-      timeIntervals={30}
-      dateFormat="MMMM d, yyyy h:mm aa"
-      placeholderText="Select Date and time"
-      className="form-control temp-form-control-option w-100 ps-5 pe-5"
-      minDate={today}
-      minTime={minTime}
-      maxTime={maxTime}
-      required
-    />
-
-    {/* Clock icon */}
-    <FaRegClock
-      className="position-absolute temp-date-time-icon"
-     
-    />
-  </div>
-</Form.Group>
-
+                          <Form.Group className="mb-3 mt-3">
+                            <Form.Label className="temp-label mb-2">
+                              Temple Booking Date & Time{" "}
+                              <span className="temp-span-star">*</span>
+                            </Form.Label>
+                            <div>
+                              <DatePicker
+                                selected={selectedDateTime}
+                                onChange={setSelectedDateTime}
+                                showTimeSelect
+                                timeFormat="hh:mm aa"
+                                timeIntervals={30}
+                                dateFormat="MMMM d, yyyy h:mm aa"
+                                placeholderText="Select Date and time"
+                                className="form-control temp-form-control-option w-100"
+                                minDate={today}
+                                minTime={minTime}
+                                maxTime={maxTime}
+                                required
+                              />
+                            </div>
+                          </Form.Group>
 
                           <div className="mt-3">
                             <p>

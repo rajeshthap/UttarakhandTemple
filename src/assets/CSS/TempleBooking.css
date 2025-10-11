@@ -109,15 +109,7 @@ button.accordion-button.collapsed {
     transition: all 0.3s ease;
     border: 0px;
 }
-.temp-date-time-icon {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  color: var(--temp-gray-light-black);
-  font-size: var(--temp-space-400);
-  pointer-events: none; 
-}
+
 .modal-close-btn {
     background-color: #6c757d !important;
     border-color: #6c757d !important;
