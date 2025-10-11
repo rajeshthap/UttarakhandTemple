@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Button, Form, Col } from "react-bootstrap";
+import { BASE_URLL } from "../BaseURL";
 
 const VerifyOtp = ({ phone, onVerified }) => {
   const [otp, setOtp] = useState("");
@@ -40,7 +41,7 @@ const VerifyOtp = ({ phone, onVerified }) => {
     setMessage("");
     try {
       const res = await axios.post(
-   "https://brjobsedu.com/Temple_portal/api/verify-otp/",
+   `${BASE_URLL}api/verify-otp/`,
         { phone, otp }
       );
 
@@ -65,7 +66,7 @@ const VerifyOtp = ({ phone, onVerified }) => {
       setOtpExpiry(60); 
 
       const res = await axios.post(
-   "https://brjobsedu.com/Temple_portal/api/send-otp/",
+   `${BASE_URLL}api/send-otp/`,
         { phone }
       );
 

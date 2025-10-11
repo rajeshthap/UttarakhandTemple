@@ -1,11 +1,12 @@
 import axios from "axios";
 
 // Temple register api function
+const BASE_URLL="https://c29ce1509da7.ngrok-free.app/";
 
 export const Globaleapi = async (payload) => {
   try {
     const res = await axios.post(
-      "https://brjobsedu.com/Temple_portal/api/all-reg/",
+      `${BASE_URLL}api/all-reg/`,
       payload,
       {
         headers: { "Content-Type": "multipart/form-data" }
@@ -26,7 +27,7 @@ export const Globaleapi = async (payload) => {
 
 const SendOtp = (otpPayload) => {
   return axios.post(
-    "https://brjobsedu.com/Temple_portal/api/send-otp/",
+    `${BASE_URLL}api/send-otp/`,
     otpPayload, 
     {
       headers: { "Content-Type": "multipart/form-data" },
@@ -39,7 +40,7 @@ export const CheckPhoneApi = (phone) => {
   const formData = new FormData();
   formData.append("phone", phone); 
   return axios.get(
-    "https://brjobsedu.com/Temple_portal/api/all-reg/",
+    `${BASE_URLL}api/all-reg/`,
     formData,
     {
       headers: { "Content-Type": "multipart/form-data" },

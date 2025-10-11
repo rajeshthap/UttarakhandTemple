@@ -5,6 +5,7 @@ import axios from "axios";
 import SendOtpModal from "../OTPModel/SendOtpModal";
 import ModifyAlert from "../Alert/ModifyAlert";
 import { useNavigate } from "react-router-dom";
+import { BASE_URLL } from "../BaseURL";
 
 const OnlineHirePandit = () => {
   const [show, setShow] = useState(false); // OTP modal
@@ -30,7 +31,7 @@ const OnlineHirePandit = () => {
       setLoadingOtp(true);
 
       await axios.post(
-   "https://brjobsedu.com/Temple_portal/api/send-otp/",
+   "${BASE_URLL}api/send-otp/",
         { phone: formData.mobile_number },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -220,7 +221,7 @@ const OnlineHirePandit = () => {
 
     try {
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/OnlinepanditHIre/",
+        `${BASE_URLL}api/OnlinepanditHIre/`,
         formData,
         { headers: { "Content-Type": "application/json" } }
       );

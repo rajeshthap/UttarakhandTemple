@@ -5,6 +5,7 @@ import OTPModel from "../OTPModel/OTPModel";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ModifyAlert from "../Alert/ModifyAlert";
+import { BASE_URLL } from "../BaseURL";
 
 const ExtendYourDivine = () => {
   const [show, setShow] = useState(false);
@@ -27,7 +28,7 @@ const ExtendYourDivine = () => {
     const fetchTemples = async () => {
       try {
         const res = await axios.get(
-          "https://brjobsedu.com/Temple_portal/api/temples-for-divine/"
+          `${BASE_URLL}api/temples-for-divine/`
         );
         if (res.data && Array.isArray(res.data.temples)) {
           setTemples(res.data.temples);
@@ -116,7 +117,7 @@ const ExtendYourDivine = () => {
   const handleResendOtp = async () => {
     try {
       const res = await axios.post(
-   "https://brjobsedu.com/Temple_portal/api/send-otp/",
+   `${BASE_URLL}api/send-otp/`,
         {
           phone: formData.mobile_number,
         }

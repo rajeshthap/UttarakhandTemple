@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Form, Button, Card, Row, Container, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom"; //  for navigation
+import { BASE_URLL } from "../BaseURL";
 
 
 const UserVerifyOtp = () => {
@@ -45,7 +46,7 @@ const UserVerifyOtp = () => {
 
 
         try {
-            const data = await axios.post("https://brjobsedu.com/Temple_portal/api/Verify/", 
+            const data = await axios.post(`${BASE_URLL}api/Verify/`, 
                 { "phone": phone, "otp": getotp });
 
                 // console.log("Verify API response:", data);
@@ -67,7 +68,7 @@ const handleResend = async () => {
 
   try {
     const response = await axios.post(
- "https://brjobsedu.com/Temple_portal/api/send-otp/",
+ `${BASE_URLL}api/send-otp/`,
       { phone }
     );
 
@@ -81,7 +82,7 @@ const handleResend = async () => {
       //  Auto verify OTP right after resend
       try {
         const verifyRes = await axios.post(
-     "https://brjobsedu.com/Temple_portal/api/verify-otp/",
+     `${BASE_URLL}api/verify-otp/`,
           { phone, otp: response.data.otp }
         );
         // console.log("Auto Verify API response:", verifyRes);

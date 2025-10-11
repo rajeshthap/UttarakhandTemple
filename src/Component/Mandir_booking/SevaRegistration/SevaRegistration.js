@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import ModifyAlert from "../../Alert/ModifyAlert";
 import DatePicker from "react-datepicker";
 import LoginPopup from "../../OTPModel/LoginPopup";
+import { BASE_URLL } from "../../BaseURL";
 
 const SevaRegistration = () => {
   const [show, setShow] = useState(false);
@@ -49,7 +50,7 @@ const SevaRegistration = () => {
   const handleResendOtp = async () => {
     try {
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/send-otp/",
+        `${BASE_URLL}api/send-otp/`,
         {
           phone: formData.mobile_number,
         }
@@ -77,7 +78,7 @@ const SevaRegistration = () => {
     const fetchTemples = async () => {
       try {
         const res = await axios.get(
-          "https://brjobsedu.com/Temple_portal/api/temple-names-list/"
+          `${BASE_URLL}api/temple-names-list/`
         );
         if (res.data && Array.isArray(res.data.temple_names)) {
           setTemples(res.data.temple_names);
@@ -116,7 +117,7 @@ const SevaRegistration = () => {
     //  otherwise send OTP
     try {
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/send-otp/",
+        `${BASE_URLL}api/send-otp/`,
         {
           phone: formData.mobile_number,
         }
@@ -142,7 +143,7 @@ const SevaRegistration = () => {
   const handleVerifyOtp = async () => {
     try {
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/verify-otp/",
+        `${BASE_URLL}api/verify-otp/`,
         {
           phone: formData.mobile_number,
           otp: otp,
@@ -268,7 +269,7 @@ const SevaRegistration = () => {
   const checkUserExists = async (fieldValue, fieldName) => {
     try {
       const res = await axios.get(
-        "https://brjobsedu.com/Temple_portal/api/all-reg/"
+        `${BASE_URLL}api/all-reg/`
       );
 
       const userExists = res.data.some((user) => {
@@ -316,7 +317,7 @@ const SevaRegistration = () => {
     const authHeader = "Basic " + btoa(username + ":" + password);
 
     const res = await axios.post(
-      "https://brjobsedu.com/Temple_portal/api/seva-booking/",
+      `${BASE_URLL}api/seva-booking/`,
       formDataToSend,
       {
         headers: {

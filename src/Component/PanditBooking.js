@@ -187,10 +187,10 @@ const PanditBooking = () => {
                     style={{ cursor: "pointer" }}
                   >
                     <div
-                      className={`card-item ${selectedCard?.id === item.id ? "active-card" : ""
+                      className={`card-item-page ${selectedCard?.id === item.id ? "active-card" : ""
                         }`}
                     >
-                      <div className="card-image-wrapper-temple">
+                      <div className="card-image-wrapper-temple-page">
                         <img
                           src={item.img}
                           alt={item.title}

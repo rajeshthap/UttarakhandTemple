@@ -4,6 +4,7 @@ import "../../CustomCss/custom.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ModifyAlert from "../Alert/ModifyAlert";
+import { BASE_URLL } from "../BaseURL";
 
 const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
   const [otp, setOtp] = useState("");
@@ -59,7 +60,7 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
     try {
       setLoading(true);
       const res = await axios.post(
-   "https://brjobsedu.com/Temple_portal/api/verify-otp/",
+   `${BASE_URLL}api/verify-otp/`,
         { phone: phone.trim(), otp: otp.trim() },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -100,7 +101,7 @@ const SendOtpModal = ({ show, handleClose, setIsOtpVerified }) => {
       setTimer(60);       
       setOtpExpiry(60);  
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/send-otp/",
+        `${BASE_URLL}api/send-otp/`,
         { phone: phone.trim() },
         { headers: { "Content-Type": "application/json" } }
       );

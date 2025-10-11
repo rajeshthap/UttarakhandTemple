@@ -10,6 +10,7 @@ import ModifyAlert from "../../Alert/ModifyAlert";
 import DatePicker from "react-datepicker";
 import { setHours, setMinutes } from "date-fns";
 import LoginPopup from "../../OTPModel/LoginPopup";
+import { BASE_URLL } from "../../BaseURL";
 
 const PoojaBooking = () => {
   const [show, setShow] = useState(false);
@@ -81,7 +82,7 @@ const PoojaBooking = () => {
   const checkUserExists = async (fieldValue, fieldName) => {
     try {
       const res = await axios.get(
-        "https://brjobsedu.com/Temple_portal/api/all-reg/"
+        `${BASE_URLL}api/all-reg/`
       );
 
       const userExists = res.data.some((user) => {
@@ -102,7 +103,7 @@ const PoojaBooking = () => {
   const handleResendOtp = async () => {
     try {
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/send-otp/",
+        `${BASE_URLL}api/send-otp/`,
         {
           phone: formData.mobile_number,
         }
@@ -136,7 +137,7 @@ const PoojaBooking = () => {
     const fetchTemples = async () => {
       try {
         const res = await axios.get(
-          "https://brjobsedu.com/Temple_portal/api/temple-names-list/"
+          `${BASE_URLL}api/temple-names-list/`
         );
         if (res.data && Array.isArray(res.data.temple_names)) {
           setTemples(res.data.temple_names);
@@ -283,7 +284,7 @@ const PoojaBooking = () => {
     //  otherwise send OTP
     try {
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/send-otp/",
+        `${BASE_URLL}api/send-otp/`,
         {
           phone: formData.mobile_number,
         }
@@ -317,7 +318,7 @@ const PoojaBooking = () => {
   const handleVerifyOtp = async () => {
     try {
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/verify-otp/",
+        `${BASE_URLL}api/verify-otp/`,
         {
           phone: formData.mobile_number,
           otp: otp,
@@ -391,7 +392,7 @@ const PoojaBooking = () => {
       const authHeader = "Basic " + btoa(username + ":" + password);
 
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/pooja-booking/",
+        `${BASE_URLL}api/pooja-booking/`,
         formDataToSend,
         {
           headers: {

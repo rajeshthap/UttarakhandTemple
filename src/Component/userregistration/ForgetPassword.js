@@ -6,6 +6,7 @@ import { Form, Button, Row, Col, } from "react-bootstrap";
 
 
 import { Container } from "react-bootstrap";
+import { BASE_URLL } from "../BaseURL";
 
 const isPhone = (value) => /^\d{10}$/.test(value);
 
@@ -61,7 +62,7 @@ const ForgetPassword = () => {
 
     try {
       setLoading(true);
-      const response = await axios.put("https://brjobsedu.com/Temple_portal/api/change-password/", payload);
+      const response = await axios.put(`${BASE_URLL}api/change-password/`, payload);
 
       setMessage(response.data.message || "Password reset successful.");
       setFormData({ phone: "", password: "", confirm_password: "" });

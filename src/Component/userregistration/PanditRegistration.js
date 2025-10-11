@@ -14,6 +14,7 @@ import LocationState from "../userregistration/LocationState";
 import Regimg1 from "../../assets/images/pandit-img.png";
 import Select from "react-select";
 import ModifyAlert from "../Alert/ModifyAlert";
+import { BASE_URLL } from "../BaseURL";
 
 function PanditRegistration() {
   const [phone, setPhone] = useState("");
@@ -385,7 +386,7 @@ function PanditRegistration() {
       }
 
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/all-reg/",
+        `${BASE_URLL}api/all-reg/`,
         formDataToSend,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

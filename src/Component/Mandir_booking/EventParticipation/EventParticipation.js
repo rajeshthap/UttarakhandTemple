@@ -8,6 +8,7 @@ import ModifyAlert from "../../Alert/ModifyAlert";
 import DatePicker from "react-datepicker";
 import { setHours, setMinutes } from "date-fns";
 import LoginPopup from "../../OTPModel/LoginPopup";
+import { BASE_URLL } from "../../BaseURL";
 
 const EventParticipation = () => {
   // Move useState for selectedDateTime to the top before any logic uses it
@@ -76,7 +77,7 @@ const EventParticipation = () => {
   const handleResendOtp = async () => {
     try {
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/send-otp/",
+        `${BASE_URLL}api/send-otp/`,
         {
           phone: formData.mobile_number,
         }
@@ -97,7 +98,7 @@ const EventParticipation = () => {
     const fetchTemples = async () => {
       try {
         const res = await axios.get(
-          "https://brjobsedu.com/Temple_portal/api/temple-names-list/"
+          `${BASE_URLL}api/temple-names-list/`
         );
         if (res.data && Array.isArray(res.data.temple_names)) {
           setTemples(res.data.temple_names);
@@ -112,7 +113,7 @@ const EventParticipation = () => {
   const checkUserExists = async (fieldValue, fieldName) => {
     try {
       const res = await axios.get(
-        "https://brjobsedu.com/Temple_portal/api/all-reg/"
+        `${BASE_URLL}api/all-reg/`
       );
 
       const userExists = res.data.some((user) => {
@@ -238,7 +239,7 @@ const EventParticipation = () => {
 
     try {
       setSendingOtp(true);
-      await axios.post("https://brjobsedu.com/Temple_portal/api/send-otp/", {
+      await axios.post(`${BASE_URLL}api/send-otp/`, {
         phone: formData.mobile_number,
       });
       setShow(true);
@@ -273,7 +274,7 @@ const EventParticipation = () => {
       const authHeader = "Basic " + btoa(username + ":" + password);
 
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/event-booking/",
+        `${BASE_URLL}api/event-booking/`,
         formData,
         {
           headers: {
@@ -312,7 +313,7 @@ const EventParticipation = () => {
     setVerifying(true);
     try {
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/verify-otp/",
+        `${BASE_URLL}api/verify-otp/`,
         { phone: formData.mobile_number, otp }
       );
 

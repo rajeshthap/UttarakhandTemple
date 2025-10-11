@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Button, Form, Col } from "react-bootstrap";
 import { CheckPhoneApi } from "../GlobleAuth/Globleapi";
+import { BASE_URLL } from "../BaseURL";
 
 const SendOtp = ({ phone, setPhone, onOtpSent }) => {
   const [loading, setLoading] = useState(false);
@@ -50,7 +51,7 @@ const SendOtp = ({ phone, setPhone, onOtpSent }) => {
 
       //  Only send OTP if phone does NOT exist
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/send-otp/",
+        `${BASE_URLL}api/send-otp/`,
         { phone }
       );
 

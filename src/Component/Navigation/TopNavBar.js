@@ -31,9 +31,9 @@ const TopNavBar = () => {
                     <NavDropdown.Item href="/MissionVision">
                       Mission & Vision
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="/ContactUs">
+                    {/* <NavDropdown.Item href="/ContactUs">
                       Contact Info
-                    </NavDropdown.Item>
+                    </NavDropdown.Item> */}
                     <NavDropdown.Item href="/MandirMahadevaya">
                       Mandir & Mahadevaya Platform Overview{" "}
                     </NavDropdown.Item>
@@ -42,18 +42,20 @@ const TopNavBar = () => {
                     </NavDropdown.Item>
                   </NavDropdown>
                   <Nav.Link href="/DonateTemples">Donate</Nav.Link>
+                  <Nav.Link href="/TempleBookingInfo">Darshan & Pooja Booking</Nav.Link>
 
-                  <NavDropdown
+
+                  {/* <NavDropdown
                     title="Mandir Booking"
                     id="navbarScrollingDropdown"
                   >
                     <NavDropdown.Item href="/TempleBookingInfo">
-                      Mandir Booking{" "}
+                      Darshan and Pooja Booking{" "}
                     </NavDropdown.Item>
                     <NavDropdown.Item href="/DarshanBooking">
                       Darshan Booking
                     </NavDropdown.Item>
-                  </NavDropdown>
+                  </NavDropdown> */}
 
                   <NavDropdown
                     title="Pooja & Seva"
@@ -69,19 +71,19 @@ const TopNavBar = () => {
                       Event Participation
                     </NavDropdown.Item>
                   </NavDropdown>
-
-                  <NavDropdown
+<Nav.Link href="/PanditBooking">Pandit Booking</Nav.Link>
+                  {/* <NavDropdown
                     title="Pandit Booking"
                     id="navbarScrollingDropdown"
                   >
                     <NavDropdown.Item href="/PanditBooking">
                       Hire a Pandit
                     </NavDropdown.Item>
-                  </NavDropdown>
+                  </NavDropdown> */}
 
-                  <Nav.Link href="/TempleFacilityBooking">
+                  {/* <Nav.Link href="/TempleFacilityBooking">
                     Temple Facility Booking
-                  </Nav.Link>
+                  </Nav.Link> */}
 
                   {/* <NavDropdown title="Temple Facilities" id="navbarScrollingDropdown">
                     <NavDropdown.Item href="#action3">
@@ -102,9 +104,9 @@ const TopNavBar = () => {
                     <NavDropdown.Item href="#action3">
                       Upcoming Mandir Events
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="#action4">
+                    {/* <NavDropdown.Item href="#action4">
                       Past Event Gallery
-                    </NavDropdown.Item>
+                    </NavDropdown.Item> */}
                   </NavDropdown>
                 </Nav>
                 <Nav.Link href="/">
@@ -116,7 +118,7 @@ const TopNavBar = () => {
                     ></img>
                   </div>
                 </Nav.Link>
-                <Nav.Link href="/">
+                {/* <Nav.Link href="/">
                   <button
                     type="button"
                     class="solution-btn "
@@ -124,7 +126,7 @@ const TopNavBar = () => {
                   >
                     <FaRocketchat /> परामर्श
                   </button>
-                </Nav.Link>
+                </Nav.Link> */}
                 {/* <Form className="d-flex">
                   <div className="search">
                     <form id="searchFormTop" action="" method="get">

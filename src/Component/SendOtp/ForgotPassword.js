@@ -6,6 +6,7 @@ import "../../CustomCss/custom.css";
 import "../../assets/CSS/ForgotPassword.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import ModifyAlert from "../Alert/ModifyAlert";
+import { BASE_URLL } from "../BaseURL";
 
 const ForgotPassword = () => {
   const [step, setStep] = useState(1);
@@ -80,7 +81,7 @@ const ForgotPassword = () => {
 
   try {
     const res = await axios.post(
-      "https://brjobsedu.com/Temple_portal/api/send-otp/",
+      `${BASE_URLL}api/send-otp/`,
       payload
     );
     if (res.data.success) {
@@ -128,7 +129,7 @@ const ForgotPassword = () => {
 
   try {
     const res = await axios.post(
-      "https://brjobsedu.com/Temple_portal/api/verify-otp/",
+      `${BASE_URLL}api/verify-otp/`,
       payload
     );
 
@@ -206,7 +207,7 @@ const ForgotPassword = () => {
 
   try {
     await axios.post(
-      "https://brjobsedu.com/Temple_portal/api/change-password/",
+      `${BASE_URLL}api/change-password/`,
       payload
     );
 
@@ -246,7 +247,7 @@ const ForgotPassword = () => {
 
     try {
       const res = await axios.post(
-   "https://brjobsedu.com/Temple_portal/api/send-otp/",
+   `${BASE_URLL}api/send-otp/`,
         payload
       );
       if (res.data.success) {

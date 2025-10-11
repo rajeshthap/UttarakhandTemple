@@ -201,6 +201,7 @@ body {
 .temp-page-heading {
     display: flex;
     justify-content: space-between;
+    margin-top: 50px !important;
 }
 
 .alert-txt {

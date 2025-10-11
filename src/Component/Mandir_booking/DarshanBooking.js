@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import LocationState from "../userregistration/LocationState";
 import ModifyAlert from "../Alert/ModifyAlert"
 import DatePicker from "react-datepicker";
+import { BASE_URLL } from "../BaseURL";
 
 const DarshanBooking = () => {
   // Move selectedDateTime useState to the top before any logic uses it
@@ -72,7 +73,7 @@ const DarshanBooking = () => {
   const handleResendOtp = async () => {
     try {
 
-      const res = await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
+      const res = await axios.post("${BASE_URLL}", {
         phone: formData.mobile_number,
       });
 
@@ -129,7 +130,7 @@ const DarshanBooking = () => {
     const fetchTemples = async () => {
       try {
         const res = await axios.get(
-          "https://brjobsedu.com/Temple_portal/api/temples-for-divine/"
+          `${BASE_URLL}api/temples-for-divine/`
         );
         if (res.data && Array.isArray(res.data.temples)) {
           setTemples(res.data.temples);
@@ -257,7 +258,7 @@ const DarshanBooking = () => {
     //  otherwise send OTP
     try {
       const res = await axios.post(
-   "https://brjobsedu.com/Temple_portal/api/send-otp/",
+   `${BASE_URLL}api/send-otp/`,
         {
           phone: formData.mobile_number,
         }
@@ -283,7 +284,7 @@ const DarshanBooking = () => {
   const handleVerifyOtp = async () => {
     try {
       const res = await axios.post(
-   "https://brjobsedu.com/Temple_portal/api/verify-otp/",
+   `${BASE_URLL}api/verify-otp/`,
         {
           phone: formData.mobile_number,
           otp: otp,
@@ -375,7 +376,7 @@ const DarshanBooking = () => {
       }
 
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/darshan-booking/",
+        `${BASE_URLL}api/darshan-booking/`,
         formDataToSend,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

@@ -48,7 +48,7 @@ export default function Login() {
     setLoading(true);
     try {
       const res = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/login/",
+        "${BASE_URLL}api/login/",
         formData
       );
       const userData = res.data;
