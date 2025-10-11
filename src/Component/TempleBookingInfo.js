@@ -120,7 +120,7 @@ const TempleBookingInfo = () => {
           {/* Left side temple cards */}
           <Col lg={7} md={7} sm={12}>
             <div className="text-center p-2 my-4 temp-regis desktop-mobile">
-             
+
               <p>
                 Kindly click on the <strong>Login</strong> or <strong>Register</strong> button below to continue.
               </p>
@@ -153,7 +153,7 @@ const TempleBookingInfo = () => {
                   onClick={() => setSelectedCard(item)}
                   style={{ cursor: "pointer" }}
                 >
-                  <div className={`card-item ${selectedCard?.id === item.id ? "active-card" : ""}`}>
+                  <div className={`card-item-info ${selectedCard?.id === item.id ? "active-card" : ""}`}>
                     <div className="card-image-wrapper">
                       <img src={item.img} alt={item.title} className="card-image" />
                     </div>
@@ -162,8 +162,8 @@ const TempleBookingInfo = () => {
                       <h6>{item.text}</h6>
                     </div>
                   </div>
-                   {/* Popup Modal for Register/Login message */}
-                   <Modal
+                  {/* Popup Modal for Register/Login message */}
+                  <Modal
                     // show={showPopup}
                     onHide={() => setShowPopup(false)}
                     centered
@@ -222,8 +222,8 @@ const TempleBookingInfo = () => {
           </Col>
 
           {/* Right side pooja accordion */}
-           
-            
+
+
           <Col lg={5} md={5} sm={12} className="mt-2 temp-right-side rhs-gob-mob">
             <div className="text-center p-4 my-4 temp-regis">
               <h5>
@@ -258,7 +258,7 @@ const TempleBookingInfo = () => {
                 </Col>
               </Row>
             </div>
- 
+
             <div className="tem-rhs-info temp-right-side-style">
               <h1>{selectedCard?.title || "Temple Booking"}</h1>
 

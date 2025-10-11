@@ -6,6 +6,7 @@ import { FaHandsPraying } from "react-icons/fa6";
 import { RiHotelBedFill } from "react-icons/ri";
 import { MdOutlineFoodBank } from "react-icons/md";
 import { BiSolidCarWash } from "react-icons/bi";
+
 const OnlineBooking = () => {
     return (
         <div className='container-fluid p-0'>

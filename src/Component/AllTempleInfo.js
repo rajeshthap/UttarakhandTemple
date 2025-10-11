@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import "../assets/CSS/Alltemple.css";
+
+import "../assets/CSS/TempleInfo.css";
 
 import Badrinath from "../assets/images/Badrinath-Temple.png";
 import Kedarnath from "../assets/images/Kedarnath-Temple.png";
