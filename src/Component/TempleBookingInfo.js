@@ -331,7 +331,7 @@ const TempleBookingInfo = () => {
                         src={item.img}
                         alt={item.title}
                         className="card-image"
-                        style={{ height: "200px", objectFit: "cover" }}
+
                       />
                     </div>
                     <div className="card-text-temp flex-grow-1 d-flex flex-column">
