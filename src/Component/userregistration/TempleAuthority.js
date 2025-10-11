@@ -113,38 +113,38 @@ function TempleAuthority() {
     trust_cert: useRef(null),
   };
 
-  useEffect(() => {
-    const fetchBankByIfsc = async () => {
-      if (formData.ifsc_code.length === 11) {
-        setLoading(true);
-        try {
-          const response = await axios.get(
-            `${BASE_URLL}api/get-bank-details/?ifsc_code=${formData.ifsc_code}`
-          );
-          console.log("response", response);
+  // useEffect(() => {
+  //   const fetchBankByIfsc = async () => {
+  //     if (formData.ifsc_code.length === 11) {
+  //       setLoading(true);
+  //       try {
+  //         const response = await axios.get(
+  //           `${BASE_URLL}api/get-bank-details/?ifsc_code=${formData.ifsc_code}`
+  //         );
+  //         console.log("response", response);
 
-          if (response.data && response.data.Bank) {
-            setFormData((prev) => ({
-              ...prev,
-              bank_name: response.data.Bank,
-            }));
-          } else {
-            setFormData((prev) => ({ ...prev, bank_name: "" }));
-            alert("Bank name not found for this IFSC code.");
-          }
-        } catch (error) {
-          console.error("Error fetching bank name:", error);
-          alert("Invalid IFSC code or server error.");
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        setFormData((prev) => ({ ...prev, bank_name: "" }));
-      }
-    };
+  //         if (response.data && response.data.Bank) {
+  //           setFormData((prev) => ({
+  //             ...prev,
+  //             bank_name: response.data.Bank,
+  //           }));
+  //         } else {
+  //           setFormData((prev) => ({ ...prev, bank_name: "" }));
+  //           alert("Bank name not found for this IFSC code.");
+  //         }
+  //       } catch (error) {
+  //         console.error("Error fetching bank name:", error);
+  //         alert("Invalid IFSC code or server error.");
+  //       } finally {
+  //         setLoading(false);
+  //       }
+  //     } else {
+  //       setFormData((prev) => ({ ...prev, bank_name: "" }));
+  //     }
+  //   };
 
-    fetchBankByIfsc();
-  }, [formData.ifsc_code]);
+  //   fetchBankByIfsc();
+  // }, [formData.ifsc_code]);
 
   // Full form validation
   const validateForm = () => {
@@ -535,7 +535,7 @@ function TempleAuthority() {
               <Form onSubmit={handleSubmit}>
                 <Row>
                   <Row>
-                    {/* {!otpSent && !otpVerified && (
+                    {!otpSent && !otpVerified && (
                       <>
                         <Col lg={6} md={6} sm={12}>
                           <SendOtp
@@ -582,9 +582,9 @@ function TempleAuthority() {
                           />
                         </Col>
                       </>
-                    )} */}
+                    )}
                   </Row>
-                  {/* {otpVerified && ( */}
+                  {otpVerified && (
                   <>
                     <Row className="mt-4">
                       <Col lg={4} md={4} sm={12}>
@@ -1339,7 +1339,7 @@ function TempleAuthority() {
                       </Button>
                     </div>
                   </>
-                  {/* )} */}
+                   )} 
                 </Row>
               </Form>
             </div>
