@@ -9,7 +9,7 @@ import ModifyAlert from "../Alert/ModifyAlert";
 import "../../assets/CSS/PanditProfile.css";
 import "../../assets/CSS/PanditLeftNav.css";
 
-const PanditProfile = () => {
+const UserProfile = () => {
  
   const [navOpen, setNavOpen] = useState(false);
   const [showModifyAlert, setShowModifyAlert] = useState(false);
@@ -76,7 +76,6 @@ const PanditProfile = () => {
           </Dropdown>
         </div>
       </header>
-      
     <div className="pandit-profile-page py-5">
       {/* Header Section */}
    
@@ -156,4 +155,4 @@ const PanditProfile = () => {
   );
 };
 
-export default PanditProfile;
+export default UserProfile;

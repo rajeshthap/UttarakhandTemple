@@ -154,7 +154,7 @@ function LeftNav() {
 
       {/* Dropdown menu */}
       <Dropdown.Menu>
-        <Dropdown.Item as={Link} to="/Profile">
+        <Dropdown.Item as={Link} to="/UserProfile">
           My Profile
         </Dropdown.Item>
         <Dropdown.Item as={Link} to="/Dashboard">
@@ -193,10 +193,10 @@ function LeftNav() {
 
       {/* Dropdown menu */}
       <Dropdown.Menu>
-        <Dropdown.Item as={Link} to="/Profile">
+        <Dropdown.Item as={Link} to="/UserProfile">
           My Profile
         </Dropdown.Item>
-        <Dropdown.Item as={Link} to="/Dashboard">
+        <Dropdown.Item as={Link} to="/DashBoard">
           Dashboard
         </Dropdown.Item>
         <Dropdown.Divider />

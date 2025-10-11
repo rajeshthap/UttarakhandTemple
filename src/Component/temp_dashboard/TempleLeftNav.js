@@ -153,10 +153,10 @@ function TempleLeftNav() {
 
       {/* Dropdown menu */}
       <Dropdown.Menu>
-        <Dropdown.Item as={Link} to="/Profile">
+        <Dropdown.Item as={Link} to="/TempleProfile">
           My Profile
         </Dropdown.Item>
-        <Dropdown.Item as={Link} to="/Dashboard">
+        <Dropdown.Item as={Link} to="/TempleDashBoard">
           Dashboard
         </Dropdown.Item>
         <Dropdown.Divider />
@@ -198,10 +198,10 @@ function TempleLeftNav() {
               
                     {/* Dropdown menu */}
                     <Dropdown.Menu>
-                      <Dropdown.Item as={Link} to="/Profile">
+                      <Dropdown.Item as={Link} to="/TempleProfile">
                         My Profile
                       </Dropdown.Item>
-                      <Dropdown.Item as={Link} to="/Dashboard">
+                      <Dropdown.Item as={Link} to="/TempleDashBoard">
                         Dashboard
                       </Dropdown.Item>
                       <Dropdown.Divider />

@@ -9,7 +9,7 @@ import ModifyAlert from "../Alert/ModifyAlert";
 import "../../assets/CSS/PanditProfile.css";
 import "../../assets/CSS/PanditLeftNav.css";
 
-const PanditProfile = () => {
+const TempleProfile = () => {
  
   const [navOpen, setNavOpen] = useState(false);
   const [showModifyAlert, setShowModifyAlert] = useState(false);
@@ -156,4 +156,4 @@ const PanditProfile = () => {
   );
 };
 
-export default PanditProfile;
+export default TempleProfile;
