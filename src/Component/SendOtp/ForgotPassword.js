@@ -225,7 +225,7 @@ const ForgotPassword = () => {
           navigate("/PanditLogin");
           break;
         default:
-          navigate("/DevoteeLogin");
+          navigate("/Login");
       }
     }, 1500);
   } catch (err) {
