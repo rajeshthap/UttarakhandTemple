@@ -81,22 +81,22 @@ function LeftNav() {
 
   const navigationOptions = [
     { icon: <RiDashboard3Line />, label: "Dashboard", path: "/MainDashBoard" },
-    { icon: <BiDonateHeart />, label: "Donate", path: "/DonateDashboard" },
+    { icon: <BiDonateHeart />, label: "Online", path: "/DonateDashboard" },
     { icon: <LiaCalendarCheck />, label: "Pandit Booking", path: "/PanditDashBoard" },
     { icon: <IoCalendarClear />, label: "Pooja Booking", path: "/PoojaBookingDashBoard" },
     {
       icon: <GiByzantinTemple />,
-      label: "Mandir Booking",
+      label: "Darshan Booking",
       path: "/MandirBookingDashBoard",
       fileName: "praroop1_tutorial.pdf",
     },
-    {
-      icon: <MdLibraryBooks />,
-      label: "Darshan Booking",
+    // {
+    //   icon: <MdLibraryBooks />,
+    //   label: "Darshan Booking",
 
-      path: "/DarshanBookingDashBoard",
-      fileName: "shashandesh_new.pdf",
-    },
+    //   path: "/DarshanBookingDashBoard",
+    //   fileName: "shashandesh_new.pdf",
+    // },
     {
       path: "/SevaRegistrationDashBoard",
 
