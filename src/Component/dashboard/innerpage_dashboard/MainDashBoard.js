@@ -4,13 +4,17 @@ import "../../../assets/CSS/DashBoard.css";
 import { Button, Col, Row } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import LeftNav from "../LeftNav";
-import { FaHandsPraying } from "react-icons/fa6";
+import { FaHandsPraying, FaOm } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { MdOutlineSwipeUp } from "react-icons/md";
 import { BsNewspaper } from "react-icons/bs";
+import { IoIosArrowForward } from "react-icons/io";
 import { FaHandHoldingWater } from "react-icons/fa";
 import { MdEventAvailable } from "react-icons/md";
 import { RiFilePaper2Line } from "react-icons/ri";
+import PanditImg from "../../../assets/images/pandit_icon.png";
+import { BiSolidDonateBlood } from "react-icons/bi";
+import { GiByzantinTemple } from "react-icons/gi";
 
 const MainDashBoard = () => {
   return (
@@ -25,7 +29,9 @@ const MainDashBoard = () => {
         {/* Right-hand Main Container */}
         <main className="main-container">
           <div className="content-box">
-            <h1 className=" fw500"><span class="fw700h1">Devotee </span> Dashboard</h1>
+            <h1 className=" fw500">
+              <span class="fw700h1">Devotee </span> Dashboard
+            </h1>
             <Row>
               <Col lg={3} md={3} sm={12} className="d-flex">
                 <Card className="shadow-sm  rounded  dbcard-box-1 flex-fill">
@@ -109,7 +115,7 @@ const MainDashBoard = () => {
                     <h3 class="sd-side-heading-2 fw600">
                       {" "}
                       <MdEventAvailable className="up-come-icon" />
-                      <span class="fw700">Upcoming</span>  Bookings
+                      <span class="fw700">Upcoming</span> Bookings
                     </h3>
                     <div class="clearfix sd-upcoming-bookings-table">
                       <table>
@@ -122,42 +128,110 @@ const MainDashBoard = () => {
                     </div>
                   </div>
                 </div>
+
                 <Row>
-                  <Col lg={8} md={8} sm={12}>
-                    <Row>
-                      <Col lg={6} md={6} sm={12} className="mt-3 sd-upcoming-bookings">
-                        <Row>
-                          <Col lg={1} md={1} sm={12}>
+                  <Col lg={6} md={6} sm={12}>
+                    <div className="mt-3 user-upcoming-bookings d-flex">
+                      <Col lg={1} md={1} sm={12}>
+                        {/* <div className="">
+                            <img src={PanditImg} alt="Pandit" className="seva-come-icon-darshanam img-fluid" />
+                          </div> */}
 
-                            <FaHandHoldingWater />
-
-                          </Col>
-                          <Col lg={11} md={11} sm={12}>
-
-                            <h2>Sevas</h2>
-                            <p>text text</p>
-                            <div>
-                              <Button>Book Now</Button>
-
-
-                            </div>
-
-                          </Col>
-                        </Row>
-
-
+                        <FaOm className="seva-come-icon-darshanam" />
                       </Col>
-                      <Col lg={6} md={6} sm={12} className="mt-3">
-
-
-
+                      <Col lg={11} md={11} sm={12} className="user-seva-text">
+                        <h3>Sevas and Darshanam</h3>
+                        <p>
+                          Darshanam and Seva tickets can now be bought offline
+                          at the ticket counter and online via our website.
+                          Relish by visiting Sri Kanaka Durgamma Devasthanam
+                        </p>
+                        <div className="clearfix user-btn-all mt-4">
+                          <button className="sd-btn-blue">
+                            Book Now{" "}
+                            <IoIosArrowForward className="user-seva-btn-icon" />
+                          </button>
+                        </div>
                       </Col>
-                    </Row>
+                    </div>
+                  </Col>
+                  <Col lg={6} md={6} sm={12}>
+                    <div className="mt-3 pandit-upcoming-bookings d-flex">
+                      <Col lg={1} md={1} sm={12}>
+                        <div className="pnadit-w">
+                            <img src={PanditImg} alt="Pandit" className="seva-come-icon-darshanam img-fluid" />
+                          </div>
 
+                        {/* <FaOm className="seva-come-icon-darshanam" /> */}
+                      </Col>
+                      <Col lg={11} md={11} sm={12} className="user-seva-text">
+                        <h3>Pandit Booking</h3>
+                        <p>
+                          Darshanam and Seva tickets can now be bought offline
+                          at the ticket counter and online via our website.
+                          Relish by visiting Sri Kanaka Durgamma Devasthanam
+                        </p>
+                        <div className="clearfix user-btn-all mt-4">
+                          <button className="pandit-btn-blue">
+                            Book Now{" "}
+                            <IoIosArrowForward className="user-seva-btn-icon" />
+                          </button>
+                        </div>
+                      </Col>
+                    </div>
+                  </Col>
+                    <Col lg={6} md={6} sm={12}>
+                    <div className="mt-3 donation-upcoming-bookings d-flex">
+                      <Col lg={1} md={1} sm={12}>
+                        {/* <div className="">
+                            <img src={PanditImg} alt="Pandit" className="seva-come-icon-darshanam img-fluid" />
+                          </div> */}
+
+                        <BiSolidDonateBlood className="seva-come-icon-darshanam" />
+                      </Col>
+                      <Col lg={11} md={11} sm={12} className="user-seva-text">
+                        <h3>Donations</h3>
+                        <p>
+                          Darshanam and Seva tickets can now be bought offline
+                          at the ticket counter and online via our website.
+                          Relish by visiting Sri Kanaka Durgamma Devasthanam
+                        </p>
+                        <div className="clearfix user-btn-all mt-4">
+                          <button className="donation-btn-blue">
+                            Donate Now{" "}
+                            <IoIosArrowForward className="user-seva-btn-icon" />
+                          </button>
+                        </div>
+                      </Col>
+                    </div>
                   </Col>
 
-                </Row>
+                   <Col lg={6} md={6} sm={12}>
+                    <div className="mt-3 pooja-upcoming-bookings d-flex">
+                      <Col lg={1} md={1} sm={12}>
+                        {/* <div className="">
+                            <img src={PanditImg} alt="Pandit" className="seva-come-icon-darshanam img-fluid" />
+                          </div> */}
 
+                        <GiByzantinTemple className="seva-come-icon-darshanam" />
+                      </Col>
+                      <Col lg={11} md={11} sm={12} className="user-seva-text">
+                        <h3>Poojs Booking</h3>
+                        <p>
+                          Darshanam and Seva tickets can now be bought offline
+                          at the ticket counter and online via our website.
+                          Relish by visiting Sri Kanaka Durgamma Devasthanam
+                        </p>
+                        <div className="clearfix user-btn-all mt-4">
+                          <button className="pooja-btn-blue">
+                            Book Now{" "}
+                            <IoIosArrowForward className="user-seva-btn-icon" />
+                          </button>
+                        </div>
+                      </Col>
+                    </div>
+                  </Col>
+                </Row>
               </Col>
               <Col lg={4} md={4} sm={12} className="">
                 <Row>

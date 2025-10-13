@@ -151,12 +151,11 @@
 }
 
 .sd-btn-orange {
-    background-color: #f27a21;
-    /* vibrant orange */
+    background-color:var(--temp-org);
     color: #fff;
-    padding: 8px 20px;
+    padding: var(--temp-space-200) var(--temp-space-500);
     border-radius: 6px;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 600;
     border: none;
     text-decoration: none;
@@ -173,7 +172,89 @@
     transform: translateY(-2px);
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 }
+.user-seva-btn-icon{
+    font-size: var(--temp-space-400);
+ 
 
+}
+.sd-btn-blue {
+     background: #2f3193;
+    color: #fff;
+    border-radius: 4px;
+    padding: 4px 10px 5px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 600;
+    cursor: pointer;
+    border: none !important;
+
+}
+.sd-btn-blue:hover {
+     color: var(--temp-white);
+    background: #1a1f6e;
+    transform: translateY(-2px);
+    border: none !important;
+}
+.pandit-btn-blue {
+     background: var(--temp-org);
+    color: #fff;
+    border-radius: 4px;
+    padding: 4px 10px 5px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 600;
+    cursor: pointer;
+    border: none !important;
+
+}
+
+.pandit-btn-blue:hover {
+     color: var(--temp-white);
+    background: var(--temp-org);
+    transform: translateY(-2px);
+    border: none !important;
+}
+.donation-btn-blue {
+     background: #529c58;
+    color: #fff;
+    border-radius: 4px;
+    padding: 4px 10px 5px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 600;
+    cursor: pointer;
+    border: none !important;
+
+}
+
+.donation-btn-blue:hover {
+     color: var(--temp-white);
+    background: #529c58;
+    transform: translateY(-2px);
+    border: none !important;
+}
+.pooja-btn-blue {
+     background: #3aaeba;
+    color: #fff;
+    border-radius: 4px;
+    padding: 4px 10px 5px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 600;
+    cursor: pointer;
+    border: none !important;
+
+}
+
+.pooja-btn-blue:hover {
+     color: var(--temp-white);
+    background: #3aaeba;
+    transform: translateY(-2px);
+    border: none !important;
+}
+.pnadit-w{
+    width: 30px;
+}
 .slick-list {
     color: #777;
     font-size: var(--temp-space-300);
@@ -255,13 +336,92 @@
     display: inline-block;
     width: 100%;
 }
-
+.user-upcoming-bookings {
+    border: 1px solid #cbcbcb;
+    border-radius: 4px;
+    padding: 16px 20px 16px 16px;
+    display: inline-block;
+    width: 100%;
+    background-image: url("../images/bg-1.jpg");
+      background-size: cover;        
+    background-repeat: no-repeat; 
+    background-position: center; 
+  
+}
+.pandit-upcoming-bookings {
+    border: 1px solid #cbcbcb;
+    border-radius: 4px;
+    padding: 16px 20px 16px 16px;
+    display: inline-block;
+    width: 100%;
+    background-image: url("../images/bg-2.jpg");
+      background-size: cover;        
+    background-repeat: no-repeat; 
+    background-position: center; 
+  
+}
+.donation-upcoming-bookings{
+    border: 1px solid #cbcbcb;
+    border-radius: 4px;
+    padding: 16px 20px 16px 16px;
+    display: inline-block;
+    width: 100%;
+    background-image: url("../images/bg-3.jpg");
+      background-size: cover;        
+    background-repeat: no-repeat; 
+    background-position: center; 
+}
+.pooja-upcoming-bookings{
+    border: 1px solid #cbcbcb;
+    border-radius: 4px;
+    padding: 16px 20px 16px 16px;
+    display: inline-block;
+    width: 100%;
+    background-image: url("../images/bg-4.jpg");
+      background-size: cover;        
+    background-repeat: no-repeat; 
+    background-position: center; 
+}
+.seva-come-icon {
+    font-size: var(--temp-space-800);
+    background-color: #f9cba0;
+    color: #a45d1d;
+    border-radius: 50%;
+    padding: 4px;
+    margin-right: 8px;
+}
+.seva-come-icon-darshanam {
+    font-size: var(--temp-space-800);
+    background-color: var(--temp-white);
+    color: #2f3193;;
+    border-radius: 50%;
+    padding: 4px;
+    margin-right: 8px;
+}
+.seva-p{
+    padding: var(--temp-space-200);
+}
 .sd-dashboard-icons {
     position: absolute;
     height: 40px !important;
     width: 40px;
 }
-
+.user-seva-text h3{
+    font-size: var(--temp-space-450);
+    color: var(--temp-Black);
+    text-align: left;
+    font-weight: 500;
+    margin-top: var(--temp-space-100);
+    margin-bottom: var(--temp-space-300);
+}
+.user-seva-text p{
+    font-size: var(--temp-space-300);
+    color: #372e2e;
+    text-align: left;
+    font-weight: 400;
+    margin-top: var(--temp-space-100);
+    margin-bottom: var(--temp-space-200);
+}
 .sd-upcoming-bookings-table {
     padding-left: 25px;
     color: #8b8787;
