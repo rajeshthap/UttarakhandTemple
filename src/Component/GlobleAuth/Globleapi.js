@@ -1,7 +1,6 @@
 import axios from "axios";
 
-// Temple register api function
-const BASE_URLL = "https://c29ce1509da7.ngrok-free.app/";
+const BASE_URLL = "http://mahadevaaya.com/backend/";
 
 export const Globaleapi = async (payload) => {
   try {

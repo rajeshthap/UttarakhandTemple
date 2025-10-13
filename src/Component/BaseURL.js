@@ -1,1 +1,1 @@
-export const BASE_URLL = "https://c29ce1509da7.ngrok-free.app/";
+export const BASE_URLL = "http://mahadevaaya.com/backend/";
