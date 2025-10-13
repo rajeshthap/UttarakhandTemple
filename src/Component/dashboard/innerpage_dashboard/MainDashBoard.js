@@ -9,6 +9,8 @@ import { Link } from "react-router-dom";
 import { MdOutlineSwipeUp } from "react-icons/md";
 import { BsNewspaper } from "react-icons/bs";
 import { FaHandHoldingWater } from "react-icons/fa";
+import { MdEventAvailable } from "react-icons/md";
+import { RiFilePaper2Line } from "react-icons/ri";
 
 const MainDashBoard = () => {
   return (
@@ -23,9 +25,8 @@ const MainDashBoard = () => {
         {/* Right-hand Main Container */}
         <main className="main-container">
           <div className="content-box">
-            <h1>Dashboard</h1>
+            <h1 className=" fw500"><span class="fw700h1">Devotee </span> Dashboard</h1>
             <Row>
-              <h2>Online Services</h2>
               <Col lg={3} md={3} sm={12} className="d-flex">
                 <Card className="shadow-sm  rounded  dbcard-box-1 flex-fill">
                   <Card.Body>
@@ -107,69 +108,69 @@ const MainDashBoard = () => {
                   <div class="">
                     <h3 class="sd-side-heading-2 fw600">
                       {" "}
-                      <MdOutlineSwipeUp className="up-come-icon" />
-                      Upcoming Bookings
+                      <MdEventAvailable className="up-come-icon" />
+                      <span class="fw700">Upcoming</span>  Bookings
                     </h3>
                     <div class="clearfix sd-upcoming-bookings-table">
                       <table>
                         <p>
                           {" "}
-                          <MdOutlineSwipeUp className="up-come-icon-sub mx-2" />{" "}
+                          <RiFilePaper2Line className="up-come-icon-sub mx-2" />{" "}
                           Sorry! There seems to be no current bookings.
                         </p>
                       </table>
                     </div>
                   </div>
                 </div>
-<Row>
-    <Col lg={8} md={8} sm={12}>
-<Row>
-  <Col lg={6} md={6} sm={12} className="mt-3 sd-upcoming-bookings">
-   <Row>
-    <Col lg={1} md={1} sm={12}>
+                <Row>
+                  <Col lg={8} md={8} sm={12}>
+                    <Row>
+                      <Col lg={6} md={6} sm={12} className="mt-3 sd-upcoming-bookings">
+                        <Row>
+                          <Col lg={1} md={1} sm={12}>
 
-    <FaHandHoldingWater />
-    
-    </Col>
-    <Col lg={11} md={11} sm={12}>
-    
-    <h2>Sevas</h2>
-    <p>text text</p>
-    <div>
-      <Button>Book Now</Button>
-      
+                            <FaHandHoldingWater />
 
-      </div>
-   
-    </Col>
-   </Row>
+                          </Col>
+                          <Col lg={11} md={11} sm={12}>
 
-  
-  </Col>
-    <Col lg={6} md={6} sm={12} className="mt-3">
-   
+                            <h2>Sevas</h2>
+                            <p>text text</p>
+                            <div>
+                              <Button>Book Now</Button>
 
-  
-  </Col>
-</Row>
 
-    </Col>
-    
-</Row>
+                            </div>
+
+                          </Col>
+                        </Row>
+
+
+                      </Col>
+                      <Col lg={6} md={6} sm={12} className="mt-3">
+
+
+
+                      </Col>
+                    </Row>
+
+                  </Col>
+
+                </Row>
 
               </Col>
               <Col lg={4} md={4} sm={12} className="">
                 <Row>
                   <Col lg={12} md={12} sm={12} className="">
                     <div class="sd-upcoming-events mt-3">
-                      <h2 class="sd-side-heading fw500 sd-border-no">
+                      <div class="sd-side-heading fw500 sd-border-no">
                         <span class="fw700">Upcoming</span> Events
-                      </h2>
+                      </div>
                       <div class="slick-list">No Events</div>
                     </div>
                   </Col>
                   <Col lg={12} md={12} sm={12}>
-                    <div className="sd-news-updates mt-40">
+                    <div className="sd-news-updates ">
                       <h2 className="sd-side-heading fw500">
                         <span className="fw700">News</span> Updates
                       </h2>
