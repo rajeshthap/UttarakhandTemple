@@ -15,6 +15,30 @@ import { useLocation } from "react-router-dom";
 const MandirBooking = () => {
   const [show, setShow] = useState(false);
   const [temples, setTemples] = useState([]);
+  // Array to hold details for each person
+  const [persons, setPersons] = useState([]);
+  // Form data state must be declared before any useEffect or logic that uses it
+  const [formData, setFormData] = useState({
+    full_name: "",
+    gender: "",
+    age: "",
+    mobile_number: "",
+    email: "",
+    id_proof_type: "",
+    id_proof_number: "",
+    temple_name: "",
+    mandir_book_date_and_time: "",
+    check_in_time: "",
+    check_out_time: "",
+    state: "",
+    country: "",
+    city: "",
+    address: "",
+    pin_code: "",
+    grand_total: "",
+    payment_mode: "",
+    no_of_persons: "",
+  });
   const handleClose = () => setShow(false);
   const [agree, setAgree] = useState(false);
   const [otp, setOtp] = useState("");
@@ -31,6 +55,32 @@ const MandirBooking = () => {
   const location = useLocation();
   const { temple_name, no_of_persons, mandir_book_date_and_time, grand_total } =
     location.state || {};
+
+  // Update persons array when number of persons changes
+  useEffect(() => {
+    const num = parseInt(formData.no_of_persons || no_of_persons || 0);
+    if (num > 0) {
+      setPersons((prev) => {
+        // If already correct length, do nothing
+        if (prev.length === num) return prev;
+        // If more, slice
+        if (prev.length > num) return prev.slice(0, num);
+        // If less, add empty objects
+        return [
+          ...prev,
+          ...Array(num - prev.length).fill().map(() => ({
+            full_name: "",
+            age: "",
+            gender: "",
+            id_proof_type: "",
+            id_proof_number: "",
+          }))
+        ];
+      });
+    } else {
+      setPersons([]);
+    }
+  }, [formData.no_of_persons, no_of_persons]);
 
   // Helper to round up to next 30 min interval
   const getNextInterval = (date = new Date()) => {
@@ -62,47 +112,25 @@ const MandirBooking = () => {
   };
 
   // Populate formData from props if available
-useEffect(() => {
-  if (temple_name || no_of_persons || mandir_book_date_and_time || grand_total) {
-    setFormData((prev) => ({
-      ...prev,
-      temple_name: temple_name || prev.temple_name,
-      no_of_persons: no_of_persons || prev.no_of_persons,
-      mandir_book_date_and_time:
-        mandir_book_date_and_time || prev.mandir_book_date_and_time,
-      grand_total: grand_total || prev.grand_total,
-    }));
+  useEffect(() => {
+    if (temple_name || no_of_persons || mandir_book_date_and_time || grand_total) {
+      setFormData((prev) => ({
+        ...prev,
+        temple_name: temple_name || prev.temple_name,
+        no_of_persons: no_of_persons || prev.no_of_persons,
+        mandir_book_date_and_time:
+          mandir_book_date_and_time || prev.mandir_book_date_and_time,
+        grand_total: grand_total || prev.grand_total,
+      }));
 
-    // If mandir_book_date_and_time exists, also set DatePicker value
-    if (mandir_book_date_and_time) {
-      setSelectedDateTime(new Date(mandir_book_date_and_time));
+      // If mandir_book_date_and_time exists, also set DatePicker value
+      if (mandir_book_date_and_time) {
+        setSelectedDateTime(new Date(mandir_book_date_and_time));
+      }
     }
-  }
-}, [temple_name, no_of_persons, mandir_book_date_and_time, grand_total]);
+  }, [temple_name, no_of_persons, mandir_book_date_and_time, grand_total]);
 
 
-  const [formData, setFormData] = useState({
-    full_name: "",
-    gender: "",
-    age: "",
-    mobile_number: "",
-    email: "",
-    id_proof_type: "",
-    id_proof_number: "",
-    temple_name: "",
-    darshan_type: "",
-    mandir_book_date_and_time: "",
-    accommodation_required: "",
-    prasad_delivery: "",
-    special_seva_or_puja: "",
-    state: "",
-    country: "",
-    city: "",
-    pin_code: "",
-    grand_total: "",
-    payment_mode: "",
-    no_of_persons: "",
-  });
 
   const handleResendOtp = async () => {
     try {
@@ -127,27 +155,27 @@ useEffect(() => {
 
   const handleInputChangeCity = (name, value) => {
     // Update form data
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const fieldName = name;
+    setFormData((prev) => ({ ...prev, [fieldName]: value }));
 
     // Remove validation error only for the current field if it has a valid value
     setErrors((prev) => {
       const newErrors = { ...prev };
       if (value && value.trim() !== "") {
-        delete newErrors[name]; // Clear only the current field's error
+        delete newErrors[fieldName]; // Clear only the current field's error
       } else {
-        newErrors[name] = `${
-          name.charAt(0).toUpperCase() + name.slice(1)
-        } is required`;
+        newErrors[fieldName] = `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
+          } is required`;
       }
       return newErrors;
     });
 
     // Reset dependent dropdowns
-    if (name === "country") {
+    if (fieldName === "country") {
       setFormData((prev) => ({ ...prev, state: "", city: "" }));
       // Only clear errors if the fields are not required anymore
       // Don't clear state/city errors here - they should remain until filled
-    } else if (name === "state") {
+    } else if (fieldName === "state") {
       setFormData((prev) => ({ ...prev, city: "" }));
       // Don't clear city error here - it should remain until filled
     }
@@ -201,27 +229,18 @@ useEffect(() => {
     } else if (formData.id_proof_number.length > 16) {
       newErrors.id_proof_number = "ID Proof Number cannot exceed 16 characters";
     }
-
-    // Darshan Booking Details
-    // if (!formData.temple_name)
-    //   newErrors.temple_name = "Temple Name is required";
-
-    if (!formData.darshan_type)
-      newErrors.darshan_type = "Darshan Type is required";
-
-    if (!formData.mandir_book_date_and_time)
+       
+    
+    if (!formData.mandir_book_date_and_time){
       newErrors.mandir_book_date_and_time = "Date of Mandir is required";
+       }
 
-    if (!formData.special_seva_or_puja.trim())
-      newErrors.special_seva_or_puja = "Special Seva / Puja is required";
-
-    // Prasad Delivery (Required field)
-    if (formData.prasad_delivery === "" || formData.prasad_delivery === null) {
-      newErrors.prasad_delivery = "Prasad Delivery option is required";
-    }
+        if (!formData.check_in_time){
+      newErrors.check_in_time = "Check In time is  required";
+       }
 
     // Address Details (validate only if prasad_delivery is true)
-    if (String(formData.prasad_delivery).toLowerCase() === "yes") {
+    
       if (!formData.state?.trim()) newErrors.state = "State is required";
       if (!formData.country?.trim()) newErrors.country = "Country is required";
       if (!formData.city?.trim()) newErrors.city = "City is required";
@@ -230,7 +249,7 @@ useEffect(() => {
       } else if (!/^\d{6}$/.test(formData.pin_code)) {
         newErrors.pin_code = "Enter a valid 6-digit Pin Code";
       }
-    }
+    
 
     // Payment Details
     if (
@@ -242,6 +261,9 @@ useEffect(() => {
 
     if (!formData.payment_mode)
       newErrors.payment_mode = "Payment Mode is required";
+
+       if (!formData.address)
+      newErrors.address = "Address is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -358,13 +380,22 @@ useEffect(() => {
       ...prev,
       [name]: value && value.trim() !== "" ? "" : prev[name], // keep error if value empty
     }));
+  };
+
+  // Handle change for person table
+  const handlePersonChange = (idx, field, value) => {
+    setPersons((prev) => {
+      const updated = [...prev];
+      updated[idx][field] = value;
+      return updated;
+    });
 
     // Specific validations
-    if (name === "mobile_number" && value.length === 10) {
+    if (field === "mobile_number" && value.length === 10) {
       checkUserExists(value, "mobile_number");
     }
 
-    if (name === "email" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+    if (field === "email" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
       checkUserExists(value, "email");
     }
   };
@@ -465,31 +496,26 @@ useEffect(() => {
               <h2>Personal Details</h2>
               <Row>
                 <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
+                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Form.Label className="temp-label">
-                      Full Name <span className="temp-span-star">*</span>
+                      Mobile Number <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
-                      type="text"
-                      placeholder="Enter Name"
+                      type="number"
+                      placeholder="Enter Mobile Number"
                       className="temp-form-control"
-                      name="full_name"
-                      value={formData.full_name}
+                      name="mobile_number"
+                      value={formData.mobile_number}
                       onChange={handleInputChange}
                     />
-                    {errors.full_name && (
-                      <small className="text-danger">{errors.full_name}</small>
+                    {errors.mobile_number && (
+                      <small className="text-danger">{errors.mobile_number}</small>
                     )}
                   </Form.Group>
                 </Col>
+
                 <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
+                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Form.Label className="temp-label">
                       Email ID <span className="temp-span-star">*</span>
                     </Form.Label>
@@ -506,165 +532,10 @@ useEffect(() => {
                     )}
                   </Form.Group>
                 </Col>
-                <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="temp-label">
-                      Gender <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Select
-                      className="temp-form-control-option"
-                      placeholder="Gender"
-                      name="gender"
-                      value={formData.gender}
-                      onChange={handleInputChange}
-                    >
-                      <option value="">Select Gender </option>
-                      <option value="Male">Male </option>
-                      <option value="Female">Female </option>
-                      <option value="Other">Other </option>
-                    </Form.Select>
-                    {errors.gender && (
-                      <small className="text-danger">{errors.gender}</small>
-                    )}
-                  </Form.Group>
-                </Col>
+
 
                 <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="temp-label">
-                      Age <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="number"
-                      placeholder="Enter Age"
-                      className="temp-form-control"
-                      name="age"
-                      value={formData.age}
-                      onChange={handleInputChange}
-                    />
-                    {errors.age && (
-                      <small className="text-danger">{errors.age}</small>
-                    )}
-                  </Form.Group>
-                </Col>
-
-                <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="temp-label">
-                      Mobile Number <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="number"
-                      placeholder="Enter Mobile Number"
-                      className="temp-form-control"
-                      name="mobile_number"
-                      value={formData.mobile_number}
-                      onChange={handleInputChange}
-                    />
-                    {errors.mobile_number && (
-                      <small className="text-danger">
-                        {errors.mobile_number}
-                      </small>
-                    )}
-                  </Form.Group>
-                </Col>
-
-                <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="temp-label">
-                      ID Proof Type <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Select
-                      className="temp-form-control-option"
-                      placeholder="ID Proof Type"
-                      name="id_proof_type"
-                      value={formData.id_proof_type}
-                      onChange={handleInputChange}
-                    >
-                      <option value="">Select ID Proof </option>
-                      <option value="Aadhar">Aadhar Card </option>
-                      <option value="PAN ">PAN </option>
-                      <option value="Passport ">Passport </option>
-                      <option value="Voter ID">Voter ID </option>
-                    </Form.Select>
-                    {errors.id_proof_type && (
-                      <small className="text-danger">
-                        {errors.id_proof_type}
-                      </small>
-                    )}
-                  </Form.Group>
-                </Col>
-                <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="temp-label">
-                      ID Proof Number <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter ID Proof Number"
-                      className="temp-form-control"
-                      name="id_proof_number"
-                      value={formData.id_proof_number}
-                      onChange={handleInputChange}
-                      maxLength={16}
-                    />
-                    {errors.id_proof_number && (
-                      <small className="text-danger">
-                        {errors.id_proof_number}
-                      </small>
-                    )}
-                  </Form.Group>
-                </Col>
-
-                <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="temp-label">
-                      Number Of Persons{" "}
-                      <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="number"
-                      name="no_of_persons"
-                      className="temp-form-control"
-                      value={formData.no_of_persons || no_of_persons || ""}
-                      readOnly
-                    />
-                    {errors.no_of_persons && (
-                      <small className="text-danger">
-                        {errors.no_of_persons}
-                      </small>
-                    )}
-                  </Form.Group>
-                </Col>
-              </Row>
-              <h2>Mandir Booking Details</h2>
-
-              <Row>
-                {/* Booking Details */}
-
-                <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
+                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Form.Label className="temp-label">
                       Temple Name <span className="temp-span-star">*</span>
                     </Form.Label>
@@ -673,49 +544,96 @@ useEffect(() => {
                       name="temple_name"
                       value={formData.temple_name || temple_name || ""}
                       readOnly
-                      className="temp-form-control-option"
+                      className="form-control temp-form-control-option w-100"
+                      disabled
                     />
                     {errors.temple_name && (
-                      <small className="text-danger">
-                        {errors.temple_name}
-                      </small>
+                      <small className="text-danger">{errors.temple_name}</small>
                     )}
                   </Form.Group>
                 </Col>
 
                 <Col lg={6} md={6} sm={12}>
-                  <Form.Group className="mb-3" controlId="darshanType">
+                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Form.Label className="temp-label">
-                      Type of Booking<span className="temp-span-star">*</span>
+                      Number Of Persons <span className="temp-span-star">*</span>
                     </Form.Label>
-                    <Form.Select
-                      className="temp-form-control-option"
-                      placeholder="Darshan Type"
-                      name="darshan_type"
-                      value={formData.darshan_type}
-                      onChange={handleInputChange}
-                    >
-                      <option value="">Select Darshan Type</option>
-                      <option value="Darshan">Darshan</option>
-                      <option value="Puja">Puja</option>
-                      <option value="Festival Booking">Festival Booking</option>
-                      <option value="Abhishekam">Abhishekam</option>
-                      <option value="Archana">Archana</option>
-                      <option value="Rudrabhishek">Rudrabhishek</option>
-                      <option value="Other">Other</option>
-                    </Form.Select>
-                    {errors.darshan_type && (
+                    <Form.Control
+                      type="number"
+                      name="no_of_persons"
+                      className="form-control temp-form-control-option w-100"
+                      disabled
+                      value={formData.no_of_persons || no_of_persons || ""}
+                      readOnly
+                    />
+                    {errors.no_of_persons && (
+                      <small className="text-danger">{errors.no_of_persons}</small>
+                    )}
+                  </Form.Group>
+                </Col>
+
+                {/* Check-In Time Field (DatePicker) */}
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group className="mb-3" controlId="checkInTime">
+                    <Form.Label className="temp-label">
+                      Check-In Time <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <DatePicker
+                      selected={formData.check_in_time ? new Date(formData.check_in_time) : null}
+                      onChange={date =>
+                        setFormData(prev => ({
+                          ...prev,
+                          check_in_time: date ? date.toISOString() : ""
+                        }))
+                      }
+                      showTimeSelect
+                      timeFormat="hh:mm aa"
+                      timeIntervals={30}
+                      dateFormat="MMMM d, yyyy h:mm aa"
+                      placeholderText="Select Check-In Date and Time"
+                      className="form-control temp-form-control-option w-100"
+                      minDate={today}
+                    />
+                    {errors.check_in_time && (
                       <small className="text-danger">
-                        {errors.darshan_type}
+                        {errors.check_in_time}
                       </small>
                     )}
+                  </Form.Group>
+                </Col>
+                {/* Check-Out Time Field (DatePicker, always 12:00 PM, disabled) */}
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group className="mb-3" controlId="checkOutTime">
+                    <Form.Label className="temp-label">
+                      Check-Out Time <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <DatePicker
+                      selected={(() => {
+                        // If check-in is selected, use next day with 12:00 PM
+                        if (formData.check_in_time) {
+                          const date = new Date(formData.check_in_time);
+                          date.setDate(date.getDate() + 1);
+                          date.setHours(12, 0, 0, 0);
+                          return date;
+                        }
+                        return null;
+                      })()}
+                      onChange={() => { }}
+                      showTimeSelect
+                      timeFormat="hh:mm aa"
+                      timeIntervals={30}
+                      dateFormat="MMMM d, yyyy h:mm aa"
+                      placeholderText="12:00 PM"
+                      className="form-control temp-form-control-option w-100"
+                      disabled
+                    />
                   </Form.Group>
                 </Col>
 
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group className="mb-3 ">
                     <Form.Label className="temp-label mb-2">
-                      Mandir Date & Time{" "}
+                      Pooja Date & Time{" "}
                       <span className="temp-span-star">*</span>
                     </Form.Label>
                     <div>
@@ -746,113 +664,134 @@ useEffect(() => {
                   </Form.Group>
                 </Col>
 
+              </Row>
+              {/* Dynamic Table for Person Details */}
+              <h2>Devotee Details</h2>
+              <div style={{ overflowX: "auto" }}>
+                <table className="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Full Name</th>
+                      <th>Age</th>
+                      <th>Gender</th>
+                      <th>ID Proof Type</th>
+                      <th>ID Proof Number</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {persons.map((person, idx) => (
+                      <tr key={idx}>
+                        <td>
+                          <Form.Control
+                            type="text"
+                            placeholder="Full Name"
+                            value={person.full_name}
+                            onChange={e => handlePersonChange(idx, "full_name", e.target.value)}
+                          />
+                        </td>
+                        <td>
+                          <Form.Control
+                            type="number"
+                            placeholder="Age"
+                            value={person.age}
+                            onChange={e => handlePersonChange(idx, "age", e.target.value)}
+                          />
+                        </td>
+                        <td>
+                          <Form.Select
+                            value={person.gender}
+                            onChange={e => handlePersonChange(idx, "gender", e.target.value)}
+                          >
+                            <option value="">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                          </Form.Select>
+                        </td>
+                        <td>
+                          <Form.Select
+                            value={person.id_proof_type}
+                            onChange={e => handlePersonChange(idx, "id_proof_type", e.target.value)}
+                          >
+                            <option value="">Select</option>
+                            <option value="Aadhar">Aadhar Card</option>
+                            <option value="PAN">PAN</option>
+                            <option value="Passport">Passport</option>
+                            <option value="Voter ID">Voter ID</option>
+                          </Form.Select>
+                        </td>
+                        <td>
+                          <Form.Control
+                            type="text"
+                            placeholder="ID Proof Number"
+                            value={person.id_proof_number}
+                            maxLength={16}
+                            onChange={e => handlePersonChange(idx, "id_proof_number", e.target.value)}
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+
+              <Row>
+
+
                 <h2 className="pt-4">Address Details</h2>
 
-                <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="temp-label">
-                      Prasad Delivery <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Select
-                      className="temp-form-control-option"
-                      name="prasad_delivery"
-                      value={formData.prasad_delivery}
-                      onChange={handleInputChange}
-                    >
-                      <option value="">Select option</option>
-                      <option value="yes">Yes</option>
-                      <option value="no">No</option>
-                    </Form.Select>
-                    {errors.prasad_delivery && (
-                      <small className="text-danger">
-                        {errors.prasad_delivery}
-                      </small>
-                    )}
-                  </Form.Group>
-                </Col>
+                <LocationState
+                  formData={formData}
+                  handleInputChange={handleInputChangeCity}
+                  formErrors={errors}
+                />
 
-                {formData.prasad_delivery === "yes" && (
-                  <>
-                    <h2 className="mt-2 mb-3">Delivery Address</h2>
 
-                    <LocationState
-                      formData={formData}
-                      handleInputChange={handleInputChangeCity}
-                      formErrors={errors}
-                    />
 
-                    <Col lg={6} md={6} sm={12}>
-                      <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">
-                          Pin Code <span className="temp-span-star">*</span>
-                        </Form.Label>
-                        <Form.Control
-                          type="text"
-                          placeholder=" Enter Pin Code"
-                          className="temp-form-control"
-                          name="pin_code"
-                          value={formData.pin_code}
-                          onChange={handleInputChange}
-                        />
-                        {errors.pin_code && (
-                          <small className="text-danger">
-                            {errors.pin_code}
-                          </small>
-                        )}
-                      </Form.Group>
-                    </Col>
-                  </>
-                )}
                 <Col lg={6} md={6} sm={12}>
-                  <Form.Group className="mb-3" controlId="darshanType">
+                  <Form.Group className="mb-3">
                     <Form.Label className="temp-label">
-                      Select Accommodation Required{" "}
-                      <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Select
-                      className="temp-form-control-option"
-                      name="accommodation_required"
-                      value={formData.accommodation_required}
-                      onChange={handleInputChange}
-                    >
-                      <option value="">Select Accommodation</option>
-                      <option value="yes">Yes</option>
-                      <option value="no">No</option>
-                    </Form.Select>
-                    {errors.accommodation_required && (
-                      <small className="text-danger">
-                        {errors.accommodation_required}
-                      </small>
-                    )}
-                  </Form.Group>
-                </Col>
-                <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="temp-label">
-                      Special Requests <span className="temp-span-star">*</span>
+                      Pin Code <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
-                      as="textarea"
-                      rows={4}
-                      placeholder="Enter Your Special Requests"
+                      type="text"
+                      placeholder=" Enter Pin Code"
                       className="temp-form-control"
-                      name="special_seva_or_puja"
-                      value={formData.special_seva_or_puja}
+                      name="pin_code"
+                      value={formData.pin_code}
                       onChange={handleInputChange}
                     />
-                    {errors.special_seva_or_puja && (
+                    {errors.pin_code && (
                       <small className="text-danger">
-                        {errors.special_seva_or_puja}
+                        {errors.pin_code}
                       </small>
                     )}
                   </Form.Group>
                 </Col>
+
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="temp-label">
+                      Address <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Address"
+                      className="temp-form-control"
+                      name="address"
+                      value={formData.address}
+                      onChange={handleInputChange}
+                    />
+                    {errors.address && (
+                      <small className="text-danger">
+                        {errors.address}
+                      </small>
+                    )}
+                  </Form.Group>
+                </Col>
+
+
 
                 <h2>Payment Details</h2>
 
@@ -890,7 +829,8 @@ useEffect(() => {
                     <Form.Control
                       type="text"
                       name="grand_total"
-                      className="temp-form-control"
+                   className="form-control temp-form-control-option w-100"
+                      disabled
                       value={formData.grand_total || grand_total || ""}
                       readOnly
                     />
