@@ -29,14 +29,21 @@ const TempleBookingInfo = () => {
   const [activeAccordion, setActiveAccordion] = useState(null);
 
   // Fetch temple data from API
-  useEffect(() => {
-    fetch("http://mahadevaaya.com/backend/api/temple-poojas-list/")
-      .then((res) => res.json())
-      .then((data) => {
-        setTempleData(data);
+ useEffect(() => {
+  fetch("http://mahadevaaya.com/backend/api/temple-poojas-list/")
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("API response:", data); // 🔹 log the response
+      setTempleData(data);
+
+      if (data.length > 0) {
         setSelectedCard(data[0]);
-      });
-  }, []);
+      }
+    })
+    .catch((error) => console.error("Error fetching temple data:", error));
+}, []);
+
+
 
   // Pagination logic
   const itemsPerPage = 8;
@@ -147,17 +154,19 @@ const TempleBookingInfo = () => {
                     }`}
                   >
                     <div className="card-image-wrapper">
-                      <img
-                        src={
-                          item.temple_image
-                            ? item.temple_image.startsWith("http")
-                              ? item.temple_image
-                              : `http://mahadevaaya.com${item.temple_image}`
-                            : Diya
-                        }
-                        alt={item.temple_name}
-                        className="card-image"
-                      />
+                    <img
+  src={
+    item.temple_image
+      ? item.temple_image.startsWith("http") // Full URL already
+        ? item.temple_image
+        : `http://mahadevaaya.com/media/${item.temple_image}` // Prepend media path
+      : Diya // Fallback image if none
+  }
+  alt={item.temple_name || "Temple Image"}
+  className="card-image"
+/>
+
+
                     </div>
                     <div className="card-text-temp flex-grow-1 d-flex flex-column">
                       <h5>{item.temple_name}</h5>
