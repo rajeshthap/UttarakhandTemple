@@ -294,6 +294,7 @@ const MandirBooking = () => {
     fetchTemples();
   }, []);
 
+// ...existing code...
 const validateFields = () => {
   const newErrors = {};
 
@@ -306,15 +307,24 @@ const validateFields = () => {
     newErrors.pooja_details = "Please select at least one Pooja";
   }
 
-  // Devotee Information
-  if (!formData.full_name || !formData.full_name.trim())
-    newErrors.full_name = "Full Name is required";
+  // Devotee Information (validate each person)
+  persons.forEach((person, idx) => {
+    if (!person.full_name || !person.full_name.trim())
+      newErrors[`person_${idx}_full_name`] = `Full Name is required for person ${idx + 1}`;
+    if (!person.gender)
+      newErrors[`person_${idx}_gender`] = `Gender is required for person ${idx + 1}`;
+    if (!person.age || isNaN(person.age) || person.age <= 0)
+      newErrors[`person_${idx}_age`] = `Valid age is required for person ${idx + 1}`;
+    if (!person.id_proof_type)
+      newErrors[`person_${idx}_id_proof_type`] = `ID Proof Type is required for person ${idx + 1}`;
+    if (!person.id_proof_number) {
+      newErrors[`person_${idx}_id_proof_number`] = `ID Proof Number is required for person ${idx + 1}`;
+    } else if (person.id_proof_number.length > 16) {
+      newErrors[`person_${idx}_id_proof_number`] = `ID Proof Number cannot exceed 16 characters for person ${idx + 1}`;
+    }
+  });
 
-  if (!formData.gender) newErrors.gender = "Gender is required";
-
-  if (!formData.age || isNaN(formData.age) || formData.age <= 0)
-    newErrors.age = "Valid age is required";
-
+  // Mobile, Email, etc. (top-level fields)
   if (!formData.mobile_number) {
     newErrors.mobile_number = "Mobile number is required";
   } else if (!/^\d{10}$/.test(formData.mobile_number)) {
@@ -325,15 +335,6 @@ const validateFields = () => {
     newErrors.email = "Email is required";
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
     newErrors.email = "Enter a valid email address";
-  }
-
-  if (!formData.id_proof_type)
-    newErrors.id_proof_type = "ID Proof Type is required";
-
-  if (!formData.id_proof_number) {
-    newErrors.id_proof_number = "ID Proof Number is required";
-  } else if (formData.id_proof_number.length > 16) {
-    newErrors.id_proof_number = "ID Proof Number cannot exceed 16 characters";
   }
 
   if (!formData.mandir_book_date_and_time) {
@@ -374,6 +375,7 @@ const validateFields = () => {
   setErrors(newErrors);
   return Object.keys(newErrors).length === 0;
 };
+// ...existing code...
 
 
   const checkUserExists = async (fieldValue, fieldName) => {
@@ -462,7 +464,7 @@ const validateFields = () => {
         setShowAlert(true);
         handleClose(); // close modal
 
-        // navigate("/PaymentConfirmation");
+        navigate("/PaymentConfirmation");
       } else {
         setAlertMessage(res.data.message || "Invalid OTP");
         setShowAlert(true);
@@ -535,9 +537,7 @@ const validateFields = () => {
       formDataToSend.append("devotee_details", JSON.stringify(persons));
 
       // Basic Auth credentials
-      const username = "9058423148";
-      const password = "Ritik@123";
-      const authHeader = "Basic " + btoa(username + ":" + password);
+      
 
       const res = await axios.post(
         `${BASE_URLL}api/mandir-booking/`,
@@ -545,7 +545,7 @@ const validateFields = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: authHeader,
+            
           },
         }
       );

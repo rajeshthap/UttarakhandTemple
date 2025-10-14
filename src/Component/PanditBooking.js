@@ -205,7 +205,7 @@ const PanditBooking = () => {
                     </div>
                     {/* Popup Modal for Register/Login message */}
                     <Modal 
-                    // show={showPopup}
+                     show={showPopup}
                      onHide={() => setShowPopup(false)} centered>
                       <Modal.Header closeButton>
 
