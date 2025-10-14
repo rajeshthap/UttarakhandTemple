@@ -125,7 +125,7 @@ function LeftNav() {
           {
            icon: <LiaCalendarCheck />,
            label: "Event Participation", 
-          path: "/SevaRegistrationDashBoard" },
+          path: "/EventDashBoard" },
        {
            icon: <LiaCalendarCheck />,
            label: "Pooja Booking", 
