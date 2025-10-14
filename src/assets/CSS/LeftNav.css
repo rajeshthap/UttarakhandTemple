@@ -27,7 +27,7 @@
 
 /* Submenu styles */
 .sub-menu {
-  padding-left: 20px;
+  /* padding-left: 20px; */
   background-color: rgba(0, 0, 0, 0.05);
   max-height: 0;
   overflow: hidden;
@@ -40,6 +40,7 @@
   max-height: 500px;
   /* Adjust as needed */
   display: block;
+  background-color: rgb(244, 143, 71);
   /* Ensure it's displayed when open */
 }
 
@@ -56,6 +57,8 @@
   display: flex;
   align-items: center;
   margin-left: auto;
+  color: var(--nd-white);
+  /* background-image: url("../images/arrow_icon.svg") !important; */
 }
 
 .nav-item.d-flex.justify-content-between {
@@ -105,7 +108,9 @@
   min-height: 100vh;
 }
 
-/* Sidebar */
+.sidebar{
+    background-color: var(--temp-primary);
+}
 
 
 /* Right-hand content */
@@ -120,7 +125,7 @@
   flex: 1;
   padding: 20px;
   background: #f4f6f8;
-  margin: 50px 0px 0px 0px;
+  margin: 50px 68px 68px 0px !important;
 }
 
 /* Box inside main content */
@@ -273,7 +278,7 @@
   position: absolute;
   top: -7px;
   left: 00;
-  box-shadow: 1px 1px 10px rgba(198, 189, 248, 0.825);
+  /* box-shadow: 1px 1px 10px rgba(198, 189, 248, 0.825); */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -367,8 +372,15 @@
 .nav-item {
   margin-left: -3px;
 }
-
+.sub-item {
+  margin-left: 16px;
+}
 span.nav-label {
+  padding-top: var(--nd-space-250);
+  font-size: var(--nd-space-350);
+  color: var(--nd-white);
+}
+span.sub-label {
   padding-top: var(--nd-space-250);
   font-size: var(--nd-space-350);
   color: var(--nd-white);

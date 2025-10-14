@@ -2,21 +2,11 @@ import React from "react";
 import "../../../assets/CSS/LeftNav.css";
 import "../../../assets/CSS/DashBoard.css";
 import { Button, Col, Row } from "react-bootstrap";
-import Card from "react-bootstrap/Card";
-import LeftNav from "../LeftNav";
-import { FaHandsPraying, FaOm } from "react-icons/fa6";
-import { Link } from "react-router-dom";
-import { MdOutlineSwipeUp } from "react-icons/md";
-import { BsNewspaper } from "react-icons/bs";
-import { IoIosArrowForward } from "react-icons/io";
-import { FaHandHoldingWater } from "react-icons/fa";
-import { MdEventAvailable } from "react-icons/md";
-import { RiFilePaper2Line } from "react-icons/ri";
-import PanditImg from "../../../assets/images/pandit_icon.png";
-import { BiSolidDonateBlood } from "react-icons/bi";
-import { GiByzantinTemple } from "react-icons/gi";
 
-const DarshanBookingDashBoard = () => {
+import LeftNav from "../LeftNav";
+
+
+const Logout = () => {
   return (
     <>
       {/* Main Wrapper */}
@@ -30,7 +20,7 @@ const DarshanBookingDashBoard = () => {
         <main className="main-container">
           <div className="content-box">
             <h1 className=" fw500">
-              <span class="fw700h1">Darshn Booking </span>
+              <span class="fw700h1"> </span> Support
             </h1>
           
 
@@ -90,4 +80,4 @@ const DarshanBookingDashBoard = () => {
   );
 };
 
-export default DarshanBookingDashBoard;
+export default Logout;

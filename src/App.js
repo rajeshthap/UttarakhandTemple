@@ -89,6 +89,11 @@ import SendOtpModal from "./Component/OTPModel/SendOtpModal";
 import KedarnathInfo from "./Component/KedarnathInfo";
 import GangotriInfo from "./Component/GangotriInfo";
 import YamunotriInfo from "./Component/YamunotriInfo";
+import BookingHistory from "./Component/dashboard/innerpage_dashboard/BookingHistory";
+import MyProfile from "./Component/dashboard/MyAccount/MyProfile";
+import Support from "./Component/dashboard/innerpage_dashboard/Support";  
+import EventDashBoard from "./Component/dashboard/innerpage_dashboard/EventDashBoard";
+
 // import BASE_URLL from "./Component/BaseURL";
 // import DashBoard from "./Component/dashboard/DashBoard";
 // import LeftNav from "./Component/dashboard/LeftNav";
@@ -99,8 +104,10 @@ function App() {
 
   const location = useLocation
     ();
-  const hiddenPaths = new Set(["/DashBoard", "/MainDashBoard", "/DonateDashboard", "/PanditDashBoard", "/LeftNav", "/PoojaBookingDashBoard", "/MandirBookingDashBoard", "/DarshanBookingDashBoard", "/SevaRegistrationDashBoard",
-     "/ChangePassword","/TempleDashBoard", "/TempleLeftNav","/PanditDarshanBooking","/PanditChangePassword","/PanditLeftNav","/Pandit_DashBoard","/PanditDonateDashBoard","/PanditBookDashBoard","/PanditPoojaBooking","/PanditBookingDashBoard","/PanditSevaRegis","/TempDonateDashBoard","/TempPanditBooking","/TempPoojaBooking","/TempChangePassword","/TempSevaRegis","/TempDarshnBooking","/TempBookingDashBoard","/PanditProfile"]);
+  const hiddenPaths = new Set(["/DashBoard", "/MainDashBoard", "/DonateDashBoard", "/PanditDashBoard", "/LeftNav", "/PoojaBookingDashBoard", "/MandirBookingDashBoard", "/DarshanBookingDashBoard", "/SevaRegistrationDashBoard",
+     "/ChangePassword","/TempleDashBoard", "/TempleLeftNav","/PanditDarshanBooking","/PanditChangePassword","/PanditLeftNav","/Pandit_DashBoard","/PanditDonateDashBoard","/PanditBookDashBoard","/PanditPoojaBooking","/PanditBookingDashBoard",
+     "/PanditSevaRegis","/TempDonateDashBoard","/TempPanditBooking","/TempPoojaBooking","/TempChangePassword","/TempSevaRegis",
+     "/TempDarshnBooking","/TempBookingDashBoard","/PanditProfile","/BookingHistory","/MyProfile","/Support","/EventDashBoard"]);
   const shouldHideBars = hiddenPaths.has(location.pathname);
   const hideFooter = location.pathname === "/";
   return (
@@ -174,9 +181,14 @@ function App() {
         <Route path="/TempSevaRegis" element={<TempSevaRegis />} />
         <Route path="/TempBookingDashBoard" element={<TempBookingDashBoard />} />
         <Route path="/PanditProfile" element={<PanditProfile />} />
+        <Route path="/BookingHistory" element={<BookingHistory />} />
         
         <Route path="/LeftNav" element={<LeftNav />} />
         <Route path="/SendOtpModal" element={<SendOtpModal />} />
+        <Route path="/MyProfile" element={<MyProfile />} />
+        <Route path="/Support" element={<Support />} />
+        <Route path="/EventDashBoard" element={<EventDashBoard />} />
+        
       </Routes>
       {!hideFooter && <TempleFooter />}
     </div>
