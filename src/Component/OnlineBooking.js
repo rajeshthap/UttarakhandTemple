@@ -1,11 +1,14 @@
 import React from 'react'
 import "../assets/CSS/Onlinebooking.css"
 import { Button, Col, Row } from 'react-bootstrap'
-import { GiByzantinTemple } from "react-icons/gi";
-import { FaHandsPraying } from "react-icons/fa6";
-import { FaUserClock } from "react-icons/fa";
-import { FaGift } from "react-icons/fa";
+
 import { FaHandshake } from "react-icons/fa6";
+import panditimg from "../assets/images/pandit-img.png";
+import templeimg from "../assets/images/Mission-img.png";
+import eventicon from "../assets/images/event-icon.png"
+import seva from "../assets/images/seva.png"
+import help from "../assets/images/help.png"
+
 
 const OnlineBooking = () => {
     return (
@@ -20,35 +23,58 @@ const OnlineBooking = () => {
                     <Row>
                         <Col><div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3 align-items-stretch ">
                             <div class="features-icons-icon d-flex flex-fill rounded-circle mb-3  booking-info  ">
-                                <div class=" m-auto booking-icon"> <GiByzantinTemple /></div></div>
+                                <div class=" m-auto booking-icon"> <img
+                                    src={templeimg}
+                                    alt="About by god"
+                                    className="img-fluid"
+                                ></img></div></div>
                             <h3>Darshan & Pooja Booking</h3>
                             <p><Button variant="" className='click-btn'>Click here</Button></p>
 
                         </div></Col>
                         <Col><div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3 ">
                             <div class="features-icons-icon d-flex flex-fill rounded-circle mb-3  booking-info ">
-                                <div class=" m-auto booking-icon"> <FaGift /></div></div>
+                                <div class=" m-auto booking-icon">  <img
+                                    src={seva}
+                                    alt="About by god"
+                                    className="img-fluid"
+                                ></img></div></div>
                             <h3>Donate Online </h3>
                             <p><Button variant="" className='click-btn'>Click here</Button></p>
 
                         </div></Col>
                         <Col><div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                             <div class="features-icons-icon d-flex flex-fill rounded-circle mb-3  booking-info ">
-                                <div class=" m-auto booking-icon"> <FaHandshake /></div></div>
+                                <div class=" m-auto booking-icon">  					 <img
+                                    src={help}
+                                    alt="About by god"
+                                    className="img-fluid"
+                                ></img></div></div>
                             <h3>Seva Registration</h3>
                             <p><Button variant="" className='click-btn'>Click here</Button></p>
 
                         </div></Col>
                         <Col><div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                             <div class="features-icons-icon d-flex flex-fill rounded-circle mb-3  booking-info ">
-                                <div class=" m-auto booking-icon"> <FaUserClock /></div></div>
+                                <div class=" m-auto booking-icon">
+                                    <img
+                                        src={panditimg}
+                                        alt="About by god"
+                                        className="img-fluid"
+                                    ></img>
+
+                                </div></div>
                             <h3>Pandit Booking</h3>
                             <p><Button variant="" className='click-btn'>Click here</Button></p>
 
                         </div></Col>
                         <Col><div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                             <div class="features-icons-icon d-flex flex-fill rounded-circle mb-3  booking-info ">
-                                <div class=" m-auto booking-icon"> <FaHandsPraying /></div></div>
+                                <div class=" m-auto booking-icon">  <img
+                                    src={eventicon}
+                                    alt="About by god"
+                                    className="img-fluid"
+                                ></img></div></div>
                             <h3>Event Participation</h3>
                             <p><Button variant="" className='click-btn'>Click here</Button></p>
 
