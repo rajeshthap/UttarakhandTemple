@@ -398,6 +398,22 @@
     padding: 4px;
     margin-right: 8px;
 }
+.donation-come-icon-darshanam {
+    font-size: var(--temp-space-800);
+    background-color: var(--temp-white);
+    color: #529c58;
+    border-radius: 50%;
+    padding: 4px;
+    margin-right: 8px;
+}
+.pooja-come-icon-darshanam {
+    font-size: var(--temp-space-800);
+    background-color: var(--temp-white);
+    color: #3aaeba;
+    border-radius: 50%;
+    padding: 4px;
+    margin-right: 8px;
+}
 .seva-p{
     padding: var(--temp-space-200);
 }
@@ -464,19 +480,19 @@
 
 .rwd-table tr:first-child {
     border-top: none;
-    background: var(--temp-primary);
+    background: #ae3d1f;
     color: #fff;
 }
-
-.rwd-table tr {
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    background-color: #f5f9fc;
-}
-
 .rwd-table tr:nth-child(odd):not(:first-child) {
-    background-color: #ebf3f9;
+    background-color: #ffe2da;
 }
+.rwd-table tr {
+    border-top: 1px solid #fa8a6c;
+    border-bottom: 1px solid #f74f22;
+    background-color: #ffffff;
+}
+
+
 
 .rwd-table th {
     display: none;
@@ -535,8 +551,8 @@
 }
 
 @media screen and (min-width: 600px) {
-    .rwd-table tr:hover:not(:first-child) {
-        background-color: #d8e7f3;
+     .rwd-table tr:hover:not(:first-child) {
+        background-color: #f7e0befa;
     }
 
     .rwd-table td:before {

@@ -96,33 +96,83 @@ function LeftNav() {
 
   const navigationOptions = [
     { icon: <RiDashboard3Line />, label: "Dashboard", path: "/MainDashBoard" },
-    { icon: <BiDonateHeart />, label: "Online", path: "/DonateDashboard" },
+    // { icon: <BiDonateHeart />, label: "Online", path: "#" },
     {
       icon: <LiaCalendarCheck />,
-      label: "Pandit Booking",
-      path: "/PanditDashBoard",
+      label: "Online Booking",
+      path: "#",
       hasSubmenu: true,
       subItems: [
-        { label: "Booking List", path: "/PanditDashBoard/booking-list" },
-        { label: "Available Pandits", path: "/PanditDashBoard/available-pandits" },
-        { label: "Booking History", path: "/PanditDashBoard/booking-history" },
-        { label: "Pandit Management", path: "/PanditDashBoard/pandit-management" },
+        {
+           icon: <LiaCalendarCheck />,
+           label: "Darshnam Booking", 
+          path: "/DarshanBookingDashBoard" },
+
+          {
+           icon: <LiaCalendarCheck />,
+           label: "Donation", 
+          path: "/DonateDashBoard" },
+        
+           {
+           icon: <LiaCalendarCheck />,
+           label: "Pandit Booking", 
+          path: "/PanditDashBoard" },
+       
+       {
+           icon: <LiaCalendarCheck />,
+           label: "Seva Booking", 
+          path: "/SevaRegistrationDashBoard" },
+          {
+           icon: <LiaCalendarCheck />,
+           label: "Event Participation", 
+          path: "/SevaRegistrationDashBoard" },
+       {
+           icon: <LiaCalendarCheck />,
+           label: "Pooja Booking", 
+          path: "/PoojaBookingDashBoard" },
+      ]
+      
+      
+    },
+  {
+      icon: <GiByzantinTemple />,
+      label: "Booking History",
+      path: "/BookingHistory",
+    
+    },
+    {
+      icon: <LiaCalendarCheck />,
+      label: "My Account",
+      path: "#",
+      hasSubmenu: true,
+      subItems: [
+         {
+           icon: <LiaCalendarCheck />,
+           label: "My Profile", 
+          path: "/MyProfile" },
+        {
+           icon: <LiaCalendarCheck />,
+           label: "Change Password", 
+          path: "/ChangePassword" },
+
+       
+      
       ]
     },
-    { icon: <IoCalendarClear />, label: "Pooja Booking", path: "/PoojaBookingDashBoard" },
+   
+  
     {
-      icon: <GiByzantinTemple />,
-      label: "Darshan Booking",
-      path: "/MandirBookingDashBoard",
-      fileName: "praroop1_tutorial.pdf",
-    },
-    {
-      path: "/SevaRegistrationDashBoard",
+      path: "/Support",
       icon: <FaRegFileLines />,
-      label: "Seva Registration",
-      fileName: "praroop2_tutorial.pdf",
+      label: "Support",
+    
     },
-    { icon: <TbPasswordUser />, label: "Change Password", path: "/ChangePassword" },
+    {
+    icon: <TbPasswordUser />,
+    label: "Logout",
+    path: "#", // will trigger logout
+    isLogout: true, // custom flag to detect logout
+  },
   ];
 
   return (
@@ -259,27 +309,41 @@ function LeftNav() {
                             }`}
                           onClick={() => setActivePath(subItem.path)}
                         >
-                          <div className="nav-item d-flex">
-                            <span className="nav-label">{subItem.label}</span>
+                          <div className="sub-item d-flex">
+                             <span className="nav-icon">
+                                      {subItem.icon}
+                                    </span>
+                            <span className="sub-label">{subItem.label}</span>
                           </div>
                         </Link>
                       ))}
                     </div>
                   </>
                 ) : (
-                  <Link
-                    to={option.path}
-                    className={`nav-option option${index + 1} ${activePath === option.path ? "active-nav" : ""
-                      } ${hoveredMenu === index ? "hovered-nav" : ""}`}
-                    onClick={() => setActivePath(option.path)}
-                    onMouseEnter={() => handleMenuHover(index)}
-                    onMouseLeave={handleMenuLeave}
-                  >
-                    <div className="nav-item d-flex">
-                      <span className="nav-icon">{option.icon}</span>
-                      <span className="nav-label">{option.label}</span>
-                    </div>
-                  </Link>
+                 <Link
+  to={option.path}
+  className={`nav-option option${index + 1} ${activePath === option.path ? "active-nav" : ""
+    } ${hoveredMenu === index ? "hovered-nav" : ""}`}
+  onClick={() => {
+    if (option.isLogout) {
+      const confirmLogout = window.confirm("Are you sure you want to logout?");
+      if (confirmLogout) {
+        localStorage.clear();
+        window.location.href = "/";
+      }
+    } else {
+      setActivePath(option.path);
+    }
+  }}
+  onMouseEnter={() => handleMenuHover(index)}
+  onMouseLeave={handleMenuLeave}
+>
+  <div className="nav-item d-flex">
+    <span className="nav-icon">{option.icon}</span>
+    <span className="nav-label">{option.label}</span>
+  </div>
+</Link>
+
                 )}
               </React.Fragment>
             ))}

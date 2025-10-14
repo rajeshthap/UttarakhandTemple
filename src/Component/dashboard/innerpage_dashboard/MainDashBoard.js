@@ -157,14 +157,14 @@ const MainDashBoard = () => {
                   </Col>
                   <Col lg={6} md={6} sm={12}>
                     <div className="mt-3 pandit-upcoming-bookings d-flex">
-                      <Col lg={1} md={1} sm={12}>
+                      <Col lg={1} md={2} sm={12}>
                         <div className="pnadit-w">
                             <img src={PanditImg} alt="Pandit" className="seva-come-icon-darshanam img-fluid" />
                           </div>
 
                         {/* <FaOm className="seva-come-icon-darshanam" /> */}
                       </Col>
-                      <Col lg={11} md={11} sm={12} className="user-seva-text">
+                      <Col lg={11} md={10} sm={12} className="user-seva-text">
                         <h3>Pandit Booking</h3>
                         <p>
                           Darshanam and Seva tickets can now be bought offline
@@ -182,14 +182,14 @@ const MainDashBoard = () => {
                   </Col>
                     <Col lg={6} md={6} sm={12}>
                     <div className="mt-3 donation-upcoming-bookings d-flex">
-                      <Col lg={1} md={1} sm={12}>
+                      <Col lg={1} md={2} sm={12}>
                         {/* <div className="">
                             <img src={PanditImg} alt="Pandit" className="seva-come-icon-darshanam img-fluid" />
                           </div> */}
 
                         <BiSolidDonateBlood className="seva-come-icon-darshanam" />
                       </Col>
-                      <Col lg={11} md={11} sm={12} className="user-seva-text">
+                      <Col lg={11} md={10} sm={12} className="user-seva-text">
                         <h3>Donations</h3>
                         <p>
                           Darshanam and Seva tickets can now be bought offline
@@ -208,14 +208,14 @@ const MainDashBoard = () => {
 
                    <Col lg={6} md={6} sm={12}>
                     <div className="mt-3 pooja-upcoming-bookings d-flex">
-                      <Col lg={1} md={1} sm={12}>
+                      <Col lg={1} md={2} sm={12}>
                         {/* <div className="">
                             <img src={PanditImg} alt="Pandit" className="seva-come-icon-darshanam img-fluid" />
                           </div> */}
 
                         <GiByzantinTemple className="seva-come-icon-darshanam" />
                       </Col>
-                      <Col lg={11} md={11} sm={12} className="user-seva-text">
+                      <Col lg={11} md={10} sm={12} className="user-seva-text">
                         <h3>Poojs Booking</h3>
                         <p>
                           Darshanam and Seva tickets can now be bought offline

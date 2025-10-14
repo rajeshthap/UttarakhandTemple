@@ -16,7 +16,7 @@ import PanditImg from "../../../assets/images/pandit_icon.png";
 import { BiSolidDonateBlood } from "react-icons/bi";
 import { GiByzantinTemple } from "react-icons/gi";
 
-const DarshanBookingDashBoard = () => {
+const MyProfile = () => {
   return (
     <>
       {/* Main Wrapper */}
@@ -30,7 +30,7 @@ const DarshanBookingDashBoard = () => {
         <main className="main-container">
           <div className="content-box">
             <h1 className=" fw500">
-              <span class="fw700h1">Darshn Booking </span>
+              <span class="fw700h1">My </span> Profile
             </h1>
           
 
@@ -90,4 +90,4 @@ const DarshanBookingDashBoard = () => {
   );
 };
 
-export default DarshanBookingDashBoard;
+export default MyProfile;
