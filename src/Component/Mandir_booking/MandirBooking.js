@@ -294,80 +294,87 @@ const MandirBooking = () => {
     fetchTemples();
   }, []);
 
-  const validateFields = () => {
-    const newErrors = {};
+const validateFields = () => {
+  const newErrors = {};
 
-    if (!formData.pooja_name || formData.pooja_name.trim() === "") {
-      newErrors.pooja_name = "Please select at least one Pooja";
-    }
+  // Pooja Details
+  if (
+    !formData.pooja_details ||
+    (Array.isArray(formData.pooja_details) &&
+      formData.pooja_details.length === 0)
+  ) {
+    newErrors.pooja_details = "Please select at least one Pooja";
+  }
 
+  // Devotee Information
+  if (!formData.full_name || !formData.full_name.trim())
+    newErrors.full_name = "Full Name is required";
 
-    // Devotee Information
-    if (!formData.full_name.trim())
-      newErrors.full_name = "Full Name is required";
+  if (!formData.gender) newErrors.gender = "Gender is required";
 
-    if (!formData.gender) newErrors.gender = "Gender is required";
+  if (!formData.age || isNaN(formData.age) || formData.age <= 0)
+    newErrors.age = "Valid age is required";
 
-    if (!formData.age || isNaN(formData.age) || formData.age <= 0)
-      newErrors.age = "Valid age is required";
+  if (!formData.mobile_number) {
+    newErrors.mobile_number = "Mobile number is required";
+  } else if (!/^\d{10}$/.test(formData.mobile_number)) {
+    newErrors.mobile_number = "Enter a valid 10-digit mobile number";
+  }
 
-    if (!formData.mobile_number) {
-      newErrors.mobile_number = "Mobile number is required";
-    } else if (!/^\d{10}$/.test(formData.mobile_number)) {
-      newErrors.mobile_number = "Enter a valid 10-digit mobile number";
-    }
+  if (!formData.email) {
+    newErrors.email = "Email is required";
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    newErrors.email = "Enter a valid email address";
+  }
 
-    if (!formData.email) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Enter a valid email address";
-    }
+  if (!formData.id_proof_type)
+    newErrors.id_proof_type = "ID Proof Type is required";
 
-    if (!formData.id_proof_type)
-      newErrors.id_proof_type = "ID Proof Type is required";
+  if (!formData.id_proof_number) {
+    newErrors.id_proof_number = "ID Proof Number is required";
+  } else if (formData.id_proof_number.length > 16) {
+    newErrors.id_proof_number = "ID Proof Number cannot exceed 16 characters";
+  }
 
-    if (!formData.id_proof_number) {
-      newErrors.id_proof_number = "ID Proof Number is required";
-    } else if (formData.id_proof_number.length > 16) {
-      newErrors.id_proof_number = "ID Proof Number cannot exceed 16 characters";
-    }
+  if (!formData.mandir_book_date_and_time) {
+    newErrors.mandir_book_date_and_time = "Date of Mandir is required";
+  }
 
+  // Address Details
+  if (!formData.state || !formData.state.trim())
+    newErrors.state = "State is required";
 
-    if (!formData.mandir_book_date_and_time) {
-      newErrors.mandir_book_date_and_time = "Date of Mandir is required";
-    }
+  if (!formData.country || !formData.country.trim())
+    newErrors.country = "Country is required";
 
+  if (!formData.city || !formData.city.trim())
+    newErrors.city = "City is required";
 
+  if (!formData.pin_code || !formData.pin_code.toString().trim()) {
+    newErrors.pin_code = "Pin Code is required";
+  } else if (!/^\d{6}$/.test(formData.pin_code)) {
+    newErrors.pin_code = "Enter a valid 6-digit Pin Code";
+  }
 
-    // Address Details (validate only if prasad_delivery is true)
+  // Payment Details
+  if (
+    !formData.grand_total ||
+    isNaN(formData.grand_total) ||
+    formData.grand_total <= 0
+  ) {
+    newErrors.grand_total = "Valid Donation Amount is required";
+  }
 
-    if (!formData.state?.trim()) newErrors.state = "State is required";
-    if (!formData.country?.trim()) newErrors.country = "Country is required";
-    if (!formData.city?.trim()) newErrors.city = "City is required";
-    if (!formData.pin_code?.trim()) {
-      newErrors.pin_code = "Pin Code is required";
-    } else if (!/^\d{6}$/.test(formData.pin_code)) {
-      newErrors.pin_code = "Enter a valid 6-digit Pin Code";
-    }
+  if (!formData.payment_mode)
+    newErrors.payment_mode = "Payment Mode is required";
 
+  if (!formData.address || !formData.address.trim())
+    newErrors.address = "Address is required";
 
-    // Payment Details
-    if (
-      !formData.grand_total ||
-      isNaN(formData.grand_total) ||
-      formData.grand_total <= 0
-    )
-      newErrors.grand_total = "Valid Donation Amount is required";
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+};
 
-    if (!formData.payment_mode)
-      newErrors.payment_mode = "Payment Mode is required";
-
-    if (!formData.address)
-      newErrors.address = "Address is required";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
 
   const checkUserExists = async (fieldValue, fieldName) => {
     try {
