@@ -73,9 +73,9 @@ function TempleAuthority() {
     return allOptions.filter((opt) => !selectedValues.includes(opt.value));
   };
   const [formData, setFormData] = useState({
-    state: "s",
-    country: "s",
-    city: "s",
+    state: "",
+    country: "",
+    city: "",
     zip_code: "",
     temple_name: "",
     password: "",

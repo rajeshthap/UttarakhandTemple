@@ -1,0 +1,46 @@
+.dashboard-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+}
+
+.main-container {
+  flex: 1;
+  padding: 30px;
+}
+
+.content-box {
+  background: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.fw500 {
+  font-weight: 500;
+  font-size: 24px;
+}
+
+.fw700h1 {
+  font-weight: 700;
+  color: #c00;
+}
+
+.profile-form .form-label {
+  font-weight: 500;
+}
+
+.profile-form .form-control,
+.profile-form .form-select {
+  border-radius: 5px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+}
+
+.profile-form .btn-save {
+  background-color: #c00;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+}

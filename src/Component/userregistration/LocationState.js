@@ -78,82 +78,60 @@ const LocationState = ({
     <>
       {/* Country */}
       
-      <Col md={4}>
-        <Form.Group className="mb-3" controlId="countrySelect">
-          <Form.Label className="temp-label">
-            Country <span className="temp-span-star">*</span>
-          </Form.Label>
-          <Form.Select
-            className="temp-form-control-option"
-            value={formData.country || ""}
-            onChange={(e) => onChange("country", e.target.value)}
-          >
-            <option value="">Select Country</option>
-            {countries.map((c) => (
-              <option key={c.id} value={c.name}>
-                {c.name}
-              </option>
-            ))}
-          </Form.Select>
-          {formErrors.country && (
-            <small className="text-danger">
-              {formErrors.country}
-            </small>
-          )}
-        </Form.Group>
-      </Col>
+    <Col md={4}>
+  <Form.Group className="mb-3" controlId="countryInput">
+    <Form.Label className="temp-label">
+      Country <span className="temp-span-star">*</span>
+    </Form.Label>
+    <Form.Control
+      type="text"
+      placeholder="Enter Country"
+      className="temp-form-control-option"
+      value={formData.country || ""}
+      onChange={(e) => onChange("country", e.target.value)}
+    />
+    {formErrors.country && (
+      <small className="text-danger">{formErrors.country}</small>
+    )}
+  </Form.Group>
+</Col>
 
-      {/* State */}
-      <Col md={4}>
-        <Form.Group className="mb-3" controlId="stateSelect">
-          <Form.Label className="temp-label">
-            State <span className="temp-span-star">*</span>
-          </Form.Label>
-          <Form.Select
-            className="temp-form-control-option"
-            value={formData.state || ""}
-            onChange={(e) => onChange("state", e.target.value)}
-          >
-            <option value="">Select State</option>
-            {states.map((s) => (
-              <option key={s.id} value={s.name}>
-                {s.name}
-              </option>
-            ))}
-          </Form.Select>
-          {formErrors.state && (
-            <small className="text-danger">
-              {formErrors.state}
-            </small>
-          )}
-        </Form.Group>
-      </Col>
+<Col md={4}>
+  <Form.Group className="mb-3" controlId="stateInput">
+    <Form.Label className="temp-label">
+      State <span className="temp-span-star">*</span>
+    </Form.Label>
+    <Form.Control
+      type="text"
+      placeholder="Enter State"
+      className="temp-form-control-option"
+      value={formData.state || ""}
+      onChange={(e) => onChange("state", e.target.value)}
+    />
+    {formErrors.state && (
+      <small className="text-danger">{formErrors.state}</small>
+    )}
+  </Form.Group>
+</Col>
 
-      {/* City */}
-      <Col md={4}>
-        <Form.Group className="mb-3" controlId="citySelect">
-          <Form.Label className="temp-label">
-            City <span className="temp-span-star">*</span>
-          </Form.Label>
-          <Form.Select
-            className="temp-form-control-option"
-            value={formData.city || ""}
-            onChange={(e) => onChange("city", e.target.value)}
-          >
-            <option value="">Select City</option>
-            {cities.map((ct) => (
-              <option key={ct.id} value={ct.name_ascii}>
-                {ct.name_ascii}
-              </option>
-            ))}
-          </Form.Select>
-          {formErrors.city && (
-             <small className="text-danger">
-              {formErrors.city}
-            </small>
-          )}
-        </Form.Group>
-      </Col>
+<Col md={4}>
+  <Form.Group className="mb-3" controlId="cityInput">
+    <Form.Label className="temp-label">
+      City <span className="temp-span-star">*</span>
+    </Form.Label>
+    <Form.Control
+      type="text"
+      placeholder="Enter City"
+      className="temp-form-control-option"
+      value={formData.city || ""}
+      onChange={(e) => onChange("city", e.target.value)}
+    />
+    {formErrors.city && (
+      <small className="text-danger">{formErrors.city}</small>
+    )}
+  </Form.Group>
+</Col>
+
     </>
   );
 };
