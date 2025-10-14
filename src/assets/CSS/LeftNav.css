@@ -21,7 +21,83 @@
   --two-use-color: #5500cb;
 }
 
+/* LeftNav.css */
 
+/* Existing styles remain unchanged */
+
+/* Submenu styles */
+.sub-menu {
+  padding-left: 20px;
+  background-color: rgba(0, 0, 0, 0.05);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  display: block;
+  /* Ensure it's displayed */
+}
+
+.sub-menu.open {
+  max-height: 500px;
+  /* Adjust as needed */
+  display: block;
+  /* Ensure it's displayed when open */
+}
+
+.sub-nav-option {
+  padding: 8px 10px 8px 35px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+  display: block;
+  /* Ensure it's displayed */
+}
+
+.nav-arrow {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.nav-item.d-flex.justify-content-between {
+  width: 100%;
+}
+
+/* Hover effects */
+.nav-option:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.hovered-nav {
+  background-color: rgba(0, 0, 0, 0.08);
+  border-left: 3px solid #4a89dc;
+}
+
+.sub-nav-option:hover {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-left: 3px solid #4a89dc;
+  padding-left: 40px;
+}
+
+/* Active menu item styling */
+.active-nav {
+  background-color: rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+  border-left: 3px solid #4a89dc;
+}
+
+/* Smooth transitions */
+.nav-option {
+  transition: all 0.3s ease;
+}
+
+.nav-icon {
+  transition: transform 0.3s ease;
+}
+
+.nav-option:hover .nav-icon {
+  transform: scale(1.1);
+}
 
 /* Main wrapper with sidebar + content */
 .dashboard-wrapper {
@@ -152,14 +228,14 @@
 
 } */
 .user-dp {
-    font-size: var(--nd-space-500);
-    background-color: var(--temp-org) !important;
-    border-radius: 50%;
-    color: var(--nd-white);
-    width: 46px;
-    height: 46px;
-    padding-top: 4px;
-    margin-right: 2px;
+  font-size: var(--nd-space-500);
+  background-color: var(--temp-org) !important;
+  border-radius: 50%;
+  color: var(--nd-white);
+  width: 46px;
+  height: 46px;
+  padding-top: 4px;
+  margin-right: 2px;
 }
 
 
@@ -344,13 +420,13 @@ span.nav-label {
 
 @media screen and (max-width: 850px) {
 
- .nd-menu {
+  .nd-menu {
     font-size: 22px;
     padding: 18px 0px 10px 35px;
     display: flex;
-    justify-content:space-between;
+    justify-content: space-between;
   }
-  
+
   .nd-log-icon-mob {
     background-color: var(--temp-org);
     width: 30px;
@@ -360,17 +436,20 @@ span.nav-label {
     margin-right: var(--nd-space-300);
     color: var(--temp-white);
   }
+
   .user-dp {
-   
+
     margin-right: 12px;
-}
-.nd-user{
-  color: var(--temp-white);
-  font-size: var(--nd-space-350);
-}
-.menuicn {
-  color: var(--temp-white);
-}
+  }
+
+  .nd-user {
+    color: var(--temp-white);
+    font-size: var(--nd-space-350);
+  }
+
+  .menuicn {
+    color: var(--temp-white);
+  }
 
   .option1 {
     margin-top: 1% !important;
@@ -416,7 +495,7 @@ span.nav-label {
     padding-left: var(--nd-space-150);
     margin-right: var(--nd-space-150);
   }
- 
+
 
 }
 
@@ -454,7 +533,7 @@ span.nav-label {
     text-align: right;
     font-size: 16px;
     color: var(--temp-white);
-    
+
   }
 
   .message {

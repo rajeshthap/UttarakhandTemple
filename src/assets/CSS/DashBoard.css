@@ -1,7 +1,52 @@
 .temp-card-bg {
-    background-color: var(--temp-org) !important;
+    /* background-color: var(--temp-org) !important; */
     color: var(--temp-white) !important;
     text-align: center !important;
+}
+
+.dbcard-box-1 {
+    border: 2px solid #cbe6ce;
+    border-radius: 10px;
+    background-color: #edffef !important;
+    color: #529c58 !important;
+
+}
+
+.dbcard-box-2 {
+    border: 2px solid #dedaef;
+    border-radius: 10px;
+    background-color: #f4f2ff !important;
+    color: #605599 !important;
+}
+
+.dbcard-box-3 {
+    border: 2px solid #e9d6cd;
+    border-radius: 10px;
+    background-color: #fff2ec !important;
+    color: #9a705b !important;
+}
+
+.dbcard-box-4 {
+    border: 2px solid #cae1e7;
+    border-radius: 10px;
+    background-color: #ecfbff !important;
+    color: #397e91 !important;
+}
+
+.user-span {
+    font-weight: 400 !important;
+    font-size: var(--temp-space-400) !important;
+}
+
+.user-sub-title {
+    font-weight: 600 !important;
+    font-size: var(--temp-space-500);
+}
+
+.user-sub-title-data {
+    font-weight: 600 !important;
+    font-size: var(--temp-space-700);
+    margin-top: var(--temp-space-300) !important;
 }
 
 .temp-card-bg .card-subtitle {
@@ -15,12 +60,383 @@
     margin-bottom: var(--temp-space-200);
 }
 
+/* upcomping css */
+.sd-dashboard-right-panel .sd-side-heading {
+    font-size: 21px;
+    padding: 0 0 15px;
+    border-bottom: 1px solid #cbcbcb;
+}
+
+.sd-upcoming-events {
+    border: 1px solid #cbcbcb;
+    border-radius: 4px;
+    padding: 10px 20px 25px;
+}
+
+.sd-border-no {
+    border: none !important;
+}
+
 .content-box h1 {
     font-size: var(--temp-space-600);
     color: var(--temp-org);
     text-align: left;
     font-weight: 500;
+    padding-bottom: var(--temp-space-200);
 }
+
+.sd-side-heading h1 {
+    font-size: 34px !important;
+    color: var(--temp-org);
+    padding: 5px 0 30px;
+    font-weight: 400;
+}
+
+.fw700 {
+    font-weight: 700 !important;
+    color: var(--temp-org);
+    font-size: var(--temp-space-500);
+
+}
+
+.fw700h1 {
+    font-weight: 700 !important;
+    color: var(--temp-org);
+    font-size: var(--temp-space-500);
+    font-size: var(--temp-space-600);
+
+}
+
+.sd-side-heading {
+    font-size: 30px;
+    color: #991403;
+    padding: 5px 0 30px;
+    font-weight: 400;
+}
+
+
+.fw500 {
+    font-weight: 500;
+}
+
+/* Upcoming css */
+
+.sd-news-updates {
+    background: #ededed;
+    border-radius: 4px;
+    padding: 15px 20px;
+    margin-top: 16px;
+}
+
+.sd-dashboard-right-panel .sd-side-heading {
+
+    font-size: 21px;
+
+    padding: 0 0 15px;
+
+    border-bottom: 1px solid #cbcbcb;
+
+}
+
+.sd-side-heading {
+
+    font-size: 30px;
+
+    color: #991403;
+
+    padding: 5px 0 30px;
+
+    font-weight: 400;
+
+}
+
+.sd-btn-orange {
+    background-color:var(--temp-org);
+    color: #fff;
+    padding: var(--temp-space-200) var(--temp-space-500);
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+}
+
+.sd-btn-orange:hover {
+    background-color: #d96400;
+    /* darker orange on hover */
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+.user-seva-btn-icon{
+    font-size: var(--temp-space-400);
+ 
+
+}
+.sd-btn-blue {
+     background: #2f3193;
+    color: #fff;
+    border-radius: 4px;
+    padding: 4px 10px 5px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 600;
+    cursor: pointer;
+    border: none !important;
+
+}
+.sd-btn-blue:hover {
+     color: var(--temp-white);
+    background: #1a1f6e;
+    transform: translateY(-2px);
+    border: none !important;
+}
+.pandit-btn-blue {
+     background: var(--temp-org);
+    color: #fff;
+    border-radius: 4px;
+    padding: 4px 10px 5px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 600;
+    cursor: pointer;
+    border: none !important;
+
+}
+
+.pandit-btn-blue:hover {
+     color: var(--temp-white);
+    background: var(--temp-org);
+    transform: translateY(-2px);
+    border: none !important;
+}
+.donation-btn-blue {
+     background: #529c58;
+    color: #fff;
+    border-radius: 4px;
+    padding: 4px 10px 5px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 600;
+    cursor: pointer;
+    border: none !important;
+
+}
+
+.donation-btn-blue:hover {
+     color: var(--temp-white);
+    background: #529c58;
+    transform: translateY(-2px);
+    border: none !important;
+}
+.pooja-btn-blue {
+     background: #3aaeba;
+    color: #fff;
+    border-radius: 4px;
+    padding: 4px 10px 5px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 600;
+    cursor: pointer;
+    border: none !important;
+
+}
+
+.pooja-btn-blue:hover {
+     color: var(--temp-white);
+    background: #3aaeba;
+    transform: translateY(-2px);
+    border: none !important;
+}
+.pnadit-w{
+    width: 30px;
+}
+.slick-list {
+    color: #777;
+    font-size: var(--temp-space-300);
+}
+
+
+.mt-50 {
+    margin-top: 50px;
+}
+
+
+
+/* .sd-news-para {
+
+    padding-left: 8px;
+
+} */
+.news-icon-text {
+    display: flex;
+
+}
+
+.sd-news-date {
+
+    color: grey;
+
+    font-size: 12px;
+    margin-left: 12px;
+    font-weight: 500;
+
+}
+
+.mt-20 {
+
+    margin-top: 20px !important;
+
+}
+
+.mt-40 {
+
+    margin-top: 40px;
+
+}
+
+/* up comming updated end */
+
+/* upcoming booking css start */
+.up-come-icon {
+    font-size: var(--temp-space-800);
+    background-color: #f9cba0;
+    color: #a45d1d;
+    border-radius: 50%;
+    padding: 4px;
+    margin-right: 8px;
+}
+
+.sd-side-heading-2 {
+    font-size: 17px;
+    padding: 10px 0 20px;
+    color: #181818;
+    border-bottom: 1px solid #cbcbcb;
+}
+
+.sd-side-heading {
+    font-size: 21px;
+    padding: 0 0 15px;
+    border-bottom: 1px solid #cbcbcb;
+}
+
+.up-come-icon-sub {
+    font-size: var(--temp-space-800);
+    padding: 4px;
+}
+
+.sd-upcoming-bookings {
+    border: 1px solid #cbcbcb;
+    border-radius: 4px;
+    padding: 16px 20px 16px 16px;
+    display: inline-block;
+    width: 100%;
+}
+.user-upcoming-bookings {
+    border: 1px solid #cbcbcb;
+    border-radius: 4px;
+    padding: 16px 20px 16px 16px;
+    display: inline-block;
+    width: 100%;
+    background-image: url("../images/bg-1.jpg");
+      background-size: cover;        
+    background-repeat: no-repeat; 
+    background-position: center; 
+  
+}
+.pandit-upcoming-bookings {
+    border: 1px solid #cbcbcb;
+    border-radius: 4px;
+    padding: 16px 20px 16px 16px;
+    display: inline-block;
+    width: 100%;
+    background-image: url("../images/bg-2.jpg");
+      background-size: cover;        
+    background-repeat: no-repeat; 
+    background-position: center; 
+  
+}
+.donation-upcoming-bookings{
+    border: 1px solid #cbcbcb;
+    border-radius: 4px;
+    padding: 16px 20px 16px 16px;
+    display: inline-block;
+    width: 100%;
+    background-image: url("../images/bg-3.jpg");
+      background-size: cover;        
+    background-repeat: no-repeat; 
+    background-position: center; 
+}
+.pooja-upcoming-bookings{
+    border: 1px solid #cbcbcb;
+    border-radius: 4px;
+    padding: 16px 20px 16px 16px;
+    display: inline-block;
+    width: 100%;
+    background-image: url("../images/bg-4.jpg");
+      background-size: cover;        
+    background-repeat: no-repeat; 
+    background-position: center; 
+}
+.seva-come-icon {
+    font-size: var(--temp-space-800);
+    background-color: #f9cba0;
+    color: #a45d1d;
+    border-radius: 50%;
+    padding: 4px;
+    margin-right: 8px;
+}
+.seva-come-icon-darshanam {
+    font-size: var(--temp-space-800);
+    background-color: var(--temp-white);
+    color: #2f3193;;
+    border-radius: 50%;
+    padding: 4px;
+    margin-right: 8px;
+}
+.seva-p{
+    padding: var(--temp-space-200);
+}
+.sd-dashboard-icons {
+    position: absolute;
+    height: 40px !important;
+    width: 40px;
+}
+.user-seva-text h3{
+    font-size: var(--temp-space-450);
+    color: var(--temp-Black);
+    text-align: left;
+    font-weight: 500;
+    margin-top: var(--temp-space-100);
+    margin-bottom: var(--temp-space-300);
+}
+.user-seva-text p{
+    font-size: var(--temp-space-300);
+    color: #372e2e;
+    text-align: left;
+    font-weight: 400;
+    margin-top: var(--temp-space-100);
+    margin-bottom: var(--temp-space-200);
+}
+.sd-upcoming-bookings-table {
+    padding-left: 25px;
+    color: #8b8787;
+}
+
+.sd-upcoming-bookings table {
+    width: 100%;
+}
+
+.mt-26 {
+    margin-top: 26px;
+}
+
+
+
 
 .content-box h2 {
     font-size: var(--temp-space-450);
@@ -104,6 +520,12 @@
 .rwd-table th,
 .rwd-table td {
     padding: .5em 1em;
+}
+
+@media (min-width: 1200px) {
+    .sd-side-heading-2 {
+        padding: 10px 0 10px;
+    }
 }
 
 @media screen and (max-width: 601px) {
