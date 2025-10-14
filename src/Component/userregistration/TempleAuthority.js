@@ -76,7 +76,7 @@ function TempleAuthority() {
     state: "s",
     country: "s",
     city: "s",
-    zip_code: "121212",
+    zip_code: "",
     temple_name: "",
     password: "",
     confirm_password: "",
@@ -88,14 +88,15 @@ function TempleAuthority() {
     email: "",
     trust_committee_type: "",
     trust_committee_details: "",
-    bank_name: "s",
+    bank_name: "",
     account_number: "",
     confirm_account_number: "",
     account_type: "",
     account_name: "",
-    ifsc_code: "11111111111",
+    ifsc_code: "",
     role: "temple",
     temple_poojas: [],
+    temple_description: ""
   });
 
   const [documents, setDocuments] = useState({
@@ -113,38 +114,38 @@ function TempleAuthority() {
     trust_cert: useRef(null),
   };
 
-  // useEffect(() => {
-  //   const fetchBankByIfsc = async () => {
-  //     if (formData.ifsc_code.length === 11) {
-  //       setLoading(true);
-  //       try {
-  //         const response = await axios.get(
-  //           `${BASE_URLL}api/get-bank-details/?ifsc_code=${formData.ifsc_code}`
-  //         );
-  //         console.log("response", response);
+  useEffect(() => {
+    const fetchBankByIfsc = async () => {
+      if (formData.ifsc_code.length === 11) {
+        setLoading(true);
+        try {
+          const response = await axios.get(
+            `${BASE_URLL}api/get-bank-details/?ifsc_code=${formData.ifsc_code}`
+          );
+          console.log("response", response);
 
-  //         if (response.data && response.data.Bank) {
-  //           setFormData((prev) => ({
-  //             ...prev,
-  //             bank_name: response.data.Bank,
-  //           }));
-  //         } else {
-  //           setFormData((prev) => ({ ...prev, bank_name: "" }));
-  //           alert("Bank name not found for this IFSC code.");
-  //         }
-  //       } catch (error) {
-  //         console.error("Error fetching bank name:", error);
-  //         alert("Invalid IFSC code or server error.");
-  //       } finally {
-  //         setLoading(false);
-  //       }
-  //     } else {
-  //       setFormData((prev) => ({ ...prev, bank_name: "" }));
-  //     }
-  //   };
+          if (response.data && response.data.Bank) {
+            setFormData((prev) => ({
+              ...prev,
+              bank_name: response.data.Bank,
+            }));
+          } else {
+            setFormData((prev) => ({ ...prev, bank_name: "" }));
+            alert("Bank name not found for this IFSC code.");
+          }
+        } catch (error) {
+          console.error("Error fetching bank name:", error);
+          alert("Invalid IFSC code or server error.");
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setFormData((prev) => ({ ...prev, bank_name: "" }));
+      }
+    };
 
-  //   fetchBankByIfsc();
-  // }, [formData.ifsc_code]);
+    fetchBankByIfsc();
+  }, [formData.ifsc_code]);
 
   // Full form validation
   const validateForm = () => {
@@ -154,6 +155,7 @@ function TempleAuthority() {
     if (!formData.state) errors.state = "State is required";
     if (!formData.country) errors.country = "Country is required";
     if (!formData.city) errors.city = "City is required";
+    if (!formData.temple_description) errors.temple_description = " Description is required";
 
     // Zip Code
     if (!formData.zip_code) {
@@ -275,6 +277,13 @@ function TempleAuthority() {
           error =
             "Temple name should only contain letters with a single space between words";
         }
+        break;
+        case "temple_description":
+        if (!value) {
+          error = "Temple description is required";
+        } else if (/^\s+$/.test(value)) {
+          error = "Temple description cannot be just spaces";
+        } 
         break;
       case "zip_code":
         if (!/^\d{6}$/.test(value)) error = "Pin Code must be 6 digits";
@@ -607,6 +616,30 @@ function TempleAuthority() {
                           {formErrors.temple_name && (
                             <p className="text-danger">
                               {formErrors.temple_name}
+                            </p>
+                          )}
+                        </Form.Group>
+                      </Col>
+                      <Col lg={4} md={4} sm={12}>
+                        <Form.Group
+                          className="mb-3"
+                          controlId="exampleForm.ControlInput1"
+                        >
+                          <Form.Label className="temp-label">
+                            Temple Description{" "}
+                            <span className="temp-span-star">*</span>
+                          </Form.Label>
+                          <Form.Control
+                            type="text"
+                            name="temple_description"
+                            value={formData.temple_description}
+                            onChange={handleChange}
+                            placeholder="Temple Description"
+                            className="temp-form-control"
+                          />
+                          {formErrors.temple_description && (
+                            <p className="text-danger">
+                              {formErrors.temple_description}
                             </p>
                           )}
                         </Form.Group>
