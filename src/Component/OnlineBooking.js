@@ -4,7 +4,7 @@ import { Button, Col, Row } from 'react-bootstrap'
 import { GiByzantinTemple } from "react-icons/gi";
 import { FaHandsPraying } from "react-icons/fa6";
 import { FaUserClock } from "react-icons/fa";
-import { BiSolidDonateBlood } from "react-icons/bi";
+import { FaGift } from "react-icons/fa";
 import { FaHandshake } from "react-icons/fa6";
 
 const OnlineBooking = () => {
@@ -27,7 +27,7 @@ const OnlineBooking = () => {
                         </div></Col>
                         <Col><div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3 ">
                             <div class="features-icons-icon d-flex flex-fill rounded-circle mb-3  booking-info ">
-                                <div class=" m-auto booking-icon"> <BiSolidDonateBlood /></div></div>
+                                <div class=" m-auto booking-icon"> <FaGift /></div></div>
                             <h3>Donate Online </h3>
                             <p><Button variant="" className='click-btn'>Click here</Button></p>
 
