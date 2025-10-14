@@ -130,7 +130,7 @@ const DarshanBooking = () => {
     const fetchTemples = async () => {
       try {
         const res = await axios.get(
-          `${BASE_URLL}api/temples-for-divine/`
+          `${BASE_URLL}api/temple-poojas-list/`
         );
         if (res.data && Array.isArray(res.data.temples)) {
           setTemples(res.data.temples);

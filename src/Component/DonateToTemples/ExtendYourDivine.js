@@ -18,7 +18,7 @@ const ExtendYourDivine = () => {
   const [alertMessage, setAlertMessage] = useState("");
 
   const [formData, setFormData] = useState({
-    temple_id: "",
+    temple_name: "hy",
     amount: "",
     pilgrim_name: "",
     mobile_number: "",
@@ -27,14 +27,20 @@ const ExtendYourDivine = () => {
   useEffect(() => {
     const fetchTemples = async () => {
       try {
-        const res = await axios.get(
-          `${BASE_URLL}api/temples-for-divine/`
-        );
-        if (res.data && Array.isArray(res.data.temples)) {
+        const res = await axios.get(`${BASE_URLL}api/temple-poojas-list/`);
+
+        if (res.data && res.data.temple_name) {
+          setTemples([res.data]);
+        } else if (Array.isArray(res.data)) {
+          setTemples(res.data);
+        } else if (Array.isArray(res.data.temples)) {
           setTemples(res.data.temples);
         }
-      } catch (err) {}
+      } catch (err) {
+        console.error("Error fetching temples:", err);
+      }
     };
+
     fetchTemples();
   }, []);
 
@@ -45,8 +51,8 @@ const ExtendYourDivine = () => {
   const validateForm = () => {
     let formErrors = {};
 
-    if (!formData.temple_id) {
-      formErrors.temple_id = "Temple selection is required.";
+    if (!formData.temple_name) {
+      formErrors.temple_name = "Temple selection is required.";
     }
     if (!formData.amount) {
       formErrors.amount = "Amount is required.";
@@ -116,12 +122,9 @@ const ExtendYourDivine = () => {
   };
   const handleResendOtp = async () => {
     try {
-      const res = await axios.post(
-   `${BASE_URLL}api/send-otp/`,
-        {
-          phone: formData.mobile_number,
-        }
-      );
+      const res = await axios.post(`${BASE_URLL}api/send-otp/`, {
+        phone: formData.mobile_number,
+      });
 
       if (res.data.success) {
         setAlertMessage("OTP Resent Successfully!");
@@ -150,20 +153,20 @@ const ExtendYourDivine = () => {
 
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append("temple_id", formData.temple_id);
+      formDataToSend.append("temple_name", formData.temple_name);
       formDataToSend.append("amount", formData.amount);
       formDataToSend.append("pilgrim_name", formData.pilgrim_name);
       formDataToSend.append("mobile_number", formData.mobile_number);
       formDataToSend.append("email_id", formData.email_id);
 
       const response = await axios.post(
-        "https://brjobsedu.com/Temple_portal/api/extend-your-divine/",
+        `${BASE_URLL}api/donation/`,
         formDataToSend,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
 
       if (response.status >= 200 && response.status < 300) {
-        await axios.post("https://brjobsedu.com/Temple_portal/api/Sentotp/", {
+        await axios.post(`${BASE_URLL}api/send-otp/`, {
           phone: formData.mobile_number,
         });
         handleShow();
@@ -197,7 +200,7 @@ const ExtendYourDivine = () => {
       };
 
       const response = await axios.post(
-   "https://brjobsedu.com/Temple_portal/api/verify-otp/",
+        `${BASE_URLL}api/verify-otp/`,
         payload
       );
 
@@ -241,19 +244,20 @@ const ExtendYourDivine = () => {
                   </Form.Label>
                   <Form.Select
                     className="temp-form-control-option"
-                    name="temple_id"
-                    value={formData.temple_id}
+                    name="temple_name"
+                    value={formData.temple_name}
                     onChange={handleInputChange}
                   >
                     <option value="">Select Temple Name</option>
-                    {temples.map((temple) => (
-                      <option key={temple.id} value={temple.id}>
-                        {temple.temple_name} – {temple.city}, {temple.state}
+                    {temples.map((temple, index) => (
+                      <option key={index} value={temple.temple_name}>
+                        {temple.temple_name}
                       </option>
                     ))}
                   </Form.Select>
-                  {errors.temple_id && (
-                    <small className="text-danger">{errors.temple_id}</small>
+
+                  {errors.temple_name && (
+                    <small className="text-danger">{errors.temple_name}</small>
                   )}
                 </Form.Group>
               </Col>

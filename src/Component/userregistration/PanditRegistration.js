@@ -44,7 +44,7 @@ function PanditRegistration() {
     pandit_image: "",
     aadhar_document: "",
     role: "pandit",
-    poojas: [{ pooja_name: "", price: "" }],
+    pandit_pooja_details: [{ pooja_name: "", pooja_price: "" }],
   });
 
   const [fileErrors, setFileErrors] = useState({
@@ -70,9 +70,9 @@ function PanditRegistration() {
     aadhar_document: null,
   });
   const poojaOptions = [
-    { pooja_name: "Satyanarayan Pooja", price: 1500 },
-    { pooja_name: "Griha Pravesh", price: 2000 },
-    { pooja_name: "Vivah Sanskar", price: 5000 },
+    { pooja_name: "Satyanarayan Pooja", pooja_price: 1500 },
+    { pooja_name: "Griha Pravesh", pooja_price: 2000 },
+    { pooja_name: "Vivah Sanskar", pooja_price: 5000 },
   ];
 
   const [errorReason_querys, setErrorReason_querys] = useState({});
@@ -89,32 +89,32 @@ function PanditRegistration() {
   const addPooja = () => {
     setFormData((prev) => ({
       ...prev,
-      poojas: [...prev.poojas, { pooja_name: "", price: "" }],
+      pandit_pooja_details: [...prev.pandit_pooja_details, { pooja_name: "", pooja_price: "" }],
     }));
   };
 
   const removePooja = (index) => {
-    const newPoojas = [...formData.poojas];
+    const newPoojas = [...formData.pandit_pooja_details];
     if (index === 0) {
-      newPoojas[0] = { pooja_name: "", price: "" };
+      newPoojas[0] = { pooja_name: "", pooja_price: "" };
     } else {
       newPoojas.splice(index, 1);
     }
-    setFormData((prev) => ({ ...prev, poojas: newPoojas }));
+    setFormData((prev) => ({ ...prev, pandit_pooja_details: newPoojas }));
   };
 
   const handlePoojaChange = (index, poojaName) => {
-    const newPoojas = [...formData.poojas];
+    const newPoojas = [...formData.pandit_pooja_details];
 
     const selectedPooja = poojaOptions.find((p) => p.pooja_name === poojaName);
 
     newPoojas[index] = {
       ...newPoojas[index],
       pooja_name: poojaName,
-      price: "",
+      pooja_price: "",
     };
 
-    setFormData((prev) => ({ ...prev, poojas: newPoojas }));
+    setFormData((prev) => ({ ...prev, pandit_pooja_details: newPoojas }));
   };
 
   // Validate individual fields
@@ -378,7 +378,7 @@ function PanditRegistration() {
       const formDataToSend = new FormData();
 
       for (let key in formData) {
-        if (key === "pandit_role" || key === "poojas") {
+        if (key === "pandit_role" || key === "pandit_pooja_details") {
           formDataToSend.append(key, JSON.stringify(formData[key]));
         } else {
           formDataToSend.append(key, formData[key]);
@@ -417,8 +417,7 @@ function PanditRegistration() {
           pandit_image: "",
           aadhar_document: "",
           pandit_role: [],
-          pandit_pooja_name: "",
-          pandit_pooja_price: "",
+          pandit_pooja_details: [{ pooja_name: "", pooja_price: "" }], 
           role: "pandit",
         });
 
@@ -778,7 +777,7 @@ function PanditRegistration() {
                             </span>
                           </Form.Label>
 
-                          {formData.poojas.map((pooja, index) => (
+                          {formData.pandit_pooja_details?.map((pooja, index) => (
                             <Row key={index} className="align-items-end">
                               <Col md={5}>
                                 <Form.Group
@@ -796,7 +795,7 @@ function PanditRegistration() {
                                     {poojaOptions
                                       .filter(
                                         (opt) =>
-                                          !formData.poojas.some(
+                                          !formData.pandit_pooja_details.some(
                                             (p, i) =>
                                               p.pooja_name === opt.pooja_name &&
                                               i !== index
@@ -823,13 +822,13 @@ function PanditRegistration() {
                                     type="number"
                                     placeholder="Enter Price"
                                     className="temp-form-control"
-                                    value={pooja.price}
+                                    value={pooja.pooja_price}
                                     onChange={(e) => {
-                                      const newPoojas = [...formData.poojas];
-                                      newPoojas[index].price = e.target.value;
+                                      const newPoojas = [...formData.pandit_pooja_details];
+                                      newPoojas[index].pooja_price = e.target.value;
                                       setFormData((prev) => ({
                                         ...prev,
-                                        poojas: newPoojas,
+                                        pandit_pooja_details: newPoojas,
                                       }));
                                     }}
                                   />
@@ -850,7 +849,7 @@ function PanditRegistration() {
                             </Row>
                           ))}
 
-                          {formData.poojas.length < poojaOptions.length && (
+                          {formData.pandit_pooja_details.length < poojaOptions.length && (
                             <Button
                               variant="primary"
                               className="mb-2"
