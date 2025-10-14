@@ -76,12 +76,9 @@ const EventParticipation = () => {
 
   const handleResendOtp = async () => {
     try {
-      const res = await axios.post(
-        `${BASE_URLL}api/send-otp/`,
-        {
-          phone: formData.mobile_number,
-        }
-      );
+      const res = await axios.post(`${BASE_URLL}api/send-otp/`, {
+        phone: formData.mobile_number,
+      });
 
       if (res.data.success) {
       } else {
@@ -97,9 +94,7 @@ const EventParticipation = () => {
   useEffect(() => {
     const fetchTemples = async () => {
       try {
-        const res = await axios.get(
-          `${BASE_URLL}api/temple-names-list/`
-        );
+        const res = await axios.get(`${BASE_URLL}api/temple-names-list/`);
         if (res.data && Array.isArray(res.data.temple_names)) {
           setTemples(res.data.temple_names);
         }
@@ -112,9 +107,7 @@ const EventParticipation = () => {
 
   const checkUserExists = async (fieldValue, fieldName) => {
     try {
-      const res = await axios.get(
-        `${BASE_URLL}api/all-reg/`
-      );
+      const res = await axios.get(`${BASE_URLL}api/all-reg/`);
 
       const userExists = res.data.some((user) => {
         if (fieldName === "mobile_number") return user.phone === fieldValue;
@@ -269,19 +262,7 @@ const EventParticipation = () => {
 
     try {
       // Add Basic Auth
-      const username = "9058423148";
-      const password = "Ritik@123";
-      const authHeader = "Basic " + btoa(username + ":" + password);
-
-      const res = await axios.post(
-        `${BASE_URLL}api/event-booking/`,
-        formData,
-        {
-          headers: {
-            Authorization: authHeader,
-          },
-        }
-      );
+      const res = await axios.post(`${BASE_URLL}api/event-booking/`, formData);
 
       if (res.status === 200 || res.status === 201) {
         setTimeout(() => {
@@ -312,21 +293,21 @@ const EventParticipation = () => {
 
     setVerifying(true);
     try {
-      const res = await axios.post(
-        `${BASE_URLL}api/verify-otp/`,
-        { phone: formData.mobile_number, otp }
-      );
+      const res = await axios.post(`${BASE_URLL}api/verify-otp/`, {
+        phone: formData.mobile_number,
+        otp,
+      });
 
       if (res.data.success) {
         setOtpVerified(true);
         setAlertMessage("OTP Verified Successfully!");
         setShowAlert(true);
         setShow(false);
-        //         setTimeout(() => {
-        //         navigate("/PaymentConfirmation");
+                setTimeout(() => {
+                navigate("/PaymentConfirmation");
 
-        //         }
-        // , 2000);
+                }
+        , 2000);
       } else {
         setAlertMessage("Invalid OTP, try again.");
         setShowAlert(true);
