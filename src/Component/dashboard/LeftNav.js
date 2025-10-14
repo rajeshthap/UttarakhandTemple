@@ -4,7 +4,7 @@ import { RiDashboard3Line } from "react-icons/ri";
 import {
   MdLibraryBooks,
 } from "react-icons/md";
-import { FaAlignLeft } from "react-icons/fa";
+import { FaAlignLeft, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
 import CompanyLogo from "../../assets/images/company-logo.png";
 import MenuIcon from "../../assets/images/menu_icon.png";
@@ -22,10 +22,13 @@ function LeftNav() {
   const [isNavClosed, setIsNavClosed] = useState(false);
   const [userName, setUserName] = useState("Loading...");
   const [activePath, setActivePath] = useState("");
+  const [openSubMenu, setOpenSubMenu] = useState(null); // Track which submenu is open
+  const [hoveredMenu, setHoveredMenu] = useState(null); // Track which menu is hovered
   const location = useLocation();
   // alert state
   const [showModifyAlert, setShowModifyAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+
   useEffect(() => {
     // Get initial user name
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -62,27 +65,50 @@ function LeftNav() {
     document.body.removeChild(a);
   };
 
- const logout = () => {
-  const confirmLogout = window.confirm("Are you sure you want to logout?");
-  if (confirmLogout) {
-    localStorage.clear();
-    setAlertMessage("Logout successfully!");
-    setShowModifyAlert(true);
+  const toggleSubMenu = (index) => {
+    setOpenSubMenu(openSubMenu === index ? null : index);
+  };
 
-    // Clear alert after 3 seconds
-    setTimeout(() => {
-      setAlertMessage("");
-      setShowModifyAlert(false);
-    }, 2000);
+  const handleMenuHover = (index) => {
+    setHoveredMenu(index);
+  };
 
-    window.location.href = "/"; // Redirect after logout
-  }
-};
+  const handleMenuLeave = () => {
+    setHoveredMenu(null);
+  };
+
+  const logout = () => {
+    const confirmLogout = window.confirm("Are you sure you want to logout?");
+    if (confirmLogout) {
+      localStorage.clear();
+      setAlertMessage("Logout successfully!");
+      setShowModifyAlert(true);
+
+      // Clear alert after 3 seconds
+      setTimeout(() => {
+        setAlertMessage("");
+        setShowModifyAlert(false);
+      }, 2000);
+
+      window.location.href = "/"; // Redirect after logout
+    }
+  };
 
   const navigationOptions = [
     { icon: <RiDashboard3Line />, label: "Dashboard", path: "/MainDashBoard" },
     { icon: <BiDonateHeart />, label: "Online", path: "/DonateDashboard" },
-    { icon: <LiaCalendarCheck />, label: "Pandit Booking", path: "/PanditDashBoard" },
+    {
+      icon: <LiaCalendarCheck />,
+      label: "Pandit Booking",
+      path: "/PanditDashBoard",
+      hasSubmenu: true,
+      subItems: [
+        { label: "Booking List", path: "/PanditDashBoard/booking-list" },
+        { label: "Available Pandits", path: "/PanditDashBoard/available-pandits" },
+        { label: "Booking History", path: "/PanditDashBoard/booking-history" },
+        { label: "Pandit Management", path: "/PanditDashBoard/pandit-management" },
+      ]
+    },
     { icon: <IoCalendarClear />, label: "Pooja Booking", path: "/PoojaBookingDashBoard" },
     {
       icon: <GiByzantinTemple />,
@@ -90,16 +116,8 @@ function LeftNav() {
       path: "/MandirBookingDashBoard",
       fileName: "praroop1_tutorial.pdf",
     },
-    // {
-    //   icon: <MdLibraryBooks />,
-    //   label: "Darshan Booking",
-
-    //   path: "/DarshanBookingDashBoard",
-    //   fileName: "shashandesh_new.pdf",
-    // },
     {
       path: "/SevaRegistrationDashBoard",
-
       icon: <FaRegFileLines />,
       label: "Seva Registration",
       fileName: "praroop2_tutorial.pdf",
@@ -121,52 +139,42 @@ function LeftNav() {
           <Link to="#" className="logo-page">
             <img src={CompanyLogo} alt="Manadavaaya" title="MAHADAVAAYA" className="logo" />
           </Link>
-
-
-          {/* <div className="nd-title">
-            <span className="nd-subtitle">उत्तराखंड सरकार | Gov.t of Uttarakhand</span>
-            <span className="subtitle">
-              महिला सशक्तिकरण एवं बाल विकास विभाग उत्तराखंड
-            </span>
-          </div> */}
         </div>
 
         <div className="message">
- <ModifyAlert
-        message={alertMessage}
-        show={showModifyAlert}
-        setShow={setShowModifyAlert}
-      />
+          <ModifyAlert
+            message={alertMessage}
+            show={showModifyAlert}
+            setShow={setShowModifyAlert}
+          />
 
           <div className="nd-msg">User: {userName}</div>
-             <Dropdown align="end" className="user-dp">
-     
-      <Dropdown.Toggle
-        variant=""
-        id="user-dropdown"
-        className=" border-0 bg-transparent"
-        title="Account Menu"
-      >
-        <div className="nd-log-icon-pandit">
-          <LuLogOut />
-        </div>
-      </Dropdown.Toggle>
+          <Dropdown align="end" className="user-dp">
+            <Dropdown.Toggle
+              variant=""
+              id="user-dropdown"
+              className="border-0 bg-transparent"
+              title="Account Menu"
+            >
+              <div className="nd-log-icon-pandit">
+                <LuLogOut />
+              </div>
+            </Dropdown.Toggle>
 
-      {/* Dropdown menu */}
-      <Dropdown.Menu>
-        <Dropdown.Item as={Link} to="/UserProfile">
-          My Profile
-        </Dropdown.Item>
-        <Dropdown.Item as={Link} to="/Dashboard">
-          Dashboard
-        </Dropdown.Item>
-        <Dropdown.Divider />
-        <Dropdown.Item onClick={logout} className="text-danger">
-          Logout
-        </Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
-       
+            {/* Dropdown menu */}
+            <Dropdown.Menu>
+              <Dropdown.Item as={Link} to="/UserProfile">
+                My Profile
+              </Dropdown.Item>
+              <Dropdown.Item as={Link} to="/Dashboard">
+                Dashboard
+              </Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Item onClick={logout} className="text-danger">
+                Logout
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </div>
       </header>
 
@@ -174,38 +182,35 @@ function LeftNav() {
       <div className={`navcontainer ${isNavClosed ? "navclose" : ""}`}>
         <nav className="nav">
           <div className="nav-upper-options">
-
             <div className="nd-menu">
               <FaAlignLeft className="icn menuicn" onClick={toggleNav} />
               <div className="nd-user">User: {userName}</div>
-                 <Dropdown align="end" className="user-dp">
-     
-      <Dropdown.Toggle
-        variant=""
-        id="user-dropdown"
-        className=" border-0 bg-transparent"
-        title="Account Menu"
-      >
-        <div className="nd-log-icon-pandit">
-          <LuLogOut />
-        </div>
-      </Dropdown.Toggle>
+              <Dropdown align="end" className="user-dp">
+                <Dropdown.Toggle
+                  variant=""
+                  id="user-dropdown"
+                  className="border-0 bg-transparent"
+                  title="Account Menu"
+                >
+                  <div className="nd-log-icon-pandit">
+                    <LuLogOut />
+                  </div>
+                </Dropdown.Toggle>
 
-      {/* Dropdown menu */}
-      <Dropdown.Menu>
-        <Dropdown.Item as={Link} to="/UserProfile">
-          My Profile
-        </Dropdown.Item>
-        <Dropdown.Item as={Link} to="/DashBoard">
-          Dashboard
-        </Dropdown.Item>
-        <Dropdown.Divider />
-        <Dropdown.Item onClick={logout} className="text-danger">
-          Logout
-        </Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
-            
+                {/* Dropdown menu */}
+                <Dropdown.Menu>
+                  <Dropdown.Item as={Link} to="/UserProfile">
+                    My Profile
+                  </Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/DashBoard">
+                    Dashboard
+                  </Dropdown.Item>
+                  <Dropdown.Divider />
+                  <Dropdown.Item onClick={logout} className="text-danger">
+                    Logout
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </div>
 
             {navigationOptions.map((option, index) => (
@@ -213,23 +218,62 @@ function LeftNav() {
                 {option.download ? (
                   <div
                     className={`nav-option option${index + 1} ${activePath === option.fileUrl ? "active-nav" : ""
-                      }`}
+                      } ${hoveredMenu === index ? "hovered-nav" : ""}`}
                     onClick={() => {
                       setActivePath(option.fileUrl);
                       handleDownload(option.fileUrl, option.fileName);
                     }}
+                    onMouseEnter={() => handleMenuHover(index)}
+                    onMouseLeave={handleMenuLeave}
                   >
                     <div className="nav-item d-flex">
                       <span className="nav-icon">{option.icon}</span>
                       <span className="nav-label">{option.label}</span>
                     </div>
                   </div>
+                ) : option.hasSubmenu ? (
+                  <>
+                    <div
+                      className={`nav-option option${index + 1} ${activePath === option.path || openSubMenu === index ? "active-nav" : ""
+                        } ${hoveredMenu === index ? "hovered-nav" : ""}`}
+                      onClick={() => toggleSubMenu(index)}
+                      onMouseEnter={() => handleMenuHover(index)}
+                      onMouseLeave={handleMenuLeave}
+                    >
+                      <div className="nav-item d-flex justify-content-between">
+                        <div className="d-flex">
+                          <span className="nav-icon">{option.icon}</span>
+                          <span className="nav-label">{option.label}</span>
+                        </div>
+                        <span className="nav-arrow">
+                          {openSubMenu === index ? <FaChevronUp /> : <FaChevronDown />}
+                        </span>
+                      </div>
+                    </div>
+                    <div className={`sub-menu ${openSubMenu === index ? 'open' : ''}`}>
+                      {option.subItems.map((subItem, subIndex) => (
+                        <Link
+                          key={subIndex}
+                          to={subItem.path}
+                          className={`nav-option sub-nav-option ${activePath === subItem.path ? "active-nav" : ""
+                            }`}
+                          onClick={() => setActivePath(subItem.path)}
+                        >
+                          <div className="nav-item d-flex">
+                            <span className="nav-label">{subItem.label}</span>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </>
                 ) : (
                   <Link
                     to={option.path}
                     className={`nav-option option${index + 1} ${activePath === option.path ? "active-nav" : ""
-                      }`}
+                      } ${hoveredMenu === index ? "hovered-nav" : ""}`}
                     onClick={() => setActivePath(option.path)}
+                    onMouseEnter={() => handleMenuHover(index)}
+                    onMouseLeave={handleMenuLeave}
                   >
                     <div className="nav-item d-flex">
                       <span className="nav-icon">{option.icon}</span>
