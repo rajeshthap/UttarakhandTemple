@@ -49,12 +49,9 @@ const SevaRegistration = () => {
 
   const handleResendOtp = async () => {
     try {
-      const res = await axios.post(
-        `${BASE_URLL}api/send-otp/`,
-        {
-          phone: formData.mobile_number,
-        }
-      );
+      const res = await axios.post(`${BASE_URLL}api/send-otp/`, {
+        phone: formData.mobile_number,
+      });
 
       if (res.data.success) {
         setAlertMessage("OTP sent successfully!");
@@ -77,9 +74,7 @@ const SevaRegistration = () => {
   useEffect(() => {
     const fetchTemples = async () => {
       try {
-        const res = await axios.get(
-          `${BASE_URLL}api/temple-names-list/`
-        );
+        const res = await axios.get(`${BASE_URLL}api/temple-names-list/`);
         if (res.data && Array.isArray(res.data.temple_names)) {
           setTemples(res.data.temple_names);
         }
@@ -116,12 +111,9 @@ const SevaRegistration = () => {
 
     //  otherwise send OTP
     try {
-      const res = await axios.post(
-        `${BASE_URLL}api/send-otp/`,
-        {
-          phone: formData.mobile_number,
-        }
-      );
+      const res = await axios.post(`${BASE_URLL}api/send-otp/`, {
+        phone: formData.mobile_number,
+      });
 
       if (res.data.success) {
         setOtpSent(true);
@@ -142,13 +134,10 @@ const SevaRegistration = () => {
 
   const handleVerifyOtp = async () => {
     try {
-      const res = await axios.post(
-        `${BASE_URLL}api/verify-otp/`,
-        {
-          phone: formData.mobile_number,
-          otp: otp,
-        }
-      );
+      const res = await axios.post(`${BASE_URLL}api/verify-otp/`, {
+        phone: formData.mobile_number,
+        otp: otp,
+      });
 
       if (res.data.success) {
         setIsVerified(true);
@@ -157,9 +146,9 @@ const SevaRegistration = () => {
         setAgree(true);
         handleClose();
 
-        // setTimeout(() => {
-        //   navigate("/PaymentConfirmation");
-        // }, 2000);
+        setTimeout(() => {
+          navigate("/PaymentConfirmation");
+        }, 2000);
       } else {
         setAlertMessage(res.data.message || "Invalid OTP");
         setShowAlert(true);
@@ -268,9 +257,7 @@ const SevaRegistration = () => {
 
   const checkUserExists = async (fieldValue, fieldName) => {
     try {
-      const res = await axios.get(
-        `${BASE_URLL}api/all-reg/`
-      );
+      const res = await axios.get(`${BASE_URLL}api/all-reg/`);
 
       const userExists = res.data.some((user) => {
         if (fieldName === "mobile_number") return user.phone === fieldValue;
@@ -288,87 +275,81 @@ const SevaRegistration = () => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!validateFields()) {
-    setAlertMessage("Please fill all required fields.");
-    setShowAlert(true);
-    setAgree(false);
-    return;
-  }
-
-  if (!isVerified) {
-    setAlertMessage("Please verify your phone number before submitting.");
-    setShowAlert(true);
-    setAgree(false);
-    return;
-  }
-
-  setLoading(true);
-
-  try {
-    const formDataToSend = new FormData();
-    for (let key in formData) {
-      formDataToSend.append(key, formData[key]);
+    if (!validateFields()) {
+      setAlertMessage("Please fill all required fields.");
+      setShowAlert(true);
+      setAgree(false);
+      return;
     }
 
-    const username = "9058423148";
-    const password = "Ritik@123";
-    const authHeader = "Basic " + btoa(username + ":" + password);
+    if (!isVerified) {
+      setAlertMessage("Please verify your phone number before submitting.");
+      setShowAlert(true);
+      setAgree(false);
+      return;
+    }
 
-    const res = await axios.post(
-      `${BASE_URLL}api/seva-booking/`,
-      formDataToSend,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: authHeader, 
-        },
+    setLoading(true);
+
+    try {
+      const formDataToSend = new FormData();
+      for (let key in formData) {
+        formDataToSend.append(key, formData[key]);
       }
-    );
 
-    if (res.data.message === "Seva booking created successfully") {
-      setAlertMessage("Seva Registration Successful!");
+      const res = await axios.post(
+        `${BASE_URLL}api/seva-booking/`,
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (res.data.message === "Seva booking created successfully") {
+        setAlertMessage("Seva Registration Successful!");
+        setShowAlert(true);
+        setAgree(false);
+
+        setFormData({
+          full_name: "",
+          gender: "",
+          age: "",
+          mobile_number: "",
+          email: "",
+          id_proof_type: "",
+          id_proof_number: "",
+          temple_name: "",
+          type_of_seva: "",
+          preferred_dates: "",
+          time_slot: "",
+          frequency: "",
+          participation_mode: "",
+          gotra: "",
+          nakshatra_rashi: "",
+          special_instructions: "",
+          seva_donation_amount: "",
+          payment_mode: "",
+        });
+      } else {
+        setAlertMessage(res.data.message || "Seva Registration failed");
+        setShowAlert(true);
+        setAgree(false);
+      }
+    } catch (err) {
+      console.error(err);
+      const errorMsg =
+        err.response?.data?.message || err.message || "Something went wrong!";
+      setAlertMessage(errorMsg);
       setShowAlert(true);
       setAgree(false);
-
-      setFormData({
-        full_name: "",
-        gender: "",
-        age: "",
-        mobile_number: "",
-        email: "",
-        id_proof_type: "",
-        id_proof_number: "",
-        temple_name: "",
-        type_of_seva: "",
-        preferred_dates: "",
-        time_slot: "",
-        frequency: "",
-        participation_mode: "",
-        gotra: "",
-        nakshatra_rashi: "",
-        special_instructions: "",
-        seva_donation_amount: "",
-        payment_mode: "",
-      });
-    } else {
-      setAlertMessage(res.data.message || "Seva Registration failed");
-      setShowAlert(true);
-      setAgree(false);
+    } finally {
+      setLoading(false);
     }
-  } catch (err) {
-    console.error(err);
-    const errorMsg =
-      err.response?.data?.message || err.message || "Something went wrong!";
-    setAlertMessage(errorMsg);
-    setShowAlert(true);
-    setAgree(false);
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   return (
     <div>

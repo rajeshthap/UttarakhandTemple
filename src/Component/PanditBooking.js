@@ -204,7 +204,9 @@ const PanditBooking = () => {
                       </div>
                     </div>
                     {/* Popup Modal for Register/Login message */}
-                    <Modal show={showPopup} onHide={() => setShowPopup(false)} centered>
+                    <Modal 
+                    // show={showPopup}
+                     onHide={() => setShowPopup(false)} centered>
                       <Modal.Header closeButton>
 
                       </Modal.Header>
@@ -299,7 +301,7 @@ const PanditBooking = () => {
                 </Row>
 
               </div>
-              <div className="tem-rhs-info temp-right-side-style">
+              <div className="tem-rhs-info pandit-right-side-style">
                 <h1>Online Pandit Booking</h1>
 
                 {selectedCard ? (
@@ -396,7 +398,7 @@ const PanditBooking = () => {
 
                           {/* Button */}
                           <div className="gap-3 mt-3 mb-3 Temp-btn-submit">
-                            <Link to="/MandirBooking">
+                            <Link to="/OnlineHirePandit">
                               <Button
                                 variant="temp-submit-btn"
                                 className="temp-submit-btn mx-3"
