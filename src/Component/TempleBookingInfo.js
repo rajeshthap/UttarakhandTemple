@@ -33,7 +33,7 @@ const TempleBookingInfo = () => {
   fetch("http://mahadevaaya.com/backend/api/temple-poojas-list/")
     .then((res) => res.json())
     .then((data) => {
-      console.log("API response:", data); // 🔹 log the response
+      console.log("API response:", data); 
       setTempleData(data);
 
       if (data.length > 0) {
@@ -43,6 +43,13 @@ const TempleBookingInfo = () => {
     .catch((error) => console.error("Error fetching temple data:", error));
 }, []);
 
+const getImageUrl = (imgPath) => {
+  if (!imgPath)
+    return "https://mahadevaaya.com/backend/media/temple_images/default.png";
+
+  const filename = imgPath.split("/").pop();
+  return `https://mahadevaaya.com/backend/media/temple_images/${filename}`;
+};
 
 
   // Pagination logic
@@ -135,53 +142,45 @@ const TempleBookingInfo = () => {
               </Row>
             </div>
             <Row className="g-4">
-              {currentCards.map((item, idx) => (
-                <Col
-                  lg={4}
-                  md={6}
-                  sm={6}
-                  xs={6}
-                  key={idx}
-                  onClick={() => setSelectedCard(item)}
-                  style={{ cursor: "pointer" }}
-                  className="d-flex"
-                >
-                  <div
-                    className={`card-item flex-fill card card-shadow d-flex flex-column ${
-                      selectedCard?.temple_name === item.temple_name
-                        ? "active-card"
-                        : ""
-                    }`}
-                  >
-                    <div className="card-image-wrapper">
-                    <img
-  src={
-    item.temple_image
-      ? item.temple_image.startsWith("http") // Full URL already
-        ? item.temple_image
-        : `http://mahadevaaya.com/media/${item.temple_image}` // Prepend media path
-      : Diya // Fallback image if none
-  }
-  alt={item.temple_name || "Temple Image"}
-  className="card-image"
-/>
+            {currentCards.map((item, idx) => (
+  <Col
+    lg={4}
+    md={6}
+    sm={6}
+    xs={6}
+    key={idx}
+    onClick={() => setSelectedCard(item)}
+    style={{ cursor: "pointer" }}
+    className="d-flex"
+  >
+    <div
+      className={`card-item flex-fill card card-shadow d-flex flex-column ${
+        selectedCard?.temple_name === item.temple_name ? "active-card" : ""
+      }`}
+    >
+      <div className="card-image-wrapper">
+        <img
+          src={getImageUrl(item.temple_image)}
+          alt={item.temple_name}
+          className="card-image"
+        />
+      </div>
 
+      <div className="card-text-temp flex-grow-1 d-flex flex-column">
+        <h5>{item.temple_name}</h5>
+        <h6 className="mb-3">{item.temple_description}</h6>
+        <div className="mt-auto">
+          <Row className="mb-1">
+            <Col lg={12} md={6} className="mb-2">
+              <Button className="click-btn">Read More..</Button>
+            </Col>
+          </Row>
+        </div>
+      </div>
+    </div>
+  </Col>
+))}
 
-                    </div>
-                    <div className="card-text-temp flex-grow-1 d-flex flex-column">
-                      <h5>{item.temple_name}</h5>
-                      <h6 className="mb-3">{item.temple_description}</h6>
-                      <div className="mt-auto">
-                        <Row className="mb-1">
-                          <Col lg={12} md={6} className="mb-2">
-                            <Button className="click-btn">Read More..</Button>
-                          </Col>
-                        </Row>
-                      </div>
-                    </div>
-                  </div>
-                </Col>
-              ))}
             </Row>
             <PagingNation
               totalItems={templeData.length}

@@ -13,6 +13,11 @@
     font-weight: 500;
 }
 
+.temple-card {
+    width: 100%;
+    height: 100%;
+}
+
 .temp-container-box h2 {
     font-size: var(--temp-space-450);
     color: var(--temp-org);
@@ -100,14 +105,15 @@ button.accordion-button.collapsed {
 } */
 
 .pandit-right-side-style {
-  pointer-events: none;
-  opacity: 0.5;
+    pointer-events: none;
+    opacity: 0.5;
 }
 
 .pandit-right-side-style.active {
-  pointer-events: auto;
-  opacity: 1;
+    pointer-events: auto;
+    opacity: 1;
 }
+
 .temp-click-btn-read {
 
     color: #d97706 !important;
