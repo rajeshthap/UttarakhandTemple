@@ -218,7 +218,6 @@ const KedarnathInfo = () => {
                                         </Col>
                                     </Row>
 
-
                                     <Row className="temp-route">
                                         <Col lg={6} md={12} sm={12} xs={12} >
                                             <Row>
@@ -246,7 +245,7 @@ const KedarnathInfo = () => {
                                         </Col>
                                     </Row>
                                     <div className="d-flex justify-content-center mt-3">
-                                        <Button className="temp-view-more-btn">Book Puja / Offer Donation</Button>
+                                        <Link to="/MandirBooking"><Button className="temp-view-more-btn">Book Puja / Offer Donation</Button></Link>
                                     </div>
                                 </div>
 

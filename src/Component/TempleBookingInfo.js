@@ -51,7 +51,6 @@ const getImageUrl = (imgPath) => {
   return `https://mahadevaaya.com/backend/media/temple_images/${filename}`;
 };
 
-
   // Pagination logic
   const itemsPerPage = 8;
   const [currentPage, setCurrentPage] = useState(1);
@@ -171,10 +170,25 @@ const getImageUrl = (imgPath) => {
         <h6 className="mb-3">{item.temple_description}</h6>
         <div className="mt-auto">
           <Row className="mb-1">
-            <Col lg={12} md={6} className="mb-2">
-              <Button className="click-btn">Read More..</Button>
-            </Col>
-          </Row>
+  <Col lg={12} md={6} className="mb-2 text-center">
+    {item.temple_name === "Kedarnath Temple" && (
+      <Link to="/KedarnathInfo" className="click-btn btn btn-primary">
+        Read More..
+      </Link>
+    )}
+    {item.temple_name === "Badrinath Temple" && (
+      <Link to="/BadrinathInfo" className="click-btn btn btn-primary">
+        Read More..
+      </Link>
+    )}
+    {item.temple_name === "Yamunotri Temple" && (
+      <Link to="/YamunotriInfo" className="click-btn btn btn-primary">
+        Read More..
+      </Link>
+    )}
+  </Col>
+</Row>
+
         </div>
       </div>
     </div>

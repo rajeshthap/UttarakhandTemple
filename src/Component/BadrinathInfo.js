@@ -245,7 +245,7 @@ const BadrinathInfo = () => {
                                         </Col>
                                     </Row>
                                     <div className="d-flex justify-content-center mt-3">
-                                        <Button className="temp-view-more-btn">Book Puja / Offer Donation</Button>
+                                      <Link to="/MandirBooking"> <Button className="temp-view-more-btn">Book Puja / Offer Donation</Button></Link> 
                                     </div>
                                 </div>
 
