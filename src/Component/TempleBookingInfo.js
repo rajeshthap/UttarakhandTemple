@@ -186,6 +186,11 @@ const getImageUrl = (imgPath) => {
         Read More..
       </Link>
     )}
+     {item.temple_name === "Gangotri Temple" && (
+      <Link to="/GangotriInfo" className="click-btn btn btn-primary">
+        Read More..
+      </Link>
+    )}
   </Col>
 </Row>
 
