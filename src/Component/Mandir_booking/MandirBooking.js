@@ -23,10 +23,15 @@ const MandirBooking = () => {
   // Form data state must be declared before any useEffect or logic that uses it
   const [formData, setFormData] = useState({
 
+    full_name: "",
+    age: "",
+    gender: "",
+    id_proof_type: "",
+    id_proof_number: "",
     mobile_number: "",
     email: "",
     temple_name: "",
-    mandir_book_date_and_time: "",
+    book_date_and_time: "",
     state: "",
     country: "",
     city: "",
@@ -35,9 +40,9 @@ const MandirBooking = () => {
     grand_total: "",
     payment_mode: "",
     no_of_persons: "",
-    pooja_details: [],
     devotee_details: [
       {
+        devotee_id: "",
         full_name: "",
         age: "",
         gender: "",
@@ -45,7 +50,14 @@ const MandirBooking = () => {
         id_proof_number: "",
       },
     ],
+    pooja_details: [
+      {
+        pooja_name: "",
+        pooja_price: 0,
+      },
+    ],
   });
+
   const handleClose = () => setShow(false);
   const [agree, setAgree] = useState(false);
   const [otp, setOtp] = useState("");
@@ -63,7 +75,7 @@ const MandirBooking = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { temple_name, pooja_details, no_of_persons, mandir_book_date_and_time, grand_total } =
+  const { temple_name, pooja_details, no_of_persons, book_date_and_time, grand_total } =
     location.state || {};
 
 
@@ -183,20 +195,20 @@ const MandirBooking = () => {
     setSelectedDateTime(date);
     setFormData((prev) => ({
       ...prev,
-      mandir_book_date_and_time: date ? date.toISOString() : "",
+      book_date_and_time: date ? date.toISOString() : "",
     }));
-    setErrors((prev) => ({ ...prev, mandir_book_date_and_time: "" }));
+    setErrors((prev) => ({ ...prev, book_date_and_time: "" }));
   };
 
   // Populate formData from props if available
   useEffect(() => {
-    if (temple_name || no_of_persons || mandir_book_date_and_time || grand_total) {
+    if (temple_name || no_of_persons || book_date_and_time || grand_total) {
       setFormData((prev) => ({
         ...prev,
         temple_name: temple_name || prev.temple_name,
         no_of_persons: no_of_persons || prev.no_of_persons,
-        mandir_book_date_and_time:
-          mandir_book_date_and_time || prev.mandir_book_date_and_time,
+        book_date_and_time:
+          book_date_and_time || prev.book_date_and_time,
         grand_total: grand_total || prev.grand_total,
       }));
 
@@ -204,11 +216,11 @@ const MandirBooking = () => {
 
 
       // If mandir_book_date_and_time exists, also set DatePicker value
-      if (mandir_book_date_and_time) {
-        setSelectedDateTime(new Date(mandir_book_date_and_time));
+      if (book_date_and_time) {
+        setSelectedDateTime(new Date(book_date_and_time));
       }
     }
-  }, [temple_name, no_of_persons, mandir_book_date_and_time, grand_total]);
+  }, [temple_name, no_of_persons, book_date_and_time, grand_total]);
 
   const handlePoojaChange = (selected) => {
     setSelectedPoojas(selected);
@@ -294,88 +306,88 @@ const MandirBooking = () => {
     fetchTemples();
   }, []);
 
-// ...existing code...
-const validateFields = () => {
-  const newErrors = {};
+  // ...existing code...
+  const validateFields = () => {
+    const newErrors = {};
 
-  // Pooja Details
-  if (
-    !formData.pooja_details ||
-    (Array.isArray(formData.pooja_details) &&
-      formData.pooja_details.length === 0)
-  ) {
-    newErrors.pooja_details = "Please select at least one Pooja";
-  }
-
-  // Devotee Information (validate each person)
-  persons.forEach((person, idx) => {
-    if (!person.full_name || !person.full_name.trim())
-      newErrors[`person_${idx}_full_name`] = `Full Name is required for person ${idx + 1}`;
-    if (!person.gender)
-      newErrors[`person_${idx}_gender`] = `Gender is required for person ${idx + 1}`;
-    if (!person.age || isNaN(person.age) || person.age <= 0)
-      newErrors[`person_${idx}_age`] = `Valid age is required for person ${idx + 1}`;
-    if (!person.id_proof_type)
-      newErrors[`person_${idx}_id_proof_type`] = `ID Proof Type is required for person ${idx + 1}`;
-    if (!person.id_proof_number) {
-      newErrors[`person_${idx}_id_proof_number`] = `ID Proof Number is required for person ${idx + 1}`;
-    } else if (person.id_proof_number.length > 16) {
-      newErrors[`person_${idx}_id_proof_number`] = `ID Proof Number cannot exceed 16 characters for person ${idx + 1}`;
+    // Pooja Details
+    if (
+      !formData.pooja_details ||
+      (Array.isArray(formData.pooja_details) &&
+        formData.pooja_details.length === 0)
+    ) {
+      newErrors.pooja_details = "Please select at least one Pooja";
     }
-  });
 
-  // Mobile, Email, etc. (top-level fields)
-  if (!formData.mobile_number) {
-    newErrors.mobile_number = "Mobile number is required";
-  } else if (!/^\d{10}$/.test(formData.mobile_number)) {
-    newErrors.mobile_number = "Enter a valid 10-digit mobile number";
-  }
+    // Devotee Information (validate each person)
+    persons.forEach((person, idx) => {
+      if (!person.full_name || !person.full_name.trim())
+        newErrors[`person_${idx}_full_name`] = `Full Name is required for person ${idx + 1}`;
+      if (!person.gender)
+        newErrors[`person_${idx}_gender`] = `Gender is required for person ${idx + 1}`;
+      if (!person.age || isNaN(person.age) || person.age <= 0)
+        newErrors[`person_${idx}_age`] = `Valid age is required for person ${idx + 1}`;
+      if (!person.id_proof_type)
+        newErrors[`person_${idx}_id_proof_type`] = `ID Proof Type is required for person ${idx + 1}`;
+      if (!person.id_proof_number) {
+        newErrors[`person_${idx}_id_proof_number`] = `ID Proof Number is required for person ${idx + 1}`;
+      } else if (person.id_proof_number.length > 16) {
+        newErrors[`person_${idx}_id_proof_number`] = `ID Proof Number cannot exceed 16 characters for person ${idx + 1}`;
+      }
+    });
 
-  if (!formData.email) {
-    newErrors.email = "Email is required";
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-    newErrors.email = "Enter a valid email address";
-  }
+    // Mobile, Email, etc. (top-level fields)
+    if (!formData.mobile_number) {
+      newErrors.mobile_number = "Mobile number is required";
+    } else if (!/^\d{10}$/.test(formData.mobile_number)) {
+      newErrors.mobile_number = "Enter a valid 10-digit mobile number";
+    }
 
-  if (!formData.mandir_book_date_and_time) {
-    newErrors.mandir_book_date_and_time = "Date of Mandir is required";
-  }
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Enter a valid email address";
+    }
 
-  // Address Details
-  if (!formData.state || !formData.state.trim())
-    newErrors.state = "State is required";
+    if (!formData.book_date_and_time) {
+      newErrors.book_date_and_time = "Date of Mandir is required";
+    }
 
-  if (!formData.country || !formData.country.trim())
-    newErrors.country = "Country is required";
+    // Address Details
+    if (!formData.state || !formData.state.trim())
+      newErrors.state = "State is required";
 
-  if (!formData.city || !formData.city.trim())
-    newErrors.city = "City is required";
+    if (!formData.country || !formData.country.trim())
+      newErrors.country = "Country is required";
 
-  if (!formData.pin_code || !formData.pin_code.toString().trim()) {
-    newErrors.pin_code = "Pin Code is required";
-  } else if (!/^\d{6}$/.test(formData.pin_code)) {
-    newErrors.pin_code = "Enter a valid 6-digit Pin Code";
-  }
+    if (!formData.city || !formData.city.trim())
+      newErrors.city = "City is required";
 
-  // Payment Details
-  if (
-    !formData.grand_total ||
-    isNaN(formData.grand_total) ||
-    formData.grand_total <= 0
-  ) {
-    newErrors.grand_total = "Valid Donation Amount is required";
-  }
+    if (!formData.pin_code || !formData.pin_code.toString().trim()) {
+      newErrors.pin_code = "Pin Code is required";
+    } else if (!/^\d{6}$/.test(formData.pin_code)) {
+      newErrors.pin_code = "Enter a valid 6-digit Pin Code";
+    }
 
-  if (!formData.payment_mode)
-    newErrors.payment_mode = "Payment Mode is required";
+    // Payment Details
+    if (
+      !formData.grand_total ||
+      isNaN(formData.grand_total) ||
+      formData.grand_total <= 0
+    ) {
+      newErrors.grand_total = "Valid Donation Amount is required";
+    }
 
-  if (!formData.address || !formData.address.trim())
-    newErrors.address = "Address is required";
+    if (!formData.payment_mode)
+      newErrors.payment_mode = "Payment Mode is required";
 
-  setErrors(newErrors);
-  return Object.keys(newErrors).length === 0;
-};
-// ...existing code...
+    if (!formData.address || !formData.address.trim())
+      newErrors.address = "Address is required";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+  // ...existing code...
 
 
   const checkUserExists = async (fieldValue, fieldName) => {
@@ -464,7 +476,10 @@ const validateFields = () => {
         setShowAlert(true);
         handleClose(); // close modal
 
-        navigate("/PaymentConfirmation");
+        //      setTimeout(() => {
+        //   navigate("/PaymentConfirmation");
+        // }, 2000);
+
       } else {
         setAlertMessage(res.data.message || "Invalid OTP");
         setShowAlert(true);
@@ -509,89 +524,114 @@ const validateFields = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!validateFields()) {
-      setAlertMessage("Please fill all required fields.");
-      setShowAlert(true);
-      return;
+  // Validate form
+  if (!validateFields()) {
+    setAlertMessage("Please fill all required fields.");
+    setShowAlert(true);
+    return;
+  }
+
+  if (!isVerified) {
+    setAlertMessage("Please verify your phone number before submitting.");
+    setShowAlert(true);
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const formDataToSend = new FormData();
+
+    // 1️⃣ Add general form fields (like temple_name, mobile_number, etc.)
+    for (let key in formData) {
+      formDataToSend.append(key, formData[key]);
     }
 
-    if (!isVerified) {
-      setAlertMessage("Please verify your phone number before submitting.");
-      setShowAlert(true);
-      return;
+    // 2️⃣ Add devotees dynamically
+    const validDevotees = persons.map((p, index) => {
+      if (!p.full_name || !p.age || !p.gender || !p.id_proof_type || !p.id_proof_number) {
+        throw new Error(`All fields are required for devotee #${index + 1}`);
+      }
+      return {
+        full_name: p.full_name.trim(),
+        age: Number(p.age), // convert age to integer
+        gender: p.gender,
+        id_proof_type: p.id_proof_type,
+        id_proof_number: p.id_proof_number,
+      };
+    });
+
+    // Send first devotee's info as top-level fields (backend requirement)
+    const firstDevotee = validDevotees[0];
+    formDataToSend.append("full_name", firstDevotee.full_name);
+    formDataToSend.append("age", firstDevotee.age);
+    formDataToSend.append("gender", firstDevotee.gender);
+    formDataToSend.append("id_proof_type", firstDevotee.id_proof_type);
+    formDataToSend.append("id_proof_number", firstDevotee.id_proof_number);
+
+    // Send all devotees as JSON array
+    formDataToSend.append("devotee_details", JSON.stringify(validDevotees));
+
+    // 3️⃣ Add pooja_details dynamically
+    if (selectedPoojas.length === 0) {
+      throw new Error("Please select at least one pooja");
     }
 
-    setLoading(true);
+    const validPoojas = selectedPoojas.map((p) => ({
+      pooja_name: p.name,
+      pooja_price: Number(p.price),
+    }));
 
-    try {
-      const formDataToSend = new FormData();
+    formDataToSend.append("pooja_details", JSON.stringify(validPoojas));
 
-      for (let key in formData) {
-        formDataToSend.append(key, formData[key]);
+    // 4️⃣ Basic Auth Header
+    const username = "9058423148";
+    const password = "Test@123";
+    const authHeader = "Basic " + btoa(username + ":" + password);
+
+    // 5️⃣ Send request
+    const res = await axios.post(
+      `${BASE_URLL}api/darshan-pooja-booking/`,
+      formDataToSend,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: authHeader,
+        },
       }
+    );
 
-      //  append devotee details as JSON
-      formDataToSend.append("devotee_details", JSON.stringify(persons));
-
-      // Basic Auth credentials
-      
-
-      const res = await axios.post(
-        `${BASE_URLL}api/mandir-booking/`,
-        formDataToSend,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            
-          },
-        }
-      );
-
-      if (res.data.message === "Darshan booking created") {
-        setAlertMessage("Darshan Registration Successful!");
-        setShowAlert(true);
-        setAgree(false);
-
-        setFormData({
-          full_name: "",
-          gender: "",
-          age: "",
-          mobile_number: "",
-          email: "",
-          id_proof_type: "",
-          id_proof_number: "",
-          temple_name: "",
-          darshan_date_and_time: "",
-          special_requests: "",
-          grand_total: "",
-          payment_mode: "",
-        });
-
-        // setTimeout(() => {
-        //   navigate("/PaymentConfirmation");
-        // }, 2000);
-      } else {
-        setAlertMessage(res.data.message || "Darshan Registration failed");
-        setShowAlert(true);
-        setAgree(false);
-      }
-    } catch (err) {
-      console.error("Darshan Booking Error:", err);
-
-      const errorMsg =
-        err.response?.data?.message ||
-        err.message ||
-        "Something went wrong while booking!";
-      setAlertMessage(errorMsg);
+    // 6️⃣ Handle response
+    if (res.data.message === "Darshan Pooja booking successful") {
+      setAlertMessage("Darshan Registration Successful!");
       setShowAlert(true);
       setAgree(false);
-    } finally {
-      setLoading(false);
+
+      setTimeout(() => {
+        navigate("/PaymentConfirmation");
+      }, 2000);
+    } else {
+      setAlertMessage(res.data.message || "Darshan Registration failed");
+      setShowAlert(true);
+      setAgree(false);
     }
-  };
+  } catch (err) {
+    console.error("Darshan Booking Error:", err.response?.data || err.message);
+
+    const errorMsg =
+      err.response?.data?.message ||
+      err.message ||
+      "Something went wrong while booking!";
+    setAlertMessage(errorMsg);
+    setShowAlert(true);
+    setAgree(false);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="temp-donate">
@@ -695,8 +735,8 @@ const validateFields = () => {
                       <DatePicker
                         selected={
                           selectedDateTime ||
-                          (mandir_book_date_and_time
-                            ? new Date(mandir_book_date_and_time)
+                          (book_date_and_time
+                            ? new Date(book_date_and_time)
                             : null)
                         }
                         onChange={handleDateChange}
@@ -711,9 +751,9 @@ const validateFields = () => {
                         maxTime={maxTime}
                       />
                     </div>
-                    {errors.mandir_book_date_and_time && (
+                    {errors.book_date_and_time && (
                       <small className="text-danger">
-                        {errors.mandir_book_date_and_time}
+                        {errors.book_date_and_time}
                       </small>
                     )}
                   </Form.Group>
