@@ -18,11 +18,13 @@ import { BASE_URLL } from "../BaseURL";
 const MandirBooking = () => {
   const [show, setShow] = useState(false);
   const [, setTemples] = useState([]);
+  const location = useLocation();
+  const navigate = useNavigate();
+
   // Array to hold details for each person
   const [persons, setPersons] = useState([]);
   // Form data state must be declared before any useEffect or logic that uses it
   const [formData, setFormData] = useState({
-
     full_name: "",
     age: "",
     gender: "",
@@ -50,12 +52,7 @@ const MandirBooking = () => {
         id_proof_number: "",
       },
     ],
-    pooja_details: [
-      {
-        pooja_name: "Satyanarayan Pooja",
-        pooja_price: "1000",
-      },
-    ],
+    pooja_details: [],
   });
 
   const handleClose = () => setShow(false);
@@ -73,36 +70,74 @@ const MandirBooking = () => {
   const [selectedPoojas, setSelectedPoojas] = useState([]);
   const [, setTempleOptions] = useState([]);
 
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { temple_name, no_of_persons, book_date_and_time, grand_total } =
-    location.state || {};
-
-
+  const {
+    temple_name,
+    no_of_persons,
+    book_date_and_time,
+    grand_total,
+    pooja_id,
+    initial_pooja_id,
+    selectedPoojaId,
+    pooja,
+    pooja_details: incomingPoojaDetails,
+  } = location.state || {};
+  const initialPoojaId =
+    pooja_id ||
+    initial_pooja_id ||
+    selectedPoojaId ||
+    (pooja && pooja.temple_pooja_id);
 
   useEffect(() => {
-    if (!formData.temple_name || poojas.length === 0) return;
+    if (!incomingPoojaDetails) return;
 
-    const temple = poojas.find(
-      (t) => t.temple_name === formData.temple_name
-    );
-    if (!temple) return;
+    const normalize = (item) => {
+      if (!item) return null;
+      if (typeof item === "string") {
+        const m = item.match(/^(.*?)(?:\s*-\s*₹?\s*([\d,]+))?$/);
+        const name = m && m[1] ? m[1].trim() : item;
+        const price = m && m[2] ? Number(String(m[2]).replace(/,/g, "")) : "";
+        return {
+          value: name,
+          label: price ? `${name} - ₹${price}` : name,
+          name,
+          price,
+        };
+      }
+      if (typeof item === "object") {
+        const name =
+          item.temple_pooja_name || item.name || item.pooja_name || "";
+        const price =
+          item.temple_pooja_price || item.price || item.pooja_price || "";
+        const value = item.temple_pooja_id || name || "";
+        return {
+          value,
+          label: price ? `${name} - ₹${price}` : name,
+          name,
+          price,
+        };
+      }
+      return null;
+    };
 
-    const poojaOptions = temple.poojas.map((pooja) => ({
-      value: pooja.temple_pooja_id,
-      label: `${pooja.temple_pooja_name} - ₹${pooja.temple_pooja_price}`,
-      price: pooja.temple_pooja_price,
-      name: pooja.temple_pooja_name,
+    const opt = normalize(incomingPoojaDetails);
+    if (!opt) return;
+    setSelectedPoojas([opt]);
+    setFormData((prev) => ({
+      ...prev,
+      temple_name: temple_name || prev.temple_name,
+      no_of_persons: no_of_persons || prev.no_of_persons,
+      book_date_and_time: book_date_and_time || prev.book_date_and_time,
+      grand_total:
+        grand_total || prev.grand_total || opt.price || prev.grand_total,
+      pooja_details: [{ pooja_name: opt.name, pooja_price: opt.price }],
     }));
-
-    // Pre-select poojas based on formData.pooja_details
-    const initiallySelected = poojaOptions.filter((p) =>
-      formData.pooja_details.includes(p.value)
-    );
-
-    setSelectedPoojas(initiallySelected);
-  }, [formData.temple_name,formData.pooja_details, poojas]);
-
+  }, [
+    incomingPoojaDetails,
+    temple_name,
+    no_of_persons,
+    book_date_and_time,
+    grand_total,
+  ]);
 
   useEffect(() => {
     const fetchTemples = async () => {
@@ -112,14 +147,45 @@ const MandirBooking = () => {
         );
 
         if (Array.isArray(res.data)) {
-          setPoojas(res.data); // Keep full data to filter later
+          setPoojas(res.data);
 
-          // Prepare temple options for dropdown
           const temples = res.data.map((temple) => ({
             value: temple.temple_name,
             label: temple.temple_name,
           }));
           setTempleOptions(temples);
+
+          if (initialPoojaId) {
+            let foundOption = null;
+            for (const t of res.data) {
+              if (!Array.isArray(t.poojas)) continue;
+              const p = t.poojas.find(
+                (pp) =>
+                  String(pp.temple_pooja_id) === String(initialPoojaId) ||
+                  (pp.temple_pooja_name &&
+                    pp.temple_pooja_name === initialPoojaId)
+              );
+              if (p) {
+                foundOption = {
+                  value: p.temple_pooja_id,
+                  label: `${p.temple_pooja_name} - ₹${p.temple_pooja_price}`,
+                  price: p.temple_pooja_price,
+                  name: p.temple_pooja_name,
+                };
+                break;
+              }
+            }
+
+            if (foundOption) {
+              setSelectedPoojas([foundOption]);
+              setFormData((prev) => ({
+                ...prev,
+                pooja_details: [foundOption.value],
+                grand_total:
+                  prev.grand_total || foundOption.price || prev.grand_total,
+              }));
+            }
+          }
         }
       } catch (error) {
         console.error("Error fetching temples:", error);
@@ -128,7 +194,6 @@ const MandirBooking = () => {
 
     fetchTemples();
   }, []);
-
 
   const getPoojasForTemple = (templeName) => {
     if (!templeName) return [];
@@ -143,27 +208,24 @@ const MandirBooking = () => {
     }));
   };
 
-
-
   // Update persons array when number of persons changes
   useEffect(() => {
     const num = parseInt(formData.no_of_persons || no_of_persons || 0);
     if (num > 0) {
       setPersons((prev) => {
-        // If already correct length, do nothing
         if (prev.length === num) return prev;
-        // If more, slice
         if (prev.length > num) return prev.slice(0, num);
-        // If less, add empty objects
         return [
           ...prev,
-          ...Array(num - prev.length).fill().map(() => ({
-            full_name: "",
-            age: "",
-            gender: "",
-            id_proof_type: "",
-            id_proof_number: "",
-          }))
+          ...Array(num - prev.length)
+            .fill()
+            .map(() => ({
+              full_name: "",
+              age: "",
+              gender: "",
+              id_proof_type: "",
+              id_proof_number: "",
+            })),
         ];
       });
     } else {
@@ -171,7 +233,6 @@ const MandirBooking = () => {
     }
   }, [formData.no_of_persons, no_of_persons]);
 
-  // Helper to round up to next 30 min interval
   const getNextInterval = (date = new Date()) => {
     let minutes = date.getMinutes();
     let nextMinutes = minutes <= 30 ? 30 : 0;
@@ -207,13 +268,9 @@ const MandirBooking = () => {
         ...prev,
         temple_name: temple_name || prev.temple_name,
         no_of_persons: no_of_persons || prev.no_of_persons,
-        book_date_and_time:
-          book_date_and_time || prev.book_date_and_time,
+        book_date_and_time: book_date_and_time || prev.book_date_and_time,
         grand_total: grand_total || prev.grand_total,
       }));
-
-
-
 
       // If mandir_book_date_and_time exists, also set DatePicker value
       if (book_date_and_time) {
@@ -242,18 +299,11 @@ const MandirBooking = () => {
     });
   };
 
-
-
-
-
   const handleResendOtp = async () => {
     try {
-      const res = await axios.post(
-        `${BASE_URLL}api/send-otp/`,
-        {
-          phone: formData.mobile_number,
-        }
-      );
+      const res = await axios.post(`${BASE_URLL}api/send-otp/`, {
+        phone: formData.mobile_number,
+      });
 
       if (res.data.success) {
       } else {
@@ -278,8 +328,9 @@ const MandirBooking = () => {
       if (value && value.trim() !== "") {
         delete newErrors[fieldName]; // Clear only the current field's error
       } else {
-        newErrors[fieldName] = `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
-          } is required`;
+        newErrors[fieldName] = `${
+          fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
+        } is required`;
       }
       return newErrors;
     });
@@ -298,9 +349,7 @@ const MandirBooking = () => {
   useEffect(() => {
     const fetchTemples = async () => {
       try {
-        const res = await axios.get(
-          `${BASE_URLL}api/temple-names-list/`
-        );
+        const res = await axios.get(`${BASE_URLL}api/temple-names-list/`);
         if (res.data && Array.isArray(res.data.temple_names)) {
           setTemples(res.data.temple_names);
         }
@@ -327,17 +376,29 @@ const MandirBooking = () => {
     // Devotee Information (validate each person)
     persons.forEach((person, idx) => {
       if (!person.full_name || !person.full_name.trim())
-        newErrors[`person_${idx}_full_name`] = `Full Name is required for person ${idx + 1}`;
+        newErrors[
+          `person_${idx}_full_name`
+        ] = `Full Name is required for person ${idx + 1}`;
       if (!person.gender)
-        newErrors[`person_${idx}_gender`] = `Gender is required for person ${idx + 1}`;
+        newErrors[`person_${idx}_gender`] = `Gender is required for person ${
+          idx + 1
+        }`;
       if (!person.age || isNaN(person.age) || person.age <= 0)
-        newErrors[`person_${idx}_age`] = `Valid age is required for person ${idx + 1}`;
+        newErrors[`person_${idx}_age`] = `Valid age is required for person ${
+          idx + 1
+        }`;
       if (!person.id_proof_type)
-        newErrors[`person_${idx}_id_proof_type`] = `ID Proof Type is required for person ${idx + 1}`;
+        newErrors[
+          `person_${idx}_id_proof_type`
+        ] = `ID Proof Type is required for person ${idx + 1}`;
       if (!person.id_proof_number) {
-        newErrors[`person_${idx}_id_proof_number`] = `ID Proof Number is required for person ${idx + 1}`;
+        newErrors[
+          `person_${idx}_id_proof_number`
+        ] = `ID Proof Number is required for person ${idx + 1}`;
       } else if (person.id_proof_number.length > 16) {
-        newErrors[`person_${idx}_id_proof_number`] = `ID Proof Number cannot exceed 16 characters for person ${idx + 1}`;
+        newErrors[
+          `person_${idx}_id_proof_number`
+        ] = `ID Proof Number cannot exceed 16 characters for person ${idx + 1}`;
       }
     });
 
@@ -394,12 +455,9 @@ const MandirBooking = () => {
   };
   // ...existing code...
 
-
   const checkUserExists = async (fieldValue, fieldName) => {
     try {
-      const res = await axios.get(
-        `${BASE_URLL}api/all-reg/`
-      );
+      const res = await axios.get(`${BASE_URLL}api/all-reg/`);
 
       const userExists = res.data.some((user) => {
         if (fieldName === "mobile_number") return user.phone === fieldValue;
@@ -442,12 +500,9 @@ const MandirBooking = () => {
 
     //  otherwise send OTP
     try {
-      const res = await axios.post(
-        `${BASE_URLL}api/send-otp/`,
-        {
-          phone: formData.mobile_number,
-        }
-      );
+      const res = await axios.post(`${BASE_URLL}api/send-otp/`, {
+        phone: formData.mobile_number,
+      });
 
       if (res.data.success) {
         setOtpSent(true);
@@ -467,13 +522,10 @@ const MandirBooking = () => {
 
   const handleVerifyOtp = async () => {
     try {
-      const res = await axios.post(
-        `${BASE_URLL}api/verify-otp/`,
-        {
-          phone: formData.mobile_number,
-          otp: otp,
-        }
-      );
+      const res = await axios.post(`${BASE_URLL}api/verify-otp/`, {
+        phone: formData.mobile_number,
+        otp: otp,
+      });
 
       if (res.data.success) {
         setIsVerified(true);
@@ -484,7 +536,6 @@ const MandirBooking = () => {
         setTimeout(() => {
           navigate("/PaymentConfirmation");
         }, 2000);
-
       } else {
         setAlertMessage(res.data.message || "Invalid OTP");
         setShowAlert(true);
@@ -528,7 +579,6 @@ const MandirBooking = () => {
       checkUserExists(value, "email");
     }
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -636,7 +686,10 @@ const MandirBooking = () => {
         setAgree(false);
       }
     } catch (err) {
-      console.error("Darshan Booking Error:", err.response?.data || err.message);
+      console.error(
+        "Darshan Booking Error:",
+        err.response?.data || err.message
+      );
       const errorMsg =
         err.response?.data?.message ||
         err.message ||
@@ -648,10 +701,6 @@ const MandirBooking = () => {
       setLoading(false);
     }
   };
-
-
-
-
 
   return (
     <div className="temp-donate">
@@ -666,7 +715,10 @@ const MandirBooking = () => {
               <h2>Personal Details</h2>
               <Row>
                 <Col lg={6} md={6} sm={12}>
-                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
                     <Form.Label className="temp-label">
                       Mobile Number <span className="temp-span-star">*</span>
                     </Form.Label>
@@ -679,13 +731,18 @@ const MandirBooking = () => {
                       onChange={handleInputChange}
                     />
                     {errors.mobile_number && (
-                      <small className="text-danger">{errors.mobile_number}</small>
+                      <small className="text-danger">
+                        {errors.mobile_number}
+                      </small>
                     )}
                   </Form.Group>
                 </Col>
 
                 <Col lg={6} md={6} sm={12}>
-                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
                     <Form.Label className="temp-label">
                       Email ID <span className="temp-span-star">*</span>
                     </Form.Label>
@@ -703,9 +760,11 @@ const MandirBooking = () => {
                   </Form.Group>
                 </Col>
 
-
                 <Col lg={6} md={6} sm={12}>
-                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
                     <Form.Label className="temp-label">
                       Temple Name <span className="temp-span-star">*</span>
                     </Form.Label>
@@ -718,15 +777,21 @@ const MandirBooking = () => {
                       disabled
                     />
                     {errors.temple_name && (
-                      <small className="text-danger">{errors.temple_name}</small>
+                      <small className="text-danger">
+                        {errors.temple_name}
+                      </small>
                     )}
                   </Form.Group>
                 </Col>
 
                 <Col lg={6} md={6} sm={12}>
-                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
                     <Form.Label className="temp-label">
-                      Number Of Persons <span className="temp-span-star">*</span>
+                      Number Of Persons{" "}
+                      <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
                       type="number"
@@ -737,13 +802,12 @@ const MandirBooking = () => {
                       readOnly
                     />
                     {errors.no_of_persons && (
-                      <small className="text-danger">{errors.no_of_persons}</small>
+                      <small className="text-danger">
+                        {errors.no_of_persons}
+                      </small>
                     )}
                   </Form.Group>
                 </Col>
-
-
-
 
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group className="mb-3 ">
@@ -788,7 +852,14 @@ const MandirBooking = () => {
                     <Select
                       isMulti
                       name="pooja_details"
-                      options={getPoojasForTemple(formData.temple_name)}
+                      options={getPoojasForTemple(formData.temple_name).filter(
+                        (opt) =>
+                          !selectedPoojas.some(
+                            (sel) =>
+                              String(sel.value) === String(opt.value) ||
+                              String(sel.label) === String(opt.label)
+                          )
+                      )}
                       className="basic-multi-select"
                       classNamePrefix="select"
                       value={selectedPoojas}
@@ -796,16 +867,13 @@ const MandirBooking = () => {
                       placeholder="Select one or more Poojas"
                     />
 
-
-
-
-
                     {errors.pooja_name && (
-                      <small className="text-danger">{errors.pooja_details}</small>
+                      <small className="text-danger">
+                        {errors.pooja_details}
+                      </small>
                     )}
                   </Form.Group>
                 </Col>
-
               </Row>
               {/* Dynamic Table for Person Details */}
               <h2>Devotee Details</h2>
@@ -828,7 +896,13 @@ const MandirBooking = () => {
                             type="text"
                             placeholder="Full Name"
                             value={person.full_name}
-                            onChange={e => handlePersonChange(idx, "full_name", e.target.value)}
+                            onChange={(e) =>
+                              handlePersonChange(
+                                idx,
+                                "full_name",
+                                e.target.value
+                              )
+                            }
                           />
                         </td>
                         <td>
@@ -836,13 +910,17 @@ const MandirBooking = () => {
                             type="number"
                             placeholder="Age"
                             value={person.age}
-                            onChange={e => handlePersonChange(idx, "age", e.target.value)}
+                            onChange={(e) =>
+                              handlePersonChange(idx, "age", e.target.value)
+                            }
                           />
                         </td>
                         <td>
                           <Form.Select
                             value={person.gender}
-                            onChange={e => handlePersonChange(idx, "gender", e.target.value)}
+                            onChange={(e) =>
+                              handlePersonChange(idx, "gender", e.target.value)
+                            }
                           >
                             <option value="">Select</option>
                             <option value="Male">Male</option>
@@ -853,7 +931,13 @@ const MandirBooking = () => {
                         <td>
                           <Form.Select
                             value={person.id_proof_type}
-                            onChange={e => handlePersonChange(idx, "id_proof_type", e.target.value)}
+                            onChange={(e) =>
+                              handlePersonChange(
+                                idx,
+                                "id_proof_type",
+                                e.target.value
+                              )
+                            }
                           >
                             <option value="">Select</option>
                             <option value="Aadhar">Aadhar Card</option>
@@ -868,7 +952,13 @@ const MandirBooking = () => {
                             placeholder="ID Proof Number"
                             value={person.id_proof_number}
                             maxLength={16}
-                            onChange={e => handlePersonChange(idx, "id_proof_number", e.target.value)}
+                            onChange={(e) =>
+                              handlePersonChange(
+                                idx,
+                                "id_proof_number",
+                                e.target.value
+                              )
+                            }
                           />
                         </td>
                       </tr>
@@ -877,10 +967,7 @@ const MandirBooking = () => {
                 </table>
               </div>
 
-
               <Row>
-
-
                 <h2 className="pt-4">Address Details</h2>
 
                 <LocationState
@@ -888,8 +975,6 @@ const MandirBooking = () => {
                   handleInputChange={handleInputChangeCity}
                   formErrors={errors}
                 />
-
-
 
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group className="mb-3">
@@ -905,9 +990,7 @@ const MandirBooking = () => {
                       onChange={handleInputChange}
                     />
                     {errors.pin_code && (
-                      <small className="text-danger">
-                        {errors.pin_code}
-                      </small>
+                      <small className="text-danger">{errors.pin_code}</small>
                     )}
                   </Form.Group>
                 </Col>
@@ -926,14 +1009,10 @@ const MandirBooking = () => {
                       onChange={handleInputChange}
                     />
                     {errors.address && (
-                      <small className="text-danger">
-                        {errors.address}
-                      </small>
+                      <small className="text-danger">{errors.address}</small>
                     )}
                   </Form.Group>
                 </Col>
-
-
 
                 <h2>Payment Details</h2>
 
