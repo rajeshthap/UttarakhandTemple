@@ -569,9 +569,9 @@ const MandirBooking = () => {
         setShowAlert(true);
         handleClose(); // close modal
 
-        // setTimeout(() => {
-        //   navigate("/PaymentConfirmation");
-        // }, 2000);
+        setTimeout(() => {
+          navigate("/PaymentConfirmation");
+        }, 2000);
       } else {
         setAlertMessage(res.data.message || "Invalid OTP");
         setShowAlert(true);
