@@ -43,14 +43,7 @@ const MandirBooking = () => {
     payment_mode: "",
     no_of_persons: "",
     devotee_details: [
-      {
-        devotee_id: "",
-        full_name: "",
-        age: "",
-        gender: "",
-        id_proof_type: "",
-        id_proof_number: "",
-      },
+      
     ],
     pooja_details: [],
   });
@@ -208,29 +201,52 @@ const MandirBooking = () => {
     }));
   };
 
-  // Update persons array when number of persons changes
   useEffect(() => {
     const num = parseInt(formData.no_of_persons || no_of_persons || 0);
-    if (num > 0) {
-      setPersons((prev) => {
-        if (prev.length === num) return prev;
-        if (prev.length > num) return prev.slice(0, num);
-        return [
-          ...prev,
-          ...Array(num - prev.length)
-            .fill()
-            .map(() => ({
-              full_name: "",
-              age: "",
-              gender: "",
-              id_proof_type: "",
-              id_proof_number: "",
-            })),
-        ];
+
+    setPersons((prevPersons) => {
+      let updated;
+      if (num > 0) {
+        if (prevPersons.length === num) {
+          updated = prevPersons;
+        } else if (prevPersons.length > num) {
+          updated = prevPersons.slice(0, num);
+        } else {
+          updated = [
+            ...prevPersons,
+            ...Array(num - prevPersons.length)
+              .fill()
+              .map(() => ({
+                full_name: "",
+                age: "",
+                gender: "",
+                id_proof_type: "",
+                id_proof_number: "",
+              })),
+          ];
+        }
+      } else {
+        updated = [];
+      }
+
+      setErrors((prev) => {
+        const newErr = { ...prev };
+        Object.keys(newErr).forEach((k) => {
+          const m = k.match(/^person_(\d+)_/);
+          if (m) {
+            const idx = Number(m[1]);
+            if (idx >= updated.length) delete newErr[k];
+          }
+        });
+        const hasPersonErrors = Object.keys(newErr).some((k) =>
+          k.startsWith("person_")
+        );
+        if (!hasPersonErrors) delete newErr.devotee_details;
+        return newErr;
       });
-    } else {
-      setPersons([]);
-    }
+
+      return updated;
+    });
   }, [formData.no_of_persons, no_of_persons]);
 
   const getNextInterval = (date = new Date()) => {
@@ -360,7 +376,6 @@ const MandirBooking = () => {
     fetchTemples();
   }, []);
 
-  // ...existing code...
   const validateFields = () => {
     const newErrors = {};
 
@@ -374,33 +389,55 @@ const MandirBooking = () => {
     }
 
     // Devotee Information (validate each person)
-    persons.forEach((person, idx) => {
-      if (!person.full_name || !person.full_name.trim())
-        newErrors[
-          `person_${idx}_full_name`
-        ] = `Full Name is required for person ${idx + 1}`;
-      if (!person.gender)
-        newErrors[`person_${idx}_gender`] = `Gender is required for person ${
-          idx + 1
-        }`;
-      if (!person.age || isNaN(person.age) || person.age <= 0)
-        newErrors[`person_${idx}_age`] = `Valid age is required for person ${
-          idx + 1
-        }`;
-      if (!person.id_proof_type)
-        newErrors[
-          `person_${idx}_id_proof_type`
-        ] = `ID Proof Type is required for person ${idx + 1}`;
-      if (!person.id_proof_number) {
-        newErrors[
-          `person_${idx}_id_proof_number`
-        ] = `ID Proof Number is required for person ${idx + 1}`;
-      } else if (person.id_proof_number.length > 16) {
-        newErrors[
-          `person_${idx}_id_proof_number`
-        ] = `ID Proof Number cannot exceed 16 characters for person ${idx + 1}`;
+    let devoteeHasError = false;
+    if (!persons || persons.length === 0) {
+      newErrors.devotee_details = "Please add at least one devotee";
+      devoteeHasError = true;
+    } else {
+      persons.forEach((person, idx) => {
+        if (!person.full_name || !person.full_name.trim()) {
+          newErrors[
+            `person_${idx}_full_name`
+          ] = `Full Name is required for person ${idx + 1}`;
+          devoteeHasError = true;
+        }
+        if (!person.gender) {
+          newErrors[`person_${idx}_gender`] = `Gender is required for person ${
+            idx + 1
+          }`;
+          devoteeHasError = true;
+        }
+        if (!person.age || isNaN(person.age) || person.age <= 0) {
+          newErrors[`person_${idx}_age`] = `Valid age is required for person ${
+            idx + 1
+          }`;
+          devoteeHasError = true;
+        }
+        if (!person.id_proof_type) {
+          newErrors[
+            `person_${idx}_id_proof_type`
+          ] = `ID Proof Type is required for person ${idx + 1}`;
+          devoteeHasError = true;
+        }
+        if (!person.id_proof_number) {
+          newErrors[
+            `person_${idx}_id_proof_number`
+          ] = `ID Proof Number is required for person ${idx + 1}`;
+          devoteeHasError = true;
+        } else if (person.id_proof_number.length > 16) {
+          newErrors[
+            `person_${idx}_id_proof_number`
+          ] = `ID Proof Number cannot exceed 16 characters for person ${idx + 1}`;
+          devoteeHasError = true;
+        }
+      });
+
+      // If per-person fields had errors, set a top-level devotee error for UI summary
+      if (devoteeHasError && !newErrors.devotee_details) {
+        newErrors.devotee_details =
+          "Please fill all devotee details correctly for each person";
       }
-    });
+    }
 
     // Mobile, Email, etc. (top-level fields)
     if (!formData.mobile_number) {
@@ -453,7 +490,6 @@ const MandirBooking = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-  // ...existing code...
 
   const checkUserExists = async (fieldValue, fieldName) => {
     try {
@@ -533,9 +569,9 @@ const MandirBooking = () => {
         setShowAlert(true);
         handleClose(); // close modal
 
-        setTimeout(() => {
-          navigate("/PaymentConfirmation");
-        }, 2000);
+        // setTimeout(() => {
+        //   navigate("/PaymentConfirmation");
+        // }, 2000);
       } else {
         setAlertMessage(res.data.message || "Invalid OTP");
         setShowAlert(true);
@@ -547,7 +583,7 @@ const MandirBooking = () => {
     }
   };
 
-  const handleInputChange = (e) => {
+   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
 
     setFormData((prev) => ({
@@ -555,22 +591,62 @@ const MandirBooking = () => {
       [name]: type === "checkbox" ? checked : value,
     }));
 
-    // Clear error if value is valid
-    setErrors((prev) => ({
-      ...prev,
-      [name]: value && value.trim() !== "" ? "" : prev[name], // keep error if value empty
-    }));
+    setErrors((prev) => {
+      const newErr = { ...prev };
+      const val = type === "checkbox" ? checked : value;
+      if (val !== undefined && val !== null && String(val).trim() !== "") {
+        delete newErr[name];
+      }
+      return newErr;
+    });
   };
 
-  // Handle change for person table
   const handlePersonChange = (idx, field, value) => {
     setPersons((prev) => {
       const updated = [...prev];
-      updated[idx][field] = value;
+      updated[idx] = { ...updated[idx], [field]: value };
       return updated;
     });
 
-    // Specific validations
+    setErrors((prev) => {
+      const newErr = { ...prev };
+      const key = `person_${idx}_${field}`;
+
+      const isValid = (() => {
+        if (field === "full_name")
+          return value && String(value).trim() !== "";
+        if (field === "age")
+          return value !== "" && !isNaN(Number(value)) && Number(value) > 0;
+        if (field === "gender" || field === "id_proof_type")
+          return value && String(value).trim() !== "";
+        if (field === "id_proof_number")
+          return value && String(value).trim() !== "" && String(value).length <= 16;
+        return true;
+      })();
+
+      if (isValid) {
+        delete newErr[key];
+      } else {
+        if (!newErr[key]) {
+          const messages = {
+            full_name: `Full Name is required for person ${idx + 1}`,
+            age: `Valid age is required for person ${idx + 1}`,
+            gender: `Gender is required for person ${idx + 1}`,
+            id_proof_type: `ID Proof Type is required for person ${idx + 1}`,
+            id_proof_number: `ID Proof Number is required for person ${idx + 1}`,
+          };
+          newErr[key] = messages[field] || `Invalid value for person ${idx + 1}`;
+        }
+      }
+
+      const hasPersonErrors = Object.keys(newErr).some((k) =>
+        k.startsWith("person_")
+      );
+      if (!hasPersonErrors) delete newErr.devotee_details;
+
+      return newErr;
+    });
+
     if (field === "mobile_number" && value.length === 10) {
       checkUserExists(value, "mobile_number");
     }
@@ -579,7 +655,6 @@ const MandirBooking = () => {
       checkUserExists(value, "email");
     }
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -596,20 +671,9 @@ const MandirBooking = () => {
       return;
     }
 
-    setLoading(true);
+   setLoading(true);
 
     try {
-      const formDataToSend = new FormData();
-
-      //  Append general fields (excluding arrays)
-      const excludeKeys = ["devotee_details", "pooja_details"];
-      Object.keys(formData).forEach((key) => {
-        if (!excludeKeys.includes(key)) {
-          formDataToSend.append(key, formData[key]);
-        }
-      });
-
-      //  Validate & append devotees
       if (!persons || persons.length === 0) {
         throw new Error("Please add at least one devotee.");
       }
@@ -633,53 +697,80 @@ const MandirBooking = () => {
         };
       });
 
-      //  First devotee as top-level fields
-      const firstDevotee = validDevotees[0];
-      formDataToSend.append("full_name", firstDevotee.full_name);
-      formDataToSend.append("age", firstDevotee.age);
-      formDataToSend.append("gender", firstDevotee.gender);
-      formDataToSend.append("id_proof_type", firstDevotee.id_proof_type);
-      formDataToSend.append("id_proof_number", firstDevotee.id_proof_number);
-
-      //  Append all devotees as JSON
-      formDataToSend.append("devotee_details", JSON.stringify(validDevotees));
-
-      //  Validate & append poojas as JSON
-      if (!formData.pooja_details || formData.pooja_details.length === 0) {
-        throw new Error("Please select at least one pooja.");
+      let poojaPayload = [];
+      if (selectedPoojas && selectedPoojas.length > 0) {
+        poojaPayload = selectedPoojas.map((p) => ({
+          pooja_id: p.value,
+          pooja_name: p.name || p.label || "",
+          pooja_price: p.price || 0,
+        }));
+      } else if (Array.isArray(formData.pooja_details)) {
+        const allPoojas = (poojas || []).flatMap((t) => t.poojas || []);
+        poojaPayload = formData.pooja_details.map((id) => {
+          const found = allPoojas.find(
+            (pp) => String(pp.temple_pooja_id) === String(id)
+          );
+          return found
+            ? {
+                pooja_id: id,
+                pooja_name: found.temple_pooja_name || found.name || "",
+                pooja_price: found.temple_pooja_price || found.price || 0,
+              }
+            : { pooja_id: id };
+        });
       }
 
-      formDataToSend.append(
-        "pooja_details",
-        JSON.stringify(formData.pooja_details)
-      );
+      let isoDate = "";
+      if (selectedDateTime instanceof Date && !isNaN(selectedDateTime)) {
+        isoDate = selectedDateTime.toISOString();
+      } else if (
+        typeof formData.book_date_and_time === "string" &&
+        formData.book_date_and_time.trim() !== ""
+      ) {
+        const parsed = new Date(formData.book_date_and_time);
+        isoDate = isNaN(parsed.getTime())
+          ? formData.book_date_and_time
+          : parsed.toISOString();
+      }
 
-      //  Basic Auth header
+      const payload = {
+        ...formData,
+        book_date_and_time: isoDate,
+        devotee_details: validDevotees,
+        pooja_details: poojaPayload,
+      };
+
+      if (validDevotees.length > 0) {
+        const fd = validDevotees[0];
+        payload.full_name = fd.full_name;
+        payload.age = fd.age;
+        payload.gender = fd.gender;
+        payload.id_proof_type = fd.id_proof_type;
+        payload.id_proof_number = fd.id_proof_number;
+      }
+
+      console.log("Darshan payload:", payload);
+
       const username = "9058423148";
       const password = "Test@123";
       const authHeader = "Basic " + btoa(username + ":" + password);
 
-      //  Send request
       const res = await axios.post(
         `${BASE_URLL}api/darshan-pooja-booking/`,
-        formDataToSend,
+        payload,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
             Authorization: authHeader,
           },
         }
       );
 
-      //  Handle response
+      // handle response
       if (res.data.message === "Darshan Pooja booking successful") {
         setAlertMessage("Darshan Registration Successful!");
         setShowAlert(true);
         setAgree(false);
-
-        // setTimeout(() => {
-        //   navigate("/PaymentConfirmation");
-        // }, 2000);
       } else {
         setAlertMessage(res.data.message || "Darshan Registration failed");
         setShowAlert(true);
@@ -688,7 +779,7 @@ const MandirBooking = () => {
     } catch (err) {
       console.error(
         "Darshan Booking Error:",
-        err.response?.data || err.message
+        err.response?.data || err.message || err
       );
       const errorMsg =
         err.response?.data?.message ||
@@ -867,7 +958,7 @@ const MandirBooking = () => {
                       placeholder="Select one or more Poojas"
                     />
 
-                    {errors.pooja_name && (
+                    {errors.pooja_details && (
                       <small className="text-danger">
                         {errors.pooja_details}
                       </small>
@@ -965,6 +1056,11 @@ const MandirBooking = () => {
                     ))}
                   </tbody>
                 </table>
+                 {errors.devotee_details && (
+                      <small className="text-danger">
+                        {errors.devotee_details}
+                      </small>
+                    )}
               </div>
 
               <Row>
