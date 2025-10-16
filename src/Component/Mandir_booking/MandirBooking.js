@@ -17,7 +17,7 @@ import { BASE_URLL } from "../BaseURL";
 
 const MandirBooking = () => {
   const [show, setShow] = useState(false);
-  const [temples, setTemples] = useState([]);
+  const [, setTemples] = useState([]);
   // Array to hold details for each person
   const [persons, setPersons] = useState([]);
   // Form data state must be declared before any useEffect or logic that uses it
@@ -71,11 +71,11 @@ const MandirBooking = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [poojas, setPoojas] = useState([]);
   const [selectedPoojas, setSelectedPoojas] = useState([]);
-  const [templeOptions, setTempleOptions] = useState([]);
+  const [, setTempleOptions] = useState([]);
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { temple_name, pooja_details, no_of_persons, book_date_and_time, grand_total } =
+  const { temple_name, no_of_persons, book_date_and_time, grand_total } =
     location.state || {};
 
 
@@ -101,7 +101,7 @@ const MandirBooking = () => {
     );
 
     setSelectedPoojas(initiallySelected);
-  }, [formData.temple_name, poojas]);
+  }, [formData.temple_name,formData.pooja_details, poojas]);
 
 
   useEffect(() => {
@@ -481,9 +481,9 @@ const MandirBooking = () => {
         setShowAlert(true);
         handleClose(); // close modal
 
-        //      setTimeout(() => {
-        //   navigate("/PaymentConfirmation");
-        // }, 2000);
+        setTimeout(() => {
+          navigate("/PaymentConfirmation");
+        }, 2000);
 
       } else {
         setAlertMessage(res.data.message || "Invalid OTP");
@@ -533,7 +533,7 @@ const MandirBooking = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 1️⃣ Validate fields
+    //  Validate fields
     if (!validateFields()) {
       setAlertMessage("Please fill all required fields.");
       setShowAlert(true);
@@ -551,7 +551,7 @@ const MandirBooking = () => {
     try {
       const formDataToSend = new FormData();
 
-      // 2️⃣ Append general fields (excluding arrays)
+      //  Append general fields (excluding arrays)
       const excludeKeys = ["devotee_details", "pooja_details"];
       Object.keys(formData).forEach((key) => {
         if (!excludeKeys.includes(key)) {
@@ -559,7 +559,7 @@ const MandirBooking = () => {
         }
       });
 
-      // 3️⃣ Validate & append devotees
+      //  Validate & append devotees
       if (!persons || persons.length === 0) {
         throw new Error("Please add at least one devotee.");
       }
@@ -583,7 +583,7 @@ const MandirBooking = () => {
         };
       });
 
-      // 4️⃣ First devotee as top-level fields
+      //  First devotee as top-level fields
       const firstDevotee = validDevotees[0];
       formDataToSend.append("full_name", firstDevotee.full_name);
       formDataToSend.append("age", firstDevotee.age);
@@ -591,10 +591,10 @@ const MandirBooking = () => {
       formDataToSend.append("id_proof_type", firstDevotee.id_proof_type);
       formDataToSend.append("id_proof_number", firstDevotee.id_proof_number);
 
-      // 5️⃣ Append all devotees as JSON
+      //  Append all devotees as JSON
       formDataToSend.append("devotee_details", JSON.stringify(validDevotees));
 
-      // 6️⃣ Validate & append poojas as JSON
+      //  Validate & append poojas as JSON
       if (!formData.pooja_details || formData.pooja_details.length === 0) {
         throw new Error("Please select at least one pooja.");
       }
@@ -604,12 +604,12 @@ const MandirBooking = () => {
         JSON.stringify(formData.pooja_details)
       );
 
-      // 7️⃣ Basic Auth header
+      //  Basic Auth header
       const username = "9058423148";
       const password = "Test@123";
       const authHeader = "Basic " + btoa(username + ":" + password);
 
-      // 8️⃣ Send request
+      //  Send request
       const res = await axios.post(
         `${BASE_URLL}api/darshan-pooja-booking/`,
         formDataToSend,
@@ -621,15 +621,15 @@ const MandirBooking = () => {
         }
       );
 
-      // 9️⃣ Handle response
+      //  Handle response
       if (res.data.message === "Darshan Pooja booking successful") {
         setAlertMessage("Darshan Registration Successful!");
         setShowAlert(true);
         setAgree(false);
 
-        setTimeout(() => {
-          navigate("/PaymentConfirmation");
-        }, 2000);
+        // setTimeout(() => {
+        //   navigate("/PaymentConfirmation");
+        // }, 2000);
       } else {
         setAlertMessage(res.data.message || "Darshan Registration failed");
         setShowAlert(true);
