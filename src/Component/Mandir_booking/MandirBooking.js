@@ -52,8 +52,8 @@ const MandirBooking = () => {
     ],
     pooja_details: [
       {
-        pooja_name: "",
-        pooja_price: 0,
+        pooja_name: "Satyanarayan Pooja",
+        pooja_price: "1000",
       },
     ],
   });
@@ -222,23 +222,33 @@ const MandirBooking = () => {
     }
   }, [temple_name, no_of_persons, book_date_and_time, grand_total]);
 
-  const handlePoojaChange = (selected) => {
-    setSelectedPoojas(selected);
+ const handlePoojaChange = (selected) => {
+  if (!selected) selected = [];
 
-    const total = selected.reduce((sum, p) => sum + (p.price || 0), 0);
+  // Update formData.pooja_details as an array of objects {pooja_name, pooja_price}
+  const poojaArray = selected.map((p) => ({
+    pooja_name: p.name,
+    pooja_price: Number(p.price),
+  }));
 
-    setFormData((prev) => ({
-      ...prev,
-      pooja_details: selected.map((p) => p.details).join(", "),
-      grand_total: total.toString(),
-    }));
+  setFormData((prev) => ({
+    ...prev,
+    pooja_details: poojaArray,
+    grand_total: poojaArray.reduce((sum, p) => sum + (p.pooja_price || 0), 0),
+  }));
 
-    setErrors((prev) => {
-      const newErr = { ...prev };
-      delete newErr.pooja_name;
-      return newErr;
-    });
-  };
+  setSelectedPoojas(selected);
+
+  setErrors((prev) => {
+    const newErr = { ...prev };
+    delete newErr.pooja_details;
+    return newErr;
+  });
+};
+
+
+
+
 
 
   const handleResendOtp = async () => {
@@ -524,10 +534,11 @@ const MandirBooking = () => {
     }
   };
 
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
-  // Validate form
+  // 1️⃣ Validate fields
   if (!validateFields()) {
     setAlertMessage("Please fill all required fields.");
     setShowAlert(true);
@@ -545,26 +556,39 @@ const handleSubmit = async (e) => {
   try {
     const formDataToSend = new FormData();
 
-    // 1️⃣ Add general form fields (like temple_name, mobile_number, etc.)
-    for (let key in formData) {
-      formDataToSend.append(key, formData[key]);
+    // 2️⃣ Append general fields (excluding arrays)
+    const excludeKeys = ["devotee_details", "pooja_details"];
+    Object.keys(formData).forEach((key) => {
+      if (!excludeKeys.includes(key)) {
+        formDataToSend.append(key, formData[key]);
+      }
+    });
+
+    // 3️⃣ Validate & append devotees
+    if (!persons || persons.length === 0) {
+      throw new Error("Please add at least one devotee.");
     }
 
-    // 2️⃣ Add devotees dynamically
-    const validDevotees = persons.map((p, index) => {
-      if (!p.full_name || !p.age || !p.gender || !p.id_proof_type || !p.id_proof_number) {
-        throw new Error(`All fields are required for devotee #${index + 1}`);
+    const validDevotees = persons.map((p, idx) => {
+      if (
+        !p.full_name ||
+        !p.age ||
+        !p.gender ||
+        !p.id_proof_type ||
+        !p.id_proof_number
+      ) {
+        throw new Error(`Please fill all fields for devotee #${idx + 1}`);
       }
       return {
         full_name: p.full_name.trim(),
-        age: Number(p.age), // convert age to integer
+        age: Number(p.age),
         gender: p.gender,
         id_proof_type: p.id_proof_type,
         id_proof_number: p.id_proof_number,
       };
     });
 
-    // Send first devotee's info as top-level fields (backend requirement)
+    // 4️⃣ First devotee as top-level fields
     const firstDevotee = validDevotees[0];
     formDataToSend.append("full_name", firstDevotee.full_name);
     formDataToSend.append("age", firstDevotee.age);
@@ -572,27 +596,25 @@ const handleSubmit = async (e) => {
     formDataToSend.append("id_proof_type", firstDevotee.id_proof_type);
     formDataToSend.append("id_proof_number", firstDevotee.id_proof_number);
 
-    // Send all devotees as JSON array
+    // 5️⃣ Append all devotees as JSON
     formDataToSend.append("devotee_details", JSON.stringify(validDevotees));
 
-    // 3️⃣ Add pooja_details dynamically
-    if (selectedPoojas.length === 0) {
-      throw new Error("Please select at least one pooja");
+    // 6️⃣ Validate & append poojas as JSON
+    if (!formData.pooja_details || formData.pooja_details.length === 0) {
+      throw new Error("Please select at least one pooja.");
     }
 
-    const validPoojas = selectedPoojas.map((p) => ({
-      pooja_name: p.name,
-      pooja_price: Number(p.price),
-    }));
+    formDataToSend.append(
+      "pooja_details",
+      JSON.stringify(formData.pooja_details)
+    );
 
-    formDataToSend.append("pooja_details", JSON.stringify(validPoojas));
-
-    // 4️⃣ Basic Auth Header
+    // 7️⃣ Basic Auth header
     const username = "9058423148";
     const password = "Test@123";
     const authHeader = "Basic " + btoa(username + ":" + password);
 
-    // 5️⃣ Send request
+    // 8️⃣ Send request
     const res = await axios.post(
       `${BASE_URLL}api/darshan-pooja-booking/`,
       formDataToSend,
@@ -604,7 +626,7 @@ const handleSubmit = async (e) => {
       }
     );
 
-    // 6️⃣ Handle response
+    // 9️⃣ Handle response
     if (res.data.message === "Darshan Pooja booking successful") {
       setAlertMessage("Darshan Registration Successful!");
       setShowAlert(true);
@@ -620,7 +642,6 @@ const handleSubmit = async (e) => {
     }
   } catch (err) {
     console.error("Darshan Booking Error:", err.response?.data || err.message);
-
     const errorMsg =
       err.response?.data?.message ||
       err.message ||
@@ -632,6 +653,10 @@ const handleSubmit = async (e) => {
     setLoading(false);
   }
 };
+
+
+
+
 
   return (
     <div className="temp-donate">
@@ -764,6 +789,7 @@ const handleSubmit = async (e) => {
                     <Form.Label className="temp-label">
                       Pooja Details <span className="temp-span-star">*</span>
                     </Form.Label>
+
                     <Select
                       isMulti
                       name="pooja_details"
@@ -771,28 +797,11 @@ const handleSubmit = async (e) => {
                       className="basic-multi-select"
                       classNamePrefix="select"
                       value={selectedPoojas}
-                      onChange={(selected) => {
-                        // Combine old + new selections
-                        const mergedSelections = selected || [];
-
-                        setSelectedPoojas(mergedSelections);
-
-                        const total = mergedSelections.reduce((sum, p) => sum + (p.price || 0), 0);
-
-                        setFormData((prev) => ({
-                          ...prev,
-                          pooja_details: mergedSelections.map((p) => p.value), // store IDs
-                          grand_total: total.toString(),
-                        }));
-
-                        setErrors((prev) => {
-                          const newErr = { ...prev };
-                          delete newErr.pooja_details;
-                          return newErr;
-                        });
-                      }}
+                      onChange={handlePoojaChange} // use the fixed function
                       placeholder="Select one or more Poojas"
                     />
+
+
 
 
 
