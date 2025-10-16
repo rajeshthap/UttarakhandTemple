@@ -222,30 +222,25 @@ const MandirBooking = () => {
     }
   }, [temple_name, no_of_persons, book_date_and_time, grand_total]);
 
- const handlePoojaChange = (selected) => {
-  if (!selected) selected = [];
+  const handlePoojaChange = (selected) => {
+    if (!selected) selected = [];
 
-  // Update formData.pooja_details as an array of objects {pooja_name, pooja_price}
-  const poojaArray = selected.map((p) => ({
-    pooja_name: p.name,
-    pooja_price: Number(p.price),
-  }));
+    // Store only pooja IDs (values) instead of full objects
+    const poojaIds = selected.map((p) => p.value);
 
-  setFormData((prev) => ({
-    ...prev,
-    pooja_details: poojaArray,
-    grand_total: poojaArray.reduce((sum, p) => sum + (p.pooja_price || 0), 0),
-  }));
+    setFormData((prev) => ({
+      ...prev,
+      pooja_details: poojaIds, // Now storing array of IDs
+      grand_total: selected.reduce((sum, p) => sum + (p.price || 0), 0),
+    }));
 
-  setSelectedPoojas(selected);
-
-  setErrors((prev) => {
-    const newErr = { ...prev };
-    delete newErr.pooja_details;
-    return newErr;
-  });
-};
-
+    setSelectedPoojas(selected);
+    setErrors((prev) => {
+      const newErr = { ...prev };
+      delete newErr.pooja_details;
+      return newErr;
+    });
+  };
 
 
 
@@ -535,124 +530,124 @@ const MandirBooking = () => {
   };
 
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  // 1️⃣ Validate fields
-  if (!validateFields()) {
-    setAlertMessage("Please fill all required fields.");
-    setShowAlert(true);
-    return;
-  }
-
-  if (!isVerified) {
-    setAlertMessage("Please verify your phone number before submitting.");
-    setShowAlert(true);
-    return;
-  }
-
-  setLoading(true);
-
-  try {
-    const formDataToSend = new FormData();
-
-    // 2️⃣ Append general fields (excluding arrays)
-    const excludeKeys = ["devotee_details", "pooja_details"];
-    Object.keys(formData).forEach((key) => {
-      if (!excludeKeys.includes(key)) {
-        formDataToSend.append(key, formData[key]);
-      }
-    });
-
-    // 3️⃣ Validate & append devotees
-    if (!persons || persons.length === 0) {
-      throw new Error("Please add at least one devotee.");
+    // 1️⃣ Validate fields
+    if (!validateFields()) {
+      setAlertMessage("Please fill all required fields.");
+      setShowAlert(true);
+      return;
     }
 
-    const validDevotees = persons.map((p, idx) => {
-      if (
-        !p.full_name ||
-        !p.age ||
-        !p.gender ||
-        !p.id_proof_type ||
-        !p.id_proof_number
-      ) {
-        throw new Error(`Please fill all fields for devotee #${idx + 1}`);
-      }
-      return {
-        full_name: p.full_name.trim(),
-        age: Number(p.age),
-        gender: p.gender,
-        id_proof_type: p.id_proof_type,
-        id_proof_number: p.id_proof_number,
-      };
-    });
-
-    // 4️⃣ First devotee as top-level fields
-    const firstDevotee = validDevotees[0];
-    formDataToSend.append("full_name", firstDevotee.full_name);
-    formDataToSend.append("age", firstDevotee.age);
-    formDataToSend.append("gender", firstDevotee.gender);
-    formDataToSend.append("id_proof_type", firstDevotee.id_proof_type);
-    formDataToSend.append("id_proof_number", firstDevotee.id_proof_number);
-
-    // 5️⃣ Append all devotees as JSON
-    formDataToSend.append("devotee_details", JSON.stringify(validDevotees));
-
-    // 6️⃣ Validate & append poojas as JSON
-    if (!formData.pooja_details || formData.pooja_details.length === 0) {
-      throw new Error("Please select at least one pooja.");
+    if (!isVerified) {
+      setAlertMessage("Please verify your phone number before submitting.");
+      setShowAlert(true);
+      return;
     }
 
-    formDataToSend.append(
-      "pooja_details",
-      JSON.stringify(formData.pooja_details)
-    );
+    setLoading(true);
 
-    // 7️⃣ Basic Auth header
-    const username = "9058423148";
-    const password = "Test@123";
-    const authHeader = "Basic " + btoa(username + ":" + password);
+    try {
+      const formDataToSend = new FormData();
 
-    // 8️⃣ Send request
-    const res = await axios.post(
-      `${BASE_URLL}api/darshan-pooja-booking/`,
-      formDataToSend,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: authHeader,
-        },
+      // 2️⃣ Append general fields (excluding arrays)
+      const excludeKeys = ["devotee_details", "pooja_details"];
+      Object.keys(formData).forEach((key) => {
+        if (!excludeKeys.includes(key)) {
+          formDataToSend.append(key, formData[key]);
+        }
+      });
+
+      // 3️⃣ Validate & append devotees
+      if (!persons || persons.length === 0) {
+        throw new Error("Please add at least one devotee.");
       }
-    );
 
-    // 9️⃣ Handle response
-    if (res.data.message === "Darshan Pooja booking successful") {
-      setAlertMessage("Darshan Registration Successful!");
+      const validDevotees = persons.map((p, idx) => {
+        if (
+          !p.full_name ||
+          !p.age ||
+          !p.gender ||
+          !p.id_proof_type ||
+          !p.id_proof_number
+        ) {
+          throw new Error(`Please fill all fields for devotee #${idx + 1}`);
+        }
+        return {
+          full_name: p.full_name.trim(),
+          age: Number(p.age),
+          gender: p.gender,
+          id_proof_type: p.id_proof_type,
+          id_proof_number: p.id_proof_number,
+        };
+      });
+
+      // 4️⃣ First devotee as top-level fields
+      const firstDevotee = validDevotees[0];
+      formDataToSend.append("full_name", firstDevotee.full_name);
+      formDataToSend.append("age", firstDevotee.age);
+      formDataToSend.append("gender", firstDevotee.gender);
+      formDataToSend.append("id_proof_type", firstDevotee.id_proof_type);
+      formDataToSend.append("id_proof_number", firstDevotee.id_proof_number);
+
+      // 5️⃣ Append all devotees as JSON
+      formDataToSend.append("devotee_details", JSON.stringify(validDevotees));
+
+      // 6️⃣ Validate & append poojas as JSON
+      if (!formData.pooja_details || formData.pooja_details.length === 0) {
+        throw new Error("Please select at least one pooja.");
+      }
+
+      formDataToSend.append(
+        "pooja_details",
+        JSON.stringify(formData.pooja_details)
+      );
+
+      // 7️⃣ Basic Auth header
+      const username = "9058423148";
+      const password = "Test@123";
+      const authHeader = "Basic " + btoa(username + ":" + password);
+
+      // 8️⃣ Send request
+      const res = await axios.post(
+        `${BASE_URLL}api/darshan-pooja-booking/`,
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: authHeader,
+          },
+        }
+      );
+
+      // 9️⃣ Handle response
+      if (res.data.message === "Darshan Pooja booking successful") {
+        setAlertMessage("Darshan Registration Successful!");
+        setShowAlert(true);
+        setAgree(false);
+
+        setTimeout(() => {
+          navigate("/PaymentConfirmation");
+        }, 2000);
+      } else {
+        setAlertMessage(res.data.message || "Darshan Registration failed");
+        setShowAlert(true);
+        setAgree(false);
+      }
+    } catch (err) {
+      console.error("Darshan Booking Error:", err.response?.data || err.message);
+      const errorMsg =
+        err.response?.data?.message ||
+        err.message ||
+        "Something went wrong while booking!";
+      setAlertMessage(errorMsg);
       setShowAlert(true);
       setAgree(false);
-
-      setTimeout(() => {
-        navigate("/PaymentConfirmation");
-      }, 2000);
-    } else {
-      setAlertMessage(res.data.message || "Darshan Registration failed");
-      setShowAlert(true);
-      setAgree(false);
+    } finally {
+      setLoading(false);
     }
-  } catch (err) {
-    console.error("Darshan Booking Error:", err.response?.data || err.message);
-    const errorMsg =
-      err.response?.data?.message ||
-      err.message ||
-      "Something went wrong while booking!";
-    setAlertMessage(errorMsg);
-    setShowAlert(true);
-    setAgree(false);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
 
 
