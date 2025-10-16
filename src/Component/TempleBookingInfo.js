@@ -6,7 +6,7 @@ import {
   Container,
   Row,
   Form,
-  Modal,
+  
 } from "react-bootstrap";
 import { FaCheck } from "react-icons/fa6";
 import { MdOutlineDateRange } from "react-icons/md";
@@ -24,7 +24,7 @@ const TempleBookingInfo = () => {
   const [selectedDateTime, setSelectedDateTime] = useState(null);
   const [selectedPersons, setSelectedPersons] = useState(1);
   const [, setIsLoggedIn] = useState(false);
-  const [, setShowPopup] = useState(false);
+ 
   const navigate = useNavigate();
   const [activeAccordion, setActiveAccordion] = useState(null);
 
@@ -361,7 +361,7 @@ const getImageUrl = (imgPath) => {
                                     temple_name: selectedCard.temple_name,
                                     pooja_details: `${pooja.temple_pooja_name} - ₹${pooja.temple_pooja_price}`,
                                     no_of_persons: selectedPersons,
-                                    mandir_book_date_and_time: selectedDateTime,
+                                    book_date_and_time: selectedDateTime,
                                     grand_total:
                                       pooja.temple_pooja_price *
                                       selectedPersons,
