@@ -361,7 +361,7 @@ const getImageUrl = (imgPath) => {
                                     temple_name: selectedCard.temple_name,
                                     pooja_details: `${pooja.temple_pooja_name} - ₹${pooja.temple_pooja_price}`,
                                     no_of_persons: selectedPersons,
-                                    mandir_book_date_and_time: selectedDateTime,
+                                    book_date_and_time: selectedDateTime,
                                     grand_total:
                                       pooja.temple_pooja_price *
                                       selectedPersons,
