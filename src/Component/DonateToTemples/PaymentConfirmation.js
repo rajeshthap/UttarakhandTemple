@@ -1,9 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import "../../assets/CSS/PaymentCard.css"
 import hdfc from "../../assets/images/hdfc.png"
 import billdesk from "../../assets/images/billdesk.png"
+import { useNavigate } from "react-router-dom"; 
 const PaymentConfirmation = () => {
+      const navigate = useNavigate();
+    useEffect(() => {
+  // Push the current page into history so user can't go back
+  window.history.pushState(null, "", window.location.href);
+
+  const handlePopState = () => {
+    // Disable back button by re-pushing the same page
+    window.history.pushState(null, "", window.location.href);
+  };
+
+  // Use lowercase 'popstate'
+  window.addEventListener("popstate", handlePopState);
+
+  return () => {
+    window.removeEventListener("popstate", handlePopState);
+  };
+}, [navigate]); 
     return (
         <div>
             <Container className="temp-container">

@@ -16,8 +16,8 @@ import { LiaCalendarCheck } from "react-icons/lia";
 import { FaRegFileLines } from "react-icons/fa6";
 import { TbPasswordUser } from "react-icons/tb";
 import { IoCalendarClear } from "react-icons/io5";
-import { Dropdown } from "react-bootstrap";
-
+import { Dropdown, Nav } from "react-bootstrap";
+import NavDropdown from "react-bootstrap/NavDropdown";
 function LeftNav() {
   const [isNavClosed, setIsNavClosed] = useState(false);
   const [userName, setUserName] = useState("Loading...");
@@ -189,8 +189,11 @@ function LeftNav() {
           <Link to="#" className="logo-page">
             <img src={CompanyLogo} alt="Manadavaaya" title="MAHADAVAAYA" className="logo" />
           </Link>
+         
+        
         </div>
-
+        
+                 
         <div className="message">
           <ModifyAlert
             message={alertMessage}
@@ -225,6 +228,7 @@ function LeftNav() {
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
+
         </div>
       </header>
 

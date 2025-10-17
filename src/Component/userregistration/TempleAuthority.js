@@ -21,17 +21,16 @@ function TempleAuthority() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [fileErrors, setFileErrors] = useState({});
   const navigate = useNavigate();
-  const [, setShow] = useState(false);
+  const [, ] = useState(false);
   const [phone, setPhone] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
-  const [banks, setBanks] = useState([]);
+  // const [banks, setBanks] = useState([]);
   const [formErrors, setFormErrors] = useState({});
   const [documentErrors, setDocumentErrors] = useState({});
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [loading, setLoading] = useState(false);
-
   const [temple_poojas, setTemplePoojas] = useState([
     { temple_pooja_name: "", temple_pooja_price: "" },
   ]);
@@ -113,7 +112,22 @@ function TempleAuthority() {
     noc_doc: useRef(null),
     trust_cert: useRef(null),
   };
+useEffect(() => {
+  // Push the current page into history so user can't go back
+  window.history.pushState(null, "", window.location.href);
 
+  const handlePopState = () => {
+
+    window.history.pushState(null, "", window.location.href);
+  };
+
+  // Use lowercase 'popstate'
+  window.addEventListener("popstate", handlePopState);
+
+  return () => {
+    window.removeEventListener("popstate", handlePopState);
+  };
+}, [navigate]);
   useEffect(() => {
     const fetchBankByIfsc = async () => {
       if (formData.ifsc_code.length === 11) {
