@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
@@ -20,6 +20,117 @@ const OnlineHirePandit = () => {
 
   // Send OTP
 
+  const poojaOptions = {
+    "Book Pandit Online for Puja": [
+      "Annaprashan Sanskar Puja",
+      "Satyanarayan Puja",
+      "Bhoomi Puja",
+      "Griha Pravesh Puja",
+      "New Office Opening Pooja",
+      "Vivah (Marriage) Puja",
+      "Vishwakarma Puja",
+      "Yagnopavit Sanskar",
+      "Rudrabhishek Puja",
+      "Engagement Ceremony (Sagai)",
+      "Naming Ceremony",
+      "Ganesh Chaturthi Puja",
+      "Vehicle / Vahan Puja",
+      "Mundan Sanskar Puja",
+      "Navratri Durga Puja",
+      "Brihaspati Vrat Udyapan Puja",
+      "Ekadashi Vrat Udyapan Puja",
+      "Godh Bharai Puja (Baby Shower)",
+      "Haldi Ceremony",
+      "Janamdin / Birthday Puja",
+      "Mahalakshmi Puja",
+      "Vastu Shanti Puja",
+      "Vishnu Sahastranam Path Puja",
+      "Kaal Sarp Dosh Nivaran Puja",
+      "Office / Business Puja",
+      "Namakarana Puja",
+      "Hartalika Teej Puja",
+      "Karwa Chauth Puja",
+      "Diwali Lakshmi Puja",
+      "Dhanteras Puja",
+      "Vara Mahalakshmi Puja",
+      "Devi Poojan",
+      "Kuber Puja",
+      "Narak Chaturdashi Puja",
+      "Kali Puja",
+      "Ganesh Lakshmi Puja",
+      "Govardhan Puja",
+      "Annakut Puja",
+      "Bhai Dooj Puja",
+      "Chopda Pooja",
+    ],
+    "Book Pandit Online for Havans": [
+      "Ayush Havan",
+      "Chandi Path Havan",
+      "Lakshmi Kubera Havan",
+      "Navagraha Havan",
+      "Shuddhikaran Puja and Havan",
+      "Maha Ganapati Homa",
+      "Dhanvantari Homa",
+      "Bhagavathi Homa",
+      "Navmi Havan",
+      "Drishti Durga Homa",
+      "Mahalaxmi Havan",
+    ],
+    "Book Pandit Online for Jaaps": [
+      "Maha Mrityunjaya Jaap Puja",
+      "Gayatri Mantra Jaap Puja",
+      "Santan Gopal Mantra Jaap",
+      "Shani Dosh Nivaran Jaap",
+      "Rahu Graha Shanti Mantra Jaap",
+      "Sampoorna Sunderkand Paath",
+      "Akhand Ramayana Path",
+      "Hanuman Chalisa Paath",
+      "Bajrang Baan Path",
+      "Navchandi Paath",
+      "Durga Saptashati Path",
+      "Kanak Dhara Path",
+      "Shri Sukt Paath",
+      "Lalita Sahasranama Path",
+      "Kanakadhara Stotram Path",
+    ],
+    "Book Pandit Online for Pitru Paksha Puja": [
+      "Pitru Dosh Nivaran Puja",
+      "Shradh Puja & Karma for Ancestors Peace",
+      "Barsi Puja",
+      "Bharani Shradh Pitru Paksha",
+      "Tripindi Shradha Puja",
+      "Garud Puran Path",
+      "Tarpan Shradh Puja",
+      "Pind Daan Shradh Puja",
+    ],
+  };
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [expandedCategories, setExpandedCategories] = useState({});
+  const dropdownRef = useRef();
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const toggleCategory = (category) => {
+    setExpandedCategories((prev) => ({
+      ...prev,
+      [category]: !prev[category],
+    }));
+  };
+
+  const handleSelectPooja = (pooja) => {
+    setFormData({ pooja_type: pooja });
+    setIsOpen(false); // close dropdown after selecting pooja
+  };
   const handleShow = async () => {
     if (!formData.mobile_number) {
       setAlertMessage("all required feild fill please");
@@ -31,7 +142,7 @@ const OnlineHirePandit = () => {
       setLoadingOtp(true);
 
       await axios.post(
-   `${BASE_URLL}api/send-otp/`,
+        `${BASE_URLL}api/send-otp/`,
         { phone: formData.mobile_number },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -214,23 +325,23 @@ const OnlineHirePandit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateFields()) {
-       setAlertMessage("Please fill all required fields.");
-        setShowModifyAlert(true);
+      setAlertMessage("Please fill all required fields.");
+      setShowModifyAlert(true);
       return;
     }
 
     try {
-      const res = await axios.post(
+       await axios.post(
         `${BASE_URLL}api/OnlinepanditHIre/`,
         formData,
         { headers: { "Content-Type": "application/json" } }
       );
-      
+
       setAlertMessage("Pandit booked successfully!");
       setShowModifyAlert(true);
       setTimeout(() => {
         navigate("/PaymentConfirmation");
-        }, 2000);
+      }, 2000);
 
       // Reset form
       setFormData({
@@ -395,30 +506,83 @@ const OnlineHirePandit = () => {
                 <Col lg={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>
-                      Type of Pooja <span className="temp-span-star">*</span>
+                      Select Pooja <span className="temp-span-star">*</span>
                     </Form.Label>
-                    <Form.Select
-                      name="pooja_type"
-                      value={formData.pooja_type}
-                      onChange={handleChange}
-                      className="temp-form-control-option"
+
+                    <div
+                      ref={dropdownRef}
+                      style={{ position: "relative", userSelect: "none" }}
                     >
-                      <option value="">Select Pooja</option>
-                      <option value="Griha Pravesh">Griha Pravesh</option>
-                      <option value="Satyanarayan Katha">
-                        Satyanarayan Katha
-                      </option>
-                      <option value="Marriage">Marriage</option>
-                      <option value="Havan">Havan</option>
-                    </Form.Select>
-                    {newErrors.pooja_type && (
-                      <small className="text-danger">
-                        {newErrors.pooja_type}
-                      </small>
-                    )}
+                      <div
+                        onClick={() => setIsOpen(!isOpen)}
+                        style={{
+                          border: "1px solid #ccc",
+                          borderRadius: "5px",
+                          padding: "8px",
+                          cursor: "pointer",
+                          background: "#fff",
+                        }}
+                      >
+                        {formData.pooja_type || "Select Category / Pooja"}
+                      </div>
+
+                      {isOpen && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: "100%",
+                            left: 0,
+                            right: 0,
+                            border: "1px solid #ccc",
+                            borderRadius: "5px",
+                            background: "#fff",
+                            maxHeight: "250px",
+                            overflowY: "auto",
+                            zIndex: 1000,
+                          }}
+                        >
+                          {Object.keys(poojaOptions).map((category) => (
+                            <div key={category}>
+                              <div
+                                onClick={() => toggleCategory(category)}
+                                style={{
+                                  padding: "8px",
+                                  cursor: "pointer",
+                                  fontWeight: "bold",
+                                  background: "#f5f5f5",
+                                  borderBottom: "1px solid #ddd",
+                                }}
+                              >
+                                {category}
+                                <span style={{ float: "right" }}>
+                                  {expandedCategories[category] ? "" : ""}
+                                </span>
+                              </div>
+
+                              {expandedCategories[category] &&
+                                poojaOptions[category].map((pooja) => (
+                                  <div
+                                    key={pooja}
+                                    onClick={() => handleSelectPooja(pooja)}
+                                    style={{
+                                      padding: "8px 16px",
+                                      cursor: "pointer",
+                                      background:
+                                        formData.pooja_type === pooja
+                                          ? "#e6f7ff"
+                                          : "#fff",
+                                    }}
+                                  >
+                                    {pooja}
+                                  </div>
+                                ))}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </Form.Group>
                 </Col>
-
                 <Col lg={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>
