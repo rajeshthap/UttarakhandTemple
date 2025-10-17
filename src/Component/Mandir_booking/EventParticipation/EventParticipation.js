@@ -12,8 +12,8 @@ import { BASE_URLL } from "../../BaseURL";
 import { useAuth } from "../../GlobleAuth/AuthContext";
 
 const EventParticipation = () => {
-    const { uniqueId } = useAuth();
-  
+  const { uniqueId } = useAuth();
+
   // Move useState for selectedDateTime to the top before any logic uses it
   const [selectedDateTime, setSelectedDateTime] = useState(null);
   // Helper to round up to next 30 min interval
@@ -66,7 +66,7 @@ const EventParticipation = () => {
     special_instructions: "",
     donation_amount: "",
     payment_mode: "",
-    creator_id:uniqueId||"",
+    creator_id: uniqueId || "",
   });
 
   const handleDateChange = (date) => {
@@ -111,11 +111,14 @@ const EventParticipation = () => {
 
   const checkUserExists = async (fieldValue, fieldName) => {
     try {
-      const res = await axios.get(`${BASE_URLL}api/all-reg/`);
+      if (uniqueId) return;
 
+      const res = await axios.get(`${BASE_URLL}api/all-reg/`);
       const userExists = res.data.some((user) => {
-        if (fieldName === "mobile_number") return user.phone === fieldValue;
-        if (fieldName === "email") return user.email === fieldValue;
+        if (fieldName === "mobile_number")
+          return String(user.phone) === String(fieldValue);
+        if (fieldName === "email")
+          return String(user.email) === String(fieldValue);
         return false;
       });
 
@@ -332,10 +335,10 @@ const EventParticipation = () => {
           <p>
             <i>Join Sacred Gatherings and Be Part of Divine Celebrations </i>
           </p>
-            <div>
-              <h1>Main Dashboard</h1>
-              <p>Unique ID: {uniqueId}</p>{" "}
-            </div>
+          <div>
+            <h1>Main Dashboard</h1>
+            <p>Unique ID: {uniqueId}</p>{" "}
+          </div>
           <Row>
             <Col lg={8} md={8} sm={12} className="mt-2">
               <h2>Devotee Information</h2>
