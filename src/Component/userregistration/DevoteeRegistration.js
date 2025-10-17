@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row, Form, InputGroup } from "react-bootstrap";
 import axios from "axios";
 import "../../assets/CSS/TempleAuthority.css";
@@ -82,7 +82,21 @@ function DevoteeRegistration() {
     return true;
   }
 };
+useEffect(() => {
+  // Push the current page into history so user can't go back
+  window.history.pushState(null, "", window.location.href);
 
+  const handlePopState = () => {
+
+    window.history.pushState(null, "", window.location.href);
+  };
+  // Use lowercase 'popstate'
+  window.addEventListener("popstate", handlePopState);
+
+  return () => {
+    window.removeEventListener("popstate", handlePopState);
+  };
+}, [navigate]);
 
   // Field validation
   const validateField = (name, value) => {

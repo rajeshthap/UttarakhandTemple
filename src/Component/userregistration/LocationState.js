@@ -77,7 +77,6 @@ const LocationState = ({
   return (
     <>
       {/* Country */}
-     
       <Col md={4}>
         <Form.Group className="mb-3" controlId="countrySelect">
           <Form.Label className="temp-label">

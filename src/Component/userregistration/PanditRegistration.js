@@ -35,9 +35,9 @@ function PanditRegistration() {
     phone: "",
     aadhar_number: "",
     permanent_address: "",
-    country: "s",
-    state: "s",
-    city: "s",
+    country: "",
+    state: "",
+    city: "",
     zipcode: "",
     pandit_role: "",
     temple_association: "",
@@ -85,6 +85,20 @@ function PanditRegistration() {
     setFormData((prev) => ({ ...prev, [name]: value }));
     validateField(name, value); // live validation on custom handler
   };
+useEffect(() => {
+  // Push the current page into history so user can't go back
+  window.history.pushState(null, "", window.location.href);
+
+  const handlePopState = () => {
+    // Disable back button by re-pushing the same page
+    window.history.pushState(null, "", window.location.href);
+  };
+  window.addEventListener("popstate", handlePopState);
+
+  return () => {
+    window.removeEventListener("popstate", handlePopState);
+  };
+}, [navigate]); 
 
   const addPooja = () => {
     setFormData((prev) => ({
@@ -106,7 +120,7 @@ function PanditRegistration() {
   const handlePoojaChange = (index, poojaName) => {
     const newPoojas = [...formData.pandit_pooja_details];
 
-    const selectedPooja = poojaOptions.find((p) => p.pooja_name === poojaName);
+    // const selectedPooja = poojaOptions.find((p) => p.pooja_name === poojaName);
 
     newPoojas[index] = {
       ...newPoojas[index],

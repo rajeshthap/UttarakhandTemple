@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../../assets/CSS/TempleLeftNav.css";
 import "../../assets/CSS/DashBoard.css";
 import { Col, Row } from "react-bootstrap";
@@ -8,8 +8,24 @@ import { FaHandsPraying } from "react-icons/fa6";
 
 import "../../assets/CSS/Pandit_DashBoard.css";
 import PanditLeftNav from "./PanditLeftNav";
+import { Navigate } from "react-router-dom";
 
 const Pandit_DashBoard = () => {
+    useEffect(() => {
+      // Push the current page into history so user can't go back
+      window.history.pushState(null, "", window.location.href);
+    
+      const handlePopState = () => {
+    
+        window.history.pushState(null, "", window.location.href);
+      };
+      // Use lowercase 'popstate'
+      window.addEventListener("popstate", handlePopState);
+    
+      return () => {
+        window.removeEventListener("popstate", handlePopState);
+      };
+    }, [Navigate]);
     return (
         <>
             {/* Main Wrapper */}

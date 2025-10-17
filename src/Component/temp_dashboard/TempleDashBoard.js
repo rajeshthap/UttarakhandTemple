@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../../assets/CSS/TempleLeftNav.css";
 import "../../assets/CSS/DashBoard.css";
 import { Col, Row } from "react-bootstrap";
@@ -10,6 +10,20 @@ import TempleLeftNav from "./TempleLeftNav";
 import "../../assets/CSS/Temple_DashBoard.css"
 
 const TempleDashBoard = () => {
+    useEffect(() => {
+    // Push the current page into history so user can't go back
+    window.history.pushState(null, "", window.location.href);
+  
+    const handlePopState = () => {
+      window.history.pushState(null, "", window.location.href);
+    };
+  
+    window.addEventListener("popstate", handlePopState);
+  
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
     return (
         <>
             {/* Main Wrapper */}
