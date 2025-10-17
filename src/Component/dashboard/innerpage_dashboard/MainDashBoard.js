@@ -5,7 +5,6 @@ import { Button, Col, Row } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import LeftNav from "../LeftNav";
 import { FaHandsPraying, FaOm } from "react-icons/fa6";
-import { Link } from "react-router-dom";
 import { MdOutlineSwipeUp } from "react-icons/md";
 import { BsNewspaper } from "react-icons/bs";
 import { IoIosArrowForward } from "react-icons/io";
@@ -15,8 +14,15 @@ import { RiFilePaper2Line } from "react-icons/ri";
 import PanditImg from "../../../assets/images/pandit_icon.png";
 import { BiSolidDonateBlood } from "react-icons/bi";
 import { GiByzantinTemple } from "react-icons/gi";
-
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../GlobleAuth/AuthContext";
 const MainDashBoard = () => {
+  const navigate = useNavigate();
+  const { uniqueId } = useAuth();
+  // React.useEffect(() => {
+  //   if (!uniqueId) navigate("/Login");
+  // }, [uniqueId, navigate]);
+
   return (
     <>
       {/* Main Wrapper */}
@@ -32,6 +38,10 @@ const MainDashBoard = () => {
             <h1 className=" fw500">
               <span class="fw700h1">Devotee </span> Dashboard
             </h1>
+            <div>
+              <h1>Main Dashboard</h1>
+              <p>Unique ID: {uniqueId}</p>{" "}
+            </div>
             <Row>
               <Col lg={3} md={3} sm={12} className="d-flex">
                 <Card className="shadow-sm  rounded  dbcard-box-1 flex-fill">
@@ -159,8 +169,12 @@ const MainDashBoard = () => {
                     <div className="mt-3 pandit-upcoming-bookings d-flex">
                       <Col lg={1} md={2} sm={12}>
                         <div className="pnadit-w">
-                            <img src={PanditImg} alt="Pandit" className="seva-come-icon-darshanam img-fluid" />
-                          </div>
+                          <img
+                            src={PanditImg}
+                            alt="Pandit"
+                            className="seva-come-icon-darshanam img-fluid"
+                          />
+                        </div>
 
                         {/* <FaOm className="seva-come-icon-darshanam" /> */}
                       </Col>
@@ -180,7 +194,7 @@ const MainDashBoard = () => {
                       </Col>
                     </div>
                   </Col>
-                    <Col lg={6} md={6} sm={12}>
+                  <Col lg={6} md={6} sm={12}>
                     <div className="mt-3 donation-upcoming-bookings d-flex">
                       <Col lg={1} md={2} sm={12}>
                         {/* <div className="">
@@ -206,7 +220,7 @@ const MainDashBoard = () => {
                     </div>
                   </Col>
 
-                   <Col lg={6} md={6} sm={12}>
+                  <Col lg={6} md={6} sm={12}>
                     <div className="mt-3 pooja-upcoming-bookings d-flex">
                       <Col lg={1} md={2} sm={12}>
                         {/* <div className="">

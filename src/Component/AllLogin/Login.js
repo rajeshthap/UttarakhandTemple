@@ -10,6 +10,7 @@ import AdminImg from "../../assets/images/about-img.png";
 import DefaultImg from "../../assets/images/about-inner-img.png";
 import axios from "axios";
 import { BASE_URLL } from "../BaseURL";
+import { useAuth } from "../GlobleAuth/AuthContext";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -17,7 +18,7 @@ export default function Login() {
     email_or_password: "",
     password: "",
   });
-
+  const { setAuth } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showModifyAlert, setShowModifyAlert] = useState(false);
@@ -37,52 +38,49 @@ export default function Login() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!formData.email_or_password || !formData.password) {
-      setAlertMessage("Please fill in all fields");
-      setShowModifyAlert(true);
-      return;
+  if (!formData.email_or_password || !formData.password) {
+    setAlertMessage("Please fill in all fields");
+    setShowModifyAlert(true);
+    return;
+  }
+
+  setLoading(true);
+  try {
+    const res = await axios.post(`${BASE_URLL}api/login/`, formData);
+    const { unique_id } = res.data;
+    setAuth(unique_id);
+
+    // Redirect and pass unique_id as route state (like a prop)
+    switch (formData.role.toLowerCase()) {
+      case "admin":
+        navigate("/DashBoard", { state: { unique_id } });
+        break;
+      case "pandit":
+        navigate("/Pandit_DashBoard", { state: { unique_id } });
+        break;
+      case "user":
+        navigate("/MainDashBoard", { state: { unique_id } });
+        break;
+      case "temple":
+        navigate("/TempleDashBoard", { state: { unique_id } });
+        break;
+      default:
+        navigate("/", { state: { unique_id } });
     }
 
-    setLoading(true);
-    try {
-      const res = await axios.post(
-        `${BASE_URLL}api/login/`,
-        formData
-      );
-      const userData = res.data;
+    setAlertMessage("Login successful!");
+    setShowModifyAlert(true);
+  } catch (err) {
+    setAlertMessage(err.response?.data?.detail || "Invalid username or password");
+    setShowModifyAlert(true);
+  } finally {
+    setLoading(false);
+  }
+};
 
-      // Redirect based on role
-      switch (formData.role.toLowerCase()) {
-        case "admin":
-          navigate("/DashBoard");
-          break;
-        case "pandit":
-          navigate("/Pandit_DashBoard");
-          break;
-        case "user":
-          navigate("/MainDashBoard");
-          break;
-        case "temple":
-          navigate("/TempleDashBoard");
-          break;
-        default:
-          navigate("/");
-      }
-
-      setAlertMessage("Login successful!");
-      setShowModifyAlert(true);
-    } catch (err) {
-      setAlertMessage(
-        err.response?.data?.detail || "Invalid username or password"
-      );
-      setShowModifyAlert(true);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const roleHeading = formData.role
     ? `${formData.role.charAt(0).toUpperCase() + formData.role.slice(1)} Login`
