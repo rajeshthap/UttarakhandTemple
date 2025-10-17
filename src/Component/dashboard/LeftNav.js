@@ -18,7 +18,10 @@ import { TbPasswordUser } from "react-icons/tb";
 import { IoCalendarClear } from "react-icons/io5";
 import { Dropdown, Nav } from "react-bootstrap";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import { useAuth } from "../GlobleAuth/AuthContext";
 function LeftNav() {
+  const { clearAuth } = useAuth();
+
   const [isNavClosed, setIsNavClosed] = useState(false);
   const [userName, setUserName] = useState("Loading...");
   const [activePath, setActivePath] = useState("");
@@ -77,22 +80,22 @@ function LeftNav() {
     setHoveredMenu(null);
   };
 
-  const logout = () => {
-    const confirmLogout = window.confirm("Are you sure you want to logout?");
-    if (confirmLogout) {
-      localStorage.clear();
-      setAlertMessage("Logout successfully!");
-      setShowModifyAlert(true);
+ const logout = () => {
+  const confirmLogout = window.confirm("Are you sure you want to logout?");
+  if (confirmLogout) {
+    localStorage.clear();      
+    clearAuth();               
+    setAlertMessage("Logout successfully!");
+    setShowModifyAlert(true);
 
-      // Clear alert after 3 seconds
-      setTimeout(() => {
-        setAlertMessage("");
-        setShowModifyAlert(false);
-      }, 2000);
+    setTimeout(() => {
+      setAlertMessage("");
+      setShowModifyAlert(false);
+      window.location.href = "/"; 
+    }, 2000);
+  }
+};
 
-      window.location.href = "/"; // Redirect after logout
-    }
-  };
 
   const navigationOptions = [
     { icon: <RiDashboard3Line />, label: "Dashboard", path: "/MainDashBoard" },
@@ -324,17 +327,13 @@ function LeftNav() {
                     </div>
                   </>
                 ) : (
-                 <Link
+                <Link
   to={option.path}
-  className={`nav-option option${index + 1} ${activePath === option.path ? "active-nav" : ""
-    } ${hoveredMenu === index ? "hovered-nav" : ""}`}
+  className={`nav-option option${index + 1} ${activePath === option.path ? "active-nav" : ""}
+    ${hoveredMenu === index ? "hovered-nav" : ""}`}
   onClick={() => {
     if (option.isLogout) {
-      const confirmLogout = window.confirm("Are you sure you want to logout?");
-      if (confirmLogout) {
-        localStorage.clear();
-        window.location.href = "/";
-      }
+      logout(); // use the new logout handler
     } else {
       setActivePath(option.path);
     }
@@ -347,6 +346,7 @@ function LeftNav() {
     <span className="nav-label">{option.label}</span>
   </div>
 </Link>
+
 
                 )}
               </React.Fragment>

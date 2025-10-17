@@ -9,8 +9,11 @@ import DatePicker from "react-datepicker";
 import { setHours, setMinutes } from "date-fns";
 import LoginPopup from "../../OTPModel/LoginPopup";
 import { BASE_URLL } from "../../BaseURL";
+import { useAuth } from "../../GlobleAuth/AuthContext";
 
 const EventParticipation = () => {
+    const { uniqueId } = useAuth();
+  
   // Move useState for selectedDateTime to the top before any logic uses it
   const [selectedDateTime, setSelectedDateTime] = useState(null);
   // Helper to round up to next 30 min interval
@@ -63,6 +66,7 @@ const EventParticipation = () => {
     special_instructions: "",
     donation_amount: "",
     payment_mode: "",
+    creator_id:uniqueId||"",
   });
 
   const handleDateChange = (date) => {
@@ -328,6 +332,10 @@ const EventParticipation = () => {
           <p>
             <i>Join Sacred Gatherings and Be Part of Divine Celebrations </i>
           </p>
+            <div>
+              <h1>Main Dashboard</h1>
+              <p>Unique ID: {uniqueId}</p>{" "}
+            </div>
           <Row>
             <Col lg={8} md={8} sm={12} className="mt-2">
               <h2>Devotee Information</h2>
