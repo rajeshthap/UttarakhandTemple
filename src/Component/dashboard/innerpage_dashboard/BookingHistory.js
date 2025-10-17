@@ -15,8 +15,11 @@ import { RiFilePaper2Line } from "react-icons/ri";
 import PanditImg from "../../../assets/images/pandit_icon.png";
 import { BiSolidDonateBlood } from "react-icons/bi";
 import { GiByzantinTemple } from "react-icons/gi";
+import { useAuth } from "../../GlobleAuth/AuthContext";
+
 
 const BookingHistory = () => {
+  const { uniqueId } = useAuth();
   return (
     <>
       {/* Main Wrapper */}
@@ -32,7 +35,10 @@ const BookingHistory = () => {
             <h1 className=" fw500">
               <span class="fw700h1">Booking </span> History
             </h1>
-          
+          <div>
+              <h1>Main Dashboard</h1>
+              <p>Unique ID: {uniqueId}</p>{" "}
+            </div>
 
             <Row>
               <h2>Transaction History</h2>

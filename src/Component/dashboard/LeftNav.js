@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { RiDashboard3Line } from "react-icons/ri";
-import {
-  MdLibraryBooks,
-} from "react-icons/md";
+import { MdLibraryBooks } from "react-icons/md";
 import { FaAlignLeft, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
 import CompanyLogo from "../../assets/images/company-logo.png";
@@ -17,6 +15,8 @@ import { FaRegFileLines } from "react-icons/fa6";
 import { TbPasswordUser } from "react-icons/tb";
 import { IoCalendarClear } from "react-icons/io5";
 import { Dropdown } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../GlobleAuth/AuthContext";
 
 function LeftNav() {
   const [isNavClosed, setIsNavClosed] = useState(false);
@@ -28,6 +28,8 @@ function LeftNav() {
   // alert state
   const [showModifyAlert, setShowModifyAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const navigate = useNavigate();
+  const { clearAuth } = useAuth();
 
   useEffect(() => {
     // Get initial user name
@@ -79,19 +81,19 @@ function LeftNav() {
 
   const logout = () => {
     const confirmLogout = window.confirm("Are you sure you want to logout?");
-    if (confirmLogout) {
-      localStorage.clear();
-      setAlertMessage("Logout successfully!");
-      setShowModifyAlert(true);
+    if (!confirmLogout) return;
 
-      // Clear alert after 3 seconds
-      setTimeout(() => {
-        setAlertMessage("");
-        setShowModifyAlert(false);
-      }, 2000);
+    clearAuth();
+    localStorage.clear();
 
-      window.location.href = "/"; // Redirect after logout
-    }
+    setAlertMessage("Logout successfully!");
+    setShowModifyAlert(true);
+
+    setTimeout(() => {
+      setAlertMessage("");
+      setShowModifyAlert(false);
+      navigate("/Login");
+    }, 1200);
   };
 
   const navigationOptions = [
@@ -104,41 +106,44 @@ function LeftNav() {
       hasSubmenu: true,
       subItems: [
         {
-           icon: <LiaCalendarCheck />,
-           label: "Darshnam Booking", 
-          path: "/DarshanBookingDashBoard" },
+          icon: <LiaCalendarCheck />,
+          label: "Darshnam Booking",
+          path: "/DarshanBookingDashBoard",
+        },
 
-          {
-           icon: <LiaCalendarCheck />,
-           label: "Donation", 
-          path: "/DonateDashBoard" },
-        
-           {
-           icon: <LiaCalendarCheck />,
-           label: "Pandit Booking", 
-          path: "/PanditDashBoard" },
-       
-       {
-           icon: <LiaCalendarCheck />,
-           label: "Seva Booking", 
-          path: "/SevaRegistrationDashBoard" },
-          {
-           icon: <LiaCalendarCheck />,
-           label: "Event Participation", 
-          path: "/EventDashBoard" },
-       {
-           icon: <LiaCalendarCheck />,
-           label: "Pooja Booking", 
-          path: "/PoojaBookingDashBoard" },
-      ]
-      
-      
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Donation",
+          path: "/DonateDashBoard",
+        },
+
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Pandit Booking",
+          path: "/PanditDashBoard",
+        },
+
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Seva Booking",
+          path: "/SevaRegistrationDashBoard",
+        },
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Event Participation",
+          path: "/EventDashBoard",
+        },
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Pooja Booking",
+          path: "/PoojaBookingDashBoard",
+        },
+      ],
     },
-  {
+    {
       icon: <GiByzantinTemple />,
       label: "Booking History",
       path: "/BookingHistory",
-    
     },
     {
       icon: <LiaCalendarCheck />,
@@ -146,33 +151,30 @@ function LeftNav() {
       path: "#",
       hasSubmenu: true,
       subItems: [
-         {
-           icon: <LiaCalendarCheck />,
-           label: "My Profile", 
-          path: "/MyProfile" },
         {
-           icon: <LiaCalendarCheck />,
-           label: "Change Password", 
-          path: "/ChangePassword" },
-
-       
-      
-      ]
+          icon: <LiaCalendarCheck />,
+          label: "My Profile",
+          path: "/MyProfile",
+        },
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Change Password",
+          path: "/ChangePassword",
+        },
+      ],
     },
-   
-  
+
     {
       path: "/Support",
       icon: <FaRegFileLines />,
       label: "Support",
-    
     },
     {
-    icon: <TbPasswordUser />,
-    label: "Logout",
-    path: "#", // will trigger logout
-    isLogout: true, // custom flag to detect logout
-  },
+      icon: <TbPasswordUser />,
+      label: "Logout",
+      path: "#", // will trigger logout
+      isLogout: true, // custom flag to detect logout
+    },
   ];
 
   return (
@@ -187,7 +189,12 @@ function LeftNav() {
             onClick={toggleNav}
           />
           <Link to="#" className="logo-page">
-            <img src={CompanyLogo} alt="Manadavaaya" title="MAHADAVAAYA" className="logo" />
+            <img
+              src={CompanyLogo}
+              alt="Manadavaaya"
+              title="MAHADAVAAYA"
+              className="logo"
+            />
           </Link>
         </div>
 
@@ -267,8 +274,9 @@ function LeftNav() {
               <React.Fragment key={index}>
                 {option.download ? (
                   <div
-                    className={`nav-option option${index + 1} ${activePath === option.fileUrl ? "active-nav" : ""
-                      } ${hoveredMenu === index ? "hovered-nav" : ""}`}
+                    className={`nav-option option${index + 1} ${
+                      activePath === option.fileUrl ? "active-nav" : ""
+                    } ${hoveredMenu === index ? "hovered-nav" : ""}`}
                     onClick={() => {
                       setActivePath(option.fileUrl);
                       handleDownload(option.fileUrl, option.fileName);
@@ -284,8 +292,11 @@ function LeftNav() {
                 ) : option.hasSubmenu ? (
                   <>
                     <div
-                      className={`nav-option option${index + 1} ${activePath === option.path || openSubMenu === index ? "active-nav" : ""
-                        } ${hoveredMenu === index ? "hovered-nav" : ""}`}
+                      className={`nav-option option${index + 1} ${
+                        activePath === option.path || openSubMenu === index
+                          ? "active-nav"
+                          : ""
+                      } ${hoveredMenu === index ? "hovered-nav" : ""}`}
                       onClick={() => toggleSubMenu(index)}
                       onMouseEnter={() => handleMenuHover(index)}
                       onMouseLeave={handleMenuLeave}
@@ -296,23 +307,30 @@ function LeftNav() {
                           <span className="nav-label">{option.label}</span>
                         </div>
                         <span className="nav-arrow">
-                          {openSubMenu === index ? <FaChevronUp /> : <FaChevronDown />}
+                          {openSubMenu === index ? (
+                            <FaChevronUp />
+                          ) : (
+                            <FaChevronDown />
+                          )}
                         </span>
                       </div>
                     </div>
-                    <div className={`sub-menu ${openSubMenu === index ? 'open' : ''}`}>
+                    <div
+                      className={`sub-menu ${
+                        openSubMenu === index ? "open" : ""
+                      }`}
+                    >
                       {option.subItems.map((subItem, subIndex) => (
                         <Link
                           key={subIndex}
                           to={subItem.path}
-                          className={`nav-option sub-nav-option ${activePath === subItem.path ? "active-nav" : ""
-                            }`}
+                          className={`nav-option sub-nav-option ${
+                            activePath === subItem.path ? "active-nav" : ""
+                          }`}
                           onClick={() => setActivePath(subItem.path)}
                         >
                           <div className="sub-item d-flex">
-                             <span className="nav-icon">
-                                      {subItem.icon}
-                                    </span>
+                            <span className="nav-icon">{subItem.icon}</span>
                             <span className="sub-label">{subItem.label}</span>
                           </div>
                         </Link>
@@ -320,30 +338,26 @@ function LeftNav() {
                     </div>
                   </>
                 ) : (
-                 <Link
-  to={option.path}
-  className={`nav-option option${index + 1} ${activePath === option.path ? "active-nav" : ""
-    } ${hoveredMenu === index ? "hovered-nav" : ""}`}
-  onClick={() => {
-    if (option.isLogout) {
-      const confirmLogout = window.confirm("Are you sure you want to logout?");
-      if (confirmLogout) {
-        localStorage.clear();
-        window.location.href = "/";
-      }
-    } else {
-      setActivePath(option.path);
-    }
-  }}
-  onMouseEnter={() => handleMenuHover(index)}
-  onMouseLeave={handleMenuLeave}
->
-  <div className="nav-item d-flex">
-    <span className="nav-icon">{option.icon}</span>
-    <span className="nav-label">{option.label}</span>
-  </div>
-</Link>
-
+                  <Link
+                    to={option.isLogout ? "#" : option.path}
+                    className={`nav-option option${index + 1} ${
+                      activePath === option.path ? "active-nav" : ""
+                    } ${hoveredMenu === index ? "hovered-nav" : ""}`}
+                    onClick={() => {
+                      if (option.isLogout) {
+                        logout();
+                      } else {
+                        setActivePath(option.path);
+                      }
+                    }}
+                    onMouseEnter={() => handleMenuHover(index)}
+                    onMouseLeave={handleMenuLeave}
+                  >
+                    <div className="nav-item d-flex">
+                      <span className="nav-icon">{option.icon}</span>
+                      <span className="nav-label">{option.label}</span>
+                    </div>
+                  </Link>
                 )}
               </React.Fragment>
             ))}
