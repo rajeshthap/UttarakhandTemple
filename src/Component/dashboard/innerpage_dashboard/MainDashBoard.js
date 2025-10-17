@@ -19,9 +19,9 @@ import { useAuth } from "../../GlobleAuth/AuthContext";
 const MainDashBoard = () => {
   const navigate = useNavigate();
   const { uniqueId } = useAuth();
-  React.useEffect(() => {
-    if (!uniqueId) navigate("/Login");
-  }, [uniqueId, navigate]);
+  // React.useEffect(() => {
+  //   if (!uniqueId) navigate("/Login");
+  // }, [uniqueId, navigate]);
 
   return (
     <>
