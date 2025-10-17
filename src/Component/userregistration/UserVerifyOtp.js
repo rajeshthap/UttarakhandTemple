@@ -55,7 +55,7 @@ const UserVerifyOtp = () => {
 
 
 
-            navigate("/PanditLogin", { replace: true });
+            navigate("/Login", { replace: true });
 
         } catch (err) {
             console.error("OTP Error:", err);
@@ -88,7 +88,7 @@ const handleResend = async () => {
         // console.log("Auto Verify API response:", verifyRes);
 
         setSuccess("OTP verified successfully!");
-       navigate("/PanditLogin", { replace: true }); // redirect to login page
+       navigate("/Login", { replace: true }); // redirect to login page
       } catch (verifyErr) {
         // console.error("Auto-verify after resend failed:", verifyErr);
         setError("Failed to auto-verify OTP. Please try manually.");

@@ -234,10 +234,10 @@ useEffect(() => {
     setTimeout(() => {
       switch (userType.toLowerCase()) {
         case "temple":
-          navigate("/AuthorityLogin");
+          navigate("/Login");
           break;
         case "pandit":
-          navigate("/PanditLogin");
+          navigate("/Login");
           break;
         default:
           navigate("/Login");
