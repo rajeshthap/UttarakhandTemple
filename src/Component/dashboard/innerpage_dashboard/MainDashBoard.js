@@ -1,7 +1,7 @@
 import React from "react";
 import "../../../assets/CSS/LeftNav.css";
 import "../../../assets/CSS/DashBoard.css";
-import { Button, Col, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import LeftNav from "../LeftNav";
 import { FaHandsPraying, FaOm } from "react-icons/fa6";
@@ -38,10 +38,10 @@ const MainDashBoard = () => {
             <h1 className=" fw500">
               <span class="fw700h1">Devotee </span> Dashboard
             </h1>
-            <div>
+            {/* <div>
               <h1>Main Dashboard</h1>
               <p>Unique ID: {uniqueId}</p>{" "}
-            </div>
+            </div> */}
             <Row>
               <Col lg={3} md={3} sm={12} className="d-flex">
                 <Card className="shadow-sm  rounded  dbcard-box-1 flex-fill">

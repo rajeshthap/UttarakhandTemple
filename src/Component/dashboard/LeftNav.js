@@ -13,12 +13,14 @@ import ModifyAlert from "../Alert/ModifyAlert";
 import { BiDonateHeart } from "react-icons/bi";
 import { GiByzantinTemple } from "react-icons/gi";
 import { LiaCalendarCheck } from "react-icons/lia";
+import Navbar from "react-bootstrap/Navbar";
 import { FaRegFileLines } from "react-icons/fa6";
 import { TbPasswordUser } from "react-icons/tb";
 import { IoCalendarClear } from "react-icons/io5";
 import { Dropdown, Nav } from "react-bootstrap";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { useAuth } from "../GlobleAuth/AuthContext";
+import "../../assets/CSS/TopInfo.css";
 function LeftNav() {
   const { clearAuth } = useAuth();
 
@@ -31,29 +33,6 @@ function LeftNav() {
   // alert state
   const [showModifyAlert, setShowModifyAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
-
-  useEffect(() => {
-    // Get initial user name
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (storedUser?.name) {
-      setUserName(storedUser.name);
-    }
-
-    setActivePath(location.pathname);
-
-    // Poll for updates
-    const interval = setInterval(() => {
-      const storedUser = JSON.parse(localStorage.getItem("user"));
-      const updatedUser = JSON.parse(localStorage.getItem("updatedPhase1Data"));
-      const newName =
-        updatedUser?.kanya_name || storedUser?.name || "Unknown User";
-
-      setUserName((prevName) => (prevName !== newName ? newName : prevName));
-      setActivePath(location.pathname);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [location.pathname]);
 
   const toggleNav = () => {
     setIsNavClosed(!isNavClosed);
@@ -181,8 +160,8 @@ function LeftNav() {
   return (
     <>
       {/* Header */}
-      <header className="user-nd-header">
-        <div className="logosec">
+      <Navbar className="user-nd-header" expand="lg">
+        <Nav  className="me-auto my-2 my-lg-0 px-2" navbarScroll>
           <img
             src={MenuIcon}
             className="icn menuicn"
@@ -193,8 +172,52 @@ function LeftNav() {
             <img src={CompanyLogo} alt="Manadavaaya" title="MAHADAVAAYA" className="logo" />
           </Link>
          
-        
-        </div>
+         <NavDropdown title="Home" id="navbarScrollingDropdown">
+                    <NavDropdown.Item href="/AboutUs">
+                      About Us
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="/PlatFormInfo">
+                      Platform info
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="/MissionVision">
+                      Mission & Vision
+                    </NavDropdown.Item>
+                    {/* <NavDropdown.Item href="/ContactUs">
+                      Contact Info
+                    </NavDropdown.Item> */}
+                    <NavDropdown.Item href="/MandirMahadevaya">
+                      Mandir & Mahadevaya Platform Overview{" "}
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="/SpecialAnnouncements">
+                      Special announcements / Upcoming Events
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                   <Nav.Link href="/DonateTemples">Donate</Nav.Link>
+                  <Nav.Link href="/TempleBookingInfo">Darshan & Pooja Booking</Nav.Link>
+                    <NavDropdown
+                    title="Pooja & Seva"
+                    id="navbarScrollingDropdown"
+                  >
+                    <NavDropdown.Item href="/PoojaBooking">
+                      Pooja Booking{" "}
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="/SevaRegistration">
+                      Seva Registration
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="/EventParticipation">
+                      Event Participation
+                    </NavDropdown.Item>
+                  </NavDropdown>
+<Nav.Link href="/PanditBooking">Pandit Booking</Nav.Link>
+ <NavDropdown title="Events" id="navbarScrollingDropdown">
+                    <NavDropdown.Item href="#action3">
+                      Upcoming Mandir Events
+                    </NavDropdown.Item>
+                    {/* <NavDropdown.Item href="#action4">
+                      Past Event Gallery
+                    </NavDropdown.Item> */}
+                  </NavDropdown>
+        </Nav>
         
                  
         <div className="message">
@@ -233,7 +256,7 @@ function LeftNav() {
           </Dropdown>
 
         </div>
-      </header>
+      </Navbar>
 
       {/* Sidebar Navigation */}
       <div className={`navcontainer ${isNavClosed ? "navclose" : ""}`}>
