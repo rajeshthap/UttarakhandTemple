@@ -18,9 +18,9 @@ import NewsUpdates from "../AboutUsDashBoard/NewsUpdate";
 const MainDashBoard = () => {
   const navigate = useNavigate();
   const { uniqueId } = useAuth();
-  // React.useEffect(() => {
-  //   if (!uniqueId) navigate("/Login");
-  // }, [uniqueId, navigate]);
+  React.useEffect(() => {
+    if (!uniqueId) navigate("/Login");
+  }, [uniqueId, navigate]);
 
   return (
     <>
