@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { Accordion, Button, Col, Container, Row, Form } from "react-bootstrap";
-import { FaCheck } from "react-icons/fa6";
-import { MdOutlineDateRange } from "react-icons/md";
-import { FaUsersLine } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Button, Col, Container, Row, Form, Modal } from "react-bootstrap";
+
+import { Link, useNavigate } from "react-router-dom";
 import { BsInfoCircleFill } from "react-icons/bs";
 import "../assets/CSS/BadrinathInfo.css";
-import DatePicker from "react-datepicker";
 import { FaCalendarAlt } from "react-icons/fa";
 import { MdLocationPin } from "react-icons/md";
 import { FaTrainSubway } from "react-icons/fa6";
@@ -17,72 +14,39 @@ import { SiGooglemaps } from "react-icons/si";
 // Correct image imports
 
 import Gangotri from "../assets/images/GangotriInfo.jpg";
-import Diya from "../assets/images/Diya.png";
+
 import "../assets/CSS/TempleBooking.css";
-
-
+import { useAuth } from "./GlobleAuth/AuthContext";
 
 const GangotriInfo = () => {
-    const [selectedDateTime, setSelectedDateTime] = useState(null);
-    // Helper to round up to next 30 min interval
-    const getNextInterval = (date = new Date()) => {
-        let minutes = date.getMinutes();
-        let nextMinutes = minutes <= 30 ? 30 : 0;
-        let nextHour = nextMinutes === 0 ? date.getHours() + 1 : date.getHours();
-        return new Date(
-            date.getFullYear(),
-            date.getMonth(),
-            date.getDate(),
-            nextHour,
-            nextMinutes
-        );
-    };
+  const navigate = useNavigate();
+  const { uniqueId } = useAuth();
 
-    const today = new Date();
-    const isToday =
-        selectedDateTime &&
-        selectedDateTime.getDate() === today.getDate() &&
-        selectedDateTime.getMonth() === today.getMonth() &&
-        selectedDateTime.getFullYear() === today.getFullYear();
+  const handleBookClick = () => {
+  if (uniqueId) {
+    // User logged in → navigate directly
+    navigate("/MandirBooking");
+  } else {
+    // User NOT logged in → show modal
+    setShowLoginModal(true);
+  }
+};
 
-    // 6:00 AM
-    const minTime = isToday
-        ? getNextInterval(today)
-        : new Date(today.getFullYear(), today.getMonth(), today.getDate(), 6, 0);
-    // 11:30 PM
-    const maxTime = new Date(
-        today.getFullYear(),
-        today.getMonth(),
-        today.getDate(),
-        23,
-        30
-    );
-
-    const [, setShow] = useState(false);
-    const [selectedPersons, setSelectedPersons] = useState(1);
-    const [selectedCard, ] = useState(null);
-
-    const [, setIsLoggedIn] = useState(false); // Login state
+ 
+const [showLoginModal, setShowLoginModal] = useState(false);
 
 
+  const handleCloseModal = () => setShowLoginModal(false);
+  const [, setShow] = useState(false);
+  const [] = useState(null);
+
+  const [, setIsLoggedIn] = useState(false); // Login state
+
+  const handleShow = () => setShow(true);
   
 
-    const handleShow = () => setShow(true);
-    // const [, setPujaDate] = useState("");
-    // const [, setPujaTime] = useState("");
-    // Default select the first ceremony on mount
-    useEffect(() => {
 
-    }, []);
-    // Correct total calculation
-    const totalAmount = selectedCard
-        ? selectedCard.price * selectedPersons
-        : 0;
-    //  Login/Register button handler
-    const handleLoginRegister = () => setIsLoggedIn(true);
-
-    const formattedDate = `${String(today.getDate()).padStart(2, "0")}/${String(today.getMonth() + 1).padStart(2, "0")}/${today.getFullYear()}`;
-
+  const handleLoginRegister = () => setIsLoggedIn(true);
     return (
         <div className="temp-donate">
             <Container className="temp-container-box temp-container-details">
@@ -93,6 +57,8 @@ const GangotriInfo = () => {
                     {/* Left Side Cards */}
                     <Col lg={7} md={7} sm={12} className="">
                         <div className="text-center p-4 my-4 temp-regis desktop-mobile ">
+                                     {!uniqueId && (
+                     <>
                             <h5>
                                 <BsInfoCircleFill className="temp-info-icon" />
                                 <strong></strong>To continue with your Mandir booking, please login
@@ -124,6 +90,7 @@ const GangotriInfo = () => {
                                     </Link>
                                 </Col>
                             </Row>
+                           </> )}
                         </div>
                         <Row className="g-4">
                             <Col lg={5} md={5} sm={12} xs={12} className="pl-2" >
@@ -246,11 +213,49 @@ const GangotriInfo = () => {
                                         </Col>
                                     </Row>
                                     <div className="d-flex justify-content-center mt-3">
-                                      <Link to="/MandirBooking"><Button className="temp-view-more-btn">Book Puja / Offer Donation</Button></Link>
+                                      <Link to="/MandirBooking"><Button className="temp-view-more-btn" onClick={handleBookClick}>Book Puja / Offer Donation</Button></Link>
                                     </div>
                                 </div>
 
                             </Col>
+                             {!uniqueId && (
+ 
+                                                    <Modal show={showLoginModal} onHide={() => setShowLoginModal(false)} centered>
+  <Modal.Header closeButton></Modal.Header>
+  <Modal.Body className="text-center">
+     <div className="text-center p-4 my-4 temp-regis">
+                      
+                       <p>
+                         Kindly click on the <strong>Login</strong> or{" "}
+                         <strong>Register</strong> button below to continue.
+                       </p>
+                       <Row className="mb-3">
+                         <Col xs={12} md={6} className="mb-2 mb-md-0">
+                           <Link to="/Login">
+                             <Button
+                               className="w-100 temp-login-btn"
+                               onClick={handleLoginRegister}
+                             >
+                               Login
+                             </Button>
+                           </Link>
+                         </Col>
+                         <Col xs={12} md={6}>
+                           <Link to="/DevoteeRegistration">
+                             <Button
+                               className="w-100 temp-regis-btn"
+                               onClick={handleLoginRegister}
+                             >
+                               Register
+                             </Button>
+                           </Link>
+                         </Col>
+                       </Row>
+                     </div>
+ 
+  </Modal.Body>
+</Modal>
+)}
                             <Container className="mt-4">
                                 <p>
                                     <span className="text-color">Gangotri Temple</span>, dedicated to <span className="text-color">Goddess Ganga</span>, is one of the most sacred shrines in India and a vital part of the <span className="text-color">Char Dham Yatra</span> in Uttarakhand. Located at an altitude of <span className="text-color">3,100 meters</span> in the <span className="text-color">Uttarkashi district</span>, the temple marks the origin of the <span className="text-color">River Ganga</span>, which is believed to have descended from heaven to cleanse the sins of mankind.
@@ -283,7 +288,7 @@ const GangotriInfo = () => {
 
 
                     </Col>
-
+   {!uniqueId && (
                     <Col lg={5} md={5} sm={12} className="mt-2 temp-right-side rhs-gob-mob">
                         <div className="text-center p-4 my-4 temp-regis">
                             <h5>
@@ -319,176 +324,9 @@ const GangotriInfo = () => {
                             </Row>
                         </div>
 
-                        <div className="tem-rhs-info temp-right-side-style">
-                            <h1>Temple Booking</h1>
-
-                            {selectedCard ? (
-                                <Accordion defaultActiveKey="0">
-                                    <Accordion.Item eventKey="0">
-                                        <Accordion.Header className="accordion-header-title">
-                                            {selectedCard.title}{" "}
-                                            <span className="temp-span-temple">
-                                                (₹{selectedCard.price} per person)
-                                            </span>
-                                        </Accordion.Header>
-                                        <Accordion.Body>
-                                            <Form.Group className="mb-3">
-                                                <Form.Label className="temp-label">
-                                                    No. of Person{" "}
-                                                    <span className="temp-span-star">*</span>
-                                                </Form.Label>
-                                                <Form.Select
-                                                    className="temp-form-control-option"
-                                                    value={selectedPersons}
-                                                    onChange={(e) =>
-                                                        setSelectedPersons(Number(e.target.value))
-                                                    }
-                                                >
-                                                    {Array.from({ length: 10 }, (_, i) => (
-                                                        <option key={i + 1} value={i + 1}>
-                                                            {i + 1}
-                                                        </option>
-                                                    ))}
-                                                </Form.Select>
-                                                <Form.Group className="mb-3 mt-3">
-                                                    <Form.Label className="temp-label mb-2">
-                                                        Pooja Date & Time{" "}
-                                                        <span className="temp-span-star">*</span>
-                                                    </Form.Label>
-                                                    <div>
-                                                        <DatePicker
-                                                            selected={selectedDateTime}
-                                                            onChange={setSelectedDateTime}
-                                                            showTimeSelect
-                                                            timeFormat="hh:mm aa"
-                                                            timeIntervals={30}
-                                                            dateFormat="MMMM d, yyyy h:mm aa"
-                                                            placeholderText="Select Date and time"
-                                                            className="form-control temp-form-control-option w-100"
-                                                            minDate={today}
-                                                            minTime={minTime}
-                                                            maxTime={maxTime}
-                                                            required
-                                                        />
-                                                    </div>
-                                                </Form.Group>
-                                              
-
-                                                {/* Info */}
-                                                <div className="mt-3">
-                                                    <p>
-                                                        <MdOutlineDateRange className="temple-icon" />{" "}
-                                                        {formattedDate}
-                                                    </p>
-                                                    <p>
-                                                        <FaUsersLine className="temple-icon" />{" "}
-                                                        {selectedPersons} Person(s), Charges ₹
-                                                        {selectedCard.price} Per Person
-                                                    </p>
-                                                </div>
-
-                                                {/* Amount */}
-                                                <div className="text-end mt-2">
-                                                    <p>
-                                                        Applicable Amount:{" "}
-                                                        <span className="amount-span">₹ {totalAmount}/-</span>
-                                                    </p>
-                                                </div>
-
-                                                {/* Cart */}
-                                                <h2>Cart Total</h2>
-                                                <p className="border-temp">{selectedCard.title}</p>
-                                                <div className="d-flex justify-content-between">
-                                                    <p>
-                                                        {selectedPersons} × ₹{selectedCard.price}
-                                                    </p>
-                                                    <span className="amount-span">₹ {totalAmount}/-</span>
-                                                </div>
-
-                                                {/* Button */}
-                                                <div className="gap-3 mt-3 mb-3 Temp-btn-submit">
-                                                    <Button
-                                                        variant="temp-submit-btn"
-                                                        className="temp-submit-btn mx-3"
-                                                        type="submit"
-                                                        onClick={handleShow}
-                                                    >
-                                                        <FaCheck /> Proceed for devotee details
-                                                    </Button>
-                                                </div>
-
-                                                <Accordion alwaysOpen={false} className="temp-accordin-btn">
-                                                    <Accordion.Item eventKey="0" className="temp-accordin-btn">
-                                                        <Accordion.Header className="temp-accordin-btn">
-                                                            {" "}
-                                                            <div>
-                                                                <img
-                                                                    src={Diya}
-                                                                    alt="img not found"
-                                                                    className="img-fluid temp-img-btn"
-                                                                ></img>
-                                                            </div>{" "}
-                                                            Ved Path <span>(₹2500 per Person)</span>
-                                                        </Accordion.Header>
-                                                        <Accordion.Body>
-                                                            <Form.Group className="mb-3">
-                                                                Ved Path <span>(₹2500 per Person)</span>
-                                                            </Form.Group>
-                                                        </Accordion.Body>
-                                                    </Accordion.Item>
-                                                </Accordion>
-
-                                                <Accordion alwaysOpen={false} className="temp-accordin-btn">
-                                                    <Accordion.Item eventKey="0" className="temp-accordin-btn">
-                                                        <Accordion.Header className="temp-accordin-btn">
-                                                            {" "}
-                                                            <div>
-                                                                <img
-                                                                    src={Diya}
-                                                                    alt="img not found"
-                                                                    className="img-fluid temp-img-btn"
-                                                                ></img>
-                                                            </div>{" "}
-                                                            Ved Path <span>(₹2500 per Person)</span>
-                                                        </Accordion.Header>
-                                                        <Accordion.Body>
-                                                            <Form.Group className="mb-3">
-                                                                Ved Path <span>(₹2500 per Person)</span>
-                                                            </Form.Group>
-                                                        </Accordion.Body>
-                                                    </Accordion.Item>
-                                                </Accordion>
-                                                <Accordion alwaysOpen={false} className="temp-accordin-btn">
-                                                    <Accordion.Item eventKey="0" className="temp-accordin-btn">
-                                                        <Accordion.Header className="temp-accordin-btn">
-                                                            {" "}
-                                                            <div>
-                                                                <img
-                                                                    src={Diya}
-                                                                    alt="img not found"
-                                                                    className="img-fluid temp-img-btn"
-                                                                ></img>
-                                                            </div>{" "}
-                                                            Ved Path <span>(₹2500 per Person)</span>
-                                                        </Accordion.Header>
-                                                        <Accordion.Body>
-                                                            <Form.Group className="mb-3">
-                                                                Ved Path <span>(₹2500 per Person)</span>
-                                                            </Form.Group>
-                                                        </Accordion.Body>
-                                                    </Accordion.Item>
-                                                </Accordion>
-                                            </Form.Group>
-                                        </Accordion.Body>
-                                    </Accordion.Item>
-                                </Accordion>
-                            ) : (
-                                <p className="text-muted">
-                                    👉 Select a ceremony from the left to view details here.
-                                </p>
-                            )}
-                        </div>
+                     
                     </Col>
+   )}
                 </Row>
             </Container>
         </div>

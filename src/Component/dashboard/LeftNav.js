@@ -1,33 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RiDashboard3Line } from "react-icons/ri";
-import {
-  MdLibraryBooks,
-} from "react-icons/md";
 import axios from "axios";
-
 import { FaAlignLeft, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
 import CompanyLogo from "../../assets/images/company-logo.png";
 import MenuIcon from "../../assets/images/menu_icon.png";
 import "../../assets/CSS/LeftNav.css";
 import ModifyAlert from "../Alert/ModifyAlert";
-import { BiDonateHeart } from "react-icons/bi";
 import { GiByzantinTemple } from "react-icons/gi";
 import { LiaCalendarCheck } from "react-icons/lia";
-import Navbar from "react-bootstrap/Navbar";
 import { FaRegFileLines } from "react-icons/fa6";
 import { TbPasswordUser } from "react-icons/tb";
-import { IoCalendarClear } from "react-icons/io5";
 import { Dropdown, Nav } from "react-bootstrap";
-import NavDropdown from "react-bootstrap/NavDropdown";
 import { useAuth } from "../GlobleAuth/AuthContext";
 import "../../assets/CSS/TopInfo.css";
 function LeftNav() {
   const { clearAuth } = useAuth();
 
   const [isNavClosed, setIsNavClosed] = useState(false);
-  const [userName, setUserName] = useState("Loading...");
+  const [userName, ] = useState("Loading...");
   const [activePath, setActivePath] = useState("");
   const [openSubMenu, setOpenSubMenu] = useState(null); // Track which submenu is open
   const [hoveredMenu, setHoveredMenu] = useState(null); // Track which menu is hovered
@@ -44,14 +36,14 @@ function LeftNav() {
     displayName: "",
     devotee_photo: "",
   });
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
 
   const { uniqueId } = useAuth(); // if you have AuthContext
 useEffect(() => {
     const fetchProfile = async () => {
       try {
         setLoading(true);
-        const userId = uniqueId || "USR/2025/47393";
+        const userId = uniqueId 
         const response = await axios.get(
           `https://mahadevaaya.com/backend/api/get-user/?user_id=${userId}`
         );
@@ -72,11 +64,7 @@ useEffect(() => {
 
     fetchProfile();
   }, [uniqueId]);
- const getImageUrl = (imgPath) => {
-  if (!imgPath) return "https://mahadevaaya.com/backend/media/devotee_photos/default.png";
-  if (imgPath.startsWith("https")) return imgPath;
-  return `https://mahadevaaya.com/backend/media/devotee_photos/${imgPath.split("/").pop()}`;
-};
+
   
   const handleDownload = (fileUrl, fileName) => {
     const a = document.createElement("a");

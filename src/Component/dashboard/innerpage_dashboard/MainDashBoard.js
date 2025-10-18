@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../../../assets/CSS/LeftNav.css";
 import "../../../assets/CSS/DashBoard.css";
 import { Col, Row } from "react-bootstrap";
@@ -12,10 +12,25 @@ import { RiFilePaper2Line } from "react-icons/ri";
 import PanditImg from "../../../assets/images/pandit_icon.png";
 import { BiSolidDonateBlood } from "react-icons/bi";
 import { GiByzantinTemple } from "react-icons/gi";
-import { useNavigate } from "react-router-dom";
+
 import { useAuth } from "../../GlobleAuth/AuthContext";
 import NewsUpdates from "../AboutUsDashBoard/NewsUpdate";
+import { useNavigate } from "react-router-dom";
 const MainDashBoard = () => {
+  useEffect(() => {
+
+  window.history.pushState(null, "", window.location.href);
+
+  const handlePopState = () => {
+    window.history.pushState(null, "", window.location.href);
+  };
+
+  window.addEventListener("popstate", handlePopState);
+
+  return () => {
+    window.removeEventListener("popstate", handlePopState);
+  };
+}, []); 
   const navigate = useNavigate();
   const { uniqueId } = useAuth();
   React.useEffect(() => {
