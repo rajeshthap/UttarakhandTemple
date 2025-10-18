@@ -41,14 +41,17 @@ const ForgotPassword = () => {
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
   const getContactPayload = () => {
-  const trimmedContact = contact.trim();
-  const trimmedRole = userType.trim();
-  if (phoneRegex.test(trimmedContact)) {
-    return { phone: trimmedContact, role: trimmedRole };
-  }
-  return null; 
-};
-
+    const trimmedContact = contact.trim();
+    const trimmedRole = userType.trim();
+    if (!trimmedRole) return null;
+    if (phoneRegex.test(trimmedContact)) {
+      return { phone: trimmedContact, role: trimmedRole };
+    }
+    if (emailRegex.test(trimmedContact)) {
+      return { email: trimmedContact, role: trimmedRole };
+    }
+    return null;
+  };
 
   const maskContact = (contact) => {
     if (phoneRegex.test(contact)) {
@@ -63,58 +66,62 @@ const ForgotPassword = () => {
   };
 
   const handleSendOtp = async () => {
-  if (!userType.trim()) {
-    setErrors("Please select user type");
-    return;
-  }
-
-  if (!contact.trim() || !phoneRegex.test(contact)) {
-    setErrors("Enter a valid phone number");
-    return;
-  }
-
-  setLoading(true);
-  setErrors("");
-  setMessage("");
-
-  const payload = { phone: contact.trim(), role: userType.trim() };
-
-  try {
-    const res = await axios.post(
-      `${BASE_URLL}api/send-otp/`,
-      payload
-    );
-    if (res.data.success) {
-      setStep(2);
-      setOtpExpiry(60);
-      setResendTimer(60);
-      setMaskedContact(maskContact(contact));
-    } else {
-      setErrors(res.data.message || "Failed to send OTP");
+    if (!userType.trim()) {
+      setErrors("Please select user type");
+      return;
     }
-  } catch (err) {
-    console.error(err);
-    setErrors("Error while sending OTP");
-  } finally {
-    setLoading(false);
-  }
-};
 
-useEffect(() => {
-  // Push the current page into history so user can't go back
-  window.history.pushState(null, "", window.location.href);
+    const trimmed = contact.trim();
+    if (!trimmed || (!phoneRegex.test(trimmed) && !emailRegex.test(trimmed))) {
+      setErrors("Enter a valid phone number");
+      return;
+    }
 
-  const handlePopState = () => {
+    setLoading(true);
+    setErrors("");
+    setMessage("");
+
+    const payload = getContactPayload();
+    if (!payload) {
+      setLoading(false);
+      setErrors("Invalid contact or missing role");
+      return;
+    }
+    try {
+      const res = await axios.post(
+        `${BASE_URLL}api/send-otp-password-change/`,
+        payload
+      );
+      if (res.data.success) {
+        setStep(2);
+        setOtpExpiry(60);
+        setResendTimer(60);
+        setMaskedContact(maskContact(contact));
+      } else {
+        setErrors(res.data.message || "Failed to send OTP");
+      }
+    } catch (err) {
+      console.error(err);
+      setErrors("You are not registered in this role");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    // Push the current page into history so user can't go back
     window.history.pushState(null, "", window.location.href);
-  };
 
-  window.addEventListener("popstate", handlePopState);
+    const handlePopState = () => {
+      window.history.pushState(null, "", window.location.href);
+    };
 
-  return () => {
-    window.removeEventListener("popstate", handlePopState);
-  };
-}, []);
+    window.addEventListener("popstate", handlePopState);
 
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -126,39 +133,36 @@ useEffect(() => {
     }
   };
 
- const handleVerifyOtp = async () => {
-  if (!otp) return setErrors("Enter the OTP sent to your phone");
+  const handleVerifyOtp = async () => {
+    if (!otp) return setErrors("Enter the OTP sent to your phone");
 
-  const payload = { ...getContactPayload(), otp };
-  if (!payload) return setErrors("Invalid phone number");
+    const payload = { ...getContactPayload(), otp };
+    if (!payload) return setErrors("Invalid phone number");
 
-  if (otpExpiry <= 0) {
-    setErrors("OTP expired, please resend");
-    return;
-  }
-
-  setLoading(true);
-  setErrors("");
-  setMessage("");
-
-  try {
-    const res = await axios.post(
-      `${BASE_URLL}api/verify-otp/`,
-      payload
-    );
-
-    if (res.data.success) {
-      setStep(3);
-    } else {
-      setErrors(res.data.message || "Invalid OTP");
+    if (otpExpiry <= 0) {
+      setErrors("OTP expired, please resend");
+      return;
     }
-  } catch (err) {
-    console.error(err);
-    setErrors("Error verifying OTP");
-  } finally {
-    setLoading(false);
-  }
-};
+
+    setLoading(true);
+    setErrors("");
+    setMessage("");
+
+    try {
+      const res = await axios.post(`${BASE_URLL}api/verify-otp/`, payload);
+
+      if (res.data.success) {
+        setStep(3);
+      } else {
+        setErrors(res.data.message || "Invalid OTP");
+      }
+    } catch (err) {
+      console.error(err);
+      setErrors("Error verifying OTP");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -188,68 +192,64 @@ useEffect(() => {
 
     if (valid) {
       //  submit to API or continue
-     // console.log("Form submitted", { password, confirmPassword });
+      // console.log("Form submitted", { password, confirmPassword });
     }
   };
 
- const handleResetPassword = async () => {
-  if (!password || !confirmPassword) return;
-  if (!contact || !userType) {
-    setErrors("Phone and role are required.");
-    return;
-  }
-  if (password !== confirmPassword) {
-    setErrors("Passwords do not match");
-    return;
-  }
-  if (!strongPasswordRegex.test(password)) {
-    setErrors(
-      "Password must be at least 8 characters, include uppercase, lowercase, number, and special character."
-    );
-    return;
-  }
+  const handleResetPassword = async () => {
+    if (!password || !confirmPassword) return;
+    if (!contact || !userType) {
+      setErrors("Phone and role are required.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      setErrors("Passwords do not match");
+      return;
+    }
+    if (!strongPasswordRegex.test(password)) {
+      setErrors(
+        "Password must be at least 8 characters, include uppercase, lowercase, number, and special character."
+      );
+      return;
+    }
 
-  const payload = {
-    phone: contact.trim(),
-    new_password: password.trim(), // <-- API expects `new_password`
-    role: userType.trim(),
+    const payload = {
+      phone: contact.trim(),
+      new_password: password.trim(), // <-- API expects `new_password`
+      role: userType.trim(),
+    };
+
+    setLoading(true);
+    setErrors("");
+    setMessage("");
+
+    try {
+      await axios.post(`${BASE_URLL}api/change-password/`, payload);
+
+      setAlertMessage(
+        `Password reset successful! Redirecting to ${userType} login...`
+      );
+      setShowAlert(true);
+
+      setTimeout(() => {
+        switch (userType.toLowerCase()) {
+          case "temple":
+            navigate("/Login");
+            break;
+          case "pandit":
+            navigate("/Login");
+            break;
+          default:
+            navigate("/Login");
+        }
+      }, 1500);
+    } catch (err) {
+      console.error(err);
+      setErrors("Error Resetting Password");
+    } finally {
+      setLoading(false);
+    }
   };
-
-  setLoading(true);
-  setErrors("");
-  setMessage("");
-
-  try {
-    await axios.post(
-      `${BASE_URLL}api/change-password/`,
-      payload
-    );
-
-    setAlertMessage(
-      `Password reset successful! Redirecting to ${userType} login...`
-    );
-    setShowAlert(true);
-
-    setTimeout(() => {
-      switch (userType.toLowerCase()) {
-        case "temple":
-          navigate("/Login");
-          break;
-        case "pandit":
-          navigate("/Login");
-          break;
-        default:
-          navigate("/Login");
-      }
-    }, 1500);
-  } catch (err) {
-    console.error(err);
-    setErrors("Error Resetting Password");
-  } finally {
-    setLoading(false);
-  }
-};
-
 
   const handleResendOtp = async () => {
     const payload = getContactPayload();
@@ -260,10 +260,7 @@ useEffect(() => {
     setMessage("");
 
     try {
-      const res = await axios.post(
-   `${BASE_URLL}api/send-otp/`,
-        payload
-      );
+      const res = await axios.post(`${BASE_URLL}api/send-otp/`, payload);
       if (res.data.success) {
         // setMessage("OTP resent successfully!");
         setOtpExpiry(60);

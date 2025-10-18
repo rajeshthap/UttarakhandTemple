@@ -9,6 +9,7 @@ import ModifyAlert from "../../Alert/ModifyAlert";
 import DatePicker from "react-datepicker";
 import LoginPopup from "../../OTPModel/LoginPopup";
 import { BASE_URLL } from "../../BaseURL";
+import { useAuth } from "../../GlobleAuth/AuthContext";
 
 const SevaRegistration = () => {
   const [show, setShow] = useState(false);
@@ -26,7 +27,7 @@ const SevaRegistration = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const navigate = useNavigate();
-
+  const { uniqueId } = useAuth();
   const [formData, setFormData] = useState({
     full_name: "",
     gender: "",
@@ -45,6 +46,8 @@ const SevaRegistration = () => {
     special_instructions: "",
     seva_donation_amount: "",
     payment_mode: "",
+    creator_id: uniqueId || "",
+
   });
 
   const handleResendOtp = async () => {
@@ -257,6 +260,7 @@ const SevaRegistration = () => {
 
   const checkUserExists = async (fieldValue, fieldName) => {
     try {
+      if (uniqueId) return;
       const res = await axios.get(`${BASE_URLL}api/all-reg/`);
 
       const userExists = res.data.some((user) => {
@@ -333,6 +337,8 @@ const SevaRegistration = () => {
           special_instructions: "",
           seva_donation_amount: "",
           payment_mode: "",
+          creator_id: uniqueId || "",
+
         });
       } else {
         setAlertMessage(res.data.message || "Seva Registration failed");
