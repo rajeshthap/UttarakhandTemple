@@ -5,10 +5,8 @@ import { Col, Row } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import LeftNav from "../LeftNav";
 import { FaHandsPraying, FaOm } from "react-icons/fa6";
-
 import { BsNewspaper } from "react-icons/bs";
 import { IoIosArrowForward } from "react-icons/io";
-
 import { MdEventAvailable } from "react-icons/md";
 import { RiFilePaper2Line } from "react-icons/ri";
 import PanditImg from "../../../assets/images/pandit_icon.png";
@@ -31,7 +29,6 @@ const MainDashBoard = () => {
         <aside className="sidebar">
           <LeftNav />
         </aside>
-
         {/* Right-hand Main Container */}
         <main className="main-container">
           <div className="content-box">
@@ -71,13 +68,10 @@ const MainDashBoard = () => {
                       <br></br>{" "}
                       <span className="user-span">Darshanams Booked</span>
                     </Card.Subtitle>
-                    {/* <Card.Text>
 
-                                        </Card.Text> */}
                   </Card.Body>
                 </Card>
               </Col>
-
               <Col lg={3} md={3} sm={12} className="d-flex">
                 <Card className="shadow-sm rounded  flex-fill dbcard-box-4">
                   <Card.Body>
@@ -90,10 +84,6 @@ const MainDashBoard = () => {
                       <span className="user-sub-title-data">0</span>
                       <br></br> <span className="user-span">Booking Count</span>
                     </Card.Subtitle>
-
-                    {/* <Card.Text>
-
-                                        </Card.Text> */}
                   </Card.Body>
                 </Card>
               </Col>
