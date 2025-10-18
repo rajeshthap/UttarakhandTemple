@@ -79,13 +79,12 @@
 .sub-nav-option:hover {
   background-color: rgba(0, 0, 0, 0.15);
   border-left: 3px solid #4a89dc;
-  padding-left: 40px;
+  padding-left: 0px;
 }
 
 /* Active menu item styling */
 .active-nav {
   background-color: rgba(0, 0, 0, 0.2);
-  font-weight: bold;
   border-left: 3px solid #4a89dc;
 }
 
@@ -108,8 +107,8 @@
   min-height: 100vh;
 }
 
-.sidebar{
-    background-color: var(--temp-primary);
+.sidebar {
+  background-color: var(--temp-primary);
 }
 
 
@@ -372,14 +371,21 @@
 .nav-item {
   margin-left: -3px;
 }
+
 .sub-item {
   margin-left: 16px;
 }
+
+.sub-item-label {
+  margin-left: 0px;
+}
+
 span.nav-label {
   padding-top: var(--nd-space-250);
   font-size: var(--nd-space-350);
   color: var(--nd-white);
 }
+
 span.sub-label {
   padding-top: var(--nd-space-250);
   font-size: var(--nd-space-350);

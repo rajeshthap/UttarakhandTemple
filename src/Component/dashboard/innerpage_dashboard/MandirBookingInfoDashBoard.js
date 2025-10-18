@@ -1,10 +1,11 @@
 import React from "react";
 import "../../../assets/CSS/LeftNav.css";
 import LeftNav from "../LeftNav";
+import MissionVision from "../../Home/MissionVision";
+import PanditBooking from "../../PanditBooking";
+import TempleBookingInfo from "../../TempleBookingInfo";
 
-import MandirBooking from "../../Mandir_booking/MandirBooking";
-
-const MandirBookingDashBoard = () => {
+const MandirBookingInfoDashBoard = () => {
   return (
     <>
       {/* Main Wrapper */}
@@ -13,10 +14,11 @@ const MandirBookingDashBoard = () => {
         <aside className="sidebar">
           <LeftNav />
         </aside>
+
         {/* Right-hand Main Container */}
-          
+        
         <main className="main-container-box">
-               <MandirBooking />
+               <TempleBookingInfo />
         </main>
      
       </div>
@@ -24,4 +26,4 @@ const MandirBookingDashBoard = () => {
   );
 };
 
-export default MandirBookingDashBoard;
+export default MandirBookingInfoDashBoard;

@@ -29,10 +29,10 @@ const ChangePassword = () => {
                         className="mb-3"
                         controlId="exampleForm.ControlInput1"
                       >
-                        <Form.Label>Login Type</Form.Label>
+                        <Form.Label className="temp-label">Login Type</Form.Label>
                         <Form.Control
                           type="text"
-                          placeholder="Temple" disabled
+                          placeholder="Temple" disabled className="temp-form-control-option"
                         />
                       </Form.Group>
                     </Col>
@@ -41,9 +41,9 @@ const ChangePassword = () => {
                         className="mb-3"
                         controlId="exampleForm.ControlInput1"
                       >
-                        <Form.Label>Old Password</Form.Label>
+                        <Form.Label className="temp-label">Old Password</Form.Label>
                         <Form.Control
-                             type="password" disabled value="........"
+                             type="password" disabled value="........" className="temp-form-control-option"
                           
                         />
                       </Form.Group>
@@ -53,10 +53,10 @@ const ChangePassword = () => {
                         className="mb-3"
                         controlId="exampleForm.ControlInput1"
                       >
-                        <Form.Label>User Name</Form.Label>
+                        <Form.Label className="temp-label">User Name</Form.Label>
                         <Form.Control
                           type="text"
-                          placeholder="deeps"  disabled
+                          placeholder="deeps"  disabled className="temp-form-control-option"
                         />
                       </Form.Group>
                     </Col>
@@ -65,10 +65,10 @@ const ChangePassword = () => {
                         className="mb-3"
                         controlId="exampleForm.ControlInput1"
                       >
-                        <Form.Label> Mobile No.</Form.Label>
+                        <Form.Label className="temp-label"> Mobile No.</Form.Label>
                         <Form.Control
                           type="number"
-                          placeholder="9876543210"  disabled
+                          placeholder="9876543210"  disabled className="temp-form-control-option"
                         />
                       </Form.Group>
                     </Col>
@@ -77,10 +77,10 @@ const ChangePassword = () => {
                         className="mb-3"
                         controlId="exampleForm.ControlInput1"
                       >
-                        <Form.Label>Type New Password</Form.Label>
+                        <Form.Label className="temp-label">Type New Password</Form.Label>
                         <Form.Control
                           type="password"
-                          placeholder="Type New Password"
+                          placeholder="Type New Password" className="temp-form-control-option"
                         />
                       </Form.Group>
                     </Col>
@@ -89,10 +89,10 @@ const ChangePassword = () => {
                         className="mb-3"
                         controlId="exampleForm.ControlInput1"
                       >
-                        <Form.Label>Confirm your Password</Form.Label>
+                        <Form.Label className="temp-label">Confirm your Password</Form.Label>
                         <Form.Control
                           type="password"
-                          placeholder="Confirm your Password"
+                          placeholder="Confirm your Password" className="temp-form-control-option"
                         />
                       </Form.Group>
                     </Col>

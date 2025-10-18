@@ -93,8 +93,16 @@ import BookingHistory from "./Component/dashboard/innerpage_dashboard/BookingHis
 import MyProfile from "./Component/dashboard/MyAccount/MyProfile";
 import Support from "./Component/dashboard/innerpage_dashboard/Support";  
 import EventDashBoard from "./Component/dashboard/innerpage_dashboard/EventDashBoard";
-
+import AboutDashBoard from "./Component/dashboard/AboutUsDashBoard/AboutDashBoard";
 import { AuthProvider } from "./Component/GlobleAuth/AuthContext";
+import PlatformInfoDashBoard from "./Component/dashboard/AboutUsDashBoard/PlatformInfoDashBoard";
+import MandirPlatformDashBoard from "./Component/dashboard/AboutUsDashBoard/MandirPlatformDashBoard";
+import MissionDashBoard from "./Component/dashboard/AboutUsDashBoard/MissionDashBoard";
+import SpecialAnnouncementDashBoard from "./Component/dashboard/AboutUsDashBoard/SpecialAnnouncementDashBoard";
+import MandirBookingInfoDashBoard from "./Component/dashboard/innerpage_dashboard/MandirBookingInfoDashBoard";
+
+
+
 
 // import BASE_URLL from "./Component/BaseURL";
 // import DashBoard from "./Component/dashboard/DashBoard";
@@ -109,7 +117,7 @@ function App() {
   const hiddenPaths = new Set(["/DashBoard", "/MainDashBoard", "/DonateDashBoard", "/PanditDashBoard", "/LeftNav", "/PoojaBookingDashBoard", "/MandirBookingDashBoard", "/DarshanBookingDashBoard", "/SevaRegistrationDashBoard",
      "/ChangePassword","/TempleDashBoard", "/TempleLeftNav","/PanditDarshanBooking","/PanditChangePassword","/PanditLeftNav","/Pandit_DashBoard","/PanditDonateDashBoard","/PanditBookDashBoard","/PanditPoojaBooking","/PanditBookingDashBoard",
      "/PanditSevaRegis","/TempDonateDashBoard","/TempPanditBooking","/TempPoojaBooking","/TempChangePassword","/TempSevaRegis",
-     "/TempDarshnBooking","/TempBookingDashBoard","/PanditProfile","/BookingHistory","/MyProfile","/Support","/EventDashBoard"]);
+     "/TempDarshnBooking","/TempBookingDashBoard","/PanditProfile","/BookingHistory","/MyProfile","/Support","/EventDashBoard","/AboutDashBoard","/PlatformInfoDashBoard","/MandirPlatformDashBoard","/MissionDashBoard","/SpecialAnnouncementDashBoard","/MandirBookingInfoDashBoard"]);
   const shouldHideBars = hiddenPaths.has(location.pathname);
   const hideFooter = location.pathname === "/";
   return (
@@ -148,6 +156,11 @@ function App() {
           <Route path="/PlatFormInfo" element={<PlatFormInfo />} />
           <Route path="/MandirBookingDashBoard" element={<MandirBookingDashBoard />} />
           <Route path="/TempDarshnBooking" element={<TempDarshnBooking />} />
+          <Route path="/PlatformInfoDashBoard" element={<PlatformInfoDashBoard />} />
+          <Route path="/MandirPlatformDashBoard" element={<MandirPlatformDashBoard />} />
+          <Route path="/MissionDashBoard" element={<MissionDashBoard />} />
+          <Route path="/SpecialAnnouncementDashBoard" element={<SpecialAnnouncementDashBoard />} />
+          <Route path="/MandirBookingInfoDashBoard" element={<MandirBookingInfoDashBoard />} />
 
           <Route path="/BaseURL" element={<BASE_URLL />} />
           <Route path="*" element={<NotFound />} />
@@ -185,6 +198,7 @@ function App() {
           <Route path="/TempBookingDashBoard" element={<TempBookingDashBoard />} />
           <Route path="/PanditProfile" element={<PanditProfile />} />
           <Route path="/BookingHistory" element={<BookingHistory />} />
+          <Route path="/AboutDashBoard" element={<AboutDashBoard />} />
           
           <Route path="/LeftNav" element={<LeftNav />} />
           <Route path="/SendOtpModal" element={<SendOtpModal />} />

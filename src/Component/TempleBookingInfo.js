@@ -392,7 +392,7 @@ const TempleBookingInfo = () => {
                 </Accordion>
               ) : (
                 <p className="text-muted">
-                  👉 Select a temple to view available Poojas.
+                   Select a temple to view available Poojas.
                 </p>
               )}
             </div>
@@ -406,7 +406,7 @@ const TempleBookingInfo = () => {
         </Modal.Header>
         <Modal.Body className="text-center">
           <p>
-            To continue with temple booking, please{" "}
+            To continue with mandir booking, please{" "}
             <strong>Login</strong> or <strong>Register</strong>.
           </p>
           <Row className="mb-3">

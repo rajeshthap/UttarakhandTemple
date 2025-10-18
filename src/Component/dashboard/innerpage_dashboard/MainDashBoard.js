@@ -14,6 +14,7 @@ import { BiSolidDonateBlood } from "react-icons/bi";
 import { GiByzantinTemple } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../GlobleAuth/AuthContext";
+import NewsUpdates from "../AboutUsDashBoard/NewsUpdate";
 const MainDashBoard = () => {
   const navigate = useNavigate();
   const { uniqueId } = useAuth();
@@ -47,10 +48,10 @@ const MainDashBoard = () => {
                       <FaHandsPraying />
                     </Card.Title>
                     <Card.Subtitle className="mb-2 user-sub-title">
-                      Sevas
+                      Seva
                       <br></br>
                       <span className="user-sub-title-data">0</span>
-                      <br></br> <span className="user-span">Sevas Booked</span>
+                      <br></br> <span className="user-span">Seva Booked</span>
                     </Card.Subtitle>
                   </Card.Body>
                 </Card>
@@ -62,13 +63,12 @@ const MainDashBoard = () => {
                       <FaHandsPraying />
                     </Card.Title>
                     <Card.Subtitle className="mb-2 user-sub-title">
-                      Darshanam
+                      Darshan Name
                       <br></br>
                       <span className="user-sub-title-data">0</span>
                       <br></br>{" "}
-                      <span className="user-span">Darshanams Booked</span>
+                      <span className="user-span">Darshan Booked</span>
                     </Card.Subtitle>
-
                   </Card.Body>
                 </Card>
               </Col>
@@ -100,9 +100,6 @@ const MainDashBoard = () => {
                       <br></br> <span className="user-span">Donations</span>
                     </Card.Subtitle>
 
-                    {/* <Card.Text>
-
-                                        </Card.Text> */}
                   </Card.Body>
                 </Card>
               </Col>
@@ -140,9 +137,9 @@ const MainDashBoard = () => {
                         <FaOm className="seva-come-icon-darshanam" />
                       </Col>
                       <Col lg={11} md={11} sm={12} className="user-seva-text">
-                        <h3>Sevas and Darshanam</h3>
+                        <h3>Seva and Darshanam</h3>
                         <p>
-                          Darshanam and Seva tickets can now be bought offline
+                          Darshan and Seva tickets can now be bought offline
                           at the ticket counter and online via our website.
                           Relish by visiting Sri Kanaka Durgamma Devasthanam
                         </p>
@@ -239,40 +236,7 @@ const MainDashBoard = () => {
               </Col>
               <Col lg={4} md={4} sm={12} className="">
                 <Row>
-                  <Col lg={12} md={12} sm={12} className="">
-                    <div class="sd-upcoming-events mt-3">
-                      <div class="sd-side-heading fw500 sd-border-no">
-                        <span class="fw700">Upcoming</span> Events
-                      </div>
-                      <div class="slick-list">No Events</div>
-                    </div>
-                  </Col>
-                  <Col lg={12} md={12} sm={12}>
-                    <div className="sd-news-updates ">
-                      <h2 className="sd-side-heading fw500">
-                        <span className="fw700">News</span> Updates
-                      </h2>
-
-                      <div className="sd-news-list mt-20">
-                        <div className="item">
-                          <div className="sd-news-para">
-                            <div className="news-icon-text">
-                              <BsNewspaper className="up-come-icon" />
-                              <p>
-                                Dussera Celebrations will be started with great
-                                grandeur from 25-09-2022
-                              </p>
-                            </div>
-                            <span className="sd-news-date">09 Sep 2022</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="clearfix user-btn-all mt-4">
-                        <button className="sd-btn-orange">View All</button>
-                      </div>
-                    </div>
-                  </Col>
+                  <NewsUpdates />
                 </Row>
               </Col>
             </Row>

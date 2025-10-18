@@ -335,10 +335,7 @@ const EventParticipation = () => {
           <p>
             <i>Join Sacred Gatherings and Be Part of Divine Celebrations </i>
           </p>
-          <div>
-            <h1>Main Dashboard</h1>
-            <p>Unique ID: {uniqueId}</p>{" "}
-          </div>
+        
           <Row>
             <Col lg={8} md={8} sm={12} className="mt-2">
               <h2>Devotee Information</h2>

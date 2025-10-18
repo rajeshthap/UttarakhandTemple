@@ -1,10 +1,9 @@
 import React from "react";
 import "../../../assets/CSS/LeftNav.css";
 import LeftNav from "../LeftNav";
+import SpecialAnnouncements from "../../Home/SpecialAnnouncements";
 
-import MandirBooking from "../../Mandir_booking/MandirBooking";
-
-const MandirBookingDashBoard = () => {
+const SpecialAnnouncementDashBoard = () => {
   return (
     <>
       {/* Main Wrapper */}
@@ -13,10 +12,11 @@ const MandirBookingDashBoard = () => {
         <aside className="sidebar">
           <LeftNav />
         </aside>
+
         {/* Right-hand Main Container */}
-          
+        
         <main className="main-container-box">
-               <MandirBooking />
+               <SpecialAnnouncements />
         </main>
      
       </div>
@@ -24,4 +24,4 @@ const MandirBookingDashBoard = () => {
   );
 };
 
-export default MandirBookingDashBoard;
+export default SpecialAnnouncementDashBoard;
