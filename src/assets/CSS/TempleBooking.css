@@ -113,7 +113,19 @@ button.accordion-button.collapsed {
     pointer-events: auto;
     opacity: 1;
 } */
-
+.temp-search{
+    margin-right: var(--temp-space-250);
+    border-radius: var(--temp-space-300);
+    background-color: var(--temp-boader-gary);
+    font-size: var(--temp-space-300);
+}
+.temp-list{
+    min-width: 200px;
+ 
+    border-radius: var(--temp-space-300);
+    background-color: var(--temp-boader-gary);
+    font-size: var(--temp-space-300);
+}
 .temp-click-btn-read {
 
     color: #d97706 !important;
