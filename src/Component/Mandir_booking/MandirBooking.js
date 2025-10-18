@@ -14,12 +14,16 @@ import { setHours, setMinutes } from "date-fns";
 import LoginPopup from "../OTPModel/LoginPopup";
 import { useLocation } from "react-router-dom";
 import { BASE_URLL } from "../BaseURL";
+import { useAuth } from "../GlobleAuth/AuthContext";
+
 
 const MandirBooking = () => {
   const [show, setShow] = useState(false);
   const [, setTemples] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
+  const { uniqueId } = useAuth();
+  
 
   // Array to hold details for each person
   const [persons, setPersons] = useState([]);
@@ -46,6 +50,8 @@ const MandirBooking = () => {
 
     ],
     pooja_details: [],
+    creator_id: uniqueId || "",
+
   });
 
   const handleClose = () => setShow(false);
@@ -748,9 +754,7 @@ const MandirBooking = () => {
 
       console.log("Darshan payload:", payload);
 
-      const username = "9058423148";
-      const password = "Test@123";
-      const authHeader = "Basic " + btoa(username + ":" + password);
+      
 
       const res = await axios.post(
         `${BASE_URLL}api/darshan-pooja-booking/`,
@@ -758,7 +762,7 @@ const MandirBooking = () => {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: authHeader,
+            
           },
         }
       );
