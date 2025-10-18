@@ -11,7 +11,7 @@ import defaultAvatar from "../../assets/images/Diya.png";
 
 const InfoBar = () => {
   const navigate = useNavigate();
-  const { uniqueId, setUniqueId } = useAuth(); // Use setter here
+  const { uniqueId, setUniqueId } = useAuth(); 
   const [profile, setProfile] = useState({
     displayName: "",
     devotee_photo: "",
