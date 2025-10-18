@@ -6,23 +6,54 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ModifyAlert from "../Alert/ModifyAlert";
 import { BASE_URLL } from "../BaseURL";
+import { useAuth } from "../GlobleAuth/AuthContext";
+import LoginPopup from "../OTPModel/LoginPopup";
 
 const ExtendYourDivine = () => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
   const [verifying, setVerifying] = useState(false);
+  const [pendingDonation, setPendingDonation] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [profileLoaded, setProfileLoaded] = useState(false);
+  const [, setAgree] = useState(false);
   const [otp, setOtp] = useState("");
   const [temples, setTemples] = useState([]);
   const [errors, setErrors] = useState({});
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const { uniqueId } = useAuth();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [isButtonEnabled, setIsButtonEnabled] = useState(true);
+
+  const checkUserExists = async (fieldValue, fieldName) => {
+    try {
+      if (uniqueId) return;
+
+      const res = await axios.get(`${BASE_URLL}api/all-reg/`);
+      const userExists = res.data.some((user) => {
+        if (fieldName === "mobile_number")
+          return String(user.phone) === String(fieldValue);
+        if (fieldName === "email")
+          return String(user.email) === String(fieldValue);
+        return false;
+      });
+      if (userExists) {
+        setShowLoginModal(true);
+      }
+    } catch (err) {
+      console.error("Error checking user existence:", err);
+    }
+  };
 
   const [formData, setFormData] = useState({
-    temple_name: "hy",
+    temple_name: "",
     amount: "",
     pilgrim_name: "",
     mobile_number: "",
     email_id: "",
+    creator_id: uniqueId || "",
   });
   useEffect(() => {
     const fetchTemples = async () => {
@@ -43,6 +74,48 @@ const ExtendYourDivine = () => {
 
     fetchTemples();
   }, []);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        setLoading(true);
+        const userId = uniqueId || "USR/2025/47393";
+        const response = await axios.get(
+          `https://mahadevaaya.com/backend/api/get-user/?user_id=${userId}`
+        );
+
+        if (response.data) {
+          const user = response.data;
+          const fetched = {
+            displayName: user.devotee_name || "",
+            mobile: user.phone || "",
+            email: user.email || "",
+            firstName: user.devotee_name?.split(" ")[0] || "",
+            gender: user.gender || "",
+            devotee_photo: user.devotee_photo || "",
+          };
+          console.log("Fetched User Data:", fetched);
+          setProfile(fetched);
+
+          // populate formData with fetched mobile/email and pilgrim name (if available)
+          setFormData((prev) => ({
+            ...prev,
+            mobile_number: fetched.mobile || prev.mobile_number,
+            email_id: fetched.email || prev.email_id,
+            pilgrim_name: fetched.displayName || prev.pilgrim_name,
+            creator_id: uniqueId || prev.creator_id,
+          }));
+        }
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      } finally {
+        setLoading(false);
+        setProfileLoaded(true);
+      }
+    };
+
+    fetchProfile();
+  }, [uniqueId]);
 
   const navigate = useNavigate();
   const handleShow = () => setShow(true);
@@ -96,6 +169,7 @@ const ExtendYourDivine = () => {
           const { mobile_number, ...rest } = prev;
           return rest;
         });
+        checkUserExists(value, "mobile_number");
       }
     }
 
@@ -110,6 +184,7 @@ const ExtendYourDivine = () => {
           const { email_id, ...rest } = prev;
           return rest;
         });
+        checkUserExists(value, "email");
       }
     }
 
@@ -126,98 +201,106 @@ const ExtendYourDivine = () => {
         phone: formData.mobile_number,
       });
 
-      if (res.data.success) {
-        setAlertMessage("OTP Resent Successfully!");
+      if (res.data?.success) {
+        setAlertMessage("OTP sent successfully!");
         setShowAlert(true);
       } else {
-        setAlertMessage("Failed to resend OTP. Try again.");
+        setAlertMessage(
+          res.data?.message || "Failed to resend OTP. Try again."
+        );
         setShowAlert(true);
       }
     } catch (error) {
+      console.error("Resend OTP error:", error);
       setAlertMessage("Something went wrong. Please try again.");
       setShowAlert(true);
     }
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e?.preventDefault?.();
 
     if (!validateForm()) {
       setAlertMessage("Please fill all required fields.");
       setShowAlert(true);
+      return;
+    }
+
+    // If OTP not verified yet
+    if (!isVerified) {
+      try {
+        setLoading(true);
+        const otpRes = await axios.post(`${BASE_URLL}api/send-otp/`, {
+          phone: formData.mobile_number,
+        });
+
+        if (otpRes.data?.success) {
+          setPendingDonation({ ...formData });
+          setIsButtonEnabled(false);
+          setAlertMessage("OTP sent. Please verify to proceed to Payment.");
+          setShowAlert(true);
+          setShow(true); // open OTP modal
+        } else {
+          setAlertMessage(
+            otpRes.data?.message || "Failed to send OTP. Try again."
+          );
+          setShowAlert(true);
+        }
+      } catch (err) {
+        console.error("Error sending OTP:", err);
+        setAlertMessage("Error sending OTP. Please try again.");
+        setShowAlert(true);
+      } finally {
+        setLoading(false);
+      }
 
       return;
     }
 
-    setLoading(true);
-
-    try {
-      const formDataToSend = new FormData();
-      formDataToSend.append("temple_name", formData.temple_name);
-      formDataToSend.append("amount", formData.amount);
-      formDataToSend.append("pilgrim_name", formData.pilgrim_name);
-      formDataToSend.append("mobile_number", formData.mobile_number);
-      formDataToSend.append("email_id", formData.email_id);
-
-      const response = await axios.post(
-        `${BASE_URLL}api/donation/`,
-        formDataToSend,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-
-      if (response.status >= 200 && response.status < 300) {
-        await axios.post(`${BASE_URLL}api/send-otp/`, {
-          phone: formData.mobile_number,
-        });
-        handleShow();
-      } else {
-        setAlertMessage("Something went wrong!");
-        setShowAlert(true);
-      }
-    } catch (error) {
-      // console.log(error.response?.data || error.message);
-      setAlertMessage(
-        "Error: " +
-          (error.response?.data?.message ||
-            error.response?.data ||
-            error.message)
-      );
-      setShowAlert(true);
-    } finally {
-      setLoading(false);
-    }
+    // OTP already verified → redirect to Payment Page
+    setTimeout(() => navigate("/PaymentConfirmation"), 500);
   };
 
   const handleVerifyOtp = async () => {
     if (!otp) {
+      setAlertMessage("Please enter OTP.");
+      setShowAlert(true);
       return;
     }
+
     setVerifying(true);
     try {
-      const payload = {
-        phone: formData.mobile_number,
-        otp: otp,
-      };
+      const phoneToVerify = String(
+        pendingDonation?.mobile_number || formData.mobile_number
+      ).trim();
+      const otpValue = String(otp).trim();
 
-      const response = await axios.post(
-        `${BASE_URLL}api/verify-otp/`,
-        payload
-      );
+      const res = await axios.post(`${BASE_URLL}api/verify-otp/`, {
+        phone: phoneToVerify,
+        otp: otpValue,
+      });
 
-      if (response.data.success) {
-        setAlertMessage("OTP Verified Successfully!");
+      if (!(res.status === 200 && res.data?.success)) {
+        setAlertMessage(res.data?.message || "OTP verification failed");
         setShowAlert(true);
-        setTimeout(() => {
-          navigate("/PaymentConfirmation");
-        }, 2000);
-        handleClose();
-      } else {
-        setAlertMessage(response.data.message || "OTP verification failed.");
-        setShowAlert(true);
+        setAgree(false);
+        setIsButtonEnabled(true);
+        return;
       }
-    } catch (error) {
-      setAlertMessage("Please Enter Correct OTP");
+
+      setIsVerified(true);
+      setAlertMessage(res.data?.message || "OTP verified successfully");
       setShowAlert(true);
+      setAgree(true);
+      setShow(false);
+
+      setTimeout(() => navigate("/PaymentConfirmation"), 1200);
+    } catch (err) {
+      console.error("verify OTP error:", err);
+      setAlertMessage(err.response?.data?.message || "Error verifying OTP");
+      setShowAlert(true);
+      setAgree(false);
+      setIsButtonEnabled(true);
     } finally {
       setVerifying(false);
     }
@@ -312,6 +395,8 @@ const ExtendYourDivine = () => {
                     name="mobile_number"
                     value={formData.mobile_number}
                     onChange={handleInputChange}
+                    disabled={!!profile?.mobile}
+                    title={profile?.mobile ? "Phone loaded from profile" : ""}
                   />
                   {errors.mobile_number && (
                     <small className="text-danger">
@@ -333,6 +418,8 @@ const ExtendYourDivine = () => {
                     name="email_id"
                     value={formData.email_id}
                     onChange={handleInputChange}
+                    disabled={!!profile?.email}
+                    title={profile?.email ? "Email loaded from profile" : ""}
                   />
                   {errors.email_id && (
                     <small className="text-danger">{errors.email_id}</small>
@@ -347,11 +434,12 @@ const ExtendYourDivine = () => {
                 variant="temp-submit-btn"
                 className="temp-submit-btn mx-3"
                 type="button"
-                disabled={loading}
+                disabled={loading || !isButtonEnabled || verifying} // include verifying to block multiple clicks
                 onClick={handleSubmit}
               >
-                {loading ? "Registering..." : "Register Now"}
+                {loading || verifying ? "Processing..." : "Donate Now"}
               </Button>
+
               <Button
                 variant="secondary"
                 className="temp-cancle-btn"
@@ -394,6 +482,15 @@ const ExtendYourDivine = () => {
           </Col>
         </Row>
       </Container>
+      <LoginPopup
+        show={showLoginModal}
+        mobileNumber={formData.mobile_number}
+        email={formData.email_id}
+        handleClose={() => {
+          setShowLoginModal(false);
+          setFormData((prev) => ({ ...prev, mobile_number: "", email_id: "" }));
+        }}
+      />
       <ModifyAlert
         message={alertMessage}
         show={showAlert}
