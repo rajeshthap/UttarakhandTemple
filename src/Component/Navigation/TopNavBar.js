@@ -8,7 +8,9 @@ import logo from "../../assets/images/company-logo.png";
 import { FaRocketchat } from "react-icons/fa6";
 import Nandi from "../../assets/images/askNandi.gif";
 
+
 const TopNavBar = () => {
+  
   return (
     <>
       <div className="menu-wrapper menubar">
@@ -61,9 +63,9 @@ const TopNavBar = () => {
                     title="Pooja & Seva"
                     id="navbarScrollingDropdown"
                   >
-                    <NavDropdown.Item href="/PoojaBooking">
+                    {/* <NavDropdown.Item href="/PoojaBooking">
                       Pooja Booking{" "}
-                    </NavDropdown.Item>
+                    </NavDropdown.Item> */}
                     <NavDropdown.Item href="/SevaRegistration">
                       Seva Registration
                     </NavDropdown.Item>

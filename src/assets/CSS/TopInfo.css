@@ -52,6 +52,7 @@
     font-size: var(--temp-space-300);
     border-radius: var(--temp-space-100);
     transition: background-color 0.3s ease;
+    border: var(--temp-space-25) solid var(--temp-org);
 }
 
 .register-btn:hover {

@@ -235,7 +235,12 @@ body {
     font-size: 10px;
     color: var(--temp-red);
 }
-
+.nav-profile-photo{
+   width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    object-fit: cover;
+}
 .otperror {
     color: var(--temp-red);
     font-size: var(--temp-space-350);

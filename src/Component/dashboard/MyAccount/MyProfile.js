@@ -12,6 +12,8 @@ import { FaCamera } from "react-icons/fa";
 import DefaultProfile from "../../../assets/images/Diya.png";
 
 const MyProfile = () => {
+    //   if (!uniqueId) navigate("/Login");
+  // }, [uniqueId, navigate]);
   const navigate = useNavigate();
   const { uniqueId } = useAuth(); // assuming this gives your user_id
   const [loading, setLoading] = useState(false);
@@ -24,47 +26,41 @@ const MyProfile = () => {
     devotee_photo: "",
   });
   
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        setLoading(true);
+ useEffect(() => {
+  const fetchProfile = async () => {
+    try {
+      setLoading(true);
 
-        // You can use uniqueId dynamically if available
-        const userId = uniqueId || "USR/2025/47393"; 
-        const response = await axios.get(
-          `http://mahadevaaya.com/backend/api/get-user/?user_id=${userId}`
-        );
+      const userId = uniqueId || "USR/2025/47393";
+      const response = await axios.get(
+        `http://mahadevaaya.com/backend/api/get-user/?user_id=${userId}`
+      );
 
-        if (response.data) {
-          const user = response.data;
-          console.log("Fetched User Data:", user);
+      if (response.data) {
+        const user = response.data;
+        console.log("Fetched User Data:", user);
 
-          setProfile({
-            displayName: user.devotee_name || "",
-            mobile: user.phone || "",
-            email: user.email || "",
-            firstName: user.devotee_name?.split(" ")[0] || "",
-           
-            dob: user.dob || "",
-            gender: user.gender || "",
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching profile data:", error);
-      } finally {
-        setLoading(false);
+        setProfile({
+          displayName: user.devotee_name || "",
+          mobile: user.phone || "",
+          email: user.email || "",
+          firstName: user.devotee_name?.split(" ")[0] || "",
+          gender: user.gender || "",
+          devotee_photo: user.devotee_photo || "", // ✅ include photo here
+        });
       }
-    };
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchProfile();
-  }, [uniqueId]);
-const getImageUrl = (imgPath) => {
-  if (!imgPath)
-    return "https://mahadevaaya.com/backend/media/temple_images/default.png";
+  fetchProfile();
+}, [uniqueId]);
 
-  const filename = imgPath.split("/").pop();
-  return `https://mahadevaaya.com/backend/media/temple_images/${filename}`;
-};
+
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProfile((prev) => ({ ...prev, [name]: value }));
@@ -103,11 +99,16 @@ const handleEditPhoto = () => {
         <Spinner animation="border" />
       ) : (
         <div className="profile-photo-wrapper position-relative mx-auto">
-         <img
-  src={getImageUrl(profile.devotee_photo)}
-  alt={profile.devotee_photo || "Devotee"}
+ <img
+  src={
+    profile.devotee_photo
+      ? `http://mahadevaaya.com/backend/media/devotee_photos/${profile.devotee_photo.split("/").pop()}`
+      : "http://mahadevaaya.com/backend/media/devotee_photos/default.png"
+  }
+  alt={profile.displayName || "Devotee"}
   className="profile-photo"
 />
+
 
           <div className="edit-overlay" onClick={handleEditPhoto}>
             <FaCamera className="edit-icon" />

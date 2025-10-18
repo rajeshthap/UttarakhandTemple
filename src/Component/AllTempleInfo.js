@@ -36,14 +36,27 @@ const AllTempleInfo = () => {
     const filename = imgPath.split("/").pop();
     return `https://mahadevaaya.com/backend/media/temple_images/${filename}`;
   };
+const handleTempleClick = (temple) => {
+  const templeName = temple.temple_name?.toLowerCase().trim();
 
-  const handleTempleClick = (temple) => {
+  if (templeName.includes("badrinath")) {
+    navigate("/BadrinathInfo", { state: { temple } });
+  } else if (templeName.includes("kedarnath")) {
+    navigate("/KedarnathInfo", { state: { temple } });
+  } else if (templeName.includes("gangotri")) {
+    navigate("/GangotriInfo", { state: { temple } });
+  } else if (templeName.includes("yamunotri")) {
+    navigate("/YamunotriInfo", { state: { temple } });
+  } else {
     const slug = temple.temple_name
       ?.toLowerCase()
       .replace(/\s+/g, "-")
       .replace(/[^a-z0-9-]/g, "");
     navigate(`/temple/${slug}`, { state: { temple } });
-  };
+  }
+};
+
+
 
   // Custom arrows
   const NextArrow = ({ onClick }) => (
@@ -81,7 +94,7 @@ const AllTempleInfo = () => {
       <div className="container">
         <div className="text-center mb-4">
           <h2>Temple Info</h2>
-          <h3>Explore Temple History, Facilities & Services</h3>
+          <h3>Explore Temple History & Services</h3>
         </div>
 
         <div className="carousel-container" style={{ position: "relative" }}>

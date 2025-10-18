@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RiDashboard3Line } from "react-icons/ri";
 import {
   MdLibraryBooks,
 } from "react-icons/md";
+import axios from "axios";
+
 import { FaAlignLeft, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
 import CompanyLogo from "../../assets/images/company-logo.png";
@@ -33,11 +35,49 @@ function LeftNav() {
   // alert state
   const [showModifyAlert, setShowModifyAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
-
+ const navigate = useNavigate();
+ 
   const toggleNav = () => {
     setIsNavClosed(!isNavClosed);
   };
+  const [profile, setProfile] = useState({
+    displayName: "",
+    devotee_photo: "",
+  });
+  const [loading, setLoading] = useState(false);
 
+  const { uniqueId } = useAuth(); // if you have AuthContext
+useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        setLoading(true);
+        const userId = uniqueId || "USR/2025/47393";
+        const response = await axios.get(
+          `http://mahadevaaya.com/backend/api/get-user/?user_id=${userId}`
+        );
+
+        if (response.data) {
+          const user = response.data;
+          setProfile({
+            displayName: user.devotee_name || "",
+            devotee_photo: user.devotee_photo || "",
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [uniqueId]);
+ const getImageUrl = (imgPath) => {
+  if (!imgPath) return "http://mahadevaaya.com/backend/media/devotee_photos/default.png";
+  if (imgPath.startsWith("http")) return imgPath;
+  return `http://mahadevaaya.com/backend/media/devotee_photos/${imgPath.split("/").pop()}`;
+};
+  
   const handleDownload = (fileUrl, fileName) => {
     const a = document.createElement("a");
     a.href = fileUrl;
@@ -198,9 +238,9 @@ function LeftNav() {
                     title="Pooja & Seva"
                     id="navbarScrollingDropdown"
                   >
-                    <NavDropdown.Item href="/PoojaBooking">
+                    {/* <NavDropdown.Item href="/PoojaBooking">
                       Pooja Booking{" "}
-                    </NavDropdown.Item>
+                    </NavDropdown.Item> */}
                     <NavDropdown.Item href="/SevaRegistration">
                       Seva Registration
                     </NavDropdown.Item>
@@ -227,33 +267,42 @@ function LeftNav() {
             setShow={setShowModifyAlert}
           />
 
-          <div className="nd-msg">User: {userName}</div>
-          <Dropdown align="end" className="user-dp">
-            <Dropdown.Toggle
-              variant=""
-              id="user-dropdown"
-              className="border-0 bg-transparent"
-              title="Account Menu"
-            >
-              <div className="nd-log-icon-pandit">
-                <LuLogOut />
-              </div>
-            </Dropdown.Toggle>
+          <div className=" d-flex align-items-center gap-2">
+      <div className="nd-msg">{profile.displayName || "User"}</div>
+      <Dropdown align="end" className="user-dp">
+        <Dropdown.Toggle
+          variant=""
+          id="user-dropdown"
+          className="border-0 bg-transparent"
+          title="Account Menu"
+        >
+         <img
+  src={
+    profile.devotee_photo 
+      ? `http://mahadevaaya.com/backend/media/devotee_photos/${profile.devotee_photo.split("/").pop()}`
+      : "http://mahadevaaya.com/backend/media/devotee_photos/default.png"
+  }
+  alt={profile.displayName || "Devotee"}
+  className="nav-profile-photo"
+/>
+        </Dropdown.Toggle>
 
-            {/* Dropdown menu */}
-            <Dropdown.Menu>
-              <Dropdown.Item as={Link} to="/UserProfile">
-                My Profile
-              </Dropdown.Item>
-              <Dropdown.Item as={Link} to="/Dashboard">
-                Dashboard
-              </Dropdown.Item>
-              <Dropdown.Divider />
-              <Dropdown.Item onClick={logout} className="text-danger">
-                Logout
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+        {/* Dropdown menu */}
+        <Dropdown.Menu>
+          <Dropdown.Item as={Link} to="/UserProfile">
+            My Profile
+          </Dropdown.Item>
+          <Dropdown.Item as={Link} to="/Dashboard">
+            Dashboard
+          </Dropdown.Item>
+          <Dropdown.Divider />
+          <Dropdown.Item onClick={logout} className="text-danger">
+            Logout
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    </div>
+         
 
         </div>
       </Navbar>

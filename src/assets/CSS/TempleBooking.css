@@ -104,7 +104,7 @@ button.accordion-button.collapsed {
   opacity: 1;
 } */
 
-.pandit-right-side-style {
+/* .pandit-right-side-style {
     pointer-events: none;
     opacity: 0.5;
 }
@@ -112,7 +112,7 @@ button.accordion-button.collapsed {
 .pandit-right-side-style.active {
     pointer-events: auto;
     opacity: 1;
-}
+} */
 
 .temp-click-btn-read {
 

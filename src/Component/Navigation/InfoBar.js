@@ -4,9 +4,13 @@ import "../../assets/CSS/TopInfo.css"; // Importing the CSS file for styling
 import Dropdown from "react-bootstrap/Dropdown";
 import { IoKeySharp } from "react-icons/io5";
 import { FaUserGroup } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../GlobleAuth/AuthContext"; // Import Auth context
 
 const InfoBar = () => {
+  const navigate = useNavigate();
+  const { uniqueId } = useAuth(); // Get login state
+
   return (
     <>
       <div className="header-top container-fluid">
@@ -29,44 +33,56 @@ const InfoBar = () => {
           {/* Right Side */}
           <Col xs={12} md={6} lg={6} className="text-center text-md-end">
             <div className="d-inline-flex align-items-center flex-wrap justify-content-center">
-              <Dropdown className="px-2">
-                <Link to="/Login" className="px-2 text-decoration-none">
-      <Button variant="" className="login-btn" id="login-dropdown">
-        <span className="top-icon">
-          <IoKeySharp />
-        </span>{" "}
-        Login
-      </Button>
-    </Link>
-                {/* <Dropdown.Menu>
-            
-                  <Dropdown.Item href="/Login">
-                    Login
-                  </Dropdown.Item>
-                 
-                </Dropdown.Menu> */}
-              </Dropdown>
 
-              <Dropdown className="px-2">
-                <Dropdown.Toggle
-                  variant=""
-                  className="register-btn"
-                  id="register-dropdown"
-                >
-                  <span className="top-icon">
-                    <FaUserGroup />
-                  </span>{" "}
-                  Register
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item href="/TempleAuthority">
-                    Temple Authority
-                  </Dropdown.Item>
-                  <Dropdown.Item href="/PanditRegistration">Pandit ji </Dropdown.Item>
-                  <Dropdown.Item href="/DevoteeRegistration">Devotee</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+              {/* Show Login/Register if NOT logged in */}
+              {!uniqueId && (
+                <>
+                  <Dropdown className="px-2">
+                    <Link to="/Login" className="px-2 text-decoration-none">
+                      <Button variant="" className="login-btn" id="login-dropdown">
+                        <span className="top-icon">
+                          <IoKeySharp />
+                        </span>{" "}
+                        Login
+                      </Button>
+                    </Link>
+                  </Dropdown>
 
+                  <Dropdown className="px-2">
+                    <Dropdown.Toggle
+                      variant=""
+                      className="register-btn"
+                      id="register-dropdown"
+                    >
+                      <span className="top-icon">
+                        <FaUserGroup />
+                      </span>{" "}
+                      Register
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item href="/TempleAuthority">
+                        Temple Authority
+                      </Dropdown.Item>
+                      <Dropdown.Item href="/PanditRegistration">Pandit ji</Dropdown.Item>
+                      <Dropdown.Item href="/DevoteeRegistration">Devotee</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </>
+              )}
+
+              {/* Show Dashboard link ONLY if logged in */}
+              {uniqueId && (
+                <div className="px-2">
+                  <Link
+                    to="/MainDashBoard"
+                    className="btn btn-primary btn-sm register-btn"
+                  >
+                    DashBoard
+                  </Link>
+                </div>
+              )}
+
+              {/* Social icons */}
               <div className="px-3 d-flex gap-2 social-icon">
                 <i className="bi bi-facebook infoicon"></i>
                 <i className="bi bi-twitter infoicon"></i>
@@ -74,6 +90,7 @@ const InfoBar = () => {
                 <i className="bi bi-linkedin infoicon"></i>
                 <i className="bi bi-youtube infoicon"></i>
               </div>
+
             </div>
           </Col>
         </Row>

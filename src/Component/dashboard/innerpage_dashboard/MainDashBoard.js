@@ -5,10 +5,10 @@ import { Col, Row } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import LeftNav from "../LeftNav";
 import { FaHandsPraying, FaOm } from "react-icons/fa6";
-import { MdOutlineSwipeUp } from "react-icons/md";
+
 import { BsNewspaper } from "react-icons/bs";
 import { IoIosArrowForward } from "react-icons/io";
-import { FaHandHoldingWater } from "react-icons/fa";
+
 import { MdEventAvailable } from "react-icons/md";
 import { RiFilePaper2Line } from "react-icons/ri";
 import PanditImg from "../../../assets/images/pandit_icon.png";
