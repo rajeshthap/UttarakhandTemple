@@ -25,11 +25,6 @@ const BookingHistory = () => {
             <h1 className=" fw500">
               <span class="fw700h1">Booking </span> History
             </h1>
-          <div>
-              <h1>Main Dashboard</h1>
-              <p>Unique ID: {uniqueId}</p>{" "}
-            </div>
-
             <Row>
               <h2>Transaction History</h2>
               <div class="col-md-12">
