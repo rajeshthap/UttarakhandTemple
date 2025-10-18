@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URLL = "http://mahadevaaya.com/backend/";
+const BASE_URLL = "https://mahadevaaya.com/backend/";
 
 export const Globaleapi = async (payload) => {
   try {

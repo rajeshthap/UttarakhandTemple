@@ -35,8 +35,8 @@ function LeftNav() {
   // alert state
   const [showModifyAlert, setShowModifyAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
- const navigate = useNavigate();
- 
+  const navigate = useNavigate();
+
   const toggleNav = () => {
     setIsNavClosed(!isNavClosed);
   };
@@ -47,13 +47,13 @@ function LeftNav() {
   const [loading, setLoading] = useState(false);
 
   const { uniqueId } = useAuth(); // if you have AuthContext
-useEffect(() => {
+  useEffect(() => {
     const fetchProfile = async () => {
       try {
         setLoading(true);
         const userId = uniqueId || "USR/2025/47393";
         const response = await axios.get(
-          `http://mahadevaaya.com/backend/api/get-user/?user_id=${userId}`
+          `https://mahadevaaya.com/backend/api/get-user/?user_id=${userId}`
         );
 
         if (response.data) {
@@ -72,12 +72,12 @@ useEffect(() => {
 
     fetchProfile();
   }, [uniqueId]);
- const getImageUrl = (imgPath) => {
-  if (!imgPath) return "http://mahadevaaya.com/backend/media/devotee_photos/default.png";
-  if (imgPath.startsWith("http")) return imgPath;
-  return `http://mahadevaaya.com/backend/media/devotee_photos/${imgPath.split("/").pop()}`;
-};
-  
+  const getImageUrl = (imgPath) => {
+    if (!imgPath) return "https://mahadevaaya.com/backend/media/devotee_photos/default.png";
+    if (imgPath.startsWith("http")) return imgPath;
+    return `https://mahadevaaya.com/backend/media/devotee_photos/${imgPath.split("/").pop()}`;
+  };
+
   const handleDownload = (fileUrl, fileName) => {
     const a = document.createElement("a");
     a.href = fileUrl;
@@ -99,21 +99,21 @@ useEffect(() => {
     setHoveredMenu(null);
   };
 
- const logout = () => {
-  const confirmLogout = window.confirm("Are you sure you want to logout?");
-  if (confirmLogout) {
-    localStorage.clear();      
-    clearAuth();               
-    setAlertMessage("Logout successfully!");
-    setShowModifyAlert(true);
+  const logout = () => {
+    const confirmLogout = window.confirm("Are you sure you want to logout?");
+    if (confirmLogout) {
+      localStorage.clear();
+      clearAuth();
+      setAlertMessage("Logout successfully!");
+      setShowModifyAlert(true);
 
-    setTimeout(() => {
-      setAlertMessage("");
-      setShowModifyAlert(false);
-      window.location.href = "/"; 
-    }, 2000);
-  }
-};
+      setTimeout(() => {
+        setAlertMessage("");
+        setShowModifyAlert(false);
+        window.location.href = "/";
+      }, 2000);
+    }
+  };
 
 
   const navigationOptions = [
@@ -126,41 +126,47 @@ useEffect(() => {
       hasSubmenu: true,
       subItems: [
         {
-           icon: <LiaCalendarCheck />,
-           label: "Darshnam Booking", 
-          path: "/DarshanBookingDashBoard" },
+          icon: <LiaCalendarCheck />,
+          label: "Darshnam Booking",
+          path: "/DarshanBookingDashBoard"
+        },
 
-          {
-           icon: <LiaCalendarCheck />,
-           label: "Donation", 
-          path: "/DonateDashBoard" },
-        
-           {
-           icon: <LiaCalendarCheck />,
-           label: "Pandit Booking", 
-          path: "/PanditDashBoard" },
-       
-       {
-           icon: <LiaCalendarCheck />,
-           label: "Seva Booking", 
-          path: "/SevaRegistrationDashBoard" },
-          {
-           icon: <LiaCalendarCheck />,
-           label: "Event Participation", 
-          path: "/EventDashBoard" },
-       {
-           icon: <LiaCalendarCheck />,
-           label: "Pooja Booking", 
-          path: "/PoojaBookingDashBoard" },
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Donation",
+          path: "/DonateDashBoard"
+        },
+
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Pandit Booking",
+          path: "/PanditDashBoard"
+        },
+
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Seva Booking",
+          path: "/SevaRegistrationDashBoard"
+        },
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Event Participation",
+          path: "/EventDashBoard"
+        },
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Pooja Booking",
+          path: "/PoojaBookingDashBoard"
+        },
       ]
-      
-      
+
+
     },
-  {
+    {
       icon: <GiByzantinTemple />,
       label: "Booking History",
       path: "/BookingHistory",
-    
+
     },
     {
       icon: <LiaCalendarCheck />,
@@ -168,40 +174,42 @@ useEffect(() => {
       path: "#",
       hasSubmenu: true,
       subItems: [
-         {
-           icon: <LiaCalendarCheck />,
-           label: "My Profile", 
-          path: "/MyProfile" },
         {
-           icon: <LiaCalendarCheck />,
-           label: "Change Password", 
-          path: "/ChangePassword" },
+          icon: <LiaCalendarCheck />,
+          label: "My Profile",
+          path: "/MyProfile"
+        },
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Change Password",
+          path: "/ChangePassword"
+        },
 
-       
-      
+
+
       ]
     },
-   
-  
+
+
     {
       path: "/Support",
       icon: <FaRegFileLines />,
       label: "Support",
-    
+
     },
     {
-    icon: <TbPasswordUser />,
-    label: "Logout",
-    path: "#", // will trigger logout
-    isLogout: true, // custom flag to detect logout
-  },
+      icon: <TbPasswordUser />,
+      label: "Logout",
+      path: "#", // will trigger logout
+      isLogout: true, // custom flag to detect logout
+    },
   ];
 
   return (
     <>
       {/* Header */}
       <Navbar className="user-nd-header" expand="lg">
-        <Nav  className="me-auto my-2 my-lg-0 px-2" navbarScroll>
+        <Nav className="me-auto my-2 my-lg-0 px-2" navbarScroll>
           <img
             src={MenuIcon}
             className="icn menuicn"
@@ -211,55 +219,55 @@ useEffect(() => {
           <Link to="#" className="logo-page">
             <img src={CompanyLogo} alt="Manadavaaya" title="MAHADAVAAYA" className="logo" />
           </Link>
-         
-         <NavDropdown title="Home" id="navbarScrollingDropdown">
-                    <NavDropdown.Item href="/AboutUs">
-                      About Us
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/PlatFormInfo">
-                      Platform info
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/MissionVision">
-                      Mission & Vision
-                    </NavDropdown.Item>
-                    {/* <NavDropdown.Item href="/ContactUs">
+
+          <NavDropdown title="Home" id="navbarScrollingDropdown">
+            <NavDropdown.Item href="/AboutUs">
+              About Us
+            </NavDropdown.Item>
+            <NavDropdown.Item href="/PlatFormInfo">
+              Platform info
+            </NavDropdown.Item>
+            <NavDropdown.Item href="/MissionVision">
+              Mission & Vision
+            </NavDropdown.Item>
+            {/* <NavDropdown.Item href="/ContactUs">
                       Contact Info
                     </NavDropdown.Item> */}
-                    <NavDropdown.Item href="/MandirMahadevaya">
-                      Mandir & Mahadevaya Platform Overview{" "}
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/SpecialAnnouncements">
-                      Special announcements / Upcoming Events
-                    </NavDropdown.Item>
-                  </NavDropdown>
-                   <Nav.Link href="/DonateTemples">Donate</Nav.Link>
-                  <Nav.Link href="/TempleBookingInfo">Darshan & Pooja Booking</Nav.Link>
-                    <NavDropdown
-                    title="Pooja & Seva"
-                    id="navbarScrollingDropdown"
-                  >
-                    {/* <NavDropdown.Item href="/PoojaBooking">
+            <NavDropdown.Item href="/MandirMahadevaya">
+              Mandir & Mahadevaya Platform Overview{" "}
+            </NavDropdown.Item>
+            <NavDropdown.Item href="/SpecialAnnouncements">
+              Special announcements / Upcoming Events
+            </NavDropdown.Item>
+          </NavDropdown>
+          <Nav.Link href="/DonateTemples">Donate</Nav.Link>
+          <Nav.Link href="/TempleBookingInfo">Darshan & Pooja Booking</Nav.Link>
+          <NavDropdown
+            title="Pooja & Seva"
+            id="navbarScrollingDropdown"
+          >
+            {/* <NavDropdown.Item href="/PoojaBooking">
                       Pooja Booking{" "}
                     </NavDropdown.Item> */}
-                    <NavDropdown.Item href="/SevaRegistration">
-                      Seva Registration
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/EventParticipation">
-                      Event Participation
-                    </NavDropdown.Item>
-                  </NavDropdown>
-<Nav.Link href="/PanditBooking">Pandit Booking</Nav.Link>
- <NavDropdown title="Events" id="navbarScrollingDropdown">
-                    <NavDropdown.Item href="#action3">
-                      Upcoming Mandir Events
-                    </NavDropdown.Item>
-                    {/* <NavDropdown.Item href="#action4">
+            <NavDropdown.Item href="/SevaRegistration">
+              Seva Registration
+            </NavDropdown.Item>
+            <NavDropdown.Item href="/EventParticipation">
+              Event Participation
+            </NavDropdown.Item>
+          </NavDropdown>
+          <Nav.Link href="/PanditBooking">Pandit Booking</Nav.Link>
+          <NavDropdown title="Events" id="navbarScrollingDropdown">
+            <NavDropdown.Item href="#action3">
+              Upcoming Mandir Events
+            </NavDropdown.Item>
+            {/* <NavDropdown.Item href="#action4">
                       Past Event Gallery
                     </NavDropdown.Item> */}
-                  </NavDropdown>
+          </NavDropdown>
         </Nav>
-        
-                 
+
+
         <div className="message">
           <ModifyAlert
             message={alertMessage}
@@ -268,41 +276,41 @@ useEffect(() => {
           />
 
           <div className=" d-flex align-items-center gap-2">
-      <div className="nd-msg">{profile.displayName || "User"}</div>
-      <Dropdown align="end" className="user-dp">
-        <Dropdown.Toggle
-          variant=""
-          id="user-dropdown"
-          className="border-0 bg-transparent"
-          title="Account Menu"
-        >
-         <img
-  src={
-    profile.devotee_photo 
-      ? `http://mahadevaaya.com/backend/media/devotee_photos/${profile.devotee_photo.split("/").pop()}`
-      : "http://mahadevaaya.com/backend/media/devotee_photos/default.png"
-  }
-  alt={profile.displayName || "Devotee"}
-  className="nav-profile-photo"
-/>
-        </Dropdown.Toggle>
+            <div className="nd-msg">{profile.displayName || "User"}</div>
+            <Dropdown align="end" className="user-dp">
+              <Dropdown.Toggle
+                variant=""
+                id="user-dropdown"
+                className="border-0 bg-transparent"
+                title="Account Menu"
+              >
+                <img
+                  src={
+                    profile.devotee_photo
+                      ? `https://mahadevaaya.com/backend/media/devotee_photos/${profile.devotee_photo.split("/").pop()}`
+                      : "https://mahadevaaya.com/backend/media/devotee_photos/default.png"
+                  }
+                  alt={profile.displayName || "Devotee"}
+                  className="nav-profile-photo"
+                />
+              </Dropdown.Toggle>
 
-        {/* Dropdown menu */}
-        <Dropdown.Menu>
-          <Dropdown.Item as={Link} to="/UserProfile">
-            My Profile
-          </Dropdown.Item>
-          <Dropdown.Item as={Link} to="/Dashboard">
-            Dashboard
-          </Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Item onClick={logout} className="text-danger">
-            Logout
-          </Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-    </div>
-         
+              {/* Dropdown menu */}
+              <Dropdown.Menu>
+                <Dropdown.Item as={Link} to="/UserProfile">
+                  My Profile
+                </Dropdown.Item>
+                <Dropdown.Item as={Link} to="/Dashboard">
+                  Dashboard
+                </Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item onClick={logout} className="text-danger">
+                  Logout
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+
 
         </div>
       </Navbar>
@@ -389,9 +397,9 @@ useEffect(() => {
                           onClick={() => setActivePath(subItem.path)}
                         >
                           <div className="sub-item d-flex">
-                             <span className="nav-icon">
-                                      {subItem.icon}
-                                    </span>
+                            <span className="nav-icon">
+                              {subItem.icon}
+                            </span>
                             <span className="sub-label">{subItem.label}</span>
                           </div>
                         </Link>
@@ -399,25 +407,25 @@ useEffect(() => {
                     </div>
                   </>
                 ) : (
-                <Link
-  to={option.path}
-  className={`nav-option option${index + 1} ${activePath === option.path ? "active-nav" : ""}
+                  <Link
+                    to={option.path}
+                    className={`nav-option option${index + 1} ${activePath === option.path ? "active-nav" : ""}
     ${hoveredMenu === index ? "hovered-nav" : ""}`}
-  onClick={() => {
-    if (option.isLogout) {
-      logout(); // use the new logout handler
-    } else {
-      setActivePath(option.path);
-    }
-  }}
-  onMouseEnter={() => handleMenuHover(index)}
-  onMouseLeave={handleMenuLeave}
->
-  <div className="nav-item d-flex">
-    <span className="nav-icon">{option.icon}</span>
-    <span className="nav-label">{option.label}</span>
-  </div>
-</Link>
+                    onClick={() => {
+                      if (option.isLogout) {
+                        logout(); // use the new logout handler
+                      } else {
+                        setActivePath(option.path);
+                      }
+                    }}
+                    onMouseEnter={() => handleMenuHover(index)}
+                    onMouseLeave={handleMenuLeave}
+                  >
+                    <div className="nav-item d-flex">
+                      <span className="nav-icon">{option.icon}</span>
+                      <span className="nav-label">{option.label}</span>
+                    </div>
+                  </Link>
 
 
                 )}

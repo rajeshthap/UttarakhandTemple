@@ -31,7 +31,7 @@ const TempleBookingInfo = () => {
 
   // Fetch temple data from API
   useEffect(() => {
-    fetch("http://mahadevaaya.com/backend/api/temple-poojas-list/")
+    fetch("https://mahadevaaya.com/backend/api/temple-poojas-list/")
       .then((res) => res.json())
       .then((data) => {
         console.log("API response:", data);

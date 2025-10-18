@@ -1,1 +1,1 @@
-export const BASE_URLL = "http://mahadevaaya.com/backend/";
+export const BASE_URLL = "https://mahadevaaya.com/backend/";

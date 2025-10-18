@@ -43,7 +43,7 @@ const MandirBooking = () => {
     payment_mode: "",
     no_of_persons: "",
     devotee_details: [
-      
+
     ],
     pooja_details: [],
   });
@@ -136,7 +136,7 @@ const MandirBooking = () => {
     const fetchTemples = async () => {
       try {
         const res = await axios.get(
-          "http://mahadevaaya.com/backend/api/temple-poojas-list/"
+          "https://mahadevaaya.com/backend/api/temple-poojas-list/"
         );
 
         if (Array.isArray(res.data)) {
@@ -344,9 +344,8 @@ const MandirBooking = () => {
       if (value && value.trim() !== "") {
         delete newErrors[fieldName]; // Clear only the current field's error
       } else {
-        newErrors[fieldName] = `${
-          fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
-        } is required`;
+        newErrors[fieldName] = `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
+          } is required`;
       }
       return newErrors;
     });
@@ -402,15 +401,13 @@ const MandirBooking = () => {
           devoteeHasError = true;
         }
         if (!person.gender) {
-          newErrors[`person_${idx}_gender`] = `Gender is required for person ${
-            idx + 1
-          }`;
+          newErrors[`person_${idx}_gender`] = `Gender is required for person ${idx + 1
+            }`;
           devoteeHasError = true;
         }
         if (!person.age || isNaN(person.age) || person.age <= 0) {
-          newErrors[`person_${idx}_age`] = `Valid age is required for person ${
-            idx + 1
-          }`;
+          newErrors[`person_${idx}_age`] = `Valid age is required for person ${idx + 1
+            }`;
           devoteeHasError = true;
         }
         if (!person.id_proof_type) {
@@ -583,7 +580,7 @@ const MandirBooking = () => {
     }
   };
 
-   const handleInputChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
 
     setFormData((prev) => ({
@@ -671,7 +668,7 @@ const MandirBooking = () => {
       return;
     }
 
-   setLoading(true);
+    setLoading(true);
 
     try {
       if (!persons || persons.length === 0) {
@@ -712,10 +709,10 @@ const MandirBooking = () => {
           );
           return found
             ? {
-                pooja_id: id,
-                pooja_name: found.temple_pooja_name || found.name || "",
-                pooja_price: found.temple_pooja_price || found.price || 0,
-              }
+              pooja_id: id,
+              pooja_name: found.temple_pooja_name || found.name || "",
+              pooja_price: found.temple_pooja_price || found.price || 0,
+            }
             : { pooja_id: id };
         });
       }
@@ -1056,11 +1053,11 @@ const MandirBooking = () => {
                     ))}
                   </tbody>
                 </table>
-                 {errors.devotee_details && (
-                      <small className="text-danger">
-                        {errors.devotee_details}
-                      </small>
-                    )}
+                {errors.devotee_details && (
+                  <small className="text-danger">
+                    {errors.devotee_details}
+                  </small>
+                )}
               </div>
 
               <Row>

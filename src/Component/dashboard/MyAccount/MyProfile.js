@@ -33,7 +33,7 @@ const MyProfile = () => {
 
       const userId = uniqueId || "USR/2025/47393";
       const response = await axios.get(
-        `http://mahadevaaya.com/backend/api/get-user/?user_id=${userId}`
+        `https://mahadevaaya.com/backend/api/get-user/?user_id=${userId}`
       );
 
       if (response.data) {
@@ -102,8 +102,8 @@ const handleEditPhoto = () => {
  <img
   src={
     profile.devotee_photo
-      ? `http://mahadevaaya.com/backend/media/devotee_photos/${profile.devotee_photo.split("/").pop()}`
-      : "http://mahadevaaya.com/backend/media/devotee_photos/default.png"
+      ? `https://mahadevaaya.com/backend/media/devotee_photos/${profile.devotee_photo.split("/").pop()}`
+      : "https://mahadevaaya.com/backend/media/devotee_photos/default.png"
   }
   alt={profile.displayName || "Devotee"}
   className="profile-photo"
