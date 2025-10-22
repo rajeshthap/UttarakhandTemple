@@ -6,6 +6,10 @@ import SendOtpModal from "../OTPModel/SendOtpModal";
 import ModifyAlert from "../Alert/ModifyAlert";
 import { useNavigate } from "react-router-dom";
 import { BASE_URLL } from "../BaseURL";
+import { useLocation } from "react-router-dom";
+import Select from "react-select";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const OnlineHirePandit = () => {
   const [show, setShow] = useState(false); // OTP modal
@@ -17,8 +21,56 @@ const OnlineHirePandit = () => {
   const [showModifyAlert, setShowModifyAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const incoming = location.state || {};
 
+  // API data & select options
+  const [apiPandits, setApiPandits] = useState([]);
+  const [panditOptions, setPanditOptions] = useState([]);
+  const [selectedPanditOptions, setSelectedPanditOptions] = useState([]);
+  const [selectedDateTime, setSelectedDateTime] = useState(
+    incoming.selected_date_and_time
+      ? new Date(incoming.selected_date_and_time)
+      : null
+  );
+
+  // helper to normalize names
+  const normalize = (s = "") =>
+    String(s || "")
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      .trim();
   // Send OTP
+ const buildPanditOptionsForPooja = (poojaName, source = apiPandits) => {
+  if (!poojaName || !Array.isArray(source)) return [];
+  const n = normalize(poojaName);
+  const opts = [];
+
+  source.forEach((pd, idx) => {
+    const panditId = pd.pandit_id || pd.id || idx + 1; 
+    const panditName =
+      pd.pandit_name || pd.name || pd.devotee_name || `Pandit ${idx + 1}`;
+    const poojas = Array.isArray(pd.poojas) ? pd.poojas : [];
+    const match = poojas.find((p) => normalize(p.pooja_name) === n);
+
+    if (match) {
+      const price = Number(match.pooja_price || 0);
+      opts.push({
+        value: `${panditId}`,
+        label: `${panditName} (ID: ${panditId}) — ₹${price}`,
+        meta: {
+          pandit_name: panditName,
+          pandit_id: panditId,
+          price,
+        },
+      });
+    }
+  });
+
+  return opts;
+};
+
+
 
   const poojaOptions = {
     "Book Pandit Online for Puja": [
@@ -128,9 +180,69 @@ const OnlineHirePandit = () => {
   };
 
   const handleSelectPooja = (pooja) => {
-    setFormData({ pooja_type: pooja });
-    setIsOpen(false); // close dropdown after selecting pooja
+    setFormData((prev) => ({ ...prev, pooja_type: pooja }));
+    const opts = buildPanditOptionsForPooja(pooja, apiPandits);
+    setPanditOptions(opts);
+    setSelectedPanditOptions([]);
+    setIsOpen(false);
   };
+  useEffect(() => {
+    const fetchPanditPoojas = async () => {
+      try {
+        const res = await axios.get(`${BASE_URLL}api/get-pandit-poojas-list/`);
+        const data = Array.isArray(res.data)
+          ? res.data
+          : res.data?.results || [];
+        setApiPandits(data);
+
+        const poojaName = incoming.pooja_type || formData.pooja_type;
+        if (poojaName) {
+          const opts = buildPanditOptionsForPooja(poojaName, data);
+          setPanditOptions(opts);
+
+          if (
+            incoming.selected_pandits &&
+            Array.isArray(incoming.selected_pandits)
+          ) {
+            const sel = incoming.selected_pandits
+              .map((sp) => {
+                let found = opts.find((o) => o.value === sp.id);
+                if (found) return found;
+                found = opts.find(
+                  (o) =>
+                    normalize(o.meta?.pandit?.pandit_name || "") ===
+                    normalize(sp.name || "")
+                );
+                if (found) return found;
+                return opts.find((o) =>
+                  normalize(String(o.label || "")).includes(
+                    normalize(sp.name || "")
+                  )
+                );
+              })
+              .filter(Boolean);
+
+            if (sel.length) {
+              setSelectedPanditOptions(sel);
+              const total = sel.reduce(
+                (s, o) => s + Number(o.meta?.price || 0),
+                0
+              );
+              setFormData((prev) => ({
+                ...prev,
+                number_of_pandits: sel.length,
+                grand_total: total,
+              }));
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching pandit poojas list:", err);
+      }
+    };
+
+    fetchPanditPoojas();
+  }, [incoming]);
   const handleShow = async () => {
     if (!formData.mobile_number) {
       setAlertMessage("all required feild fill please");
@@ -161,7 +273,6 @@ const OnlineHirePandit = () => {
   const handleClose = () => setShow(false);
   const [isOtpVerified, setIsOtpVerified] = useState();
   // localStorage.getItem("otpVerified") === "true"
-  // Form state
   const [formData, setFormData] = useState({
     full_name: "",
     mobile_number: "",
@@ -169,16 +280,46 @@ const OnlineHirePandit = () => {
     address: "",
     pooja_type: "",
     language_preference: "",
-    date_of_ceremony: "",
-    time_slot: "",
+    date_and_time: "",
     location: "",
-    duration: "",
+    // duration: "",
     number_of_pandits: "",
-    additional_assistants: "",
+    // additional_assistants: "",
     special_requirements: "",
-    estimated_fees: "",
+    grand_total: "",
     payment_mode: "",
+    creator_id: "USR/2025/82881",
   });
+  useEffect(() => {
+    if (incoming && Object.keys(incoming).length > 0) {
+      const incomingDateIso =
+        incoming.selected_date_and_time || incoming.date_and_time || null;
+
+      setFormData((prev) => ({
+        ...prev,
+        pooja_type: incoming.pooja_type || prev.pooja_type,
+        number_of_pandits: incoming.number_of_pandits || prev.number_of_pandits,
+        grand_total: incoming.grand_total || prev.grand_total,
+        date_and_time: incomingDateIso || prev.date_and_time,
+      }));
+
+      if (incomingDateIso) {
+        const dt = new Date(incomingDateIso);
+        if (!Number.isNaN(dt.getTime())) {
+          setSelectedDateTime(dt);
+        }
+      }
+    }
+  }, [incoming]);
+
+  useEffect(() => {
+    if (selectedDateTime) {
+      setFormData((prev) => ({
+        ...prev,
+        date_and_time: selectedDateTime.toISOString(),
+      }));
+    }
+  }, [selectedDateTime]);
 
   const validateFields = () => {
     let errors = {};
@@ -212,37 +353,22 @@ const OnlineHirePandit = () => {
       errors.language_preference = "Please select Language";
     }
 
-    if (!formData.date_of_ceremony) {
-      errors.date_of_ceremony = "Please select ceremony date";
-    }
-
-    if (!formData.time_slot) {
-      errors.time_slot = "Please select time slot";
+    if (!formData.date_and_time) {
+      errors.date_and_time = "Please select ceremony date";
     }
 
     if (!formData.location.trim()) {
       errors.location = "Location is required";
     }
 
-    if (!formData.duration.trim()) {
-      errors.duration = "Duration is required";
-    }
-
     if (!formData.number_of_pandits) {
-      errors.number_of_pandits = "Enter number of Pandits";
-    }
-
-    if (!formData.additional_assistants) {
-      errors.additional_assistants = "Enter number of Assistants";
+      errors.number_of_pandits = "Select number of Pandits";
     }
 
     if (!formData.special_requirements.trim()) {
       errors.special_requirements = "Enter Special Requirements";
     }
 
-    if (!formData.estimated_fees) {
-      errors.estimated_fees = "Estimated Fees is required";
-    }
 
     if (!formData.payment_mode) {
       errors.payment_mode = "Please select Payment Mode";
@@ -303,16 +429,16 @@ const OnlineHirePandit = () => {
         }
       }
 
-      if (name === "date_of_ceremony") {
+      if (name === "date_and_time") {
         if (!value) {
-          updated.date_of_ceremony = "Date of Ceremony is required";
+          updated.date_and_time = "Date of Ceremony is required";
         } else {
           const today = new Date();
           const selected = new Date(value);
           if (selected < today.setHours(0, 0, 0, 0)) {
-            updated.date_of_ceremony = "Past dates are not allowed";
+            updated.date_and_time = "Past dates are not allowed";
           } else {
-            delete updated.date_of_ceremony;
+            delete updated.date_and_time;
           }
         }
       }
@@ -322,73 +448,93 @@ const OnlineHirePandit = () => {
   };
 
   // Final Submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateFields()) {
-      setAlertMessage("Please fill all required fields.");
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (!validateFields()) {
+    setAlertMessage("Please fill all required fields.");
+    setShowModifyAlert(true);
+    return;
+  }
+
+  try {
+    // Prepare selected pandits array
+    const selectedPanditsPayload = selectedPanditOptions.map((opt) => ({
+      pandit_id: opt.meta?.pandit_id || opt.value,
+      name: opt.meta?.pandit_name || opt.label,
+      price: Number(opt.meta?.price || 0),
+    }));
+
+    // Construct payload matching your backend
+    const payload = {
+      full_name: formData.full_name,
+      creator_id: formData.creator_id,
+      mobile_number: String(formData.mobile_number),
+      email: formData.email,
+      address: formData.address,
+      pooja_type: formData.pooja_type,
+      language_preference: formData.language_preference,
+      date_and_time: selectedDateTime
+        ? selectedDateTime.toISOString()
+        : formData.date_and_time,
+      location: formData.location,
+      number_of_pandits: selectedPanditsPayload, 
+      grand_total: selectedPanditsPayload.reduce(
+        (s, p) => s + Number(p.price || 0),
+        0
+      ),
+      special_requirements: formData.special_requirements,
+      payment_mode: formData.payment_mode,
+    };
+
+    // Post request
+    await axios.post(`${BASE_URLL}api/hire-pandit/`, payload, {
+      headers: { "Content-Type": "application/json" },
+    });
+
+    setAlertMessage("Pandit booked successfully!");
+    setShowModifyAlert(true);
+
+    // Reset form
+    setFormData({
+      full_name: "",
+      mobile_number: "",
+      email: "",
+      address: "",
+      pooja_type: "",
+      language_preference: "",
+      date_and_time: "",
+      location: "",
+      number_of_pandits: "",
+      special_requirements: "",
+      grand_total: "",
+      payment_mode: "",
+      creator_id: "",
+
+    });
+    setSelectedPanditOptions([]);
+    setSelectedDateTime(null);
+    localStorage.removeItem("otpVerified");
+    setIsOtpVerified(false);
+  }  catch (err) {
+  console.log("Full error response:", err.response);
+  if (err.response?.data) {
+    const errors = err.response.data;
+    setnewErrors(errors);
+    const firstErrorField = Object.keys(errors)[0];
+    if (firstErrorField) {
+      setAlertMessage(errors[firstErrorField] || "Please fix errors and try again");
       setShowModifyAlert(true);
-      return;
     }
+  } else {
+    setAlertMessage("Something went wrong. Please try again.");
+    setShowModifyAlert(true);
+  }
+}
+  console.log("Form Data:", formData);
 
-    try {
-       await axios.post(
-        `${BASE_URLL}api/OnlinepanditHIre/`,
-        formData,
-        { headers: { "Content-Type": "application/json" } }
-      );
+};
 
-      setAlertMessage("Pandit booked successfully!");
-      setShowModifyAlert(true);
-      setTimeout(() => {
-        navigate("/PaymentConfirmation");
-      }, 2000);
-
-      // Reset form
-      setFormData({
-        full_name: "",
-        mobile_number: "",
-        email: "",
-        address: "",
-        pooja_type: "",
-        language_preference: "",
-        date_of_ceremony: "",
-        time_slot: "",
-        location: "",
-        duration: "",
-        number_of_pandits: "",
-        additional_assistants: "",
-        special_requirements: "",
-        estimated_fees: "",
-        payment_mode: "",
-      });
-
-      // Remove OTP verification from localStorage after submit
-      localStorage.removeItem("otpVerified");
-      localStorage.clear();
-      setIsOtpVerified(false);
-
-      setIsOtpVerified(false);
-    } catch (err) {
-      // console.error("Error booking pandit:", err.response?.data || err.message);
-
-      if (err.response?.data) {
-        const errors = err.response.data.booking_errors || err.response.data;
-
-        // Save backend errors
-        setnewErrors(errors);
-
-        // Focus on the first invalid field
-        const firstErrorField = Object.keys(errors)[0];
-        if (firstErrorField) {
-          const el = document.querySelector(`[name="${firstErrorField}"]`);
-          if (el) el.focus();
-        }
-      } else {
-        setAlertMessage("Something went wrong. Please try again.");
-        setShowModifyAlert(true);
-      }
-    }
-  };
 
   return (
     <div className="temp-donate">
@@ -615,48 +761,33 @@ const OnlineHirePandit = () => {
                     <Form.Label>
                       Date of Ceremony <span className="temp-span-star">*</span>
                     </Form.Label>
-                    <Form.Control
-                      type="date"
-                      placeholder="Preferred Dates"
-                      className="temp-form-control"
-                      name="date_of_ceremony"
-                      value={formData.date_of_ceremony}
-                      onChange={handleChange}
-                      min={new Date().toISOString().split("T")[0]}
+                    
+                    <DatePicker
+                      selected={selectedDateTime}
+                      onChange={(date) => {
+                        setSelectedDateTime(date);
+                        setFormData((prev) => ({
+                          ...prev,
+                          date_and_time: date ? date.toISOString() : "",
+                        }));
+                      }}
+                      showTimeSelect
+                      timeFormat="hh:mm aa"
+                      timeIntervals={30}
+                      dateFormat="MMMM d, yyyy h:mm aa"
+                      className="form-control temp-form-control"
+                      minDate={new Date()}
+                      placeholderText="Select Date and time"
                     />
-                    {newErrors.date_of_ceremony && (
+                    {newErrors.date_and_time && (
                       <small className="text-danger">
-                        {newErrors.date_of_ceremony}
+                        {newErrors.date_and_time}
                       </small>
                     )}
                   </Form.Group>
                 </Col>
 
-                <Col lg={6}>
-                  <Form.Group className="mb-3">
-                    <Form.Label>
-                      Preferred Time Slot{" "}
-                      <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Select
-                      name="time_slot"
-                      value={formData.time_slot}
-                      onChange={handleChange}
-                      className="temp-form-control-option"
-                    >
-                      <option value="">Select Preferred a Time Slot</option>
-                      <option value="Morning">Morning</option>
-                      <option value="Afternoon">Afternoon</option>
-                      <option value="Evening">Evening</option>
-                    </Form.Select>
-                    {newErrors.time_slot && (
-                      <small className="text-danger">
-                        {newErrors.time_slot}
-                      </small>
-                    )}
-                  </Form.Group>
-                </Col>
-
+          
                 <Col lg={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>
@@ -678,26 +809,7 @@ const OnlineHirePandit = () => {
                   </Form.Group>
                 </Col>
 
-                <Col lg={6}>
-                  <Form.Group className="mb-3">
-                    <Form.Label>
-                      Duration(Hrs) <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="number"
-                      name="duration"
-                      value={formData.duration}
-                      onChange={handleChange}
-                      className="temp-form-control"
-                      placeholder="Enter Duration"
-                    />
-                    {newErrors.duration && (
-                      <small className="text-danger">
-                        {newErrors.duration}
-                      </small>
-                    )}
-                  </Form.Group>
-                </Col>
+                
               </Row>
 
               <h2 className="mt-2">Pandit Requirements</h2>
@@ -708,39 +820,33 @@ const OnlineHirePandit = () => {
                       Number of Pandits{" "}
                       <span className="temp-span-star">*</span>{" "}
                     </Form.Label>
-                    <Form.Control
-                      type="number"
-                      name="number_of_pandits"
-                      value={formData.number_of_pandits}
-                      onChange={handleChange}
-                      className="temp-form-control"
-                      placeholder="Enter Number"
+                    <Select
+                      isMulti
+                      options={panditOptions}
+                      value={selectedPanditOptions}
+                      onChange={(opts) => {
+                        const selected = opts || [];
+                        setSelectedPanditOptions(selected);
+                        const total = selected.reduce(
+                          (s, o) => s + Number(o.meta?.price || 0),
+                          0
+                        );
+                        setFormData((prev) => ({
+                          ...prev,
+                          number_of_pandits: selected.length,
+                          grand_total: total,
+                        }));
+                        setnewErrors((prev) => {
+                          const updated = { ...prev };
+                          if (updated.number_of_pandits) delete updated.number_of_pandits;
+                          return updated;
+                        });
+                      }}
+                      placeholder="Select available pandits for this pooja"
                     />
                     {newErrors.number_of_pandits && (
                       <small className="text-danger">
                         {newErrors.number_of_pandits}
-                      </small>
-                    )}
-                  </Form.Group>
-                </Col>
-
-                <Col lg={6}>
-                  <Form.Group className="mb-3">
-                    <Form.Label>
-                      Additional Assistants{" "}
-                      <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="number"
-                      name="additional_assistants"
-                      value={formData.additional_assistants}
-                      onChange={handleChange}
-                      className="temp-form-control "
-                      placeholder="Enter Number Assistants"
-                    />
-                    {newErrors.additional_assistants && (
-                      <small className="text-danger">
-                        {newErrors.additional_assistants}
                       </small>
                     )}
                   </Form.Group>
@@ -771,19 +877,19 @@ const OnlineHirePandit = () => {
                 <Col lg={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>
-                      Estimated Fees <span className="temp-span-star">*</span>
+                      Grand Total <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
                       type="number"
-                      name="estimated_fees"
-                      value={formData.estimated_fees}
-                      onChange={handleChange}
+                      name="grand_total"
+                      value={formData.grand_total}
+                      disabled
                       className="temp-form-control "
-                      placeholder="Enter Estimated Fees"
+                      placeholder="Estimated Fees"
                     />
-                    {newErrors.estimated_fees && (
+                    {newErrors.grand_total && (
                       <small className="text-danger">
-                        {newErrors.estimated_fees}
+                        {newErrors.grand_total}
                       </small>
                     )}
                   </Form.Group>
