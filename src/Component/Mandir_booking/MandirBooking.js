@@ -192,7 +192,7 @@ const MandirBooking = () => {
     };
 
     fetchTemples();
-  }, []);
+  }, [initialPoojaId]);
 
   const getPoojasForTemple = (templeName) => {
     if (!templeName) return [];
@@ -366,6 +366,29 @@ const MandirBooking = () => {
       // Don't clear city error here - it should remain until filled
     }
   };
+//Fetch Users Data
+useEffect(() => {
+  const fetchUserData = async () => {
+    if (!uniqueId) return;
+    try {
+      const res = await axios.get(`${BASE_URLL}api/all-reg/`);
+      if (res.data && Array.isArray(res.data)) {
+        const user = res.data.find((u) => u.unique_id === uniqueId);
+        if (user) {
+          const phone = user.phone ? String(user.phone).replace(/\D/g, "") : "";
+          setFormData((prev) => ({
+            ...prev,
+            mobile_number: phone,
+            email: user.email || prev.email,
+          }));
+        }
+      }
+    } catch (err) {
+      console.error("Error fetching user data:", err);
+    }
+  };
+  fetchUserData();
+}, [uniqueId]);
 
   useEffect(() => {
     const fetchTemples = async () => {
@@ -807,50 +830,43 @@ const MandirBooking = () => {
               <h2>Personal Details</h2>
               <Row>
                 <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="temp-label">
-                      Mobile Number <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="number"
-                      placeholder="Enter Mobile Number"
-                      className="temp-form-control"
-                      name="mobile_number"
-                      value={formData.mobile_number}
-                      onChange={handleInputChange}
-                    />
-                    {errors.mobile_number && (
-                      <small className="text-danger">
-                        {errors.mobile_number}
-                      </small>
-                    )}
-                  </Form.Group>
-                </Col>
+  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+    <Form.Label className="temp-label">
+      Mobile Number <span className="temp-span-star">*</span>
+    </Form.Label>
+    <Form.Control
+  type="text"       // <- use text
+  placeholder="Enter Mobile Number"
+  className="temp-form-control"
+  name="mobile_number"
+  value={formData.mobile_number || ""}
+  disabled           // <- keep disabled
+/>
+    {errors.mobile_number && (
+      <small className="text-danger">{errors.mobile_number}</small>
+    )}
+  </Form.Group>
+</Col>
 
-                <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="temp-label">
-                      Email ID <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="email"
-                      placeholder="Enter Email ID"
-                      className="temp-form-control"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                    />
-                    {errors.email && (
-                      <small className="text-danger">{errors.email}</small>
-                    )}
-                  </Form.Group>
-                </Col>
+<Col lg={6} md={6} sm={12}>
+  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+    <Form.Label className="temp-label">
+      Email ID <span className="temp-span-star">*</span>
+    </Form.Label>
+    <Form.Control
+      type="email"
+      placeholder="Enter Email ID"
+      className="temp-form-control"
+      name="email"
+      value={formData.email || ""}
+      disabled // disable editing
+    />
+    {errors.email && (
+      <small className="text-danger">{errors.email}</small>
+    )}
+  </Form.Group>
+</Col>
+
 
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
