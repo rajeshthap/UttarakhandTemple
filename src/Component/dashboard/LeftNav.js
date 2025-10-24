@@ -122,7 +122,7 @@ function LeftNav() {
     },
     {
       icon: <GiByzantinTemple />,
-      label: "Darshan & Pooja Booking",
+      label: "Darshan & Puja Booking",
       path: "/MandirBookingInfoDashBoard",
 
     },

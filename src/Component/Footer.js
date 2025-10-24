@@ -19,7 +19,7 @@ const Footer = () => {
                     <h3>Information</h3>
                     <ul>
                         <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/PanditBooking">Mandir Booking</a></li>
-                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/PoojaBooking">Pooja & Seva</a></li>
+                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/PoojaBooking">Puja & Seva</a></li>
                         <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/OnlineHirePandit">Pandit Booking</a></li>
                         <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/TempleFacilityBooking">Temple Facility Booking</a></li>
 
@@ -32,7 +32,7 @@ const Footer = () => {
                 <div className="footer-section">
                     <h3>Other Links</h3>
                     <ul>
-                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/PoojaBooking">Pooja Booking</a></li>
+                        <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/PoojaBooking">Puja Booking</a></li>
                         <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/DarshanBooking">Darshan Booking</a></li>
                         <li><span className='footer-icon'><MdKeyboardArrowRight /></span> <a href="/SevaRegistration">Seva Registration</a></li>
 
