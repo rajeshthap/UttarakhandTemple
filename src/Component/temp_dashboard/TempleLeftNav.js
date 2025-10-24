@@ -1,58 +1,70 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RiDashboard3Line } from "react-icons/ri";
-import {
-  MdLibraryBooks,
-} from "react-icons/md";
-import { FaAlignLeft } from "react-icons/fa";
+import axios from "axios";
+import { FaAlignLeft, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
 import CompanyLogo from "../../assets/images/company-logo.png";
 import MenuIcon from "../../assets/images/menu_icon.png";
-import "../../assets/CSS/LeftNav.css";
+import "../../assets/CSS/TempleLeftNav.css";
 import ModifyAlert from "../Alert/ModifyAlert";
-import { BiDonateHeart } from "react-icons/bi";
 import { GiByzantinTemple } from "react-icons/gi";
 import { LiaCalendarCheck } from "react-icons/lia";
 import { FaRegFileLines } from "react-icons/fa6";
 import { TbPasswordUser } from "react-icons/tb";
-import { IoCalendarClear } from "react-icons/io5";
-import { Dropdown } from "react-bootstrap";
-
-
+import { Dropdown, Nav } from "react-bootstrap";
+import { useAuth } from "../GlobleAuth/AuthContext";
+import "../../assets/CSS/TopInfo.css";
 function TempleLeftNav() {
+  const { clearAuth } = useAuth();
+
   const [isNavClosed, setIsNavClosed] = useState(false);
-  const [userName, setUserName] = useState("Loading...");
+  const [userName,] = useState("Loading...");
   const [activePath, setActivePath] = useState("");
+  const [openSubMenu, setOpenSubMenu] = useState(null); // Track which submenu is open
+  const [hoveredMenu, setHoveredMenu] = useState(null); // Track which menu is hovered
   const location = useLocation();
   // alert state
   const [showModifyAlert, setShowModifyAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
-  useEffect(() => {
-    // Get initial user name
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (storedUser?.name) {
-      setUserName(storedUser.name);
-    }
-
-    setActivePath(location.pathname);
-
-    // Poll for updates
-    const interval = setInterval(() => {
-      const storedUser = JSON.parse(localStorage.getItem("user"));
-      const updatedUser = JSON.parse(localStorage.getItem("updatedPhase1Data"));
-      const newName =
-        updatedUser?.kanya_name || storedUser?.name || "Unknown User";
-
-      setUserName((prevName) => (prevName !== newName ? newName : prevName));
-      setActivePath(location.pathname);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [location.pathname]);
+  const navigate = useNavigate();
 
   const toggleNav = () => {
     setIsNavClosed(!isNavClosed);
   };
+  const [profile, setProfile] = useState({
+    displayName: "",
+    devotee_photo: "",
+  });
+  const [, setLoading] = useState(false);
+
+  const { uniqueId } = useAuth(); // if you have AuthContext
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        setLoading(true);
+        const userId = uniqueId
+        const response = await axios.get(
+          `https://mahadevaaya.com/backend/api/get-user/?user_id=${userId}`
+        );
+
+        if (response.data) {
+          const user = response.data;
+          setProfile({
+            displayName: user.devotee_name || "",
+            devotee_photo: user.devotee_photo || "",
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [uniqueId]);
+
 
   const handleDownload = (fileUrl, fileName) => {
     const a = document.createElement("a");
@@ -63,55 +75,242 @@ function TempleLeftNav() {
     document.body.removeChild(a);
   };
 
- const logout = () => {
-  const confirmLogout = window.confirm("Are you sure you want to logout?");
-  if (confirmLogout) {
-    localStorage.clear();
-    setAlertMessage("Logout successfully!");
-    setShowModifyAlert(true);
-    // Clear alert after 3 seconds
-    setTimeout(() => {
-      setAlertMessage("");
-      setShowModifyAlert(false);
-    }, 2000);
+  const toggleSubMenu = (index) => {
+    setOpenSubMenu(openSubMenu === index ? null : index);
+  };
 
-    window.location.href = "/"; // Redirect after logout
-  }
-};
+  const handleMenuHover = (index) => {
+    setHoveredMenu(index);
+  };
+
+  const handleMenuLeave = () => {
+    setHoveredMenu(null);
+  };
+
+  const logout = () => {
+    const confirmLogout = window.confirm("Are you sure you want to logout?");
+    if (confirmLogout) {
+      localStorage.clear();
+      clearAuth();
+      setAlertMessage("Logout successfully!");
+      setShowModifyAlert(true);
+
+      setTimeout(() => {
+        setAlertMessage("");
+        setShowModifyAlert(false);
+        window.location.href = "/";
+      }, 2000);
+    }
+  };
+
 
   const navigationOptions = [
-    { icon: <RiDashboard3Line />, label: "Dashboard", path: "/TempleDashBoard" },
-    { icon: <BiDonateHeart />, label: "Donate", path: "/TempDonateDashBoard" },
-    { icon: <LiaCalendarCheck />, label: "Pandit Booking", path: "/TempPanditBooking" },
-    { icon: <IoCalendarClear />, label: "Pooja Booking", path: "/TempPoojaBooking" },
+    { icon: <RiDashboard3Line />, label: "Dashboard", path: "/MainDashBoard" },
+
+    // { icon: <BiDonateHeart />, label: "Online", path: "#" },
+
+
+    {
+      icon: <LiaCalendarCheck />,
+      label: "Temple",
+      path: "#",
+      hasSubmenu: true,
+      subItems: [
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Add Temple ",
+          path: "/SevaRegistrationDashBoard"
+        },
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Manage Temple",
+          path: "/EventDashBoard"
+        },
+
+
+
+      ]
+    },
+
+    {
+      icon: <LiaCalendarCheck />,
+      label: "Festival",
+      path: "#",
+      hasSubmenu: true,
+      subItems: [
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Add Festival ",
+          path: "/SevaRegistrationDashBoard"
+        },
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Manage Festival",
+          path: "/EventDashBoard"
+        },
+
+
+
+      ]
+    },
+
+    {
+      icon: <LiaCalendarCheck />,
+      label: "Darshan Booking",
+      path: "#",
+      hasSubmenu: true,
+      subItems: [
+        {
+          icon: <LiaCalendarCheck />,
+          label: "New Booking ",
+          path: "/SevaRegistrationDashBoard"
+        },
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Accepted Booking",
+          path: "/EventDashBoard"
+        },
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Rejected Booking",
+          path: "/EventDashBoard"
+        },
+        {
+          icon: <LiaCalendarCheck />,
+          label: "All Booking",
+          path: "/EventDashBoard"
+        },
+
+
+      ]
+    },
+
+
+
     {
       icon: <GiByzantinTemple />,
-      label: "Mandir Booking",
-      path: "/TempBookingDashBoard",
-  
+      label: "View Donation",
+      path: "/BookingHistory",
+
     },
     {
-      icon: <MdLibraryBooks />,
-      label: "Darshan Booking",
+      icon: <LiaCalendarCheck />,
+      label: "Report",
+      path: "#",
+      hasSubmenu: true,
+      subItems: [
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Darshan Booking ",
+          path: "/SevaRegistrationDashBoard"
+        },
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Report of Donation",
+          path: "/EventDashBoard"
+        },
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Collected Donation",
+          path: "/EventDashBoard"
+        },
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Report of Reg Devotee",
+          path: "/EventDashBoard"
+        },
 
-      path: "/TempDarshnBooking",
-     
+
+      ]
     },
-    {
-      path: "/TempSevaRegis",
 
+
+
+    {
+      icon: <GiByzantinTemple />,
+      label: "Reg Devotees",
+      path: "/DonateDashBoard",
+
+    },
+
+
+
+    {
+      icon: <LiaCalendarCheck />,
+      label: "My Account",
+      path: "#",
+      hasSubmenu: true,
+      subItems: [
+        {
+          icon: <LiaCalendarCheck />,
+          label: "My Profile",
+          path: "/MyProfile"
+        },
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Change Password",
+          path: "/MyProfile"
+        },
+      ]
+    },
+
+    {
+      path: "/Support",
       icon: <FaRegFileLines />,
-      label: "Seva Registration",
-     
+      label: "Support",
+
     },
-    { icon: <TbPasswordUser />, label: "Change Password", path: "/TempChangePassword" },
+
+    {
+      icon: <LiaCalendarCheck />,
+      label: "Overview",
+      path: "#",
+      hasSubmenu: true,
+      subItems: [
+        {
+          icon: <LiaCalendarCheck />,
+          label: "About Us",
+          path: "/AboutDashBoard"
+        },
+
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Platform Info",
+          path: "/PlatformInfoDashBoard"
+        },
+
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Mission & Vision",
+          path: "/MissionDashBoard"
+        },
+
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Mandir Platform",
+          path: "/MandirPlatformDashBoard"
+        },
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Special announcement",
+          path: "/SpecialAnnouncementDashBoard"
+        },
+
+      ]
+    },
+    {
+      icon: <TbPasswordUser />,
+      label: "Logout",
+      path: "#", // will trigger logout
+      isLogout: true, // custom flag to detect logout
+    },
   ];
 
   return (
     <>
       {/* Header */}
-      <header className="user-nd-header">
-        <div className="logosec">
+      <header className="user-nd-header" expand="lg">
+        <div className="me-auto my-2 my-lg-0 px-2" navbarScroll>
           <img
             src={MenuIcon}
             className="icn menuicn"
@@ -123,126 +322,169 @@ function TempleLeftNav() {
           </Link>
 
 
-          {/* <div className="nd-title">
-            <span className="nd-subtitle">उत्तराखंड सरकार | Gov.t of Uttarakhand</span>
-            <span className="subtitle">
-              महिला सशक्तिकरण एवं बाल विकास विभाग उत्तराखंड
-            </span>
-          </div> */}
         </div>
+
 
         <div className="message">
- <ModifyAlert
-        message={alertMessage}
-        show={showModifyAlert}
-        setShow={setShowModifyAlert}
-      />
-          <div className="nd-msg">User: {userName}</div>
-          <Dropdown align="end" className="temp-dp">
-     
-      <Dropdown.Toggle
-        variant=""
-        id="user-dropdown"
-        className=" border-0 bg-transparent"
-        title="Account Menu"
-      >
-        <div className="nd-log-icon-pandit">
-          <LuLogOut />
-        </div>
-      </Dropdown.Toggle>
+          <ModifyAlert
+            message={alertMessage}
+            show={showModifyAlert}
+            setShow={setShowModifyAlert}
+          />
 
-      {/* Dropdown menu */}
-      <Dropdown.Menu>
-        <Dropdown.Item as={Link} to="/TempleProfile">
-          My Profile
-        </Dropdown.Item>
-        <Dropdown.Item as={Link} to="/TempleDashBoard">
-          Dashboard
-        </Dropdown.Item>
-        <Dropdown.Divider />
-        <Dropdown.Item onClick={logout} className="text-danger">
-          Logout
-        </Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
+          <div className=" d-flex align-items-center gap-2">
+            <div className="nd-msg">{profile.displayName || "User"}</div>
+            <Dropdown align="end" className="user-dp">
+              <Dropdown.Toggle
+                variant=""
+                id="user-dropdown"
+                className="border-0 bg-transparent"
+                title="Account Menu"
+              >
+                <img
+                  src={
+                    profile.devotee_photo
+                      ? `https://mahadevaaya.com/backend/media/devotee_photos/${profile.devotee_photo.split("/").pop()}`
+                      : "https://mahadevaaya.com/backend/media/devotee_photos/default.png"
+                  }
+                  alt={profile.displayName || "Devotee"}
+                  className="nav-profile-photo"
+                />
+              </Dropdown.Toggle>
 
-          {/* <div className="temp-dp" title="Click to logout" onClick={logout}>
-            <div className="nd-log-icon">
-              <LuLogOut />
-            </div>
-          </div> */}
+              {/* Dropdown menu */}
+              <Dropdown.Menu>
+                <Dropdown.Item as={Link} to="/MyProfile">
+                  My Profile
+                </Dropdown.Item>
+                <Dropdown.Item as={Link} to="/ChangePassword">
+                  Change Password
+                </Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item onClick={logout} className="text-danger">
+                  Logout
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+
+
         </div>
       </header>
 
       {/* Sidebar Navigation */}
       <div className={`navcontainer ${isNavClosed ? "navclose" : ""}`}>
-        <nav className="temp-nav">
+        <nav className="nav">
           <div className="nav-upper-options">
-
             <div className="nd-menu">
               <FaAlignLeft className="icn menuicn" onClick={toggleNav} />
               <div className="nd-user">User: {userName}</div>
+              <Dropdown align="end" className="user-dp">
+                <Dropdown.Toggle
+                  variant=""
+                  id="user-dropdown"
+                  className="border-0 bg-transparent"
+                  title="Account Menu"
+                >
+                  <div className="nd-log-icon-pandit">
+                    <LuLogOut />
+                  </div>
+                </Dropdown.Toggle>
 
-                        <Dropdown align="end" className="temp-dp">
-                   
-                    <Dropdown.Toggle
-                      variant=""
-                      id="user-dropdown"
-                      className=" border-0 bg-transparent"
-                      title="Account Menu"
-                    >
-                      <div className="nd-log-icon-pandit">
-                        <LuLogOut />
-                      </div>
-                    </Dropdown.Toggle>
-              
-                    {/* Dropdown menu */}
-                    <Dropdown.Menu>
-                      <Dropdown.Item as={Link} to="/TempleProfile">
-                        My Profile
-                      </Dropdown.Item>
-                      <Dropdown.Item as={Link} to="/TempleDashBoard">
-                        Dashboard
-                      </Dropdown.Item>
-                      <Dropdown.Divider />
-                      <Dropdown.Item onClick={logout} className="text-danger">
-                        Logout
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-              {/* <div className="nd-log-icon-mob-data" title="Logout" onClick={logout}>
-                <LuLogOut />
-              </div> */}
+                {/* Dropdown menu */}
+                <Dropdown.Menu>
+                  <Dropdown.Item as={Link} to="/MyProfile">
+                    My Profile
+                  </Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/DashBoard">
+                    Dashboard
+                  </Dropdown.Item>
+                  <Dropdown.Divider />
+                  <Dropdown.Item onClick={logout} className="text-danger">
+                    Logout
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </div>
 
             {navigationOptions.map((option, index) => (
               <React.Fragment key={index}>
                 {option.download ? (
                   <div
-                    className={`temp-nav-option option${index + 1} ${activePath === option.fileUrl ? "active-nav-option" : ""
-                      }`}
+                    className={`nav-option option${index + 1} ${activePath === option.fileUrl ? "active-nav" : ""
+                      } ${hoveredMenu === index ? "hovered-nav" : ""}`}
                     onClick={() => {
                       setActivePath(option.fileUrl);
                       handleDownload(option.fileUrl, option.fileName);
                     }}
+                    onMouseEnter={() => handleMenuHover(index)}
+                    onMouseLeave={handleMenuLeave}
                   >
                     <div className="nav-item d-flex">
                       <span className="nav-icon">{option.icon}</span>
                       <span className="nav-label">{option.label}</span>
                     </div>
                   </div>
+                ) : option.hasSubmenu ? (
+                  <>
+                    <div
+                      className={`nav-option option${index + 1} ${activePath === option.path || openSubMenu === index ? "active-nav" : ""
+                        } ${hoveredMenu === index ? "hovered-nav" : ""}`}
+                      onClick={() => toggleSubMenu(index)}
+                      onMouseEnter={() => handleMenuHover(index)}
+                      onMouseLeave={handleMenuLeave}
+                    >
+                      <div className="nav-item d-flex justify-content-between">
+                        <div className="d-flex">
+                          <span className="nav-icon">{option.icon}</span>
+                          <span className="nav-label">{option.label}</span>
+                        </div>
+                        <span className="nav-arrow">
+                          {openSubMenu === index ? <FaChevronUp /> : <FaChevronDown />}
+                        </span>
+                      </div>
+                    </div>
+                    <div className={`sub-menu ${openSubMenu === index ? 'open' : ''}`}>
+                      {option.subItems.map((subItem, subIndex) => (
+                        <Link
+                          key={subIndex}
+                          to={subItem.path}
+                          className={`nav-option sub-nav-option ${activePath === subItem.path ? "active-nav" : ""
+                            }`}
+                          onClick={() => setActivePath(subItem.path)}
+                        >
+                          <div className="sub-item-label d-flex">
+                            <span className="nav-icon">
+                              {subItem.icon}
+                            </span>
+                            <span className="sub-label">{subItem.label}</span>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </>
                 ) : (
                   <Link
                     to={option.path}
-                    className={`temp-nav-option option${index + 1} ${activePath === option.path ? "active-nav-option" : ""
-                      }`}
-                    onClick={() => setActivePath(option.path)}
+                    className={`nav-option option${index + 1} ${activePath === option.path ? "active-nav" : ""}
+    ${hoveredMenu === index ? "hovered-nav" : ""}`}
+                    onClick={() => {
+                      if (option.isLogout) {
+                        logout(); // use the new logout handler
+                      } else {
+                        setActivePath(option.path);
+                      }
+                    }}
+                    onMouseEnter={() => handleMenuHover(index)}
+                    onMouseLeave={handleMenuLeave}
                   >
                     <div className="nav-item d-flex">
                       <span className="nav-icon">{option.icon}</span>
                       <span className="nav-label">{option.label}</span>
                     </div>
                   </Link>
+
+
                 )}
               </React.Fragment>
             ))}
