@@ -156,7 +156,7 @@ function DevoteeRegistration() {
     if (!formDataFiles.devotee_photo) {
       setFileErrors((prev) => ({
         ...prev,
-        devotee_photo: "User photo is required",
+        devotee_photo: "Devotee photo is required",
       }));
       setMessage("Please fix the errors above");
       return;
@@ -196,7 +196,7 @@ function DevoteeRegistration() {
       setErrors({});
       setFileErrors({});
       setMessage("");
-      setAlertMessage("User Registered Successfully!");
+      setAlertMessage("Devotee Registered Successfully!");
       setShowAlert(true);
 
       setTimeout(() => {
@@ -483,7 +483,7 @@ function DevoteeRegistration() {
                             className="temp-doc-subinfo mt-2"
                           >
                             <h3>
-                              User Photo{" "}
+                              Devotee Photo{" "}
                               <span className="temp-span-star">*</span>
                             </h3>
                             {formDataFiles.devotee_photo && (
@@ -502,7 +502,7 @@ function DevoteeRegistration() {
                                     setFormDataFiles({ devotee_photo: null });
                                     setFileErrors((prev) => ({
                                       ...prev,
-                                      devotee_photo: "User photo is required",
+                                      devotee_photo: "Devotee photo is required",
                                     }));
                                   }}
                                 >
@@ -542,7 +542,7 @@ function DevoteeRegistration() {
                 <img
                   src={Regimg}
                   className="img-fluid"
-                  alt="User Registration"
+                  alt="Devotee Registration"
                 />
               </Col>
             </Row>
