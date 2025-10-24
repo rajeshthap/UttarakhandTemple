@@ -19,18 +19,18 @@ import { useNavigate } from "react-router-dom";
 const MainDashBoard = () => {
   useEffect(() => {
 
-  window.history.pushState(null, "", window.location.href);
-
-  const handlePopState = () => {
     window.history.pushState(null, "", window.location.href);
-  };
 
-  window.addEventListener("popstate", handlePopState);
+    const handlePopState = () => {
+      window.history.pushState(null, "", window.location.href);
+    };
 
-  return () => {
-    window.removeEventListener("popstate", handlePopState);
-  };
-}, []); 
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
   const navigate = useNavigate();
   const { uniqueId } = useAuth();
   React.useEffect(() => {
@@ -56,64 +56,82 @@ const MainDashBoard = () => {
               <p>Unique ID: {uniqueId}</p>{" "}
             </div> */}
             <Row>
-              <Col lg={3} md={3} sm={12} className="d-flex">
-                <Card className="shadow-sm  rounded  dbcard-box-1 flex-fill">
+              <Col lg={3} md={3} sm={12}>
+                <Card className="shadow-sm  rounded  dbcard-box-1 flex-fill mb-2">
                   <Card.Body>
-                    <Card.Title className="">
-                      <FaHandsPraying />
-                    </Card.Title>
-                    <Card.Subtitle className="mb-2 user-sub-title">
-                      Seva
-                      <br></br>
-                      <span className="user-sub-title-data">0</span>
-                      <br></br> <span className="user-span">Seva Booked</span>
-                    </Card.Subtitle>
+
+                    <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
+                      <div>
+                        <span className="text-muted d-block mb-1 text-nowrap  user-sub-title">  Seva</span> <h4 className="fw-medium mb-0">0</h4>
+                        <div><span className="user-span">Seva Booked</span></div>
+                      </div>
+
+
+
+
+                      <div className="lh-1">
+                        <div className=" avatar-md avatar-rounded save-bg flex-shrink-0 d-flex align-items-center justify-content-center ">
+                          <FaOm className=" " /> </div>
+                      </div></div>
+
+
+
+
+
+
+
+
+
                   </Card.Body>
                 </Card>
               </Col>
-              <Col lg={3} md={3} sm={12} className="d-flex">
+              <Col lg={3} md={3} sm={12}>
                 <Card className="shadow-sm dbcard-box-2 flex-fill">
                   <Card.Body>
-                    <Card.Title className="">
-                      <FaHandsPraying />
-                    </Card.Title>
-                    <Card.Subtitle className="mb-2 user-sub-title">
-                      Darshan Name
-                      <br></br>
-                      <span className="user-sub-title-data">0</span>
-                      <br></br>{" "}
-                      <span className="user-span">Darshan Booked</span>
-                    </Card.Subtitle>
+                    <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
+                      <div>
+                        <span className="text-muted d-block mb-1 text-nowrap  user-sub-title">    Darshan Name</span> <h4 className="fw-medium mb-0">0</h4>
+                        <div><span className="user-span">Darshan Booked</span></div>
+                      </div>
+                      <div className="lh-1">
+                        <div className=" avatar-md avatar-rounded Darshan-bg flex-shrink-0 d-flex align-items-center justify-content-center ">
+                          <GiByzantinTemple /> </div>
+                      </div></div>
                   </Card.Body>
                 </Card>
               </Col>
-              <Col lg={3} md={3} sm={12} className="d-flex">
+              <Col lg={3} md={3} sm={12}>
                 <Card className="shadow-sm rounded  flex-fill dbcard-box-4">
                   <Card.Body>
-                    <Card.Title className="">
-                      <FaHandsPraying />
-                    </Card.Title>
-                    <Card.Subtitle className="mb-2 user-sub-title">
-                      Pandit
-                      <br></br>
-                      <span className="user-sub-title-data">0</span>
-                      <br></br> <span className="user-span">Booking Count</span>
-                    </Card.Subtitle>
+                    <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
+                      <div>
+                        <span className="text-muted d-block mb-1 text-nowrap  user-sub-title">      Pandit</span> <h4 className="fw-medium mb-0">0</h4>
+                        <div><span className="user-span">Booking Count</span></div>
+                      </div>
+                      <div className="lh-1">
+                        <div className=" avatar-md avatar-rounded pandit-bg flex-shrink-0 d-flex align-items-center justify-content-center ">
+                          <img
+                            src={PanditImg}
+                            alt="Pandit"
+                            className=" img-fluid"
+                          /> </div>
+                      </div></div>
                   </Card.Body>
                 </Card>
               </Col>
-              <Col lg={3} md={3} sm={12} className="d-flex">
+              <Col lg={3} md={3} sm={12}>
                 <Card className="shadow-sm rounded  flex-fill dbcard-box-3">
                   <Card.Body>
-                    <Card.Title className="">
-                      <FaHandsPraying />
-                    </Card.Title>
-                    <Card.Subtitle className="mb-2 user-sub-title">
-                      Donations
-                      <br></br>
-                      <span className="user-sub-title-data">0</span>
-                      <br></br> <span className="user-span">Donations</span>
-                    </Card.Subtitle>
+                    <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
+                      <div>
+                        <span className="text-muted d-block mb-1 text-nowrap  user-sub-title">      Donations</span> <h4 className="fw-medium mb-0">0</h4>
+                        <div><span className="user-span">Donations</span></div>
+                      </div>
+
+                      <div className="lh-1">
+                        <div className=" avatar-md avatar-rounded Donations-bg flex-shrink-0 d-flex align-items-center justify-content-center ">
+                          <BiSolidDonateBlood /> </div>
+                      </div></div>
 
                   </Card.Body>
                 </Card>
@@ -144,14 +162,14 @@ const MainDashBoard = () => {
                 <Row>
                   <Col lg={6} md={6} sm={12}>
                     <div className="mt-3 user-upcoming-bookings d-flex">
-                      <Col lg={1} md={1} sm={12}>
+                      <Col lg={2} md={2} sm={12}>
                         {/* <div className="">
                             <img src={PanditImg} alt="Pandit" className="seva-come-icon-darshanam img-fluid" />
                           </div> */}
 
                         <FaOm className="seva-come-icon-darshanam" />
                       </Col>
-                      <Col lg={11} md={11} sm={12} className="user-seva-text">
+                      <Col lg={10} md={10} sm={12} className="user-seva-text">
                         <h3>Seva and Darshanam</h3>
                         <p>
                           Darshan and Seva tickets can now be bought offline
@@ -169,7 +187,7 @@ const MainDashBoard = () => {
                   </Col>
                   <Col lg={6} md={6} sm={12}>
                     <div className="mt-3 pandit-upcoming-bookings d-flex">
-                      <Col lg={1} md={2} sm={12}>
+                      <Col lg={2} md={2} sm={12}>
                         <div className="pnadit-w">
                           <img
                             src={PanditImg}
@@ -180,7 +198,7 @@ const MainDashBoard = () => {
 
                         {/* <FaOm className="seva-come-icon-darshanam" /> */}
                       </Col>
-                      <Col lg={11} md={10} sm={12} className="user-seva-text">
+                      <Col lg={10} md={10} sm={12} className="user-seva-text">
                         <h3>Pandit Booking</h3>
                         <p>
                           Darshanam and Seva tickets can now be bought offline
@@ -198,14 +216,14 @@ const MainDashBoard = () => {
                   </Col>
                   <Col lg={6} md={6} sm={12}>
                     <div className="mt-3 donation-upcoming-bookings d-flex">
-                      <Col lg={1} md={2} sm={12}>
+                      <Col lg={2} md={2} sm={12}>
                         {/* <div className="">
                             <img src={PanditImg} alt="Pandit" className="seva-come-icon-darshanam img-fluid" />
                           </div> */}
 
                         <BiSolidDonateBlood className="seva-come-icon-darshanam" />
                       </Col>
-                      <Col lg={11} md={10} sm={12} className="user-seva-text">
+                      <Col lg={10} md={10} sm={12} className="user-seva-text">
                         <h3>Donations</h3>
                         <p>
                           Darshanam and Seva tickets can now be bought offline
@@ -224,14 +242,14 @@ const MainDashBoard = () => {
 
                   <Col lg={6} md={6} sm={12}>
                     <div className="mt-3 pooja-upcoming-bookings d-flex">
-                      <Col lg={1} md={2} sm={12}>
+                      <Col lg={2} md={2} sm={12}>
                         {/* <div className="">
                             <img src={PanditImg} alt="Pandit" className="seva-come-icon-darshanam img-fluid" />
                           </div> */}
 
                         <GiByzantinTemple className="seva-come-icon-darshanam" />
                       </Col>
-                      <Col lg={11} md={10} sm={12} className="user-seva-text">
+                      <Col lg={10} md={10} sm={12} className="user-seva-text">
                         <h3>Poojs Booking</h3>
                         <p>
                           Darshanam and Seva tickets can now be bought offline
@@ -256,7 +274,7 @@ const MainDashBoard = () => {
               </Col>
             </Row>
 
-            <Row>
+            <Row className="mt-3">
               <h2>Transaction History</h2>
               <div class="col-md-12">
                 <table class="rwd-table">

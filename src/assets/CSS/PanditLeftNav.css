@@ -277,8 +277,8 @@
 }
 
 .nav-icon {
-  padding: 16px;
-  font-size: 24px;
+  padding: 0px 8px 10px 0px;
+  font-size: 18px;
   padding-top: 0px !important;
   color: var(--nd-white);
 }
@@ -288,8 +288,8 @@
 }
 
 span.nav-label {
-  padding-top: var(--nd-space-250);
-  font-size: var(--nd-space-350);
+  padding-top: var(--nd-space-150);
+  font-size: var(--nd-space-300);
   color: var(--nd-white);
 }
 
@@ -446,7 +446,7 @@ span.nav-label {
   }
 
   span.nav-label {
-    font-size: var(--nd-space-400);
+    font-size: var(--nd-space-300);
   }
 
   .option1 {

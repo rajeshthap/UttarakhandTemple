@@ -58,6 +58,7 @@
   align-items: center;
   margin-left: auto;
   color: var(--nd-white);
+  width: 10px;
   /* background-image: url("../images/arrow_icon.svg") !important; */
 }
 
@@ -309,10 +310,8 @@
 
 .nav-option {
   width: 250px;
-  height: 60px;
-
   align-items: center;
-  padding: 12px 30px 0 20px;
+  padding: 0px 30px 0 20px;
   gap: 20px;
   transition: all 0.1s ease-in-out;
 }
@@ -387,8 +386,8 @@ span.nav-label {
 }
 
 span.sub-label {
-  padding-top: var(--nd-space-250);
-  font-size: var(--nd-space-350);
+  padding-top: var(--nd-space-150);
+  font-size: var(--nd-space-300);
   color: var(--nd-white);
 }
 

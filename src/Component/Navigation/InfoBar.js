@@ -11,7 +11,7 @@ import defaultAvatar from "../../assets/images/Diya.png";
 
 const InfoBar = () => {
   const navigate = useNavigate();
-  const { uniqueId, setUniqueId } = useAuth(); 
+  const { uniqueId, setUniqueId } = useAuth();
   const [profile, setProfile] = useState({
     displayName: "",
     devotee_photo: "",
@@ -89,13 +89,13 @@ const InfoBar = () => {
 
             {uniqueId && (
               <div className="d-flex align-items-center gap-2 px-2">
-               
-            
+
+
                 <Link to="/MainDashBoard" className="btn btn-primary btn-sm">
                   Dashboard
                 </Link>
-                 <span className="text-white">{profile.displayName || "User"}</span>
-                  <Image
+                <span className="text-white">{profile.displayName || "User"}</span>
+                <Image
                   src={
                     profile.devotee_photo
                       ? `https://mahadevaaya.com/backend/media/devotee_photos/${profile.devotee_photo.split("/").pop()}`
@@ -112,7 +112,7 @@ const InfoBar = () => {
             {/* Social icons */}
             <div className="px-3 d-flex gap-2 social-icon">
               <i className="bi bi-facebook infoicon"></i>
-              <i className="bi bi-twitter infoicon"></i>
+              <i class="bi bi-twitter-x"></i>
               <i className="bi bi-instagram infoicon"></i>
               <i className="bi bi-linkedin infoicon"></i>
               <i className="bi bi-youtube infoicon"></i>
