@@ -579,7 +579,7 @@ const EventParticipation = () => {
                       onChange={handleChange}
                     >
                       <option value="">Select Participation </option>
-                      <option value="online">Online </option>
+                      {/* <option value="online">Online </option> */}
                       <option value="offline">Offline </option>
                     </Form.Select>
                     {errors.participation_type && (
