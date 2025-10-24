@@ -149,7 +149,7 @@ useEffect(() => {
 {
       icon: <GiByzantinTemple />,
       label: "Pandit Booking",
-      path: "/PanditBooking",
+      path: "/PoojaBookingDashBoard",
     
     },
         {
