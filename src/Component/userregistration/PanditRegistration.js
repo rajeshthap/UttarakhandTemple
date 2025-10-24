@@ -70,83 +70,81 @@ function PanditRegistration() {
     aadhar_document: null,
   });
   const poojaOptions = [
-  { pooja_name: "Annaprashan Sanskar Puja" },
-  { pooja_name: "Satyanarayan Puja" },
-  { pooja_name: "Bhoomi Puja" },
-  { pooja_name: "Griha Pravesh Puja" },
-  { pooja_name: "New Office Opening Puja" },
-  { pooja_name: "Vivah (Marriage) Puja" },
-  { pooja_name: "Vishwakarma Puja" },
-  { pooja_name: "Yagnopavit Sanskar" },
-  { pooja_name: "Rudrabhishek Puja" },
-  { pooja_name: "Engagement Ceremony (Sagai)" },
-  { pooja_name: "Naming Ceremony" },
-  { pooja_name: "Ganesh Chaturthi Puja" },
-  { pooja_name: "Vehicle / Vahan Puja" },
-  { pooja_name: "Mundan Sanskar Puja" },
-  { pooja_name: "Navratri Durga Puja" },
-  { pooja_name: "Brihaspati Vrat Udyapan Puja" },
-  { pooja_name: "Ekadashi Vrat Udyapan Puja" },
-  { pooja_name: "Godh Bharai Puja (Baby Shower)" },
-  { pooja_name: "Haldi Ceremony" },
-  { pooja_name: "Janamdin / Birthday Puja" },
-  { pooja_name: "Mahalakshmi Puja" },
-  { pooja_name: "Vastu Shanti Puja" },
-  { pooja_name: "Vishnu Sahastranam Path Puja" },
-  { pooja_name: "Kaal Sarp Dosh Nivaran Puja" },
-  { pooja_name: "Office / Business Puja" },
-  { pooja_name: "Namakarana Puja" },
-  { pooja_name: "Hartalika Teej Puja" },
-  { pooja_name: "Karwa Chauth Puja" },
-  { pooja_name: "Diwali Lakshmi Puja" },
-  { pooja_name: "Dhanteras Puja" },
-  { pooja_name: "Vara Mahalakshmi Puja" },
-  { pooja_name: "Devi Poojan" },
-  { pooja_name: "Kuber Puja" },
-  { pooja_name: "Narak Chaturdashi Puja" },
-  { pooja_name: "Kali Puja" },
-  { pooja_name: "Ganesh Lakshmi Puja" },
-  { pooja_name: "Govardhan Puja" },
-  { pooja_name: "Annakut Puja" },
-  { pooja_name: "Bhai Dooj Puja" },
-  { pooja_name: "Chopda Pooja" },
-  { pooja_name: "Ayush Havan" },
-  { pooja_name: "Chandi Path Havan" },
-  { pooja_name: "Lakshmi Kubera Havan" },
-  { pooja_name: "Navagraha Havan" },
-  { pooja_name: "Shuddhikaran Puja and Havan" },
-  { pooja_name: "Maha Ganapati Homa" },
-  { pooja_name: "Dhanvantari Homa" },
-  { pooja_name: "Bhagavathi Homa" },
-  { pooja_name: "Navmi Havan" },
-  { pooja_name: "Drishti Durga Homa" },
-  { pooja_name: "Mahalaxmi Havan" },
-  { pooja_name: "Maha Mrityunjaya Jaap Puja" },
-  { pooja_name: "Gayatri Mantra Jaap Puja" },
-  { pooja_name: "Santan Gopal Mantra Jaap" },
-  { pooja_name: "Shani Dosh Nivaran Jaap" },
-  { pooja_name: "Rahu Graha Shanti Mantra Jaap" },
-  { pooja_name: "Sampoorna Sunderkand Paath" },
-  { pooja_name: "Akhand Ramayana Path" },
-  { pooja_name: "Hanuman Chalisa Paath" },
-  { pooja_name: "Bajrang Baan Path" },
-  { pooja_name: "Navchandi Paath" },
-  { pooja_name: "Durga Saptashati Path" },
-  { pooja_name: "Kanak Dhara Path" },
-  { pooja_name: "Shri Sukt Paath" },
-  { pooja_name: "Lalita Sahasranama Path" },
-  { pooja_name: "Kanakadhara Stotram Path" },
-  { pooja_name: "Pitru Dosh Nivaran Puja" },
-  { pooja_name: "Shradh Puja & Karma for Ancestors Peace" },
-  { pooja_name: "Barsi Puja" },
-  { pooja_name: "Bharani Shradh Pitru Paksha" },
-  { pooja_name: "Tripindi Shradha Puja" },
-  { pooja_name: "Garud Puran Path" },
-  { pooja_name: "Tarpan Shradh Puja" },
-  { pooja_name: "Pind Daan Shradh Puja" }
-];
-
-
+    { pooja_name: "Annaprashan Sanskar Puja" },
+    { pooja_name: "Satyanarayan Puja" },
+    { pooja_name: "Bhoomi Puja" },
+    { pooja_name: "Griha Pravesh Puja" },
+    { pooja_name: "New Office Opening Puja" },
+    { pooja_name: "Vivah (Marriage) Puja" },
+    { pooja_name: "Vishwakarma Puja" },
+    { pooja_name: "Yagnopavit Sanskar" },
+    { pooja_name: "Rudrabhishek Puja" },
+    { pooja_name: "Engagement Ceremony (Sagai)" },
+    { pooja_name: "Naming Ceremony" },
+    { pooja_name: "Ganesh Chaturthi Puja" },
+    { pooja_name: "Vehicle / Vahan Puja" },
+    { pooja_name: "Mundan Sanskar Puja" },
+    { pooja_name: "Navratri Durga Puja" },
+    { pooja_name: "Brihaspati Vrat Udyapan Puja" },
+    { pooja_name: "Ekadashi Vrat Udyapan Puja" },
+    { pooja_name: "Godh Bharai Puja (Baby Shower)" },
+    { pooja_name: "Haldi Ceremony" },
+    { pooja_name: "Janamdin / Birthday Puja" },
+    { pooja_name: "Mahalakshmi Puja" },
+    { pooja_name: "Vastu Shanti Puja" },
+    { pooja_name: "Vishnu Sahastranam Path Puja" },
+    { pooja_name: "Kaal Sarp Dosh Nivaran Puja" },
+    { pooja_name: "Office / Business Puja" },
+    { pooja_name: "Namakarana Puja" },
+    { pooja_name: "Hartalika Teej Puja" },
+    { pooja_name: "Karwa Chauth Puja" },
+    { pooja_name: "Diwali Lakshmi Puja" },
+    { pooja_name: "Dhanteras Puja" },
+    { pooja_name: "Vara Mahalakshmi Puja" },
+    { pooja_name: "Devi Poojan" },
+    { pooja_name: "Kuber Puja" },
+    { pooja_name: "Narak Chaturdashi Puja" },
+    { pooja_name: "Kali Puja" },
+    { pooja_name: "Ganesh Lakshmi Puja" },
+    { pooja_name: "Govardhan Puja" },
+    { pooja_name: "Annakut Puja" },
+    { pooja_name: "Bhai Dooj Puja" },
+    { pooja_name: "Chopda Pooja" },
+    { pooja_name: "Ayush Havan" },
+    { pooja_name: "Chandi Path Havan" },
+    { pooja_name: "Lakshmi Kubera Havan" },
+    { pooja_name: "Navagraha Havan" },
+    { pooja_name: "Shuddhikaran Puja and Havan" },
+    { pooja_name: "Maha Ganapati Homa" },
+    { pooja_name: "Dhanvantari Homa" },
+    { pooja_name: "Bhagavathi Homa" },
+    { pooja_name: "Navmi Havan" },
+    { pooja_name: "Drishti Durga Homa" },
+    { pooja_name: "Mahalaxmi Havan" },
+    { pooja_name: "Maha Mrityunjaya Jaap Puja" },
+    { pooja_name: "Gayatri Mantra Jaap Puja" },
+    { pooja_name: "Santan Gopal Mantra Jaap" },
+    { pooja_name: "Shani Dosh Nivaran Jaap" },
+    { pooja_name: "Rahu Graha Shanti Mantra Jaap" },
+    { pooja_name: "Sampoorna Sunderkand Paath" },
+    { pooja_name: "Akhand Ramayana Path" },
+    { pooja_name: "Hanuman Chalisa Paath" },
+    { pooja_name: "Bajrang Baan Path" },
+    { pooja_name: "Navchandi Paath" },
+    { pooja_name: "Durga Saptashati Path" },
+    { pooja_name: "Kanak Dhara Path" },
+    { pooja_name: "Shri Sukt Paath" },
+    { pooja_name: "Lalita Sahasranama Path" },
+    { pooja_name: "Kanakadhara Stotram Path" },
+    { pooja_name: "Pitru Dosh Nivaran Puja" },
+    { pooja_name: "Shradh Puja & Karma for Ancestors Peace" },
+    { pooja_name: "Barsi Puja" },
+    { pooja_name: "Bharani Shradh Pitru Paksha" },
+    { pooja_name: "Tripindi Shradha Puja" },
+    { pooja_name: "Garud Puran Path" },
+    { pooja_name: "Tarpan Shradh Puja" },
+    { pooja_name: "Pind Daan Shradh Puja" },
+  ];
 
   const [errorReason_querys, setErrorReason_querys] = useState({});
   const [showPassword, setShowPassword] = useState(false);
@@ -158,25 +156,28 @@ function PanditRegistration() {
     setFormData((prev) => ({ ...prev, [name]: value }));
     validateField(name, value); // live validation on custom handler
   };
-useEffect(() => {
-  // Push the current page into history so user can't go back
-  window.history.pushState(null, "", window.location.href);
-
-  const handlePopState = () => {
-    // Disable back button by re-pushing the same page
+  useEffect(() => {
+    // Push the current page into history so user can't go back
     window.history.pushState(null, "", window.location.href);
-  };
-  window.addEventListener("popstate", handlePopState);
 
-  return () => {
-    window.removeEventListener("popstate", handlePopState);
-  };
-}, [navigate]); 
+    const handlePopState = () => {
+      // Disable back button by re-pushing the same page
+      window.history.pushState(null, "", window.location.href);
+    };
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [navigate]);
 
   const addPooja = () => {
     setFormData((prev) => ({
       ...prev,
-      pandit_pooja_details: [...prev.pandit_pooja_details, { pooja_name: "", pooja_price: "" }],
+      pandit_pooja_details: [
+        ...prev.pandit_pooja_details,
+        { pooja_name: "", pooja_price: "" },
+      ],
     }));
   };
 
@@ -305,11 +306,18 @@ useEffect(() => {
       const file = files[0];
 
       // Allowed types
-      const allowedTypes = ["image/jpeg", "image/png"];
+      let allowedTypes = ["image/jpeg", "image/png"];
+      if (name === "aadhar_document") {
+        allowedTypes.push("application/pdf");
+      }
+
       if (!allowedTypes.includes(file.type)) {
         setFileErrors((prev) => ({
           ...prev,
-          [name]: "Only JPG or PNG files are allowed.",
+          [name]:
+            name === "aadhar_document"
+              ? "Only JPG, PNG, or PDF files are allowed."
+              : "Only JPG or PNG files are allowed.",
         }));
         setFormData((prev) => ({ ...prev, [name]: "" }));
         return;
@@ -472,11 +480,9 @@ useEffect(() => {
         }
       }
 
-      const res = await axios.post(
-        `${BASE_URLL}api/all-reg/`,
-        formDataToSend,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
+      const res = await axios.post(`${BASE_URLL}api/all-reg/`, formDataToSend, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       if (
         res.data.success === true ||
@@ -504,7 +510,7 @@ useEffect(() => {
           pandit_image: "",
           aadhar_document: "",
           pandit_role: [],
-          pandit_pooja_details: [{ pooja_name: "", pooja_price: "" }], 
+          pandit_pooja_details: [{ pooja_name: "", pooja_price: "" }],
           role: "pandit",
         });
 
@@ -864,79 +870,87 @@ useEffect(() => {
                             </span>
                           </Form.Label>
 
-                          {formData.pandit_pooja_details?.map((pooja, index) => (
-                            <Row key={index} className="align-items-end">
-                              <Col md={5}>
-                                <Form.Group
-                                  className="mb-3"
-                                  controlId={`poojaName-${index}`}
-                                >
-                                  <Form.Select
-                                    className="temp-form-control"
-                                    value={pooja.pooja_name}
-                                    onChange={(e) =>
-                                      handlePoojaChange(index, e.target.value)
-                                    }
+                          {formData.pandit_pooja_details?.map(
+                            (pooja, index) => (
+                              <Row key={index} className="align-items-end">
+                                <Col md={5}>
+                                  <Form.Group
+                                    className="mb-3"
+                                    controlId={`poojaName-${index}`}
                                   >
-                                    <option value="">Select Pooja Name</option>
-                                    {poojaOptions
-                                      .filter(
-                                        (opt) =>
-                                          !formData.pandit_pooja_details.some(
-                                            (p, i) =>
-                                              p.pooja_name === opt.pooja_name &&
-                                              i !== index
-                                          )
-                                      )
-                                      .map((opt) => (
-                                        <option
-                                          key={opt.pooja_name}
-                                          value={opt.pooja_name}
-                                        >
-                                          {opt.pooja_name}
-                                        </option>
-                                      ))}
-                                  </Form.Select>
-                                </Form.Group>
-                              </Col>
+                                    <Form.Select
+                                      className="temp-form-control"
+                                      value={pooja.pooja_name}
+                                      onChange={(e) =>
+                                        handlePoojaChange(index, e.target.value)
+                                      }
+                                    >
+                                      <option value="">
+                                        Select Pooja Name
+                                      </option>
+                                      {poojaOptions
+                                        .filter(
+                                          (opt) =>
+                                            !formData.pandit_pooja_details.some(
+                                              (p, i) =>
+                                                p.pooja_name ===
+                                                  opt.pooja_name && i !== index
+                                            )
+                                        )
+                                        .map((opt) => (
+                                          <option
+                                            key={opt.pooja_name}
+                                            value={opt.pooja_name}
+                                          >
+                                            {opt.pooja_name}
+                                          </option>
+                                        ))}
+                                    </Form.Select>
+                                  </Form.Group>
+                                </Col>
 
-                              <Col md={5}>
-                                <Form.Group
-                                  className="mb-3"
-                                  controlId={`poojaPrice-${index}`}
+                                <Col md={5}>
+                                  <Form.Group
+                                    className="mb-3"
+                                    controlId={`poojaPrice-${index}`}
+                                  >
+                                    <Form.Control
+                                      type="number"
+                                      placeholder="Enter Price"
+                                      className="temp-form-control"
+                                      value={pooja.pooja_price}
+                                      onChange={(e) => {
+                                        const newPoojas = [
+                                          ...formData.pandit_pooja_details,
+                                        ];
+                                        newPoojas[index].pooja_price =
+                                          e.target.value;
+                                        setFormData((prev) => ({
+                                          ...prev,
+                                          pandit_pooja_details: newPoojas,
+                                        }));
+                                      }}
+                                    />
+                                  </Form.Group>
+                                </Col>
+
+                                <Col
+                                  md={2}
+                                  className="d-flex align-items-end mb-4"
                                 >
-                                  <Form.Control
-                                    type="number"
-                                    placeholder="Enter Price"
-                                    className="temp-form-control"
-                                    value={pooja.pooja_price}
-                                    onChange={(e) => {
-                                      const newPoojas = [...formData.pandit_pooja_details];
-                                      newPoojas[index].pooja_price = e.target.value;
-                                      setFormData((prev) => ({
-                                        ...prev,
-                                        pandit_pooja_details: newPoojas,
-                                      }));
-                                    }}
-                                  />
-                                </Form.Group>
-                              </Col>
+                                  <Button
+                                    variant="danger"
+                                    onClick={() => removePooja(index)}
+                                  >
+                                    {index === 0 ? "Clear" : "Remove"}
+                                  </Button>
+                                </Col>
+                              </Row>
+                            )
+                          )}
 
-                              <Col
-                                md={2}
-                                className="d-flex align-items-end mb-4"
-                              >
-                                <Button
-                                  variant="danger"
-                                  onClick={() => removePooja(index)}
-                                >
-                                  {index === 0 ? "Clear" : "Remove"}
-                                </Button>
-                              </Col>
-                            </Row>
-                          ))}
-
-                          {formData.pandit_pooja_details.length < poojaOptions.length && (
+                          {formData.pandit_pooja_details.length <
+                            poojaOptions.length && (
                             <Button
                               variant="primary"
                               className="mb-2"
@@ -1209,6 +1223,7 @@ useEffect(() => {
                                   className="invisible"
                                   onChange={handleInputChange}
                                 />
+
                                 <label
                                   className="btn temp-primary-btn mb-1"
                                   htmlFor="aadhar_document"
@@ -1254,6 +1269,12 @@ useEffect(() => {
                                       className="px-4 temp-success-doc"
                                     >
                                       <FaCheckCircle /> Uploaded Successfully
+                                      {formData.aadhar_document.type ===
+                                        "application/pdf" && (
+                                        <div>
+                                          {formData.aadhar_document.name}
+                                        </div>
+                                      )}
                                     </Col>
                                   </div>
                                   <div
