@@ -43,7 +43,7 @@ const OnlineBooking = () => {
                     <img src={templeimg} alt="About by god" className="img-fluid" />
                   </div>
                 </div>
-                <h3>Darshan & Pooja Booking</h3>
+                <h3>Darshan & Puja Booking</h3>
                 <p>
                   <Button
                     variant=""

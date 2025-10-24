@@ -8,7 +8,7 @@ span.temp-span-star {
 }
 
 .temp-label {
-    font-size: var(--temp-space-400);
+    font-size: var(--temp-space-350);
     font-weight: 500;
     color: var(--temp-light-white);
 
@@ -25,11 +25,11 @@ span.temp-span-star {
 }
 
 .temp-form-control {
-    height: 48px;
+    height: 40px;
     border-radius: var(--temp-space-200);
     border: 1px solid var(--temp-search-border);
     color: #808090;
-    font-size: var(--temp-space-350);
+    font-size: var(--temp-space-300);
 
 }
 
@@ -52,10 +52,9 @@ span.temp-span-star {
 }
 
 .temp-form-control-option {
-    height: 48px;
-    font-size: var(--temp-space-350);
+    height: 40px;
+    font-size: var(--temp-space-300);
     border: 1px solid var(--temp-search-border);
-    font-size: var(--temp-space-350) !important;
     color: #808090 !important;
 }
 

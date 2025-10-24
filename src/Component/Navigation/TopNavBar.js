@@ -10,7 +10,7 @@ import Nandi from "../../assets/images/askNandi.gif";
 
 
 const TopNavBar = () => {
-  
+
   return (
     <>
       <div className="menu-wrapper menubar">
@@ -44,7 +44,7 @@ const TopNavBar = () => {
                     </NavDropdown.Item>
                   </NavDropdown>
                   <Nav.Link href="/DonateTemples">Donate</Nav.Link>
-                  <Nav.Link href="/TempleBookingInfo">Darshan & Pooja Booking</Nav.Link>
+                  <Nav.Link href="/TempleBookingInfo">Darshan & Puja Booking</Nav.Link>
 
 
                   {/* <NavDropdown
@@ -60,7 +60,7 @@ const TopNavBar = () => {
                   </NavDropdown> */}
 
                   <NavDropdown
-                    title="Pooja & Seva"
+                    title="Puja & Seva"
                     id="navbarScrollingDropdown"
                   >
                     {/* <NavDropdown.Item href="/PoojaBooking">
@@ -73,7 +73,7 @@ const TopNavBar = () => {
                       Event Participation
                     </NavDropdown.Item>
                   </NavDropdown>
-<Nav.Link href="/PanditBooking">Pandit Booking</Nav.Link>
+                  <Nav.Link href="/PanditBooking">Pandit Booking</Nav.Link>
                   {/* <NavDropdown
                     title="Pandit Booking"
                     id="navbarScrollingDropdown"
