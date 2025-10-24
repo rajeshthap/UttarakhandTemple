@@ -9,6 +9,7 @@
     border-radius: 10px;
     background-color: #edffef !important;
     color: #529c58 !important;
+    box-shadow: 0px 6px 16px 2px rgba(0, 0, 0, 0.05) !important;
 
 }
 
@@ -17,6 +18,7 @@
     border-radius: 10px;
     background-color: #f4f2ff !important;
     color: #605599 !important;
+    box-shadow: 0px 6px 16px 2px rgba(0, 0, 0, 0.05) !important;
 }
 
 .dbcard-box-3 {
@@ -24,6 +26,7 @@
     border-radius: 10px;
     background-color: #fff2ec !important;
     color: #9a705b !important;
+    box-shadow: 0px 6px 16px 2px rgba(0, 0, 0, 0.05) !important;
 }
 
 .dbcard-box-4 {
@@ -31,20 +34,21 @@
     border-radius: 10px;
     background-color: #ecfbff !important;
     color: #397e91 !important;
+    box-shadow: 0px 6px 16px 2px rgba(0, 0, 0, 0.05) !important;
 }
 
 .user-span {
     font-weight: 400 !important;
-    font-size: var(--temp-space-400) !important;
+    font-size: var(--temp-space-250) !important;
 }
 
 .user-sub-title {
-    font-weight: 600 !important;
-    font-size: var(--temp-space-500);
+    font-weight: 500 !important;
+    font-size: var(--temp-space-350);
 }
 
 .user-sub-title-data {
-    font-weight: 600 !important;
+    font-weight: 500 !important;
     font-size: var(--temp-space-700);
     margin-top: var(--temp-space-300) !important;
 }
@@ -70,7 +74,7 @@
 .sd-upcoming-events {
     border: 1px solid #cbcbcb;
     border-radius: 4px;
-    padding: 10px 20px 25px;
+    padding: 8px 8px 36px 8px;
 }
 
 .sd-border-no {
@@ -78,7 +82,7 @@
 }
 
 .content-box h1 {
-    font-size: var(--temp-space-600);
+    font-size: var(--temp-space-500) !important;
     color: var(--temp-org);
     text-align: left;
     font-weight: 500;
@@ -93,30 +97,26 @@
 }
 
 .fw700 {
-    font-weight: 700 !important;
+    font-weight: 500 !important;
     color: var(--temp-org);
-    font-size: var(--temp-space-500);
+    font-size: var(--temp-space-400);
 
 }
 
 .fw700h1 {
-    font-weight: 700 !important;
+    font-weight: 500 !important;
     color: var(--temp-org);
     font-size: var(--temp-space-500);
-    font-size: var(--temp-space-600);
+
 
 }
 
-.sd-side-heading {
-    font-size: 30px;
-    color: #991403;
-    padding: 5px 0 30px;
-    font-weight: 400;
-}
+
 
 
 .fw500 {
     font-weight: 500;
+    font-size: var(--temp-space-400) !important;
 }
 
 /* Upcoming css */
@@ -130,30 +130,18 @@
 
 .sd-dashboard-right-panel .sd-side-heading {
 
-    font-size: 21px;
-
-    padding: 0 0 15px;
-
-    border-bottom: 1px solid #cbcbcb;
+    font-weight: 500 !important;
+    color: var(--temp-org);
+    font-size: var(--temp-space-500);
 
 }
 
-.sd-side-heading {
 
-    font-size: 30px;
-
-    color: #991403;
-
-    padding: 5px 0 30px;
-
-    font-weight: 400;
-
-}
 
 .sd-btn-orange {
-    background-color:var(--temp-org);
+    background-color: var(--temp-org);
     color: #fff;
-    padding: var(--temp-space-200) var(--temp-space-500);
+    padding: var(--temp-space-100) var(--temp-space-300);
     border-radius: 6px;
     font-size: 12px;
     font-weight: 600;
@@ -172,35 +160,39 @@
     transform: translateY(-2px);
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 }
-.user-seva-btn-icon{
+
+.user-seva-btn-icon {
     font-size: var(--temp-space-400);
- 
+
 
 }
+
 .sd-btn-blue {
-     background: #2f3193;
+    background: #2f3193;
     color: #fff;
     border-radius: 4px;
     padding: 4px 10px 5px;
-    font-size: 14px;
+    font-size: 12px;
     cursor: pointer;
     font-weight: 600;
     cursor: pointer;
     border: none !important;
 
 }
+
 .sd-btn-blue:hover {
-     color: var(--temp-white);
+    color: var(--temp-white);
     background: #1a1f6e;
     transform: translateY(-2px);
     border: none !important;
 }
+
 .pandit-btn-blue {
-     background: var(--temp-org);
+    background: var(--temp-org);
     color: #fff;
     border-radius: 4px;
     padding: 4px 10px 5px;
-    font-size: 14px;
+    font-size: 12px;
     cursor: pointer;
     font-weight: 600;
     cursor: pointer;
@@ -209,17 +201,18 @@
 }
 
 .pandit-btn-blue:hover {
-     color: var(--temp-white);
+    color: var(--temp-white);
     background: var(--temp-org);
     transform: translateY(-2px);
     border: none !important;
 }
+
 .donation-btn-blue {
-     background: #529c58;
+    background: #529c58;
     color: #fff;
     border-radius: 4px;
     padding: 4px 10px 5px;
-    font-size: 14px;
+    font-size: 12px;
     cursor: pointer;
     font-weight: 600;
     cursor: pointer;
@@ -228,17 +221,18 @@
 }
 
 .donation-btn-blue:hover {
-     color: var(--temp-white);
+    color: var(--temp-white);
     background: #529c58;
     transform: translateY(-2px);
     border: none !important;
 }
+
 .pooja-btn-blue {
-     background: #3aaeba;
+    background: #3aaeba;
     color: #fff;
     border-radius: 4px;
     padding: 4px 10px 5px;
-    font-size: 14px;
+    font-size: 12px;
     cursor: pointer;
     font-weight: 600;
     cursor: pointer;
@@ -247,14 +241,16 @@
 }
 
 .pooja-btn-blue:hover {
-     color: var(--temp-white);
+    color: var(--temp-white);
     background: #3aaeba;
     transform: translateY(-2px);
     border: none !important;
 }
-.pnadit-w{
+
+.pnadit-w {
     width: 30px;
 }
+
 .slick-list {
     color: #777;
     font-size: var(--temp-space-300);
@@ -312,14 +308,13 @@
 }
 
 .sd-side-heading-2 {
-    font-size: 17px;
+    font-size: var(--temp-space-400);
     padding: 10px 0 20px;
     color: #181818;
     border-bottom: 1px solid #cbcbcb;
 }
 
 .sd-side-heading {
-    font-size: 21px;
     padding: 0 0 15px;
     border-bottom: 1px solid #cbcbcb;
 }
@@ -332,10 +327,11 @@
 .sd-upcoming-bookings {
     border: 1px solid #cbcbcb;
     border-radius: 4px;
-    padding: 16px 20px 16px 16px;
+    padding: 8px 8px 8px 8px;
     display: inline-block;
     width: 100%;
 }
+
 .user-upcoming-bookings {
     border: 1px solid #cbcbcb;
     border-radius: 4px;
@@ -343,11 +339,12 @@
     display: inline-block;
     width: 100%;
     background-image: url("../images/bg-1.jpg");
-      background-size: cover;        
-    background-repeat: no-repeat; 
-    background-position: center; 
-  
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+
 }
+
 .pandit-upcoming-bookings {
     border: 1px solid #cbcbcb;
     border-radius: 4px;
@@ -355,33 +352,36 @@
     display: inline-block;
     width: 100%;
     background-image: url("../images/bg-2.jpg");
-      background-size: cover;        
-    background-repeat: no-repeat; 
-    background-position: center; 
-  
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+
 }
-.donation-upcoming-bookings{
+
+.donation-upcoming-bookings {
     border: 1px solid #cbcbcb;
     border-radius: 4px;
     padding: 16px 20px 16px 16px;
     display: inline-block;
     width: 100%;
     background-image: url("../images/bg-3.jpg");
-      background-size: cover;        
-    background-repeat: no-repeat; 
-    background-position: center; 
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
-.pooja-upcoming-bookings{
+
+.pooja-upcoming-bookings {
     border: 1px solid #cbcbcb;
     border-radius: 4px;
     padding: 16px 20px 16px 16px;
     display: inline-block;
     width: 100%;
     background-image: url("../images/bg-4.jpg");
-      background-size: cover;        
-    background-repeat: no-repeat; 
-    background-position: center; 
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
+
 .seva-come-icon {
     font-size: var(--temp-space-800);
     background-color: #f9cba0;
@@ -390,14 +390,17 @@
     padding: 4px;
     margin-right: 8px;
 }
+
 .seva-come-icon-darshanam {
     font-size: var(--temp-space-800);
     background-color: var(--temp-white);
-    color: #2f3193;;
+    color: #2f3193;
+    ;
     border-radius: 50%;
     padding: 4px;
     margin-right: 8px;
 }
+
 .donation-come-icon-darshanam {
     font-size: var(--temp-space-800);
     background-color: var(--temp-white);
@@ -406,6 +409,7 @@
     padding: 4px;
     margin-right: 8px;
 }
+
 .pooja-come-icon-darshanam {
     font-size: var(--temp-space-800);
     background-color: var(--temp-white);
@@ -414,30 +418,35 @@
     padding: 4px;
     margin-right: 8px;
 }
-.seva-p{
+
+.seva-p {
     padding: var(--temp-space-200);
 }
+
 .sd-dashboard-icons {
     position: absolute;
     height: 40px !important;
     width: 40px;
 }
-.user-seva-text h3{
-    font-size: var(--temp-space-450);
+
+.user-seva-text h3 {
+    font-size: var(--temp-space-400);
     color: var(--temp-Black);
     text-align: left;
     font-weight: 500;
     margin-top: var(--temp-space-100);
     margin-bottom: var(--temp-space-300);
 }
-.user-seva-text p{
-    font-size: var(--temp-space-300);
+
+.user-seva-text p {
+    font-size: var(--temp-space-250);
     color: #372e2e;
     text-align: left;
     font-weight: 400;
     margin-top: var(--temp-space-100);
     margin-bottom: var(--temp-space-200);
 }
+
 .sd-upcoming-bookings-table {
     padding-left: 25px;
     color: #8b8787;
@@ -455,11 +464,11 @@
 
 
 .content-box h2 {
-    font-size: var(--temp-space-450);
+    font-size: var(--temp-space-400) !important;
     color: var(--temp-Black);
     text-align: left;
     font-weight: 500;
-    margin-top: var(--temp-space-400);
+    margin-top: var(--temp-space-100);
     margin-bottom: var(--temp-space-500);
 }
 
@@ -483,9 +492,11 @@
     background: #ae3d1f;
     color: #fff;
 }
+
 .rwd-table tr:nth-child(odd):not(:first-child) {
     background-color: #ffe2da;
 }
+
 .rwd-table tr {
     border-top: 1px solid #fa8a6c;
     border-bottom: 1px solid #f74f22;
@@ -538,6 +549,65 @@
     padding: .5em 1em;
 }
 
+.avatar {
+    position: relative;
+    height: 2.625rem;
+    width: 2.625rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem;
+    color: #fff;
+    font-weight: 500;
+}
+
+.avatar.avatar-md {
+    width: 2.5rem;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    font-size: 0.8rem;
+}
+
+.avatar-md {
+
+    line-height: 2.5rem;
+    font-size: 24px;
+
+    height: 40px;
+    width: 40px;
+}
+
+.avatar-rounded {
+    border-radius: 50%;
+
+}
+
+.save-bg {
+    background-color: #cbe6ce !important;
+}
+
+.Darshan-bg {
+    background-color: #dedaef !important;
+}
+
+.pandit-bg {
+    background-color: #cae1e7 !important;
+}
+
+.Donations-bg {
+    background-color: #e9d6cd !important;
+}
+
+.fs-5 {
+    font-size: 1.25rem !important;
+}
+
+.card-body {
+
+    padding: 12px 12px !important;
+
+}
+
 @media (min-width: 1200px) {
     .sd-side-heading-2 {
         padding: 10px 0 10px;
@@ -551,7 +621,7 @@
 }
 
 @media screen and (min-width: 600px) {
-     .rwd-table tr:hover:not(:first-child) {
+    .rwd-table tr:hover:not(:first-child) {
         background-color: #f7e0befa;
     }
 
@@ -579,6 +649,7 @@
     .rwd-table td {
         padding: 1em !important;
         font-size: var(--temp-space-300);
+        font-weight: 400 !important;
     }
 }
 
