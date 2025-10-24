@@ -1022,16 +1022,16 @@ useEffect(() => {
                               <option value="Select a option">
                                 Select a Temple Association
                               </option>
-                              <option value="option1">
+                              <option value="Local Temple Association">
                                 Local Temple Association
                               </option>
-                              <option value="option2">
+                              <option value="State Temple Association">
                                 State Temple Association
                               </option>
-                              <option value="option3">
+                              <option value="National Temple Association">
                                 National Temple Association
                               </option>
-                              <option value="option3">Independent</option>
+                              <option value="Independent">Independent</option>
                             </Form.Select>
                             {errorReason_querys.temple_association && (
                               <div className="alert-txt">
