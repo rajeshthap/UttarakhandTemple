@@ -48,55 +48,55 @@ function DevoteeRegistration() {
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?#&])[A-Za-z\d@$!%*?#&]{8,}$/;
 
   const checkPhoneExistence = async () => {
-  if (!phone) {
-    setMessage("Please enter a phone number");
-    setIsOtpDisabled(true);
-    setPhoneChecked(false);
-    return true;
-  }
-
-  try {
-    const formData = new FormData();
-    formData.append("phone", phone);
-
-    const response = await CheckPhoneApi(formData);
-
-    const phoneList = response.data.phones || response.data;
-
-    if (Array.isArray(phoneList) && phoneList.includes(phone)) {
-      setMessage("Phone number already exists!");
+    if (!phone) {
+      setMessage("Please enter a phone number");
       setIsOtpDisabled(true);
-      setPhoneChecked(true);
+      setPhoneChecked(false);
       return true;
-    } else {
-      setMessage("");
-      setIsOtpDisabled(false);
-      setPhoneChecked(true);
-      return false;
     }
-  } catch (error) {
-    console.error(error);
-    setMessage("Error checking phone number");
-    setIsOtpDisabled(true);
-    setPhoneChecked(false);
-    return true;
-  }
-};
-useEffect(() => {
-  // Push the current page into history so user can't go back
-  window.history.pushState(null, "", window.location.href);
 
-  const handlePopState = () => {
+    try {
+      const formData = new FormData();
+      formData.append("phone", phone);
 
+      const response = await CheckPhoneApi(formData);
+
+      const phoneList = response.data.phones || response.data;
+
+      if (Array.isArray(phoneList) && phoneList.includes(phone)) {
+        setMessage("Phone number already exists!");
+        setIsOtpDisabled(true);
+        setPhoneChecked(true);
+        return true;
+      } else {
+        setMessage("");
+        setIsOtpDisabled(false);
+        setPhoneChecked(true);
+        return false;
+      }
+    } catch (error) {
+      console.error(error);
+      setMessage("Error checking phone number");
+      setIsOtpDisabled(true);
+      setPhoneChecked(false);
+      return true;
+    }
+  };
+  useEffect(() => {
+    // Push the current page into history so user can't go back
     window.history.pushState(null, "", window.location.href);
-  };
-  // Use lowercase 'popstate'
-  window.addEventListener("popstate", handlePopState);
 
-  return () => {
-    window.removeEventListener("popstate", handlePopState);
-  };
-}, [navigate]);
+    const handlePopState = () => {
+
+      window.history.pushState(null, "", window.location.href);
+    };
+    // Use lowercase 'popstate'
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [navigate]);
 
   // Field validation
   const validateField = (name, value) => {
@@ -264,7 +264,7 @@ useEffect(() => {
           setShow={() => setMessage("")}
         />
         <div className="temple-registration-heading">
-          <h1>User Registration</h1>
+          <h1>Devotee Registration</h1>
           <Form onSubmit={handleRegister}>
             <Row>
               <Col lg={6} md={6}>
@@ -305,7 +305,7 @@ useEffect(() => {
                             type="text"
                             value={phone}
                             disabled
-                            
+
                             placeholder="Enter Mobile Number"
                           />
                         </Form.Group>
@@ -458,9 +458,8 @@ useEffect(() => {
                         <Row className="temp-stepform-box">
                           <Col lg={8} md={8} sm={12}>
                             <fieldset
-                              className={`upload_dropZone text-center ${
-                                dragging === "devotee_photo" ? "drag-over" : ""
-                              }`}
+                              className={`upload_dropZone text-center ${dragging === "devotee_photo" ? "drag-over" : ""
+                                }`}
                               onDragOver={(e) => {
                                 e.preventDefault();
                                 setDragging("devotee_photo");
