@@ -26,23 +26,23 @@ const TempleBookingInfo = () => {
   const [selectedPersons, setSelectedPersons] = useState(1);
   const [activeAccordion, setActiveAccordion] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [showModal, setShowModal] = useState(false); 
+  const [showModal, setShowModal] = useState(false);
 
   const navigate = useNavigate();
-  const { uniqueId } = useAuth(); 
-useEffect(() => {
-  window.history.pushState(null, "", window.location.href);
-
-  const handlePopState = () => {
+  const { uniqueId } = useAuth();
+  useEffect(() => {
     window.history.pushState(null, "", window.location.href);
-  };
 
-  window.addEventListener("popstate", handlePopState);
+    const handlePopState = () => {
+      window.history.pushState(null, "", window.location.href);
+    };
 
-  return () => {
-    window.removeEventListener("popstate", handlePopState);
-  };
-}, [navigate]); 
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [navigate]);
   useEffect(() => {
     fetch("https://mahadevaaya.com/backend/api/temple-poojas-list/")
       .then((res) => res.json())
@@ -128,6 +128,11 @@ useEffect(() => {
           <Col lg={7} md={7} sm={12}>
             {!uniqueId && (
               <div className="text-center p-2 my-4 temp-regis desktop-mobile">
+                <h5>
+                  <BsInfoCircleFill className="temp-info-icon" />
+                  To continue with your Puja booking, please{" "}
+                  <strong>login</strong> or create an account.
+                </h5>
                 <p>
                   Kindly click on the <strong>Login</strong> or{" "}
                   <strong>Register</strong> button below to continue.
@@ -163,11 +168,10 @@ useEffect(() => {
                   className="d-flex"
                 >
                   <div
-                    className={`card-item flex-fill card card-shadow d-flex flex-column ${
-                      selectedCard?.temple_name === item.temple_name
+                    className={`card-item flex-fill card card-shadow d-flex flex-column ${selectedCard?.temple_name === item.temple_name
                         ? "active-card"
                         : ""
-                    }`}
+                      }`}
                   >
                     <div className="card-image-wrapper">
                       <img
@@ -255,9 +259,8 @@ useEffect(() => {
             )}
 
             <div
-              className={`tem-rhs-info temp-right-side-style ${
-                !uniqueId ? "disabled-section" : ""
-              }`}
+              className={`tem-rhs-info temp-right-side-style ${!uniqueId ? "disabled-section" : ""
+                }`}
               style={{
                 pointerEvents: !uniqueId ? "none" : "auto",
                 opacity: !uniqueId ? 0.5 : 1,
@@ -402,7 +405,7 @@ useEffect(() => {
                 </Accordion>
               ) : (
                 <p className="text-muted">
-                   Select a temple to view available Poojas.
+                  Select a temple to view available Poojas.
                 </p>
               )}
             </div>
@@ -415,25 +418,25 @@ useEffect(() => {
         <Modal.Header closeButton>
         </Modal.Header>
         <Modal.Body className="text-center">
-         <div className="text-center p-4 my-4 temp-regis">
-                <h5>
-                  <BsInfoCircleFill className="temp-info-icon" />
-                  To continue with your Mandir booking, please{" "}
-                  <strong>login</strong> or create an account.
-                </h5>
-                <Row className="mb-3">
-                  <Col xs={12} md={6} className="mb-2 mb-md-0">
-                    <Link to="/Login">
-                      <Button className="w-100 temp-login-btn">Login</Button>
-                    </Link>
-                  </Col>
-                  <Col xs={12} md={6}>
-                    <Link to="/DevoteeRegistration">
-                      <Button className="w-100 temp-regis-btn">Register</Button>
-                    </Link>
-                  </Col>
-                </Row>
-              </div>
+          <div className="text-center p-4 my-4 temp-regis">
+            <h5>
+              <BsInfoCircleFill className="temp-info-icon" />
+              To continue with your Mandir booking, please{" "}
+              <strong>login</strong> or create an account.
+            </h5>
+            <Row className="mb-3">
+              <Col xs={12} md={6} className="mb-2 mb-md-0">
+                <Link to="/Login">
+                  <Button className="w-100 temp-login-btn">Login</Button>
+                </Link>
+              </Col>
+              <Col xs={12} md={6}>
+                <Link to="/DevoteeRegistration">
+                  <Button className="w-100 temp-regis-btn">Register</Button>
+                </Link>
+              </Col>
+            </Row>
+          </div>
         </Modal.Body>
       </Modal>
     </div>

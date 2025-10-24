@@ -11,6 +11,7 @@ import eventicon from "../assets/images/event-icon.png";
 import seva from "../assets/images/seva.png";
 import help from "../assets/images/help.png";
 import { useAuth } from "./GlobleAuth/AuthContext"; // make sure path is correct
+import { BsInfoCircleFill } from "react-icons/bs";
 
 const OnlineBooking = () => {
   const navigate = useNavigate();
@@ -146,6 +147,11 @@ const OnlineBooking = () => {
           <Modal.Header closeButton></Modal.Header>
           <Modal.Body>
             <div className="text-center p-4 temp-regis">
+              <h5>
+                <BsInfoCircleFill className="temp-info-icon" />
+                To continue with your Puja booking, please{" "}
+                <strong>login</strong> or create an account.
+              </h5>
               <p>
                 Kindly click on the <strong>Login</strong> or <strong>Register</strong> button below to continue.
               </p>

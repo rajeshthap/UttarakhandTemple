@@ -36,7 +36,7 @@ const BadrinathInfo = () => {
       // User logged in → redirect
       navigate("/MandirBooking");
     } else {
-   
+
       setShowLoginModal(true);
     }
   };
@@ -49,8 +49,8 @@ const BadrinathInfo = () => {
   const [, setIsLoggedIn] = useState(false); // Login state
 
   const handleShow = () => setShow(true);
-  
- const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const handleLoginRegister = () => setIsLoggedIn(true);
 
@@ -322,7 +322,11 @@ const BadrinathInfo = () => {
                 <Modal.Header closeButton></Modal.Header>
                 <Modal.Body className="text-center">
                   <div className="text-center p-4 my-4 temp-regis">
-                   
+                    <h5>
+                      <BsInfoCircleFill className="temp-info-icon" />
+                      To continue with your Puja booking, please{" "}
+                      <strong>login</strong> or create an account.
+                    </h5>
                     <p>
                       Kindly click on the <strong>Login</strong> or{" "}
                       <strong>Register</strong> button below to continue.

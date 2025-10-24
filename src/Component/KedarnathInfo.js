@@ -319,6 +319,11 @@ const KedarnathInfo = () => {
                   <Modal.Header closeButton></Modal.Header>
                   <Modal.Body className="text-center">
                     <div className="text-center p-4 my-4 temp-regis">
+                      <h5>
+                        <BsInfoCircleFill className="temp-info-icon" />
+                        To continue with your Puja booking, please{" "}
+                        <strong>login</strong> or create an account.
+                      </h5>
                       <p>
                         Kindly click on the <strong>Login</strong> or{" "}
                         <strong>Register</strong> button below to continue.

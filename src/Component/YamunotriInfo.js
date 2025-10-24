@@ -18,30 +18,30 @@ import "../assets/CSS/TempleBooking.css";
 import { useAuth } from "./GlobleAuth/AuthContext";
 
 const YamunotriInfo = () => {
-  const navigate = useNavigate();
-  const { uniqueId } = useAuth();
+    const navigate = useNavigate();
+    const { uniqueId } = useAuth();
 
-  const handleBookClick = () => {
-    if (uniqueId) {
-      // User logged in → navigate directly
-      navigate("/MandirBooking");
-    } else {
-      // User NOT logged in → show modal
-      setShowLoginModal(true);
-    }
-  };
+    const handleBookClick = () => {
+        if (uniqueId) {
+            // User logged in → navigate directly
+            navigate("/MandirBooking");
+        } else {
+            // User NOT logged in → show modal
+            setShowLoginModal(true);
+        }
+    };
 
-  const [showLoginModal, setShowLoginModal] = useState(false);
+    const [showLoginModal, setShowLoginModal] = useState(false);
 
-  const handleCloseModal = () => setShowLoginModal(false);
-  const [, setShow] = useState(false);
-  const [] = useState(null);
+    const handleCloseModal = () => setShowLoginModal(false);
+    const [, setShow] = useState(false);
+    const [] = useState(null);
 
-  const [, setIsLoggedIn] = useState(false); // Login state
+    const [, setIsLoggedIn] = useState(false); // Login state
 
-  const handleShow = () => setShow(true);
+    const handleShow = () => setShow(true);
 
-  const handleLoginRegister = () => setIsLoggedIn(true);
+    const handleLoginRegister = () => setIsLoggedIn(true);
     return (
         <div className="temp-donate">
             <Container className="temp-container-box temp-container-details">
@@ -52,40 +52,40 @@ const YamunotriInfo = () => {
                     {/* Left Side Cards */}
                     <Col lg={7} md={7} sm={12} className="">
                         <div className="text-center p-4 my-4 temp-regis desktop-mobile ">
-                              {!uniqueId && (
-                <>
-                            <h5>
-                                <BsInfoCircleFill className="temp-info-icon" />
-                                <strong></strong>To continue with your Mandir booking, please login
-                                or create an account.
-                            </h5>
-                            <p>
-                                Kindly click on the <strong>Login</strong> or{" "}
-                                <strong>Register</strong> button below to continue.
-                            </p>
-                            <Row className="mb-3">
-                                <Col xs={12} md={6} className="mb-2 mb-md-0">
-                                    <Link to="/Login">
-                                        <Button
-                                            className="w-100 temp-login-btn"
-                                            onClick={handleLoginRegister}
-                                        >
-                                            Login
-                                        </Button>
-                                    </Link>
-                                </Col>
-                                <Col xs={12} md={6}>
-                                    <Link to="/DevoteeRegistration">
-                                        <Button
-                                            className="w-100 temp-regis-btn"
-                                            onClick={handleLoginRegister}
-                                        >
-                                            Register
-                                        </Button>
-                                    </Link>
-                                </Col>
-                            </Row>
-                            </>)}
+                            {!uniqueId && (
+                                <>
+                                    <h5>
+                                        <BsInfoCircleFill className="temp-info-icon" />
+                                        <strong></strong>To continue with your Mandir booking, please login
+                                        or create an account.
+                                    </h5>
+                                    <p>
+                                        Kindly click on the <strong>Login</strong> or{" "}
+                                        <strong>Register</strong> button below to continue.
+                                    </p>
+                                    <Row className="mb-3">
+                                        <Col xs={12} md={6} className="mb-2 mb-md-0">
+                                            <Link to="/Login">
+                                                <Button
+                                                    className="w-100 temp-login-btn"
+                                                    onClick={handleLoginRegister}
+                                                >
+                                                    Login
+                                                </Button>
+                                            </Link>
+                                        </Col>
+                                        <Col xs={12} md={6}>
+                                            <Link to="/DevoteeRegistration">
+                                                <Button
+                                                    className="w-100 temp-regis-btn"
+                                                    onClick={handleLoginRegister}
+                                                >
+                                                    Register
+                                                </Button>
+                                            </Link>
+                                        </Col>
+                                    </Row>
+                                </>)}
                         </div>
                         <Row className="g-4">
                             <Col lg={5} md={5} sm={12} xs={12} className="pl-2" >
@@ -102,8 +102,8 @@ const YamunotriInfo = () => {
 
                                             <TiWeatherPartlySunny className="temp-icon-2" />
                                             <div>
-                                                <Link to="https://www.accuweather.com/en/in/badrinathpuri/3001096/weather-forecast/3001096" className="temp-weather"  target="_blank"
-                          rel="noopener noreferrer">Weather</Link>
+                                                <Link to="https://www.accuweather.com/en/in/badrinathpuri/3001096/weather-forecast/3001096" className="temp-weather" target="_blank"
+                                                    rel="noopener noreferrer">Weather</Link>
 
                                             </div>
                                         </div>
@@ -115,8 +115,8 @@ const YamunotriInfo = () => {
 
                                             <SiGooglemaps className="temp-icon-2" />
                                             <div>
-                                                <Link to="https://maps.app.goo.gl/NS5netSzRbWipeNr8" className="temp-weather"  target="_blank"
-                          rel="noopener noreferrer">Google Maps</Link>
+                                                <Link to="https://maps.app.goo.gl/NS5netSzRbWipeNr8" className="temp-weather" target="_blank"
+                                                    rel="noopener noreferrer">Google Maps</Link>
                                             </div>
                                         </div>
 
@@ -210,50 +210,55 @@ const YamunotriInfo = () => {
                                         </Col>
                                     </Row>
                                     <div className="d-flex justify-content-center mt-3">
-                                         <Link to="/MandirBooking"><Button className="temp-view-more-btn" onClick={handleBookClick}>Book Puja / Offer Donation</Button></Link>
+                                        <Link to="/MandirBooking"><Button className="temp-view-more-btn" onClick={handleBookClick}>Book Puja / Offer Donation</Button></Link>
                                     </div>
                                 </div>
 
                             </Col>
-                               {!uniqueId && (
-                <Modal
-                  show={showLoginModal}
-                  onHide={() => setShowLoginModal(false)}
-                  centered
-                >
-                  <Modal.Header closeButton></Modal.Header>
-                  <Modal.Body className="text-center">
-                    <div className="text-center p-4 my-4 temp-regis">
-                      <p>
-                        Kindly click on the <strong>Login</strong> or{" "}
-                        <strong>Register</strong> button below to continue.
-                      </p>
-                      <Row className="mb-3">
-                        <Col xs={12} md={6} className="mb-2 mb-md-0">
-                          <Link to="/Login">
-                            <Button
-                              className="w-100 temp-login-btn"
-                              onClick={handleLoginRegister}
-                            >
-                              Login
-                            </Button>
-                          </Link>
-                        </Col>
-                        <Col xs={12} md={6}>
-                          <Link to="/DevoteeRegistration">
-                            <Button
-                              className="w-100 temp-regis-btn"
-                              onClick={handleLoginRegister}
-                            >
-                              Register
-                            </Button>
-                          </Link>
-                        </Col>
-                      </Row>
-                    </div>
-                  </Modal.Body>
-                </Modal>
-              )}
+                            {!uniqueId && (
+                                <Modal
+                                    show={showLoginModal}
+                                    onHide={() => setShowLoginModal(false)}
+                                    centered
+                                >
+                                    <Modal.Header closeButton></Modal.Header>
+                                    <Modal.Body className="text-center">
+                                        <div className="text-center p-4 my-4 temp-regis">
+                                            <h5>
+                                                <BsInfoCircleFill className="temp-info-icon" />
+                                                To continue with your Puja booking, please{" "}
+                                                <strong>login</strong> or create an account.
+                                            </h5>
+                                            <p>
+                                                Kindly click on the <strong>Login</strong> or{" "}
+                                                <strong>Register</strong> button below to continue.
+                                            </p>
+                                            <Row className="mb-3">
+                                                <Col xs={12} md={6} className="mb-2 mb-md-0">
+                                                    <Link to="/Login">
+                                                        <Button
+                                                            className="w-100 temp-login-btn"
+                                                            onClick={handleLoginRegister}
+                                                        >
+                                                            Login
+                                                        </Button>
+                                                    </Link>
+                                                </Col>
+                                                <Col xs={12} md={6}>
+                                                    <Link to="/DevoteeRegistration">
+                                                        <Button
+                                                            className="w-100 temp-regis-btn"
+                                                            onClick={handleLoginRegister}
+                                                        >
+                                                            Register
+                                                        </Button>
+                                                    </Link>
+                                                </Col>
+                                            </Row>
+                                        </div>
+                                    </Modal.Body>
+                                </Modal>
+                            )}
                             <Container className="mt-4">
                                 <p>
                                     Yamunotri Temple, dedicated to <span className="text-color">Goddess Yamuna</span>, is one of the sacred <span className="text-color">Char Dham</span> shrines of Uttarakhand and the first stop in the Char Dham Yatra. Nestled amidst the Garhwal Himalayas at an altitude of about <span className="text-color">3,293 meters</span>, the temple marks the <span className="text-color">origin of the holy River Yamuna</span>, which is considered the sister of Yama (the God of Death) and the daughter of Surya (the Sun God).
@@ -287,45 +292,45 @@ const YamunotriInfo = () => {
 
 
                     </Col>
-    {!uniqueId && (
-                    <Col lg={5} md={5} sm={12} className="mt-2 temp-right-side rhs-gob-mob">
-                        <div className="text-center p-4 my-4 temp-regis">
-                            <h5>
-                                <BsInfoCircleFill className="temp-info-icon" />
-                                To continue with your Mandir booking, please{" "}
-                                <strong>login</strong> or create an account.
-                            </h5>
-                            <p>
-                                Kindly click on the <strong>Login</strong> or{" "}
-                                <strong>Register</strong> button below to continue.
-                            </p>
-                            <Row className="mb-3">
-                                <Col xs={12} md={6} className="mb-2 mb-md-0">
-                                    <Link to="/Login">
-                                        <Button
-                                            className="w-100 temp-login-btn"
-                                            onClick={handleLoginRegister}
-                                        >
-                                            Login
-                                        </Button>
-                                    </Link>
-                                </Col>
-                                <Col xs={12} md={6}>
-                                    <Link to="/DevoteeRegistration">
-                                        <Button
-                                            className="w-100 temp-regis-btn"
-                                            onClick={handleLoginRegister}
-                                        >
-                                            Register
-                                        </Button>
-                                    </Link>
-                                </Col>
-                            </Row>
-                        </div>
+                    {!uniqueId && (
+                        <Col lg={5} md={5} sm={12} className="mt-2 temp-right-side rhs-gob-mob">
+                            <div className="text-center p-4 my-4 temp-regis">
+                                <h5>
+                                    <BsInfoCircleFill className="temp-info-icon" />
+                                    To continue with your Mandir booking, please{" "}
+                                    <strong>login</strong> or create an account.
+                                </h5>
+                                <p>
+                                    Kindly click on the <strong>Login</strong> or{" "}
+                                    <strong>Register</strong> button below to continue.
+                                </p>
+                                <Row className="mb-3">
+                                    <Col xs={12} md={6} className="mb-2 mb-md-0">
+                                        <Link to="/Login">
+                                            <Button
+                                                className="w-100 temp-login-btn"
+                                                onClick={handleLoginRegister}
+                                            >
+                                                Login
+                                            </Button>
+                                        </Link>
+                                    </Col>
+                                    <Col xs={12} md={6}>
+                                        <Link to="/DevoteeRegistration">
+                                            <Button
+                                                className="w-100 temp-regis-btn"
+                                                onClick={handleLoginRegister}
+                                            >
+                                                Register
+                                            </Button>
+                                        </Link>
+                                    </Col>
+                                </Row>
+                            </div>
 
-                      
-                    </Col>
-    )}
+
+                        </Col>
+                    )}
                 </Row>
             </Container>
         </div>
