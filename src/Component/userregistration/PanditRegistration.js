@@ -1301,23 +1301,10 @@ function PanditRegistration() {
                       <div className="gap-3 mt-3 Temp-btn-submit">
                         <Button
                           variant="temp-submit-btn"
-                          className="temp-submit-btn mx-3"
                           type="submit"
                           disabled={loading}
-                          onClick={handleSubmit}
                         >
-                          {loading ? (
-                            <>
-                              <span
-                                className="spinner-border spinner-border-sm me-2"
-                                role="status"
-                                aria-hidden="true"
-                              ></span>
-                              Submitting...
-                            </>
-                          ) : (
-                            "Register Now"
-                          )}
+                          {loading ? "Submitting..." : "Register Now"}
                         </Button>
                       </div>
                     </>
