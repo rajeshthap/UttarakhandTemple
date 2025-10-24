@@ -598,39 +598,42 @@ const PanditBooking = () => {
               sm={12}
               className="mt-2 temp-right-side rhs-gob-mob  "
             >
-              <div className="text-center p-4 my-4 temp-regis ">
-                <h5>
-                  <BsInfoCircleFill className="temp-info-icon" />
-                  To continue with your Puja booking, please{" "}
-                  <strong>login </strong>or create an account.
-                </h5>
-                <p>
-                  Kindly click on the <strong>Login</strong> or{" "}
-                  <strong>Register</strong> button below to continue.
-                </p>
-                <Row className="mb-3">
-                  <Col xs={12} md={6} className="mb-2 mb-md-0">
-                    <Link to="/Login">
-                      <Button
-                        className="w-100 temp-login-btn"
-                        onClick={handleLoginRegister}
-                      >
-                        Login
-                      </Button>
-                    </Link>
-                  </Col>
-                  <Col xs={12} md={6}>
-                    <Link to="/DevoteeRegistration">
-                      <Button
-                        className="w-100 temp-regis-btn"
-                        onClick={handleLoginRegister}
-                      >
-                        Register
-                      </Button>
-                    </Link>
-                  </Col>
-                </Row>
-              </div>
+              {!uniqueId && (
+                <div className="text-center p-4 my-4 temp-regis">
+                  <h5>
+                    <BsInfoCircleFill className="temp-info-icon" />
+                    To continue with your Puja booking, please{" "}
+                    <strong>login </strong>or create an account.
+                  </h5>
+                  <p>
+                    Kindly click on the <strong>Login</strong> or{" "}
+                    <strong>Register</strong> button below to continue.
+                  </p>
+                  <Row className="mb-3">
+                    <Col xs={12} md={6} className="mb-2 mb-md-0">
+                      <Link to="/Login">
+                        <Button
+                          className="w-100 temp-login-btn"
+                          onClick={handleLoginRegister}
+                        >
+                          Login
+                        </Button>
+                      </Link>
+                    </Col>
+                    <Col xs={12} md={6}>
+                      <Link to="/DevoteeRegistration">
+                        <Button
+                          className="w-100 temp-regis-btn"
+                          onClick={handleLoginRegister}
+                        >
+                          Register
+                        </Button>
+                      </Link>
+                    </Col>
+                  </Row>
+                </div>
+              )}
+
               <div
                 className="tem-rhs-info pandit-right-side-style"
                 style={{

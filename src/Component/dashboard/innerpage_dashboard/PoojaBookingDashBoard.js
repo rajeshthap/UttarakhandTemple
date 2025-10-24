@@ -1,7 +1,7 @@
 import React from "react";
 import "../../../assets/CSS/LeftNav.css";
 import LeftNav from "../LeftNav";
-import OnlineHirePandit from "../../Mandir_booking/OnlineHirePandit";
+import PanditBooking from "../../../Component/PanditBooking";
 
 const PoojaBookingDashBoard = () => {
   return (
@@ -15,7 +15,7 @@ const PoojaBookingDashBoard = () => {
         {/* Right-hand Main Container */}
         
         <main className="main-container-box">
-               <OnlineHirePandit />
+               <PanditBooking/>
         </main>
      
       </div>

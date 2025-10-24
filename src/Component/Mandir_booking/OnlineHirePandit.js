@@ -57,7 +57,7 @@ const OnlineHirePandit = () => {
       const price = Number(match.pooja_price || 0);
       opts.push({
         value: `${panditId}`,
-        label: `${panditName} (ID: ${panditId}) — ₹${price}`,
+        label: `${panditName} ( — ₹${price}`,
         meta: {
           pandit_name: panditName,
           pandit_id: panditId,
@@ -885,7 +885,7 @@ const handleSubmit = async (e) => {
                       value={formData.grand_total}
                       disabled
                       className="temp-form-control "
-                      placeholder="Estimated Fees"
+                      placeholder="Grand Total Amount"
                     />
                     {newErrors.grand_total && (
                       <small className="text-danger">
