@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-
-  Button,
-  Col,
-  Container,
-  Row,
-
-  Modal,
-} from "react-bootstrap";
+import { Button, Col, Container, Row, Modal } from "react-bootstrap";
 
 import { Link, useNavigate } from "react-router-dom";
 import { BsInfoCircleFill } from "react-icons/bs";
@@ -34,13 +26,11 @@ const BadrinathInfo = () => {
   const handleBookClick = () => {
     if (uniqueId) {
       // User logged in → redirect
-      navigate("/MandirBooking");
+      navigate("/TempleBookingInfo");
     } else {
-
       setShowLoginModal(true);
     }
   };
-
 
   const handleCloseModal = () => setShowLoginModal(false);
   const [, setShow] = useState(false);
@@ -318,44 +308,46 @@ const BadrinathInfo = () => {
                   </div>
                 </div>
               </Col>
-              <Modal show={showLoginModal} onHide={handleCloseModal} centered>
-                <Modal.Header closeButton></Modal.Header>
-                <Modal.Body className="text-center">
-                  <div className="text-center p-4 my-4 temp-regis">
-                    <h5>
-                      <BsInfoCircleFill className="temp-info-icon" />
-                      To continue with your Puja booking, please{" "}
-                      <strong>login</strong> or create an account.
-                    </h5>
-                    <p>
-                      Kindly click on the <strong>Login</strong> or{" "}
-                      <strong>Register</strong> button below to continue.
-                    </p>
-                    <Row className="mb-3">
-                      <Col xs={12} md={6} className="mb-2 mb-md-0">
-                        <Link to="/Login">
-                          <Button
-                            className="w-100 temp-login-btn"
-                            onClick={handleLoginRegister}
-                          >
-                            Login
-                          </Button>
-                        </Link>
-                      </Col>
-                      <Col xs={12} md={6}>
-                        <Link to="/DevoteeRegistration">
-                          <Button
-                            className="w-100 temp-regis-btn"
-                            onClick={handleLoginRegister}
-                          >
-                            Register
-                          </Button>
-                        </Link>
-                      </Col>
-                    </Row>
-                  </div>
-                </Modal.Body>
-              </Modal>
+              {!uniqueId && (
+                <Modal show={showLoginModal} onHide={handleCloseModal} centered>
+                  <Modal.Header closeButton></Modal.Header>
+                  <Modal.Body className="text-center">
+                    <div className="text-center p-4 my-4 temp-regis">
+                      <h5>
+                        <BsInfoCircleFill className="temp-info-icon" />
+                        To continue with your Puja booking, please{" "}
+                        <strong>login</strong> or create an account.
+                      </h5>
+                      <p>
+                        Kindly click on the <strong>Login</strong> or{" "}
+                        <strong>Register</strong> button below to continue.
+                      </p>
+                      <Row className="mb-3">
+                        <Col xs={12} md={6} className="mb-2 mb-md-0">
+                          <Link to="/Login">
+                            <Button
+                              className="w-100 temp-login-btn"
+                              onClick={handleLoginRegister}
+                            >
+                              Login
+                            </Button>
+                          </Link>
+                        </Col>
+                        <Col xs={12} md={6}>
+                          <Link to="/DevoteeRegistration">
+                            <Button
+                              className="w-100 temp-regis-btn"
+                              onClick={handleLoginRegister}
+                            >
+                              Register
+                            </Button>
+                          </Link>
+                        </Col>
+                      </Row>
+                    </div>
+                  </Modal.Body>
+                </Modal>
+              )}
               <Container className="mt-4">
                 <p>
                   Badrinath is one of the most sacred shrines for Vaishnavites
@@ -516,6 +508,70 @@ const BadrinathInfo = () => {
               </div>
             </Col>
           )}
+          {/* Right Side Info */}
+          <Col lg={4} md={4} sm={12}>
+            <div className="tem-rhs">
+              <h3>Guidelines for Online Donation</h3>
+
+              <div>
+                <ul>
+                  <li>
+                    Fields marked with{" "}
+                    <span className="temp-span-star">* </span>are mandatory.
+                  </li>
+
+                  <li>
+                    As per Government of India (GOI) regulations,{" "}
+                    <span className="temp-span-star">
+                      foreign cards are not supported
+                    </span>
+                    . Devotees residing outside{" "}
+                    <span className="temp-span-star">
+                      India may donate through Indian payment modes/cards{" "}
+                    </span>
+                    only.
+                  </li>
+                  <li>
+                    Donations above{" "}
+                    <span className="temp-span-star">₹1,00,000 </span> entitle
+                    you to{" "}
+                    <span className="temp-span-star">
+                      free Puja and Darshan for one year
+                    </span>
+                    .
+                  </li>
+                  <li>
+                    Donations can be made{" "}
+                    <span className="temp-span-star">on any day</span>, even
+                    when the temple is closed.
+                  </li>
+                </ul>
+                <h2 className="mt-2 mb-3">Accepted Payment Methods</h2>
+                <ul>
+                  <li>
+                    Net Banking – Secure online transfers through major Indian
+                    banks.
+                  </li>
+                  <li>
+                    Debit Card – Quick and convenient payment using your bank
+                    card.
+                  </li>
+                  <li>
+                    Credit Card – Hassle-free donations with instant
+                    confirmation.
+                  </li>
+                  <li>
+                    UPI (Unified Payments Interface) – Fast, mobile-based
+                    payment option.
+                  </li>
+                  <li>
+                    BharatPe QR – Scan & Pay instantly via supported payment
+                    apps.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </Col>
         </Row>
       </Container>
     </div>
