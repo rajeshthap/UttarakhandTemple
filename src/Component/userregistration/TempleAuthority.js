@@ -59,8 +59,8 @@ function TempleAuthority() {
 
   const getAvailablePoojaOptions = (currentIndex) => {
     const allOptions = [
-      { value: "Ganesh Pooja", label: "Ganesh Pooja" },
-      { value: "Lakshmi Pooja", label: "Lakshmi Pooja" },
+      { value: "Ganesh Puja", label: "Ganesh Puja" },
+      { value: "Lakshmi Puja", label: "Lakshmi Puja" },
       { value: "Naming Ceremony", label: "Naming Ceremony" },
       { value: "Engagement Ceremony", label: "Engagement Ceremony" },
       { value: "Shani Dosh Nivaran", label: "Shani Dosh Nivaran" },
