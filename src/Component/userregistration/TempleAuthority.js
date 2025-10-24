@@ -515,7 +515,7 @@ function TempleAuthority() {
       } else {
         setAlertMessage(
           "Registration failed: " +
-            (registerResult?.data?.message || "Unknown error")
+          (registerResult?.data?.message || "Unknown error")
         );
         setShowAlert(true);
       }
@@ -913,6 +913,7 @@ function TempleAuthority() {
                             <Form.Control
                               type="email"
                               name="email"
+                              className="temp-form-control"
                               placeholder="Enter Email ID"
                               value={formData.email || ""}
                               onChange={handleChange}
@@ -1078,8 +1079,8 @@ function TempleAuthority() {
 
                               <Col lg={2} md={2} sm={2}>
                                 {index === 0 &&
-                                (pooja.temple_pooja_name ||
-                                  pooja.temple_pooja_price) ? (
+                                  (pooja.temple_pooja_name ||
+                                    pooja.temple_pooja_price) ? (
                                   <Button
                                     variant="secondary"
                                     type="button"
