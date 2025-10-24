@@ -38,48 +38,48 @@ export default function Login() {
     setFormData({ ...formData, [name]: value });
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (!formData.email_or_password || !formData.password) {
-    setAlertMessage("Please fill in all fields");
-    setShowModifyAlert(true);
-    return;
-  }
-
-  setLoading(true);
-  try {
-    const res = await axios.post(`${BASE_URLL}api/login/`, formData);
-    const { unique_id } = res.data;
-    setAuth(unique_id);
-
-    // Redirect and pass unique_id as route state (like a prop)
-    switch (formData.role.toLowerCase()) {
-      case "admin":
-        navigate("/DashBoard", { state: { unique_id } });
-        break;
-      case "pandit":
-        navigate("/Pandit_DashBoard", { state: { unique_id } });
-        break;
-      case "user":
-        navigate("/MainDashBoard", { state: { unique_id } });
-        break;
-      case "temple":
-        navigate("/TempleDashBoard", { state: { unique_id } });
-        break;
-      default:
-        navigate("/", { state: { unique_id } });
+    if (!formData.email_or_password || !formData.password) {
+      setAlertMessage("Please fill in all fields");
+      setShowModifyAlert(true);
+      return;
     }
 
-    setAlertMessage("Login successful!");
-    setShowModifyAlert(true);
-  } catch (err) {
-    setAlertMessage(err.response?.data?.detail || "Invalid username or password");
-    setShowModifyAlert(true);
-  } finally {
-    setLoading(false);
-  }
-};
+    setLoading(true);
+    try {
+      const res = await axios.post(`${BASE_URLL}api/login/`, formData);
+      const { unique_id } = res.data;
+      setAuth(unique_id);
+
+      // Redirect and pass unique_id as route state (like a prop)
+      switch (formData.role.toLowerCase()) {
+        case "admin":
+          navigate("/DashBoard", { state: { unique_id } });
+          break;
+        case "pandit":
+          navigate("/Pandit_DashBoard", { state: { unique_id } });
+          break;
+        case "user":
+          navigate("/MainDashBoard", { state: { unique_id } });
+          break;
+        case "temple":
+          navigate("/TempleDashBoard", { state: { unique_id } });
+          break;
+        default:
+          navigate("/", { state: { unique_id } });
+      }
+
+      setAlertMessage("Login successful!");
+      setShowModifyAlert(true);
+    } catch (err) {
+      setAlertMessage(err.response?.data?.detail || "Invalid username or password");
+      setShowModifyAlert(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   const roleHeading = formData.role
@@ -114,7 +114,7 @@ export default function Login() {
                     <option value="admin">Admin</option>
                     <option value="temple">Temple</option>
                     <option value="pandit">Pandit</option>
-                    <option value="user">User</option>
+                    <option value="user">Devotee</option>
                   </Form.Select>
                 </Form.Group>
 
