@@ -109,7 +109,7 @@ function PanditRegistration() {
     { pooja_name: "Govardhan Puja" },
     { pooja_name: "Annakut Puja" },
     { pooja_name: "Bhai Dooj Puja" },
-    { pooja_name: "Chopda Pooja" },
+    { pooja_name: "Chopda Puja" },
     { pooja_name: "Ayush Havan" },
     { pooja_name: "Chandi Path Havan" },
     { pooja_name: "Lakshmi Kubera Havan" },
@@ -956,7 +956,7 @@ function PanditRegistration() {
                               className="mb-2"
                               onClick={addPooja}
                             >
-                              Add Pooja
+                              Add Puja
                             </Button>
                           )}
                         </Col>

@@ -987,14 +987,14 @@ function TempleAuthority() {
 
                       <Col lg={12} md={12} sm={12}>
                         <Form.Group className="mb-3" controlId="templePoojas">
-                          <h2>Temple Poojas</h2>
+                          <h2>Temple Pujas</h2>
 
                           <Row className="mb-2 align-items-center">
                             <Col lg={4} md={4} sm={4}>
-                              <strong>Pooja Name</strong>
+                              <strong>Puja Name</strong>
                             </Col>
                             <Col lg={4} md={4} sm={4}>
-                              <strong>Pooja Price</strong>
+                              <strong>Puja Price</strong>
                             </Col>
                             <Col lg={2} md={2} sm={2}>
                               <strong>Action</strong>
@@ -1011,7 +1011,7 @@ function TempleAuthority() {
                                   <Form.Control
                                     type="text"
                                     className="temp-form-control"
-                                    placeholder="Enter Pooja name"
+                                    placeholder="Enter Puja name"
                                     value={pooja.temple_pooja_name}
                                     onChange={(e) =>
                                       handlePoojaChange(
@@ -1044,7 +1044,7 @@ function TempleAuthority() {
                                       setTemplePoojas(updated);
                                     }}
                                   >
-                                    <option value="">Select Pooja</option>
+                                    <option value="">Select Puja</option>
                                     {getAvailablePoojaOptions(index).map(
                                       (opt) => (
                                         <option
@@ -1064,7 +1064,7 @@ function TempleAuthority() {
                                 <Form.Control
                                   type="number"
                                   className="temp-form-control"
-                                  placeholder="Pooja Price"
+                                  placeholder="Puja Price"
                                   value={pooja.temple_pooja_price}
                                   onChange={(e) =>
                                     handlePoojaChange(
