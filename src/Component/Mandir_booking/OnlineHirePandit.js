@@ -10,12 +10,14 @@ import { useLocation } from "react-router-dom";
 import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useAuth } from "../GlobleAuth/AuthContext";
 
 const OnlineHirePandit = () => {
   const [show, setShow] = useState(false); // OTP modal
   const [loadingOtp, setLoadingOtp] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [newErrors, setnewErrors] = useState({});
+  const [userData, setUserData] = useState({ email: "", mobile: "" });
 
   // alert state
   const [showModifyAlert, setShowModifyAlert] = useState(false);
@@ -23,6 +25,7 @@ const OnlineHirePandit = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const incoming = location.state || {};
+  const { uniqueId } = useAuth();
 
   // API data & select options
   const [apiPandits, setApiPandits] = useState([]);
@@ -41,36 +44,63 @@ const OnlineHirePandit = () => {
       .replace(/\s+/g, " ")
       .trim();
   // Send OTP
- const buildPanditOptionsForPooja = (poojaName, source = apiPandits) => {
-  if (!poojaName || !Array.isArray(source)) return [];
-  const n = normalize(poojaName);
-  const opts = [];
+  const buildPanditOptionsForPooja = (poojaName, source = apiPandits) => {
+    if (!poojaName || !Array.isArray(source)) return [];
+    const n = normalize(poojaName);
+    const opts = [];
 
-  source.forEach((pd, idx) => {
-    const panditId = pd.pandit_id || pd.id || idx + 1; 
-    const panditName =
-      pd.pandit_name || pd.name || pd.devotee_name || `Pandit ${idx + 1}`;
-    const poojas = Array.isArray(pd.poojas) ? pd.poojas : [];
-    const match = poojas.find((p) => normalize(p.pooja_name) === n);
+    source.forEach((pd, idx) => {
+      const panditId = pd.pandit_id || pd.id || idx + 1;
+      const panditName =
+        pd.pandit_name || pd.name || pd.devotee_name || `Pandit ${idx + 1}`;
+      const poojas = Array.isArray(pd.poojas) ? pd.poojas : [];
+      const match = poojas.find((p) => normalize(p.pooja_name) === n);
 
-    if (match) {
-      const price = Number(match.pooja_price || 0);
-      opts.push({
-        value: `${panditId}`,
-        label: `${panditName} ( — ₹${price}`,
-        meta: {
-          pandit_name: panditName,
-          pandit_id: panditId,
-          price,
-        },
-      });
-    }
-  });
+      if (match) {
+        const price = Number(match.pooja_price || 0);
+        opts.push({
+          value: `${panditId}`,
+          label: `${panditName} — ₹${price}`,
+          meta: {
+            pandit_name: panditName,
+            pandit_id: panditId,
+            price,
+          },
+        });
+      }
+    });
 
-  return opts;
-};
+    return opts;
+  };
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (!uniqueId) return;
 
+      try {
+        const res = await axios.get(`${BASE_URLL}api/all-reg/`);
+        const users = Array.isArray(res.data)
+          ? res.data
+          : res.data.results || [];
 
+        const user = users.find((u) => u.unique_id === uniqueId);
+
+        if (user) {
+          setUserData({ email: user.email, mobile: user.phone });
+
+          setFormData((prev) => ({
+            ...prev,
+            email_id: user.email || prev.email_id,
+            mobile_number: user.phone || prev.mobile_number,
+            creator_id: uniqueId || prev.creator_id,
+          }));
+        }
+      } catch (err) {
+        console.error("Error fetching user data:", err);
+      }
+    };
+
+    fetchUserData();
+  }, [uniqueId]);
 
   const poojaOptions = {
     "Book Pandit Online for Puja": [
@@ -288,7 +318,7 @@ const OnlineHirePandit = () => {
     special_requirements: "",
     grand_total: "",
     payment_mode: "",
-    creator_id: "USR/2025/82881",
+    creator_id: uniqueId,
   });
   useEffect(() => {
     if (incoming && Object.keys(incoming).length > 0) {
@@ -369,7 +399,6 @@ const OnlineHirePandit = () => {
       errors.special_requirements = "Enter Special Requirements";
     }
 
-
     if (!formData.payment_mode) {
       errors.payment_mode = "Please select Payment Mode";
     }
@@ -448,93 +477,92 @@ const OnlineHirePandit = () => {
   };
 
   // Final Submit
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (!validateFields()) {
-    setAlertMessage("Please fill all required fields.");
-    setShowModifyAlert(true);
-    return;
-  }
-
-  try {
-    // Prepare selected pandits array
-    const selectedPanditsPayload = selectedPanditOptions.map((opt) => ({
-      pandit_id: opt.meta?.pandit_id || opt.value,
-      name: opt.meta?.pandit_name || opt.label,
-      price: Number(opt.meta?.price || 0),
-    }));
-
-    // Construct payload matching your backend
-    const payload = {
-      full_name: formData.full_name,
-      creator_id: formData.creator_id,
-      mobile_number: String(formData.mobile_number),
-      email: formData.email,
-      address: formData.address,
-      pooja_type: formData.pooja_type,
-      language_preference: formData.language_preference,
-      date_and_time: selectedDateTime
-        ? selectedDateTime.toISOString()
-        : formData.date_and_time,
-      location: formData.location,
-      number_of_pandits: selectedPanditsPayload, 
-      grand_total: selectedPanditsPayload.reduce(
-        (s, p) => s + Number(p.price || 0),
-        0
-      ),
-      special_requirements: formData.special_requirements,
-      payment_mode: formData.payment_mode,
-    };
-
-    // Post request
-    await axios.post(`${BASE_URLL}api/hire-pandit/`, payload, {
-      headers: { "Content-Type": "application/json" },
-    });
-
-    setAlertMessage("Pandit booked successfully!");
-    setShowModifyAlert(true);
-
-    // Reset form
-    setFormData({
-      full_name: "",
-      mobile_number: "",
-      email: "",
-      address: "",
-      pooja_type: "",
-      language_preference: "",
-      date_and_time: "",
-      location: "",
-      number_of_pandits: "",
-      special_requirements: "",
-      grand_total: "",
-      payment_mode: "",
-      creator_id: "",
-
-    });
-    setSelectedPanditOptions([]);
-    setSelectedDateTime(null);
-    localStorage.removeItem("otpVerified");
-    setIsOtpVerified(false);
-  }  catch (err) {
-  console.log("Full error response:", err.response);
-  if (err.response?.data) {
-    const errors = err.response.data;
-    setnewErrors(errors);
-    const firstErrorField = Object.keys(errors)[0];
-    if (firstErrorField) {
-      setAlertMessage(errors[firstErrorField] || "Please fix errors and try again");
+    if (!validateFields()) {
+      setAlertMessage("Please fill all required fields.");
       setShowModifyAlert(true);
+      return;
     }
-  } else {
-    setAlertMessage("Something went wrong. Please try again.");
-    setShowModifyAlert(true);
-  }
-}
-  console.log("Form Data:", formData);
 
-};
+    try {
+      // Prepare selected pandits array
+      const selectedPanditsPayload = selectedPanditOptions.map((opt) => ({
+        pandit_id: opt.meta?.pandit_id || opt.value,
+        name: opt.meta?.pandit_name || opt.label,
+        price: Number(opt.meta?.price || 0),
+      }));
 
+      // Construct payload matching your backend
+      const payload = {
+        full_name: formData.full_name,
+        creator_id: formData.creator_id,
+        mobile_number: String(formData.mobile_number),
+        email: formData.email,
+        address: formData.address,
+        pooja_type: formData.pooja_type,
+        language_preference: formData.language_preference,
+        date_and_time: selectedDateTime
+          ? selectedDateTime.toISOString()
+          : formData.date_and_time,
+        location: formData.location,
+        number_of_pandits: selectedPanditsPayload,
+        grand_total: selectedPanditsPayload.reduce(
+          (s, p) => s + Number(p.price || 0),
+          0
+        ),
+        special_requirements: formData.special_requirements,
+        payment_mode: formData.payment_mode,
+      };
+
+      // Post request
+      await axios.post(`${BASE_URLL}api/hire-pandit/`, payload, {
+        headers: { "Content-Type": "application/json" },
+      });
+
+      setAlertMessage("Pandit booked successfully!");
+      setShowModifyAlert(true);
+
+      // Reset form
+      setFormData({
+        full_name: "",
+        mobile_number: "",
+        email: "",
+        address: "",
+        pooja_type: "",
+        language_preference: "",
+        date_and_time: "",
+        location: "",
+        number_of_pandits: "",
+        special_requirements: "",
+        grand_total: "",
+        payment_mode: "",
+        creator_id: uniqueId,
+      });
+      setSelectedPanditOptions([]);
+      setSelectedDateTime(null);
+      localStorage.removeItem("otpVerified");
+      setIsOtpVerified(false);
+    } catch (err) {
+      console.log("Full error response:", err.response);
+      if (err.response?.data) {
+        const errors = err.response.data;
+        setnewErrors(errors);
+        const firstErrorField = Object.keys(errors)[0];
+        if (firstErrorField) {
+          setAlertMessage(
+            errors[firstErrorField] || "Please fix errors and try again"
+          );
+          setShowModifyAlert(true);
+        }
+      } else {
+        setAlertMessage("Something went wrong. Please try again.");
+        setShowModifyAlert(true);
+      }
+    }
+    console.log("Form Data:", formData);
+  };
 
   return (
     <div className="temp-donate">
@@ -588,13 +616,13 @@ const handleSubmit = async (e) => {
                       Mobile Number <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
-                      type="number"
+                      type="text"
+                      placeholder="Enter Mobile Number"
+                      className="temp-form-control"
                       name="mobile_number"
                       value={formData.mobile_number}
-                      onChange={handleChange}
-                      placeholder="Enter Mobile Number"
-                      maxLength={10}
-                      className="temp-form-control"
+                      disabled={!!userData.mobile}
+                      title={userData.mobile ? "Phone loaded from profile" : ""}
                     />
                     {newErrors.mobile_number && (
                       <small className="text-danger">
@@ -612,11 +640,12 @@ const handleSubmit = async (e) => {
                     </Form.Label>
                     <Form.Control
                       type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
                       placeholder="Enter Email ID"
                       className="temp-form-control"
+                      name="email_id"
+                      value={formData.email_id}
+                      disabled={!!userData.email}
+                      title={userData.email ? "Email loaded from profile" : ""}
                     />
                     {newErrors.email && (
                       <small className="text-danger">{newErrors.email}</small>
@@ -761,7 +790,7 @@ const handleSubmit = async (e) => {
                     <Form.Label>
                       Date of Ceremony <span className="temp-span-star">*</span>
                     </Form.Label>
-                    
+
                     <DatePicker
                       selected={selectedDateTime}
                       onChange={(date) => {
@@ -787,7 +816,6 @@ const handleSubmit = async (e) => {
                   </Form.Group>
                 </Col>
 
-          
                 <Col lg={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>
@@ -808,8 +836,6 @@ const handleSubmit = async (e) => {
                     )}
                   </Form.Group>
                 </Col>
-
-                
               </Row>
 
               <h2 className="mt-2">Pandit Requirements</h2>
@@ -838,7 +864,8 @@ const handleSubmit = async (e) => {
                         }));
                         setnewErrors((prev) => {
                           const updated = { ...prev };
-                          if (updated.number_of_pandits) delete updated.number_of_pandits;
+                          if (updated.number_of_pandits)
+                            delete updated.number_of_pandits;
                           return updated;
                         });
                       }}

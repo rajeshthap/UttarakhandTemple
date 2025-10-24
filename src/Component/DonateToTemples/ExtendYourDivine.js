@@ -53,7 +53,7 @@ const ExtendYourDivine = () => {
     pilgrim_name: "",
     mobile_number: "",
     email_id: "",
-    creator_id: uniqueId || "",
+    creator_id: uniqueId,
   });
   useEffect(() => {
     const fetchTemples = async () => {
@@ -79,7 +79,7 @@ const ExtendYourDivine = () => {
     const fetchProfile = async () => {
       try {
         setLoading(true);
-        const userId = uniqueId || "USR/2025/47393";
+        const userId = uniqueId || "";
         const response = await axios.get(
           `https://mahadevaaya.com/backend/api/get-user/?user_id=${userId}`
         );

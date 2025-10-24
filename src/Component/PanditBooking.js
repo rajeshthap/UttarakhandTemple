@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Accordion, Button, Col, Container, Row, Form } from "react-bootstrap";
 import Select from "react-select";
 import { FaCheck, FaUsersLine } from "react-icons/fa6";
-import { MdOutlineDateRange, MdStarRate } from "react-icons/md";
+import { MdOutlineDateRange} from "react-icons/md";
 import { Link } from "react-router-dom";
 //import Kedarnath from "../assets/images/Kedarnath-Temple.png";
 //import Gangotri from "../assets/images/Gangotri-Temple.png";
@@ -360,7 +360,7 @@ const PanditBooking = () => {
   const [selectedCard, setSelectedCard] = useState(null);
   const [apiPandits, setApiPandits] = useState([]);
   const [panditOptions, setPanditOptions] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [, setIsLoggedIn] = useState(false);
   const normalize = (s = "") =>
     String(s).toLowerCase().replace(/\s+/g, " ").trim();
 
@@ -373,7 +373,6 @@ const PanditBooking = () => {
   const currentCards = cardData.slice(indexOfFirstItem, indexOfLastItem);
 
   const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
   const handleLoginRegister = () => setIsLoggedIn(true);
   // Default select the first ceremony on mount
   useEffect(() => {
@@ -381,29 +380,7 @@ const PanditBooking = () => {
       setSelectedCard(cardData[0]);
     }
   }, []);
-
-  useEffect(() => {
-    const fetchPanditPoojas = async () => {
-      try {
-        const res = await axios.get(`${BASE_URLL}api/get-pandit-poojas-list/`);
-        const data = Array.isArray(res.data)
-          ? res.data
-          : res.data?.results || [];
-        setApiPandits(data);
-        // if first card selected, populate options for it
-        if (cardData.length > 0) {
-          const first = cardData[0];
-          const opts = buildPanditOptionsForPooja(first.title, data);
-          setPanditOptions(opts);
-        }
-      } catch (err) {
-        console.error("Error fetching pandit poojas list:", err);
-      }
-    };
-    fetchPanditPoojas();
-  }, []);
-
-  const buildPanditOptionsForPooja = (poojaName, source = apiPandits) => {
+const buildPanditOptionsForPooja = (poojaName, source = apiPandits) => {
     if (!poojaName || !Array.isArray(source)) return [];
     const n = normalize(poojaName);
     const opts = [];
@@ -425,6 +402,28 @@ const PanditBooking = () => {
     });
     return opts;
   };
+  useEffect(() => {
+    const fetchPanditPoojas = async () => {
+      try {
+        const res = await axios.get(`${BASE_URLL}api/get-pandit-poojas-list/`);
+        const data = Array.isArray(res.data)
+          ? res.data
+          : res.data?.results || [];
+        setApiPandits(data);
+        // if first card selected, populate options for it
+        if (cardData.length > 0) {
+          const first = cardData[0];
+          const opts = buildPanditOptionsForPooja(first.title, data);
+          setPanditOptions(opts);
+        }
+      } catch (err) {
+        console.error("Error fetching pandit poojas list:", err);
+      }
+    };
+    fetchPanditPoojas();
+  }, []);
+
+  
 
   // Calculate total price based on selected pandits
   const totalAmount =

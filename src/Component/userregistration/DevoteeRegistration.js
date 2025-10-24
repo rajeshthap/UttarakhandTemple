@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row, Form, InputGroup } from "react-bootstrap";
-import axios from "axios";
 import "../../assets/CSS/TempleAuthority.css";
 import Regimg from "../../assets/images/User-regi-img.png";
 import SendOtp from "../SendOtp/SendOtp";
@@ -10,12 +9,12 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import ModifyAlert from "../Alert/ModifyAlert";
 import UploadFile from "../../assets/images/upload-icon.png";
-import { CheckPhoneApi, Globaleapi } from "../GlobleAuth/Globleapi";
+import {  Globaleapi } from "../GlobleAuth/Globleapi";
 
 function DevoteeRegistration() {
   const [phone, setPhone] = useState("");
-  const [isOtpDisabled, setIsOtpDisabled] = useState(false);
-  const [phoneChecked, setPhoneChecked] = useState(false);
+  const [isOtpDisabled, ] = useState(false);
+  const [phoneChecked, ] = useState(false);
 
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
@@ -47,41 +46,7 @@ function DevoteeRegistration() {
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?#&])[A-Za-z\d@$!%*?#&]{8,}$/;
 
-  const checkPhoneExistence = async () => {
-    if (!phone) {
-      setMessage("Please enter a phone number");
-      setIsOtpDisabled(true);
-      setPhoneChecked(false);
-      return true;
-    }
-
-    try {
-      const formData = new FormData();
-      formData.append("phone", phone);
-
-      const response = await CheckPhoneApi(formData);
-
-      const phoneList = response.data.phones || response.data;
-
-      if (Array.isArray(phoneList) && phoneList.includes(phone)) {
-        setMessage("Phone number already exists!");
-        setIsOtpDisabled(true);
-        setPhoneChecked(true);
-        return true;
-      } else {
-        setMessage("");
-        setIsOtpDisabled(false);
-        setPhoneChecked(true);
-        return false;
-      }
-    } catch (error) {
-      console.error(error);
-      setMessage("Error checking phone number");
-      setIsOtpDisabled(true);
-      setPhoneChecked(false);
-      return true;
-    }
-  };
+  
   useEffect(() => {
     // Push the current page into history so user can't go back
     window.history.pushState(null, "", window.location.href);
@@ -191,7 +156,7 @@ function DevoteeRegistration() {
     if (!formDataFiles.devotee_photo) {
       setFileErrors((prev) => ({
         ...prev,
-        devotee_photo: "User photo is required",
+        devotee_photo: "Devotee photo is required",
       }));
       setMessage("Please fix the errors above");
       return;
@@ -219,7 +184,7 @@ function DevoteeRegistration() {
     formData.append("role", "user");
 
     try {
-      const res = await Globaleapi(formData);
+      await Globaleapi(formData);
 
       // Reset all
       setDevoteeName("");
@@ -231,7 +196,7 @@ function DevoteeRegistration() {
       setErrors({});
       setFileErrors({});
       setMessage("");
-      setAlertMessage("User Registered Successfully!");
+      setAlertMessage("Devotee Registered Successfully!");
       setShowAlert(true);
 
       setTimeout(() => {
@@ -518,7 +483,7 @@ function DevoteeRegistration() {
                             className="temp-doc-subinfo mt-2"
                           >
                             <h3>
-                              User Photo{" "}
+                              Devotee Photo{" "}
                               <span className="temp-span-star">*</span>
                             </h3>
                             {formDataFiles.devotee_photo && (
@@ -537,7 +502,7 @@ function DevoteeRegistration() {
                                     setFormDataFiles({ devotee_photo: null });
                                     setFileErrors((prev) => ({
                                       ...prev,
-                                      devotee_photo: "User photo is required",
+                                      devotee_photo: "Devotee photo is required",
                                     }));
                                   }}
                                 >
@@ -577,7 +542,7 @@ function DevoteeRegistration() {
                 <img
                   src={Regimg}
                   className="img-fluid"
-                  alt="User Registration"
+                  alt="Devotee Registration"
                 />
               </Col>
             </Row>
