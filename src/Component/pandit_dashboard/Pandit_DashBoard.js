@@ -78,7 +78,7 @@ const Pandit_DashBoard = () => {
 
                                         <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
                                             <div>
-                                                <span className="text-muted d-block mb-1 text-nowrap  user-sub-title">  New Darshan Booking</span> <h4 className="fw-medium mb-0">01</h4>
+                                                <span className="text-muted d-block mb-1 text-nowrap  user-sub-title">  New Puja Booking</span> <h4 className="fw-medium mb-0">01</h4>
                                                 <div><span className="user-span">View Details</span></div>
                                             </div>
 
@@ -106,7 +106,7 @@ const Pandit_DashBoard = () => {
                                     <Card.Body>
                                         <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
                                             <div>
-                                                <span className="text-muted d-block mb-1 text-nowrap  user-sub-title">    Accepted Darshan Booking</span> <h4 className="fw-medium mb-0">02</h4>
+                                                <span className="text-muted d-block mb-1 text-nowrap  user-sub-title">    Accepted Puja Booking</span> <h4 className="fw-medium mb-0">02</h4>
                                                 <div><span className="user-span">View Details</span></div>
                                             </div>
                                             <div className="lh-1">
@@ -121,7 +121,7 @@ const Pandit_DashBoard = () => {
                                     <Card.Body>
                                         <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
                                             <div>
-                                                <span className="text-muted d-block mb-1 text-nowrap  user-sub-title">      Reject Darshan Booking</span> <h4 className="fw-medium mb-0">03</h4>
+                                                <span className="text-muted d-block mb-1 text-nowrap  user-sub-title">      Reject Pujas Booking</span> <h4 className="fw-medium mb-0">03</h4>
                                                 <div><span className="user-span">View Details</span></div>
                                             </div>
                                             <div className="lh-1">
@@ -140,7 +140,7 @@ const Pandit_DashBoard = () => {
                                     <Card.Body>
                                         <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
                                             <div>
-                                                <span className="text-muted d-block mb-1 text-nowrap  user-sub-title">      Total Donation</span> <h4 className="fw-medium mb-0">05</h4>
+                                                <span className="text-muted d-block mb-1 text-nowrap  user-sub-title">      Upcoming Pujas</span> <h4 className="fw-medium mb-0">05</h4>
                                                 <div><span className="user-span">View Details</span></div>
                                             </div>
 
@@ -152,66 +152,6 @@ const Pandit_DashBoard = () => {
                                     </Card.Body>
                                 </Card>
                             </Col>
-
-                            <Col lg={3} md={3} sm={12}>
-                                <Card className="shadow-sm rounded  flex-fill dbcard-box-3">
-                                    <Card.Body>
-                                        <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
-                                            <div>
-                                                <span className="text-muted d-block mb-1 text-nowrap  user-sub-title"> Total Temple</span> <h4 className="fw-medium mb-0">06</h4>
-                                                <div><span className="user-span">View Details</span></div>
-                                            </div>
-
-                                            <div className="lh-1">
-                                                <div className=" avatar-md avatar-rounded Donations-bg flex-shrink-0 d-flex align-items-center justify-content-center ">
-                                                    <BiSolidDonateBlood /> </div>
-                                            </div></div>
-
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-
-
-
-
-                            <Col lg={3} md={3} sm={12}>
-                                <Card className="shadow-sm rounded  flex-fill dbcard-box-3">
-                                    <Card.Body>
-                                        <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
-                                            <div>
-                                                <span className="text-muted d-block mb-1 text-nowrap  user-sub-title">Total Festival</span> <h4 className="fw-medium mb-0">04</h4>
-                                                <div><span className="user-span">View Details</span></div>
-                                            </div>
-
-                                            <div className="lh-1">
-                                                <div className=" avatar-md avatar-rounded Donations-bg flex-shrink-0 d-flex align-items-center justify-content-center ">
-                                                    <BiSolidDonateBlood /> </div>
-                                            </div></div>
-
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-
-                            <Col lg={3} md={3} sm={12}>
-                                <Card className="shadow-sm rounded  flex-fill dbcard-box-3">
-                                    <Card.Body>
-                                        <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
-                                            <div>
-                                                <span className="text-muted d-block mb-1 text-nowrap  user-sub-title">Total Reg Devotees</span> <h4 className="fw-medium mb-0">08</h4>
-                                                <div><span className="user-span">View Details</span></div>
-                                            </div>
-
-                                            <div className="lh-1">
-                                                <div className=" avatar-md avatar-rounded Donations-bg flex-shrink-0 d-flex align-items-center justify-content-center ">
-                                                    <BiSolidDonateBlood /> </div>
-                                            </div></div>
-
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-
-
-
                         </Row>
 
                         <Row>
