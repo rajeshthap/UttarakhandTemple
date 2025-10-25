@@ -7,7 +7,7 @@ import TempleLeftNav from "../TempleLeftNav";
 import SearchFeature from "./SearchFeature";
 import { useAuth } from "../../GlobleAuth/AuthContext";
 import axios from "axios";
-import { BASE_URLL } from "../../BaseURL";
+import { SlCalender } from "react-icons/sl";
 
 const AddFestival = () => {
   const { uniqueId } = useAuth();
@@ -28,36 +28,41 @@ const AddFestival = () => {
   const [selectedEndDateTime, setSelectedEndDateTime] = useState(null);
   const today = new Date();
 
-  // Fetch temple details based on uniqueId
+  // Fetch temple details
   useEffect(() => {
+    if (!uniqueId) return;
+
     const fetchTemple = async () => {
       try {
         const response = await axios.get(
-          `${BASE_URLL}/get-temple/?temple_id=${uniqueId}`
+          `https://mahadevaaya.com/backend/api/get-temple/?temple_id=${uniqueId}`
         );
+
         const temple = response.data;
 
         setFormData((prev) => ({
           ...prev,
           temple_name: temple.temple_name || "",
+          temple_id: uniqueId,
         }));
       } catch (error) {
         console.error("Error fetching temple data:", error);
       }
     };
 
-    if (uniqueId) fetchTemple();
+    fetchTemple();
   }, [uniqueId]);
 
+  // Handle input changes (text/file)
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: files ? files[0] : value,
-    });
+    }));
   };
 
-  // Handle Start Date/Time change
+  // Handle Start Date/Time
   const handleStartDateChange = (date) => {
     setSelectedStartDateTime(date);
     const startDay = date
@@ -69,9 +74,19 @@ const AddFestival = () => {
       start_date_time: date ? date.toISOString() : "",
       start_day: startDay,
     }));
+
+    // Ensure End Date is not before Start Date
+    if (selectedEndDateTime && date > selectedEndDateTime) {
+      setSelectedEndDateTime(date);
+      setFormData((prev) => ({
+        ...prev,
+        end_date_time: date.toISOString(),
+        end_day: startDay,
+      }));
+    }
   };
 
-  // Handle End Date/Time change
+  // Handle End Date/Time
   const handleEndDateChange = (date) => {
     setSelectedEndDateTime(date);
     const endDay = date
@@ -102,15 +117,18 @@ const AddFestival = () => {
 
       if (formData.image) data.append("image", formData.image);
 
-      const response = await axios.post(`${BASE_URLL}/add-festival/`, data, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const response = await axios.post(
+        "https://mahadevaaya.com/backend/api/add-festival/",
+        data,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
 
       console.log("Festival submitted successfully:", response.data);
       alert("Festival added successfully!");
 
-      setFormData({
-        temple_name: formData.temple_name,
+      // Reset form except temple name
+      setFormData((prev) => ({
+        ...prev,
         festival_name: "",
         start_date_time: "",
         end_date_time: "",
@@ -118,8 +136,7 @@ const AddFestival = () => {
         end_day: "",
         description: "",
         image: null,
-        temple_id: uniqueId,
-      });
+      }));
       setSelectedStartDateTime(null);
       setSelectedEndDateTime(null);
     } catch (error) {
@@ -150,6 +167,7 @@ const AddFestival = () => {
 
             <div className="temp-donate">
               <Form onSubmit={handleSubmit}>
+                {/* Temple & Festival Name */}
                 <Row>
                   <Col lg={6}>
                     <Form.Group className="mb-3">
@@ -169,7 +187,8 @@ const AddFestival = () => {
                   <Col lg={6}>
                     <Form.Group className="mb-3">
                       <Form.Label>
-                        Name of Festival<span className="temp-span-star"> *</span>
+                        Name of Festival
+                        <span className="temp-span-star"> *</span>
                       </Form.Label>
                       <Form.Control
                         type="text"
@@ -182,7 +201,7 @@ const AddFestival = () => {
                   </Col>
                 </Row>
 
-                {/* Start & End Date/Time */}
+                {/* Start & End Date */}
                 <Row>
                   <Col lg={6}>
                     <Form.Group className="mb-3">
@@ -190,19 +209,25 @@ const AddFestival = () => {
                         Festival Start Date & Time
                         <span className="temp-span-star"> *</span>
                       </Form.Label>
-                      <DatePicker
-                        selected={selectedStartDateTime}
-                        onChange={handleStartDateChange}
-                        showTimeSelect
-                        timeFormat="hh:mm aa"
-                        timeIntervals={30}
-                        dateFormat="MMMM d, yyyy h:mm aa"
-                        placeholderText="Select Start Date and Time"
-                        className="form-control temp-form-control-option w-100"
-                        minDate={today}
-                        minTime={minTime}
-                        maxTime={maxTime}
-                      />
+
+                      <div className="input-group">
+                        <DatePicker
+                          selected={selectedStartDateTime}
+                          onChange={handleStartDateChange}
+                          showTimeSelect
+                          timeFormat="hh:mm aa"
+                          timeIntervals={30}
+                          dateFormat="MMMM d, yyyy h:mm aa"
+                          placeholderText="Select Start Date and Time"
+                          className="form-control temp-form-control-option"
+                          minDate={today}
+                          minTime={minTime}
+                          maxTime={maxTime}
+                        />
+                        <span className="input-group-text">
+                          <SlCalender />
+                        </span>
+                      </div>
                     </Form.Group>
                   </Col>
 
@@ -212,19 +237,25 @@ const AddFestival = () => {
                         Festival End Date & Time
                         <span className="temp-span-star"> *</span>
                       </Form.Label>
-                      <DatePicker
-                        selected={selectedEndDateTime}
-                        onChange={handleEndDateChange}
-                        showTimeSelect
-                        timeFormat="hh:mm aa"
-                        timeIntervals={30}
-                        dateFormat="MMMM d, yyyy h:mm aa"
-                        placeholderText="Select End Date and Time"
-                        className="form-control temp-form-control-option w-100"
-                        minDate={selectedStartDateTime || today}
-                        minTime={minTime}
-                        maxTime={maxTime}
-                      />
+
+                      <div className="input-group">
+                        <DatePicker
+                          selected={selectedEndDateTime}
+                          onChange={handleEndDateChange}
+                          showTimeSelect
+                          timeFormat="hh:mm aa"
+                          timeIntervals={30}
+                          dateFormat="MMMM d, yyyy h:mm aa"
+                          placeholderText="Select End Date and Time"
+                          className="form-control temp-form-control-option"
+                          minDate={selectedStartDateTime || today}
+                          minTime={minTime}
+                          maxTime={maxTime}
+                        />
+                        <span className="input-group-text">
+                          <SlCalender />
+                        </span>
+                      </div>
                     </Form.Group>
                   </Col>
                 </Row>
@@ -233,7 +264,9 @@ const AddFestival = () => {
                 <Row>
                   <Col lg={6}>
                     <Form.Group className="mb-3">
-                      <Form.Label>Start Day</Form.Label>
+                      <Form.Label>
+                        Start Day <span className="temp-span-star"> *</span>
+                      </Form.Label>
                       <Form.Control
                         type="text"
                         value={formData.start_day}
@@ -245,7 +278,9 @@ const AddFestival = () => {
 
                   <Col lg={6}>
                     <Form.Group className="mb-3">
-                      <Form.Label>End Day</Form.Label>
+                      <Form.Label>
+                        End Day<span className="temp-span-star"> *</span>
+                      </Form.Label>
                       <Form.Control
                         type="text"
                         value={formData.end_day}
@@ -256,6 +291,7 @@ const AddFestival = () => {
                   </Col>
                 </Row>
 
+                {/* Description */}
                 <Row>
                   <Col lg={12}>
                     <Form.Group className="mb-3">
@@ -274,6 +310,7 @@ const AddFestival = () => {
                   </Col>
                 </Row>
 
+                {/* Image */}
                 <Row>
                   <Col lg={12}>
                     <Form.Group className="mb-3">
