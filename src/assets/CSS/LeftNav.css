@@ -125,7 +125,7 @@
   flex: 1;
   padding: 20px;
   background: #f4f6f8;
-  margin: 50px 68px 68px 0px !important;
+  /* margin: 50px 68px 68px 0px !important; */
 }
 
 /* Box inside main content */
