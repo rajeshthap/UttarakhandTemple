@@ -66,10 +66,7 @@ const AddFestival = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
@@ -117,6 +114,7 @@ const AddFestival = () => {
       tempErrors.end_date_time = "End Date & Time is required";
     if (!formData.description)
       tempErrors.description = "Description is required";
+    if (!formDataFiles.image) tempErrors.image = "Festival image is required";
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
@@ -141,10 +139,7 @@ const AddFestival = () => {
         });
       }
 
-      setFormDataFiles((prev) => ({
-        ...prev,
-        [name]: file,
-      }));
+      setFormDataFiles((prev) => ({ ...prev, [name]: file }));
     }
   };
 
@@ -203,7 +198,7 @@ const AddFestival = () => {
         <TempleLeftNav />
       </aside>
 
-      <main className="main-container-box">
+      <main className="">
         <div className="content-box">
           <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3 ">
             <h1 className="fw500">
@@ -211,7 +206,7 @@ const AddFestival = () => {
             </h1>
             <SearchFeature />
           </div>
-          <Container className="temp-container">
+          <div className="temp-container">
             <div className="temp-donate">
               {showAlert && (
                 <ModifyAlert
@@ -259,10 +254,6 @@ const AddFestival = () => {
                       )}
                     </Form.Group>
                   </Col>
-                </Row>
-
-                {/* Start & End Date */}
-                <Row>
                   <Col lg={6}>
                     <Form.Group className="mb-3">
                       <Form.Label className="temp-label">
@@ -326,10 +317,6 @@ const AddFestival = () => {
                       )}
                     </Form.Group>
                   </Col>
-                </Row>
-
-                {/* Description */}
-                <Row>
                   <Col lg={12}>
                     <Form.Group className="mb-3">
                       <Form.Label className="temp-label">
@@ -350,113 +337,93 @@ const AddFestival = () => {
                       )}
                     </Form.Group>
                   </Col>
+
+                  {/* <Col lg={12}>
+                    <fieldset
+                      className={`upload_dropZone text-center ${
+                        dragging === "image" ? "drag-over" : ""
+                      }`}
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                        setDragging("image");
+                      }}
+                      onDragLeave={() => setDragging(null)}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        setDragging(null);
+                        const file = e.dataTransfer.files[0];
+                        if (file) {
+                          handleInputChange({
+                            target: { name: "image", files: [file] },
+                          });
+                        }
+                      }}
+                    >
+                      <legend className="visually-hidden">Upload Image</legend>
+                      <img src={UploadFile} alt="upload-file" />
+                      <p className="temp-drop-txt my-2">
+                        Drag & drop image <br /> <i>or</i>
+                      </p>
+                      <input
+                        id="image"
+                        name="image"
+                        type="file"
+                        accept="image/*"
+                        className="invisible"
+                        onChange={handleInputChange}
+                      />
+                      <label
+                        className="btn temp-primary-btn mb-1"
+                        htmlFor="image"
+                      >
+                        Choose file
+                      </label>
+                      <p className="temp-upload-file">
+                        Upload size 10KB-2MB (jpg, png, jpeg)
+                      </p>
+                    </fieldset>
+                    {fileErrors.image && (
+                      <div className="alert-txt text-center">
+                        {fileErrors.image}
+                      </div>
+                    )}
+                    {formDataFiles.image && (
+                      <div className="mt-2">
+                        <div className="d-flex temp-doc-info">
+                          <Col lg={3}>{new Date().toLocaleDateString()}</Col>
+                          <Col lg={9} className="px-4 temp-success-doc">
+                            <FaCheckCircle /> Uploaded Successfully
+                          </Col>
+                        </div>
+                        <div
+                          className="col temp-delete-icon"
+                          onClick={() => {
+                            setFormDataFiles({ image: null });
+                            setFileErrors((prev) => ({
+                              ...prev,
+                              image: "Festival image is required",
+                            }));
+                          }}
+                        >
+                          <h3>
+                            <RiDeleteBin6Line className="mx-1" /> Click here to
+                            Remove
+                          </h3>
+                        </div>
+                      </div>
+                    )}
+                  </Col> */}
+                  <div className="text-center">
+                    <Button type="submit" className="temp-submit-btn mt-3">
+                      Submit
+                    </Button>
+                  </div>
                 </Row>
 
                 {/* Image Upload */}
-                <Row>
-                  <Col lg={6}>
-                    <Row className="temp-stepform-box">
-                      <Col lg={8} md={8} sm={12}>
-                        <fieldset
-                          className={`upload_dropZone text-center ${
-                            dragging === "image" ? "drag-over" : ""
-                          }`}
-                          onDragOver={(e) => {
-                            e.preventDefault();
-                            setDragging("image");
-                          }}
-                          onDragLeave={() => setDragging(null)}
-                          onDrop={(e) => {
-                            e.preventDefault();
-                            setDragging(null);
-                            const file = e.dataTransfer.files[0];
-                            if (file) {
-                              handleInputChange({
-                                target: { name: "image", files: [file] },
-                              });
-                            }
-                          }}
-                        >
-                          <legend className="visually-hidden">
-                            Upload Image
-                          </legend>
-                          <img src={UploadFile} alt="upload-file" />
-                          <p className="temp-drop-txt my-2">
-                            Drag & drop image <br /> <i>or</i>
-                          </p>
-                          <input
-                            id="image"
-                            name="image"
-                            type="file"
-                            accept="image/*"
-                            className="invisible"
-                            onChange={handleInputChange}
-                          />
-                          <label
-                            className="btn temp-primary-btn mb-1"
-                            htmlFor="image"
-                          >
-                            Choose file
-                          </label>
-                          <p className="temp-upload-file">
-                            Upload size 10KB-2MB (jpg, png, jpeg)
-                          </p>
-                        </fieldset>
-                        {fileErrors.image && (
-                          <div className="alert-txt text-center">
-                            {fileErrors.image}
-                          </div>
-                        )}
-                      </Col>
-
-                      <Col
-                        lg={4}
-                        md={4}
-                        sm={12}
-                        className="temp-doc-subinfo mt-2"
-                      >
-                        <h3>
-                          Festival Image{" "}
-                          <span className="temp-span-star">*</span>
-                        </h3>
-                        {formDataFiles.image && (
-                          <>
-                            <div className="d-flex temp-doc-info">
-                              <Col lg={3}>
-                                {new Date().toLocaleDateString()}
-                              </Col>
-                              <Col lg={9} className="px-4 temp-success-doc">
-                                <FaCheckCircle /> Uploaded Successfully
-                              </Col>
-                            </div>
-                            <div
-                              className="col temp-delete-icon"
-                              onClick={() => {
-                                setFormDataFiles({ image: null });
-                                setFileErrors((prev) => ({
-                                  ...prev,
-                                }));
-                              }}
-                            >
-                              <h3>
-                                <RiDeleteBin6Line className="mx-1" /> Click here
-                                to Remove
-                              </h3>
-                            </div>
-                          </>
-                        )}
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-                <div className=" text-center mt-3">
-                  <Button type="submit" className="temp-submit-btn mt-3">
-                    Submit
-                  </Button>
-                </div>
               </Form>
             </div>
-          </Container>
+          </div>
         </div>
       </main>
     </div>

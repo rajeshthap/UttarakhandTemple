@@ -17,8 +17,12 @@ const DarshanBookingReport = () => {
 
         <main className="main-container-box">
           <div className="content-box">
-            <SearchFeature />
-            <div>Darshan Bookings Report</div>
+            <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3 ">
+              <h1 className="fw500">
+                <span className="fw700h1">Darshan </span> Bookings Report
+              </h1>
+              <SearchFeature />
+            </div>
           </div>
         </main>
       </div>
