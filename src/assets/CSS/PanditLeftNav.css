@@ -66,7 +66,7 @@
 .user-nd-header {
   height: 70px;
   width: 100vw;
-  padding: 0 30px;
+  padding: 0 2px;
   background: var(--temp-white);
   position: fixed;
   z-index: 100;
@@ -215,7 +215,7 @@
 }
 
 .navclose {
-  width: 68px;
+  width: 42px;
 }
 
 .pandit-nav-option {
