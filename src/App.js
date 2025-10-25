@@ -1,8 +1,8 @@
 import React from "react";
 import "./App.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import "./CustomCss/custom.css"
-import "./CustomCss/style.css"
+import "./CustomCss/custom.css";
+import "./CustomCss/style.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "slick-carousel/slick/slick.css";
@@ -16,11 +16,7 @@ import "react-bootstrap/esm/DropdownButton.js";
 import "./CustomCss/custom.css";
 import "@fontsource/poppins";
 import TempleAuthority from "./Component/userregistration/TempleAuthority";
-import {
-  Route,
-  Routes,
-  useLocation,
-} from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "./Pages/Home";
 import InfoBar from "./Component/Navigation/InfoBar";
 import TopNavBar from "./Component/Navigation/TopNavBar";
@@ -31,11 +27,11 @@ import NotFound from "./Component/notfound/NotFound";
 
 import TempleFooter from "./Component/temple_footer/TempleFooter";
 import DonateTemples from "./Component/DonateToTemples/DonateTemples";
-import ExtendYourDivine from "./Component/DonateToTemples/ExtendYourDivine"
+import ExtendYourDivine from "./Component/DonateToTemples/ExtendYourDivine";
 import Login from "./Component/AllLogin/Login";
 import { BASE_URLL } from "./Component/BaseURL";
 // import OTPModel from "./Component/OTPModel/OTPModel";
-import PaymentConfirmation from "./Component/DonateToTemples/PaymentConfirmation"
+import PaymentConfirmation from "./Component/DonateToTemples/PaymentConfirmation";
 import LocationState from "./Component/userregistration/LocationState";
 import MandirBooking from "./Component/Mandir_booking/MandirBooking";
 import DarshanBooking from "./Component/Mandir_booking/DarshanBooking";
@@ -91,7 +87,7 @@ import GangotriInfo from "./Component/GangotriInfo";
 import YamunotriInfo from "./Component/YamunotriInfo";
 import BookingHistory from "./Component/dashboard/innerpage_dashboard/BookingHistory";
 import MyProfile from "./Component/dashboard/MyAccount/MyProfile";
-import Support from "./Component/dashboard/innerpage_dashboard/Support";  
+import Support from "./Component/dashboard/innerpage_dashboard/Support";
 import EventDashBoard from "./Component/dashboard/innerpage_dashboard/EventDashBoard";
 import AboutDashBoard from "./Component/dashboard/AboutUsDashBoard/AboutDashBoard";
 import { AuthProvider } from "./Component/GlobleAuth/AuthContext";
@@ -103,8 +99,20 @@ import MandirBookingInfoDashBoard from "./Component/dashboard/innerpage_dashboar
 import AddTemple from "./Component/temp_dashboard/temp_innerdashboard/AddTemple";
 import ManageTemple from "./Component/temp_dashboard/temp_innerdashboard/ManageTemple";
 import SearchFeature from "./Component/temp_dashboard/temp_innerdashboard/SearchFeature";
-
-
+import AddFestival from "./Component/temp_dashboard/temp_innerdashboard/AddFestival";
+import ManageFestival from "./Component/temp_dashboard/temp_innerdashboard/ManageFestival";
+import NewBooking from "./Component/temp_dashboard/temp_innerdashboard/tmpl_dashboard_darshan_booking/NewBooking";
+import AcceptedBooking from "./Component/temp_dashboard/temp_innerdashboard/tmpl_dashboard_darshan_booking/AcceptedBooking";
+import RejectedBooking from "./Component/temp_dashboard/temp_innerdashboard/tmpl_dashboard_darshan_booking/RejectedBooking";
+import AllBooking from "./Component/temp_dashboard/temp_innerdashboard/tmpl_dashboard_darshan_booking/AllBookings";
+import Donations from "./Component/temp_dashboard/temp_innerdashboard/view_donation/Donations";
+import DarshanBookingReport from "./Component/temp_dashboard/temp_innerdashboard/reports/DarshanBookingReport";
+import DonationReport from "./Component/temp_dashboard/temp_innerdashboard/reports/DonationReport";
+import DonationCollected from "./Component/temp_dashboard/temp_innerdashboard/reports/DonationCollected";
+import RegDevoteeReport from "./Component/temp_dashboard/temp_innerdashboard/reports/RegDevoteeReport";
+import RegDevotee from "./Component/temp_dashboard/temp_innerdashboard/RegDevotee";
+import TempleProfile from "./Component/temp_dashboard/TempleProfile";
+import TempleSupport from "./Component/temp_dashboard/support/TempleSupport";
 
 // import BASE_URLL from "./Component/BaseURL";
 // import DashBoard from "./Component/dashboard/DashBoard";
@@ -113,13 +121,65 @@ import SearchFeature from "./Component/temp_dashboard/temp_innerdashboard/Search
 // Importing necessary components and pages
 
 function App() {
-
-  const location = useLocation
-    ();
-  const hiddenPaths = new Set(["/DashBoard", "/MainDashBoard", "/DonateDashBoard", "/PanditDashBoard", "/LeftNav", "/PoojaBookingDashBoard", "/MandirBookingDashBoard", "/DarshanBookingDashBoard", "/SevaRegistrationDashBoard",
-     "/ChangePassword","/TempleDashBoard", "/TempleLeftNav","/PanditDarshanBooking","/PanditChangePassword","/PanditLeftNav","/Pandit_DashBoard","/PanditDonateDashBoard","/PanditBookDashBoard","/PanditPoojaBooking","/PanditBookingDashBoard",
-     "/PanditSevaRegis","/TempDonateDashBoard","/TempPanditBooking","/TempPoojaBooking","/TempChangePassword","/TempSevaRegis",
-     "/TempDarshnBooking","/TempBookingDashBoard","/PanditProfile","/BookingHistory","/MyProfile","/Support","/EventDashBoard","/AboutDashBoard","/PlatformInfoDashBoard","/MandirPlatformDashBoard","/MissionDashBoard","/SpecialAnnouncementDashBoard","/MandirBookingInfoDashBoard","/AddTemple","/ManageTemple"]);
+  const location = useLocation();
+  const hiddenPaths = new Set([
+    "/DashBoard",
+    "/MainDashBoard",
+    "/DonateDashBoard",
+    "/PanditDashBoard",
+    "/LeftNav",
+    "/PoojaBookingDashBoard",
+    "/MandirBookingDashBoard",
+    "/DarshanBookingDashBoard",
+    "/SevaRegistrationDashBoard",
+    "/ChangePassword",
+    "/TempleDashBoard",
+    "/TempleLeftNav",
+    "/PanditDarshanBooking",
+    "/PanditChangePassword",
+    "/PanditLeftNav",
+    "/Pandit_DashBoard",
+    "/PanditDonateDashBoard",
+    "/PanditBookDashBoard",
+    "/PanditPoojaBooking",
+    "/PanditBookingDashBoard",
+    "/PanditSevaRegis",
+    "/TempDonateDashBoard",
+    "/TempPanditBooking",
+    "/TempPoojaBooking",
+    "/TempChangePassword",
+    "/TempSevaRegis",
+    "/TempDarshnBooking",
+    "/TempBookingDashBoard",
+    "/PanditProfile",
+    "/BookingHistory",
+    "/MyProfile",
+    "/Support",
+    "/EventDashBoard",
+    "/AboutDashBoard",
+    "/PlatformInfoDashBoard",
+    "/MandirPlatformDashBoard",
+    "/MissionDashBoard",
+    "/SpecialAnnouncementDashBoard",
+    "/MandirBookingInfoDashBoard",
+    "/AddTemple",
+    "/ManageTemple",
+    "/NewBooking",
+    "/AcceptedBooking",
+    "/DonationReport",
+    "/DarshanBookingReport",
+    "/AllBooking",
+    "/RejectedBooking",
+    "/AddFestival",
+    "/ManageFestival",
+    "/SearchFeature",
+    "/Donations",
+    "/DonationCollected",
+    "/RegDevoteeReport",
+    "/RegDevotee",
+    "/TempleProfile",
+    "/TempleSupport",
+  ]);
   const shouldHideBars = hiddenPaths.has(location.pathname);
   const hideFooter = location.pathname === "/";
   return (
@@ -132,37 +192,64 @@ function App() {
           <Route path="/TempleAuthority" element={<TempleAuthority />} />
 
           <Route path="/PanditRegistration" element={<PanditRegistration />} />
-          <Route path="/DevoteeRegistration" element={<DevoteeRegistration />} />
+          <Route
+            path="/DevoteeRegistration"
+            element={<DevoteeRegistration />}
+          />
           <Route path="/Login" element={<Login />} />
-         
+
           <Route path="/ForgotPassword" element={<ForgotPassword />} />
           <Route path="/DonateTemples" element={<DonateTemples />} />
           <Route path="/ExtendYourDivine" element={<ExtendYourDivine />} />
-          <Route path="/PaymentConfirmation" element={<PaymentConfirmation />} />
+          <Route
+            path="/PaymentConfirmation"
+            element={<PaymentConfirmation />}
+          />
           <Route path="/DarshanBooking" element={<DarshanBooking />} />
           <Route path="/MandirBooking" element={<MandirBooking />} />
           <Route path="/PoojaBooking" element={<PoojaBooking />} />
           <Route path="/LocationState" element={<LocationState />} />
-          <Route path="/TempleFacilityBooking" element={<TempleFacilityBooking />} />
+          <Route
+            path="/TempleFacilityBooking"
+            element={<TempleFacilityBooking />}
+          />
           <Route path="/SevaRegistration" element={<SevaRegistration />} />
           <Route path="/EventParticipation" element={<EventParticipation />} />
           <Route path="/OnlineHirePandit" element={<OnlineHirePandit />} />
-           <Route path="/PanditBooking" element={<PanditBooking />} />
+          <Route path="/PanditBooking" element={<PanditBooking />} />
           <Route path="/UserVerifyOtp" element={<UserVerifyOtp />} />
           <Route path="/ForgetPassword" element={<ForgetPassword />} />
           <Route path="/MandirMahadevaya" element={<MandirMahadevaya />} />
           <Route path="/ContactUs" element={<ContactUs />} />
-          <Route path="/SpecialAnnouncements" element={<SpecialAnnouncements />} />
+          <Route
+            path="/SpecialAnnouncements"
+            element={<SpecialAnnouncements />}
+          />
           <Route path="/MissionVision" element={<MissionVision />} />
           <Route path="/AboutUs" element={<AboutUs />} />
           <Route path="/PlatFormInfo" element={<PlatFormInfo />} />
-          <Route path="/MandirBookingDashBoard" element={<MandirBookingDashBoard />} />
+          <Route
+            path="/MandirBookingDashBoard"
+            element={<MandirBookingDashBoard />}
+          />
           <Route path="/TempDarshnBooking" element={<TempDarshnBooking />} />
-          <Route path="/PlatformInfoDashBoard" element={<PlatformInfoDashBoard />} />
-          <Route path="/MandirPlatformDashBoard" element={<MandirPlatformDashBoard />} />
+          <Route
+            path="/PlatformInfoDashBoard"
+            element={<PlatformInfoDashBoard />}
+          />
+          <Route
+            path="/MandirPlatformDashBoard"
+            element={<MandirPlatformDashBoard />}
+          />
           <Route path="/MissionDashBoard" element={<MissionDashBoard />} />
-          <Route path="/SpecialAnnouncementDashBoard" element={<SpecialAnnouncementDashBoard />} />
-          <Route path="/MandirBookingInfoDashBoard" element={<MandirBookingInfoDashBoard />} />
+          <Route
+            path="/SpecialAnnouncementDashBoard"
+            element={<SpecialAnnouncementDashBoard />}
+          />
+          <Route
+            path="/MandirBookingInfoDashBoard"
+            element={<MandirBookingInfoDashBoard />}
+          />
 
           <Route path="/BaseURL" element={<BASE_URLL />} />
           <Route path="*" element={<NotFound />} />
@@ -170,34 +257,67 @@ function App() {
           <Route path="/MainDashBoard" element={<MainDashBoard />} />
           <Route path="/DonateDashBoard" element={<DonateDashBoard />} />
           <Route path="/PanditDashBoard" element={<PanditDashBoard />} />
-          <Route path="/PoojaBookingDashBoard" element={<PoojaBookingDashBoard />} />
-          <Route path="/DarshanBookingDashBoard" element={<DarshanBookingDashBoard />} />
-          <Route path="/SevaRegistrationDashBoard" element={<SevaRegistrationDashBoard />} />
+          <Route
+            path="/PoojaBookingDashBoard"
+            element={<PoojaBookingDashBoard />}
+          />
+          <Route
+            path="/DarshanBookingDashBoard"
+            element={<DarshanBookingDashBoard />}
+          />
+          <Route
+            path="/SevaRegistrationDashBoard"
+            element={<SevaRegistrationDashBoard />}
+          />
           <Route path="/ChangePassword" element={<ChangePassword />} />
           <Route path="/TempleBookingInfo" element={<TempleBookingInfo />} />
-          <Route path="/BadrinathInfo" element={<BadrinathInfo/>} />
-          <Route path="/KedarnathInfo" element={<KedarnathInfo/>} />
-          <Route path="/GangotriInfo" element={<GangotriInfo/>} />
-          <Route path="/YamunotriInfo" element={<YamunotriInfo/>} />
+          <Route path="/BadrinathInfo" element={<BadrinathInfo />} />
+          <Route path="/KedarnathInfo" element={<KedarnathInfo />} />
+          <Route path="/GangotriInfo" element={<GangotriInfo />} />
+          <Route path="/YamunotriInfo" element={<YamunotriInfo />} />
 
           <Route path="/TempleDashBoard" element={<TempleDashBoard />} />
           <Route path="/TempleLeftNav" element={<TempleLeftNav />} />
           <Route path="/Pandit_DashBoard" element={<Pandit_DashBoard />} />
           <Route path="/PanditLeftNav" element={<PanditLeftNav />} />
-          <Route path="/PanditDonateDashBoard" element={<PanditDonateDashBoard />} />
-          <Route path="/PanditBookDashBoard" element={<PanditBookDashBoard />} />
+          <Route
+            path="/PanditDonateDashBoard"
+            element={<PanditDonateDashBoard />}
+          />
+          <Route
+            path="/PanditBookDashBoard"
+            element={<PanditBookDashBoard />}
+          />
           <Route path="/PanditPoojaBooking" element={<PanditPoojaBooking />} />
-          <Route path="/PanditBookingDashBoard" element={<PanditBookingDashBoard />} />
-          <Route path="/PanditDarshanBooking" element={<PanditDarshanBooking />} />
-          <Route path="/PanditDarshanBooking" element={<PanditDarshanBooking />} />
-          <Route path="/PanditChangePassword" element={<PanditChangePassword />} />
+          <Route
+            path="/PanditBookingDashBoard"
+            element={<PanditBookingDashBoard />}
+          />
+          <Route
+            path="/PanditDarshanBooking"
+            element={<PanditDarshanBooking />}
+          />
+          <Route
+            path="/PanditDarshanBooking"
+            element={<PanditDarshanBooking />}
+          />
+          <Route
+            path="/PanditChangePassword"
+            element={<PanditChangePassword />}
+          />
           <Route path="/PanditSevaRegis" element={<PanditSevaRegis />} />
-          <Route path="/TempDonateDashBoard" element={<TempDonateDashBoard />} />
+          <Route
+            path="/TempDonateDashBoard"
+            element={<TempDonateDashBoard />}
+          />
           <Route path="/TempPanditBooking" element={<TempPanditBooking />} />
           <Route path="/TempPoojaBooking" element={<TempPoojaBooking />} />
           <Route path="/TempChangePassword" element={<TempChangePassword />} />
           <Route path="/TempSevaRegis" element={<TempSevaRegis />} />
-          <Route path="/TempBookingDashBoard" element={<TempBookingDashBoard />} />
+          <Route
+            path="/TempBookingDashBoard"
+            element={<TempBookingDashBoard />}
+          />
           <Route path="/PanditProfile" element={<PanditProfile />} />
           <Route path="/BookingHistory" element={<BookingHistory />} />
           <Route path="/AboutDashBoard" element={<AboutDashBoard />} />
@@ -206,13 +326,29 @@ function App() {
           <Route path="/AddTemple" element={<AddTemple />} />
           <Route path="/ManageTemple" element={<ManageTemple />} />
           <Route path="/SearchFeature" element={<SearchFeature />} />
-    
+          <Route path="/AddFestival" element={<AddFestival />} />
+          <Route path="/ManageFestival" element={<ManageFestival />} />
+          <Route path="/NewBooking" element={<NewBooking />} />
+          <Route path="/AcceptedBooking" element={<AcceptedBooking />} />
+          <Route path="/RejectedBooking" element={<RejectedBooking />} />
+          <Route path="/AllBooking" element={<AllBooking />} />
+          <Route path="/Donations" element={<Donations />} />
+          <Route
+            path="/DarshanBookingReport"
+            element={<DarshanBookingReport />}
+          />
+          <Route path="/DonationReport" element={<DonationReport />} />
+          <Route path="/DonationCollected" element={<DonationCollected />} />
+          <Route path="/RegDevoteeReport" element={<RegDevoteeReport />} />
+          <Route path="RegDevotee" element={<RegDevotee />} />
+          <Route path="/TempleProfile" element={<TempleProfile />} />
+          <Route path="/TempleSupport" element={<TempleSupport />} />
+
           <Route path="/LeftNav" element={<LeftNav />} />
           <Route path="/SendOtpModal" element={<SendOtpModal />} />
           <Route path="/MyProfile" element={<MyProfile />} />
           <Route path="/Support" element={<Support />} />
           <Route path="/EventDashBoard" element={<EventDashBoard />} />
-          
         </Routes>
         {!hideFooter && <TempleFooter />}
       </div>

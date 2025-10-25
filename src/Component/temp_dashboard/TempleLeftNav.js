@@ -141,12 +141,12 @@ function TempleLeftNav() {
         {
           icon: <LiaCalendarCheck />,
           label: "Add Festival ",
-          path: "/SevaRegistrationDashBoard"
+          path: "/AddFestival"
         },
         {
           icon: <LiaCalendarCheck />,
           label: "Manage Festival",
-          path: "/EventDashBoard"
+          path: "/ManageFestival"
         },
 
 
@@ -163,22 +163,22 @@ function TempleLeftNav() {
         {
           icon: <LiaCalendarCheck />,
           label: "New Booking ",
-          path: "/SevaRegistrationDashBoard"
+          path: "/NewBooking"
         },
         {
           icon: <LiaCalendarCheck />,
           label: "Accepted Booking",
-          path: "/EventDashBoard"
+          path: "/AcceptedBooking"
         },
         {
           icon: <LiaCalendarCheck />,
           label: "Rejected Booking",
-          path: "/EventDashBoard"
+          path: "/RejectedBooking"
         },
         {
           icon: <LiaCalendarCheck />,
           label: "All Booking",
-          path: "/EventDashBoard"
+          path: "/AllBooking"
         },
 
 
@@ -190,7 +190,7 @@ function TempleLeftNav() {
     {
       icon: <GiByzantinTemple />,
       label: "View Donation",
-      path: "/BookingHistory",
+      path: "/Donations",
 
     },
     {
@@ -202,22 +202,22 @@ function TempleLeftNav() {
         {
           icon: <LiaCalendarCheck />,
           label: "Darshan Booking ",
-          path: "/SevaRegistrationDashBoard"
+          path: "/DarshanBookingReport"
         },
         {
           icon: <LiaCalendarCheck />,
           label: "Report of Donation",
-          path: "/EventDashBoard"
+          path: "/DonationReport"
         },
         {
           icon: <LiaCalendarCheck />,
           label: "Collected Donation",
-          path: "/EventDashBoard"
+          path: "/DonationCollected"
         },
         {
           icon: <LiaCalendarCheck />,
           label: "Report of Reg Devotee",
-          path: "/EventDashBoard"
+          path: "/RegDevoteeReport"
         },
 
 
@@ -229,7 +229,7 @@ function TempleLeftNav() {
     {
       icon: <GiByzantinTemple />,
       label: "Reg Devotees",
-      path: "/DonateDashBoard",
+      path: "/RegDevotee",
 
     },
 
@@ -244,18 +244,18 @@ function TempleLeftNav() {
         {
           icon: <LiaCalendarCheck />,
           label: "My Profile",
-          path: "/MyProfile"
+          path: "/TempleProfile"
         },
         {
           icon: <LiaCalendarCheck />,
           label: "Change Password",
-          path: "/MyProfile"
+          path: "/TempChangePassword"
         },
       ]
     },
 
     {
-      path: "/Support",
+      path: "/TempleSupport",
       icon: <FaRegFileLines />,
       label: "Support",
 
