@@ -18,7 +18,13 @@ const AddTemple = () => {
 
         <main className="main-container-box">
           <div className="content-box">
-            <SearchFeature />
+            <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3 ">
+              {" "}
+              <h1 className=" fw500">
+                <span class="fw700h1">Add </span> Temple
+              </h1>{" "}
+              <SearchFeature />
+            </div>
             <div>Temple List</div>
             <TempleAuthority />
           </div>

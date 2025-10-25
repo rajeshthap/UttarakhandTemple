@@ -2,11 +2,8 @@ import React from 'react'
 
 const SearchFeature = () => {
   return (
-            <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3 ">
-              {" "}
-              <h1 className=" fw500">
-                <span class="fw700h1">Temple </span> Dashboard
-              </h1>{" "}
+            
+              
               <div>
                 <div className="d-flex justify-content-center h-100">
                   <div className="search">
@@ -21,7 +18,6 @@ const SearchFeature = () => {
                     </button>
                   </div>
               </div>
-            </div>{" "}
           </div>
                 )
 }
