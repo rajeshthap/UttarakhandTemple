@@ -2,6 +2,7 @@ import React from "react";
 import "../../../assets/CSS/LeftNav.css";
 import TempleLeftNav from "../TempleLeftNav";
 import SearchFeature from "./SearchFeature";
+import TempleAuthority from "../../userregistration/TempleAuthority";
 
 const AddTemple = () => {
   return (
@@ -15,7 +16,10 @@ const AddTemple = () => {
 
         {/* Right-hand Main Container */}
 
-        <SearchFeature />
+        <main className="main-container-box">
+          <SearchFeature />
+          <TempleAuthority />
+        </main>
       </div>
     </>
   );

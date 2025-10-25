@@ -14,8 +14,9 @@ const ManageTemple = () => {
         </aside>
 
         {/* Right-hand Main Container */}
-
+<main className="main-container-box">
         <SearchFeature />
+</main>
       </div>
     </>
   );
