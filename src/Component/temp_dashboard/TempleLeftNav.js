@@ -124,7 +124,7 @@ function TempleLeftNav() {
         {
           icon: <LiaCalendarCheck />,
           label: "Manage Temple",
-          path: "/EventDashBoard"
+          path: "/ManageTemple"
         },
 
 

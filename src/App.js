@@ -101,7 +101,8 @@ import MissionDashBoard from "./Component/dashboard/AboutUsDashBoard/MissionDash
 import SpecialAnnouncementDashBoard from "./Component/dashboard/AboutUsDashBoard/SpecialAnnouncementDashBoard";
 import MandirBookingInfoDashBoard from "./Component/dashboard/innerpage_dashboard/MandirBookingInfoDashBoard";
 import AddTemple from "./Component/temp_dashboard/temp_innerdashboard/AddTemple";
-
+import ManageTemple from "./Component/temp_dashboard/temp_innerdashboard/ManageTemple";
+import SearchFeature from "./Component/temp_dashboard/temp_innerdashboard/SearchFeature";
 
 
 
@@ -118,7 +119,7 @@ function App() {
   const hiddenPaths = new Set(["/DashBoard", "/MainDashBoard", "/DonateDashBoard", "/PanditDashBoard", "/LeftNav", "/PoojaBookingDashBoard", "/MandirBookingDashBoard", "/DarshanBookingDashBoard", "/SevaRegistrationDashBoard",
      "/ChangePassword","/TempleDashBoard", "/TempleLeftNav","/PanditDarshanBooking","/PanditChangePassword","/PanditLeftNav","/Pandit_DashBoard","/PanditDonateDashBoard","/PanditBookDashBoard","/PanditPoojaBooking","/PanditBookingDashBoard",
      "/PanditSevaRegis","/TempDonateDashBoard","/TempPanditBooking","/TempPoojaBooking","/TempChangePassword","/TempSevaRegis",
-     "/TempDarshnBooking","/TempBookingDashBoard","/PanditProfile","/BookingHistory","/MyProfile","/Support","/EventDashBoard","/AboutDashBoard","/PlatformInfoDashBoard","/MandirPlatformDashBoard","/MissionDashBoard","/SpecialAnnouncementDashBoard","/MandirBookingInfoDashBoard"]);
+     "/TempDarshnBooking","/TempBookingDashBoard","/PanditProfile","/BookingHistory","/MyProfile","/Support","/EventDashBoard","/AboutDashBoard","/PlatformInfoDashBoard","/MandirPlatformDashBoard","/MissionDashBoard","/SpecialAnnouncementDashBoard","/MandirBookingInfoDashBoard","/AddTemple","/ManageTemple"]);
   const shouldHideBars = hiddenPaths.has(location.pathname);
   const hideFooter = location.pathname === "/";
   return (
@@ -203,7 +204,9 @@ function App() {
 
           {/* Temple Inner Dashboard Routes */}
           <Route path="/AddTemple" element={<AddTemple />} />
-          
+          <Route path="/ManageTemple" element={<ManageTemple />} />
+          <Route path="/SearchFeature" element={<SearchFeature />} />
+    
           <Route path="/LeftNav" element={<LeftNav />} />
           <Route path="/SendOtpModal" element={<SendOtpModal />} />
           <Route path="/MyProfile" element={<MyProfile />} />

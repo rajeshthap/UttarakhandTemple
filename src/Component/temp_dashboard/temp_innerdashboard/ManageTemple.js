@@ -3,7 +3,7 @@ import "../../../assets/CSS/LeftNav.css";
 import TempleLeftNav from "../TempleLeftNav";
 import SearchFeature from "./SearchFeature";
 
-const AddTemple = () => {
+const ManageTemple = () => {
   return (
     <>
       {/* Main Wrapper */}
@@ -21,4 +21,4 @@ const AddTemple = () => {
   );
 };
 
-export default AddTemple;
+export default ManageTemple;
