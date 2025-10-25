@@ -397,6 +397,29 @@ span.sub-label {
   height: 32px;
 }
 
+/* date picker*/
+.date-picker-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.date-picker-wrapper .form-control {
+  width: 100%;
+  padding-right: 40px;
+  /* Space for the icon */
+}
+
+.calendar-icon {
+  position: absolute;
+  right: 12px;
+  color: #555;
+  font-size: 20px;
+  cursor: pointer;
+  pointer-events: none;
+  /* Keeps input clickable */
+}
+
 
 /* Responsive CSS Here */
 @media only screen and (min-width: 992px) {

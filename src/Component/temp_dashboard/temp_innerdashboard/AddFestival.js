@@ -210,7 +210,7 @@ const AddFestival = () => {
                         <span className="temp-span-star"> *</span>
                       </Form.Label>
 
-                      <div className="input-group">
+                      <div className="date-picker-wrapper">
                         <DatePicker
                           selected={selectedStartDateTime}
                           onChange={handleStartDateChange}
@@ -224,9 +224,7 @@ const AddFestival = () => {
                           minTime={minTime}
                           maxTime={maxTime}
                         />
-                        <span className="input-group-text">
-                          <SlCalender />
-                        </span>
+                        <SlCalender className="calendar-icon" />
                       </div>
                     </Form.Group>
                   </Col>
@@ -238,7 +236,7 @@ const AddFestival = () => {
                         <span className="temp-span-star"> *</span>
                       </Form.Label>
 
-                      <div className="input-group">
+                      <div className="date-picker-wrapper">
                         <DatePicker
                           selected={selectedEndDateTime}
                           onChange={handleEndDateChange}
@@ -252,10 +250,9 @@ const AddFestival = () => {
                           minTime={minTime}
                           maxTime={maxTime}
                         />
-                        <span className="input-group-text">
-                          <SlCalender />
-                        </span>
+                        <SlCalender className="calendar-icon" />
                       </div>
+
                     </Form.Group>
                   </Col>
                 </Row>
