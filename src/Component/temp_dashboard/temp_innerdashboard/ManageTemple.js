@@ -4,9 +4,11 @@ import TempleLeftNav from "../TempleLeftNav";
 import SearchFeature from "./SearchFeature";
 import axios from "axios";
 import { Modal, Button, Form } from "react-bootstrap";
+import { useAuth } from "../../GlobleAuth/AuthContext"
 
 const ManageTemple = () => {
   const [templeData, setTempleData] = useState([]);
+  const { uniqueId } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const [currentTemple, setCurrentTemple] = useState({
     temple_id: "",
@@ -85,6 +87,7 @@ const ManageTemple = () => {
     } catch (error) {
       console.error("Error deleting temple:", error);
     }
+    
   };
 
   return (
