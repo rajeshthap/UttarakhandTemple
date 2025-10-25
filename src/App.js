@@ -100,6 +100,7 @@ import MandirPlatformDashBoard from "./Component/dashboard/AboutUsDashBoard/Mand
 import MissionDashBoard from "./Component/dashboard/AboutUsDashBoard/MissionDashBoard";
 import SpecialAnnouncementDashBoard from "./Component/dashboard/AboutUsDashBoard/SpecialAnnouncementDashBoard";
 import MandirBookingInfoDashBoard from "./Component/dashboard/innerpage_dashboard/MandirBookingInfoDashBoard";
+import AddTemple from "./Component/temp_dashboard/temp_innerdashboard/AddTemple";
 
 
 
@@ -199,6 +200,9 @@ function App() {
           <Route path="/PanditProfile" element={<PanditProfile />} />
           <Route path="/BookingHistory" element={<BookingHistory />} />
           <Route path="/AboutDashBoard" element={<AboutDashBoard />} />
+
+          {/* Temple Inner Dashboard Routes */}
+          <Route path="/AddTemple" element={<AddTemple />} />
           
           <Route path="/LeftNav" element={<LeftNav />} />
           <Route path="/SendOtpModal" element={<SendOtpModal />} />

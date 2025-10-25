@@ -105,7 +105,7 @@ function TempleLeftNav() {
 
 
   const navigationOptions = [
-    { icon: <RiDashboard3Line />, label: "Dashboard", path: "/MainDashBoard" },
+    { icon: <RiDashboard3Line />, label: "Dashboard", path: "/TempleDashBoard" },
 
     // { icon: <BiDonateHeart />, label: "Online", path: "#" },
 
@@ -119,7 +119,7 @@ function TempleLeftNav() {
         {
           icon: <LiaCalendarCheck />,
           label: "Add Temple ",
-          path: "/SevaRegistrationDashBoard"
+          path: "/AddTemple"
         },
         {
           icon: <LiaCalendarCheck />,
