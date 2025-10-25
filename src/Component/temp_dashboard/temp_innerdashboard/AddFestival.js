@@ -8,6 +8,7 @@ import SearchFeature from "./SearchFeature";
 import { useAuth } from "../../GlobleAuth/AuthContext";
 import axios from "axios";
 import { SlCalender } from "react-icons/sl";
+import { BASE_URLL } from "../../../Component/BaseURL";
 
 const AddFestival = () => {
   const { uniqueId } = useAuth();
@@ -117,8 +118,7 @@ const AddFestival = () => {
 
       if (formData.image) data.append("image", formData.image);
 
-      const response = await axios.post(
-        "https://mahadevaaya.com/backend/api/add-festival/",
+      const response = await axios.post(`${BASE_URLL}api/reg-festival/`,
         data,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
