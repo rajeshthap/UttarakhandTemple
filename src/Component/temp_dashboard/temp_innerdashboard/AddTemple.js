@@ -17,8 +17,11 @@ const AddTemple = () => {
         {/* Right-hand Main Container */}
 
         <main className="main-container-box">
-          <SearchFeature />
-          <TempleAuthority />
+          <div className="content-box">
+            <SearchFeature />
+            <div>Temple List</div>
+            <TempleAuthority />
+          </div>
         </main>
       </div>
     </>

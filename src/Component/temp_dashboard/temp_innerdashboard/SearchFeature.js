@@ -2,7 +2,6 @@ import React from 'react'
 
 const SearchFeature = () => {
   return (
-          <div className="content-box">
             <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3 ">
               {" "}
               <h1 className=" fw500">
@@ -21,7 +20,6 @@ const SearchFeature = () => {
                       <i className="fa fa-search"></i>
                     </button>
                   </div>
-                </div>
               </div>
             </div>{" "}
           </div>

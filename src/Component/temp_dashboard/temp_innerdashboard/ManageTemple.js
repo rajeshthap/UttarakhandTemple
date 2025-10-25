@@ -14,9 +14,12 @@ const ManageTemple = () => {
         </aside>
 
         {/* Right-hand Main Container */}
-<main className="main-container-box">
-        <SearchFeature />
-</main>
+        <main className="main-container-box">
+          <div className="content-box">
+            <SearchFeature />
+            <div>Manage Temple</div>
+          </div>
+        </main>
       </div>
     </>
   );
