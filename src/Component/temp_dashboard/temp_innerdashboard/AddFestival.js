@@ -7,8 +7,11 @@ import TempleLeftNav from "../TempleLeftNav";
 import SearchFeature from "./SearchFeature";
 import { useAuth } from "../../GlobleAuth/AuthContext";
 import axios from "axios";
-import { SlCalender } from "react-icons/sl";
 import { BASE_URLL } from "../../../Component/BaseURL";
+import ModifyAlert from "../../Alert/ModifyAlert";
+import UploadFile from "../../../assets/images/upload-icon.png";
+import { FaCheckCircle } from "react-icons/fa";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 const AddFestival = () => {
   const { uniqueId } = useAuth();
@@ -27,6 +30,15 @@ const AddFestival = () => {
 
   const [selectedStartDateTime, setSelectedStartDateTime] = useState(null);
   const [selectedEndDateTime, setSelectedEndDateTime] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [alertMessage, setAlertMessage] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertType, setAlertType] = useState("success");
+
+  const [dragging, setDragging] = useState(null);
+  const [formDataFiles, setFormDataFiles] = useState({ image: null });
+  const [fileErrors, setFileErrors] = useState({});
+
   const today = new Date();
 
   // Fetch temple details
@@ -36,11 +48,9 @@ const AddFestival = () => {
     const fetchTemple = async () => {
       try {
         const response = await axios.get(
-          `https://mahadevaaya.com/backend/api/get-temple/?temple_id=${uniqueId}`
+          `${BASE_URLL}api/get-temple/?temple_id=${uniqueId}`
         );
-
         const temple = response.data;
-
         setFormData((prev) => ({
           ...prev,
           temple_name: temple.temple_name || "",
@@ -54,94 +64,131 @@ const AddFestival = () => {
     fetchTemple();
   }, [uniqueId]);
 
-  // Handle input changes (text/file)
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: files ? files[0] : value,
+      [name]: value,
     }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  // Handle Start Date/Time
   const handleStartDateChange = (date) => {
-    setSelectedStartDateTime(date);
     const startDay = date
       ? date.toLocaleDateString("en-US", { weekday: "long" })
       : "";
-
+    setSelectedStartDateTime(date);
     setFormData((prev) => ({
       ...prev,
       start_date_time: date ? date.toISOString() : "",
       start_day: startDay,
+      end_date_time:
+        selectedEndDateTime && date > selectedEndDateTime
+          ? date.toISOString()
+          : prev.end_date_time,
+      end_day:
+        selectedEndDateTime && date > selectedEndDateTime
+          ? startDay
+          : prev.end_day,
     }));
-
-    // Ensure End Date is not before Start Date
-    if (selectedEndDateTime && date > selectedEndDateTime) {
-      setSelectedEndDateTime(date);
-      setFormData((prev) => ({
-        ...prev,
-        end_date_time: date.toISOString(),
-        end_day: startDay,
-      }));
-    }
+    setErrors((prev) => ({ ...prev, start_date_time: "" }));
   };
 
-  // Handle End Date/Time
   const handleEndDateChange = (date) => {
-    setSelectedEndDateTime(date);
     const endDay = date
       ? date.toLocaleDateString("en-US", { weekday: "long" })
       : "";
-
+    setSelectedEndDateTime(date);
     setFormData((prev) => ({
       ...prev,
       end_date_time: date ? date.toISOString() : "",
       end_day: endDay,
     }));
+    setErrors((prev) => ({ ...prev, end_date_time: "" }));
   };
 
-  // Handle form submission
+  const validateFields = () => {
+    const tempErrors = {};
+    if (!formData.festival_name)
+      tempErrors.festival_name = "Festival Name is required";
+    if (!formData.start_date_time)
+      tempErrors.start_date_time = "Start Date & Time is required";
+    if (!formData.end_date_time)
+      tempErrors.end_date_time = "End Date & Time is required";
+    if (!formData.description)
+      tempErrors.description = "Description is required";
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
+  };
+
+  const handleInputChange = (e) => {
+    const { name, files } = e.target;
+    if (files && files.length > 0) {
+      const file = files[0];
+
+      // Validate file size (10KB - 2MB)
+      if (file.size < 10 * 1024 || file.size > 2 * 1024 * 1024) {
+        setFileErrors((prev) => ({
+          ...prev,
+          [name]: "File size must be between 10KB and 2MB",
+        }));
+        return;
+      } else {
+        setFileErrors((prev) => {
+          const newErrors = { ...prev };
+          delete newErrors[name];
+          return newErrors;
+        });
+      }
+
+      setFormDataFiles((prev) => ({
+        ...prev,
+        [name]: file,
+      }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateFields()) return;
+
+    const data = new FormData();
+    Object.keys(formData).forEach((key) => {
+      if (key === "image") {
+        if (formDataFiles.image) data.append(key, formDataFiles.image);
+      } else {
+        data.append(key, formData[key]);
+      }
+    });
 
     try {
-      const data = new FormData();
-      data.append("temple_id", formData.temple_id);
-      data.append("temple_name", formData.temple_name);
-      data.append("festival_name", formData.festival_name);
-      data.append("start_date_time", formData.start_date_time);
-      data.append("end_date_time", formData.end_date_time);
-      data.append("start_day", formData.start_day);
-      data.append("end_day", formData.end_day);
-      data.append("description", formData.description);
+      await axios.post(`${BASE_URLL}api/reg-festival/`, data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
-      if (formData.image) data.append("image", formData.image);
+      setAlertMessage("Festival added successfully!");
+      setAlertType("success");
+      setShowAlert(true);
 
-      const response = await axios.post(`${BASE_URLL}api/reg-festival/`,
-        data,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-
-      console.log("Festival submitted successfully:", response.data);
-      alert("Festival added successfully!");
-
-      // Reset form except temple name
-      setFormData((prev) => ({
-        ...prev,
+      // Reset form
+      setFormData({
+        ...formData,
         festival_name: "",
         start_date_time: "",
         end_date_time: "",
         start_day: "",
         end_day: "",
         description: "",
-        image: null,
-      }));
+      });
       setSelectedStartDateTime(null);
       setSelectedEndDateTime(null);
+      setFormDataFiles({ image: null });
+      setErrors({});
     } catch (error) {
       console.error("Error submitting festival:", error);
-      alert("Failed to add festival. Please try again.");
+      setAlertMessage("Failed to add festival. Please try again.");
+      setAlertType("error");
+      setShowAlert(true);
     }
   };
 
@@ -158,20 +205,28 @@ const AddFestival = () => {
 
       <main className="main-container-box">
         <div className="content-box">
-          <SearchFeature />
-
+          <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3 ">
+            <h1 className="fw500">
+              <span className="fw700h1">Add </span> Festival
+            </h1>
+            <SearchFeature />
+          </div>
           <Container className="temp-container">
-            <div className="temple-registration-heading">
-              <h1>Festival</h1>
-            </div>
-
             <div className="temp-donate">
+              {showAlert && (
+                <ModifyAlert
+                  message={alertMessage}
+                  type={alertType}
+                  show={showAlert}
+                  setShow={setShowAlert}
+                />
+              )}
+
               <Form onSubmit={handleSubmit}>
-                {/* Temple & Festival Name */}
                 <Row>
                   <Col lg={6}>
                     <Form.Group className="mb-3">
-                      <Form.Label>
+                      <Form.Label className="temp-label">
                         Name of Temple<span className="temp-span-star"> *</span>
                       </Form.Label>
                       <Form.Control
@@ -186,7 +241,7 @@ const AddFestival = () => {
 
                   <Col lg={6}>
                     <Form.Group className="mb-3">
-                      <Form.Label>
+                      <Form.Label className="temp-label">
                         Name of Festival
                         <span className="temp-span-star"> *</span>
                       </Form.Label>
@@ -197,6 +252,11 @@ const AddFestival = () => {
                         value={formData.festival_name}
                         onChange={handleChange}
                       />
+                      {errors.festival_name && (
+                        <small className="text-danger">
+                          {errors.festival_name}
+                        </small>
+                      )}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -205,85 +265,65 @@ const AddFestival = () => {
                 <Row>
                   <Col lg={6}>
                     <Form.Group className="mb-3">
-                      <Form.Label>
+                      <Form.Label className="temp-label">
                         Festival Start Date & Time
                         <span className="temp-span-star"> *</span>
                       </Form.Label>
-
-                      <div className="date-picker-wrapper">
-                        <DatePicker
-                          selected={selectedStartDateTime}
-                          onChange={handleStartDateChange}
-                          showTimeSelect
-                          timeFormat="hh:mm aa"
-                          timeIntervals={30}
-                          dateFormat="MMMM d, yyyy h:mm aa"
-                          placeholderText="Select Start Date and Time"
-                          className="form-control temp-form-control-option"
-                          minDate={today}
-                          minTime={minTime}
-                          maxTime={maxTime}
-                        />
-                        <SlCalender className="calendar-icon" />
-                      </div>
+                      <DatePicker
+                        selected={selectedStartDateTime}
+                        onChange={handleStartDateChange}
+                        showTimeSelect
+                        timeFormat="hh:mm aa"
+                        timeIntervals={30}
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        placeholderText="Select Start Date and Time"
+                        className="form-control temp-form-control-option"
+                        minDate={today}
+                        minTime={minTime}
+                        maxTime={maxTime}
+                      />
+                      {formData.start_day && (
+                        <small className="text-muted d-block mt-1">
+                          Day: {formData.start_day}
+                        </small>
+                      )}
+                      {errors.start_date_time && (
+                        <small className="text-danger">
+                          {errors.start_date_time}
+                        </small>
+                      )}
                     </Form.Group>
                   </Col>
 
                   <Col lg={6}>
                     <Form.Group className="mb-3">
-                      <Form.Label>
+                      <Form.Label className="temp-label">
                         Festival End Date & Time
                         <span className="temp-span-star"> *</span>
                       </Form.Label>
-
-                      <div className="date-picker-wrapper">
-                        <DatePicker
-                          selected={selectedEndDateTime}
-                          onChange={handleEndDateChange}
-                          showTimeSelect
-                          timeFormat="hh:mm aa"
-                          timeIntervals={30}
-                          dateFormat="MMMM d, yyyy h:mm aa"
-                          placeholderText="Select End Date and Time"
-                          className="form-control temp-form-control-option"
-                          minDate={selectedStartDateTime || today}
-                          minTime={minTime}
-                          maxTime={maxTime}
-                        />
-                        <SlCalender className="calendar-icon" />
-                      </div>
-
-                    </Form.Group>
-                  </Col>
-                </Row>
-
-                {/* Start & End Days */}
-                <Row>
-                  <Col lg={6}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>
-                        Start Day <span className="temp-span-star"> *</span>
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        value={formData.start_day}
-                        disabled
-                        className="temp-form-control"
+                      <DatePicker
+                        selected={selectedEndDateTime}
+                        onChange={handleEndDateChange}
+                        showTimeSelect
+                        timeFormat="hh:mm aa"
+                        timeIntervals={30}
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        placeholderText="Select End Date and Time"
+                        className="form-control temp-form-control-option"
+                        minDate={selectedStartDateTime || today}
+                        minTime={minTime}
+                        maxTime={maxTime}
                       />
-                    </Form.Group>
-                  </Col>
-
-                  <Col lg={6}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>
-                        End Day<span className="temp-span-star"> *</span>
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        value={formData.end_day}
-                        disabled
-                        className="temp-form-control"
-                      />
+                      {formData.end_day && (
+                        <small className="text-muted d-block mt-1">
+                          Day: {formData.end_day}
+                        </small>
+                      )}
+                      {errors.end_date_time && (
+                        <small className="text-danger">
+                          {errors.end_date_time}
+                        </small>
+                      )}
                     </Form.Group>
                   </Col>
                 </Row>
@@ -292,7 +332,7 @@ const AddFestival = () => {
                 <Row>
                   <Col lg={12}>
                     <Form.Group className="mb-3">
-                      <Form.Label>
+                      <Form.Label className="temp-label">
                         Description<span className="temp-span-star"> *</span>
                       </Form.Label>
                       <Form.Control
@@ -303,28 +343,117 @@ const AddFestival = () => {
                         value={formData.description}
                         onChange={handleChange}
                       />
+                      {errors.description && (
+                        <small className="text-danger">
+                          {errors.description}
+                        </small>
+                      )}
                     </Form.Group>
                   </Col>
                 </Row>
 
-                {/* Image */}
+                {/* Image Upload */}
                 <Row>
-                  <Col lg={12}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Festival Image</Form.Label>
-                      <Form.Control
-                        type="file"
-                        name="image"
-                        className="temp-form-control"
-                        onChange={handleChange}
-                      />
-                    </Form.Group>
+                  <Col lg={6}>
+                    <Row className="temp-stepform-box">
+                      <Col lg={8} md={8} sm={12}>
+                        <fieldset
+                          className={`upload_dropZone text-center ${
+                            dragging === "image" ? "drag-over" : ""
+                          }`}
+                          onDragOver={(e) => {
+                            e.preventDefault();
+                            setDragging("image");
+                          }}
+                          onDragLeave={() => setDragging(null)}
+                          onDrop={(e) => {
+                            e.preventDefault();
+                            setDragging(null);
+                            const file = e.dataTransfer.files[0];
+                            if (file) {
+                              handleInputChange({
+                                target: { name: "image", files: [file] },
+                              });
+                            }
+                          }}
+                        >
+                          <legend className="visually-hidden">
+                            Upload Image
+                          </legend>
+                          <img src={UploadFile} alt="upload-file" />
+                          <p className="temp-drop-txt my-2">
+                            Drag & drop image <br /> <i>or</i>
+                          </p>
+                          <input
+                            id="image"
+                            name="image"
+                            type="file"
+                            accept="image/*"
+                            className="invisible"
+                            onChange={handleInputChange}
+                          />
+                          <label
+                            className="btn temp-primary-btn mb-1"
+                            htmlFor="image"
+                          >
+                            Choose file
+                          </label>
+                          <p className="temp-upload-file">
+                            Upload size 10KB-2MB (jpg, png, jpeg)
+                          </p>
+                        </fieldset>
+                        {fileErrors.image && (
+                          <div className="alert-txt text-center">
+                            {fileErrors.image}
+                          </div>
+                        )}
+                      </Col>
+
+                      <Col
+                        lg={4}
+                        md={4}
+                        sm={12}
+                        className="temp-doc-subinfo mt-2"
+                      >
+                        <h3>
+                          Festival Image{" "}
+                          <span className="temp-span-star">*</span>
+                        </h3>
+                        {formDataFiles.image && (
+                          <>
+                            <div className="d-flex temp-doc-info">
+                              <Col lg={3}>
+                                {new Date().toLocaleDateString()}
+                              </Col>
+                              <Col lg={9} className="px-4 temp-success-doc">
+                                <FaCheckCircle /> Uploaded Successfully
+                              </Col>
+                            </div>
+                            <div
+                              className="col temp-delete-icon"
+                              onClick={() => {
+                                setFormDataFiles({ image: null });
+                                setFileErrors((prev) => ({
+                                  ...prev,
+                                }));
+                              }}
+                            >
+                              <h3>
+                                <RiDeleteBin6Line className="mx-1" /> Click here
+                                to Remove
+                              </h3>
+                            </div>
+                          </>
+                        )}
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
-
-                <Button type="submit" className="temp-submit-btn">
-                  Submit
-                </Button>
+                <div className=" text-center mt-3">
+                  <Button type="submit" className="temp-submit-btn mt-3">
+                    Submit
+                  </Button>
+                </div>
               </Form>
             </div>
           </Container>
