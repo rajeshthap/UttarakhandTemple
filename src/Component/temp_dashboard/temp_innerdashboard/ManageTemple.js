@@ -14,6 +14,15 @@ const ManageTemple = () => {
   const [loading, setLoading] = useState(false);
   const uniqueId = sessionStorage.getItem("uniqueId");
 
+  
+
+  const getImageUrl = (imgPath) => {
+    if (!imgPath)
+      return "https://mahadevaaya.com/backend/media/temple_images/default.png";
+    const filename = imgPath.split("/").pop();
+    return `https://mahadevaaya.com/backend/media/temple_images/${filename}`;
+  };
+
 
 
   const BASE_MEDIA_URL = "https://mahadevaaya.com/backend/media/";
@@ -142,8 +151,8 @@ const ManageTemple = () => {
         <div className="content-box">
           <SearchFeature />
 
-          
-    <Row className="mt-3">
+
+          <Row className="mt-3">
             <h4>Manage Temple</h4>
             <div className="col-md-12">
               <table className="rwd-table">
@@ -161,12 +170,12 @@ const ManageTemple = () => {
                   {temples.length > 0 ? (
                     temples.map((temple, index) => (
                       <tr key={temple.temple_id}>
-                    <td  data-th="S. No">{index + 1}</td>
-                    <td data-th="Temple Name">{temple.temple_name}</td>
-                    <td data-th="Temple Address">{temple.temple_address}</td>
-                    <td data-th="City">{temple.city}</td>
-                    <td data-th="State">{temple.state}</td>
-                    <td data-th="Country">{temple.country}</td>
+                        <td data-th="S. No">{index + 1}</td>
+                        <td data-th="Temple Name">{temple.temple_name}</td>
+                        <td data-th="Temple Address">{temple.temple_address}</td>
+                        <td data-th="City">{temple.city}</td>
+                        <td data-th="State">{temple.state}</td>
+                        <td data-th="Country">{temple.country}</td>
                         <td>
                           <Button variant="info" size="sm" onClick={() => handleEdit(temple)}>Edit</Button>{" "}
                           <Button variant="danger" size="sm" onClick={() => handleDelete(temple.temple_id)}>Delete</Button>
@@ -275,24 +284,24 @@ const ManageTemple = () => {
                   <Form.Group className="mt-3" key={key}>
                     <Form.Label>{label}</Form.Label>
 
-                    {/* IMAGE PREVIEW */}
-                    {type === "image" &&
-                      (currentTemple[`${key}_preview`] || currentTemple[`${key}_url`]) && (
-                        <div className="mb-2">
-                          <Image
-                            src={
-                              currentTemple[`${key}_preview`] ||
-                              currentTemple[`${key}_url`]
-                            }
-                            style={{
-                              width: "200px",
-                              height: "150px",
-                              objectFit: "cover",
-                              borderRadius: "8px",
-                            }}
-                          />
-                        </div>
-                      )}
+                   {/* ✅ IMAGE PREVIEW (Existing from server OR newly uploaded) */}
+    {type === "image" && (
+      <>
+        {currentTemple[`${key}_preview`] ? (
+          <img
+            src={currentTemple[`${key}_preview`]} // new uploaded file
+            alt="Preview"
+            style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "10px" }}
+          />
+        ) : currentTemple[key] ? (
+          <img
+            src={getImageUrl(currentTemple[key])} // existing image from API
+            alt="Temple"
+            style={{ width: "50%", height: "100px", objectFit: "cover", borderRadius: "10px" }}
+          />
+        ) : null}
+      </>
+    )}
 
                     {/* DOCUMENT LINK */}
                     {type === "doc" && currentTemple[`${key}_url`] && (
