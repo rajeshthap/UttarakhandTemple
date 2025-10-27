@@ -11,11 +11,11 @@ import {
   Badge,
   Pagination,
 } from "react-bootstrap";
-import TempleLeftNav from "../temp_dashboard/TempleLeftNav";
 import axios from "axios";
 import { BASE_URLL } from "../BaseURL";
 import { useAuth } from "../GlobleAuth/AuthContext";
 import { useNavigate } from "react-router-dom";
+import LeftNav from "../dashboard/LeftNav";
 
 
 const Events = () => {
@@ -134,7 +134,7 @@ const Events = () => {
     <div className="dashboard-wrapper">
       {uniqueId && (
         <aside className="sidebar">
-          <TempleLeftNav />
+          <LeftNav />
         </aside>
       )}
 
