@@ -113,6 +113,7 @@ import RegDevoteeReport from "./Component/temp_dashboard/temp_innerdashboard/rep
 import RegDevotee from "./Component/temp_dashboard/temp_innerdashboard/RegDevotee";
 import TempleProfile from "./Component/temp_dashboard/TempleProfile";
 import TempleSupport from "./Component/temp_dashboard/support/TempleSupport";
+import Events from "./Component/UpcomingEvent/Events";
 
 // import BASE_URLL from "./Component/BaseURL";
 // import DashBoard from "./Component/dashboard/DashBoard";
@@ -179,6 +180,7 @@ function App() {
     "/RegDevotee",
     "/TempleProfile",
     "/TempleSupport",
+    "/Events",
   ]);
   const shouldHideBars = hiddenPaths.has(location.pathname);
   const hideFooter = location.pathname === "/";
@@ -349,6 +351,7 @@ function App() {
           <Route path="/MyProfile" element={<MyProfile />} />
           <Route path="/Support" element={<Support />} />
           <Route path="/EventDashBoard" element={<EventDashBoard />} />
+          <Route path="/Events" element={<Events />} />
         </Routes>
         {!hideFooter && <TempleFooter />}
       </div>

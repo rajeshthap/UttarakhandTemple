@@ -323,7 +323,23 @@ input[type=number] {
     background: #f4f6f8;
     margin: 50px 0px 0px 0px;
 }
+.event-box{
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: var(--temp-space-400);
+    background-color: var(--temp-white);
+    padding: var(--temp-space-300);
+    word-wrap: break-word;
+    margin-bottom: var(--temp-space-200);   
+width: 96%;
+ 
 
+}
+.event-row{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+   
+}
 
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {

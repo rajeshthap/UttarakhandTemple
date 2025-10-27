@@ -163,7 +163,7 @@ function LeftNav() {
         {
           icon: <LiaCalendarCheck />,
           label: "Upcoming Event",
-          path: "/SevaRegistrationDashBoard"
+          path: "/Events"
         },
 
       ]
