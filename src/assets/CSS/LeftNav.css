@@ -114,28 +114,12 @@
 
 
 /* Right-hand content */
-.main-container {
-  flex: 1;
-  padding: 20px;
-  background: #f4f6f8;
-  margin: 0px 0px 0px 0px;
-}
 
-.main-container-box {
-  flex: 1;
-  padding: 20px;
-  background: #f4f6f8;
-  /* margin: 50px 68px 68px 0px !important; */
-}
+
+
 
 /* Box inside main content */
-.content-box {
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-  margin-top: 64px;
-}
+
 
 .active-nav {
   background-color: var(--temp-org);

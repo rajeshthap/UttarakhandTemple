@@ -300,10 +300,42 @@ input[type=number] {
     width: 100% !important;
 }
 
+.content-box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+
+    margin-top: 90px !important;
+    margin: 12px;
+}
+
+
+.main-container {
+    flex: 1;
+    padding: 20px;
+    background: #f4f6f8;
+    margin: 0px 0px 0px 0px;
+}
+
+.main-container-box {
+    flex: 1;
+    padding: 20px;
+    background: #f4f6f8;
+    margin: 50px 0px 0px 0px;
+}
+
+
+
 @media screen and (min-width: 768px) and (max-width: 1024px) {
+
     /* .menubar {
         background-color: var(--temp-primary) !important;
     } */
+    .content-box {
+        padding: var(--temp-space-0) !important;
+        box-shadow: none !important;
+        margin-top: 95px !important;
+    }
 }
 
 
@@ -312,6 +344,8 @@ input[type=number] {
     .social-icon {
         display: none !important;
     }
+
+
 
     /* .menubar {
         background-color: var(--temp-primary);
@@ -349,11 +383,22 @@ input[type=number] {
     } */
 
     .temp-donate {
-        margin: var(--temp-space-500);
+        margin: var(--temp-space-200);
     }
 
     .card-image-wrapper {
         width: 135px;
         height: 135px;
+    }
+
+    .content-box {
+        padding: var(--temp-space-0) !important;
+        box-shadow: none !important;
+        margin-top: 95px !important;
+    }
+
+    .temp-container {
+
+        padding: var(--temp-space-200) !important;
     }
 }
