@@ -332,7 +332,7 @@ input[type=number] {
         background-color: var(--temp-primary) !important;
     } */
     .content-box {
-        padding: var(--temp-space-0) !important;
+        padding: var(--temp-space-200) !important;
         box-shadow: none !important;
         margin-top: 95px !important;
     }
@@ -392,7 +392,7 @@ input[type=number] {
     }
 
     .content-box {
-        padding: var(--temp-space-0) !important;
+        padding: var(--temp-space-200) !important;
         box-shadow: none !important;
         margin-top: 95px !important;
     }
