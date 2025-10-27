@@ -66,22 +66,10 @@ const MainDashBoard = () => {
                         <div><span className="user-span">Seva Booked</span></div>
                       </div>
 
-
-
-
                       <div className="lh-1">
                         <div className=" avatar-md avatar-rounded save-bg flex-shrink-0 d-flex align-items-center justify-content-center ">
                           <FaOm className=" " /> </div>
                       </div></div>
-
-
-
-
-
-
-
-
-
                   </Card.Body>
                 </Card>
               </Col>

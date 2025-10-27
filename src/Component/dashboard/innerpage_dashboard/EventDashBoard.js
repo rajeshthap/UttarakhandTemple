@@ -1,7 +1,6 @@
 import React from "react";
 import "../../../assets/CSS/LeftNav.css";
 import LeftNav from "../LeftNav";
-import ExtendYourDivine from "../../DonateToTemples/ExtendYourDivine";
 import EventParticipation from "../../Mandir_booking/EventParticipation/EventParticipation";
 
 
