@@ -103,7 +103,7 @@ const TopNavBar = () => {
                   </NavDropdown> */}
 
                   <NavDropdown title="Events" id="navbarScrollingDropdown">
-                    <NavDropdown.Item href="#action3">
+                    <NavDropdown.Item href="/Events">
                       Upcoming Mandir Events
                     </NavDropdown.Item>
                     {/* <NavDropdown.Item href="#action4">
