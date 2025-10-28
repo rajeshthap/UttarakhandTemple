@@ -4,8 +4,10 @@ import React, { useEffect, useState } from "react";
 import "../../../assets/CSS/LeftNav.css";
 import TempleLeftNav from "../TempleLeftNav";
 import SearchFeature from "./SearchFeature";
-import { Button, Modal, Form, Row, Col, Image } from "react-bootstrap";
+import { Button, Modal, Form, Row, Col,  } from "react-bootstrap";
 import axios from "axios";
+import LocationState from "../../userregistration/LocationState";
+import UploadFile from "../../../assets/images/upload-icon.png";
 
 const ManageTemple = () => {
   const [temples, setTemples] = useState([]);
@@ -13,21 +15,31 @@ const ManageTemple = () => {
   const [currentTemple, setCurrentTemple] = useState({});
   const [loading, setLoading] = useState(false);
   const [dragging, setDragging] = useState(null);
+  const [formData, setFormData] = useState({
+    country: "",
+    state: "",
+    city: "",
+  });
 
   const uniqueId = sessionStorage.getItem("uniqueId");
 
-
-
-  const getImageUrl = (imgPath) => {
-    if (!imgPath)
-      return "https://mahadevaaya.com/backend/media/temple_images/default.png";
-    const filename = imgPath.split("/").pop();
-    return `https://mahadevaaya.com/backend/media/temple_images/${filename}`;
+    const handleInputChangeCity = (name, value) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    // validateField(name, value); // live validation on custom handler
   };
 
 
 
-  const BASE_MEDIA_URL = "https://mahadevaaya.com/backend/media/";
+  // const getImageUrl = (imgPath) => {
+  //   if (!imgPath)
+  //     return "https://mahadevaaya.com/backend/media/temple_images/default.png";
+  //   const filename = imgPath.split("/").pop();
+  //   return `https://mahadevaaya.com/backend/media/temple_images/${filename}`;
+  // };
+
+
+
+  // const BASE_MEDIA_URL = "https://mahadevaaya.com/backend/media/";
 
 const fetchTemples = async () => {
   try {
@@ -226,7 +238,7 @@ const fetchTemples = async () => {
                 <Row>
                   <Col md={6}>
                     <Form.Group>
-                      <Form.Label>Temple Name</Form.Label>
+                      <Form.Label className="temp-label">Temple Name</Form.Label>
                       <Form.Control
                         name="temple_name"
                         value={currentTemple.temple_name || ""}
@@ -236,56 +248,32 @@ const fetchTemples = async () => {
                   </Col>
                   <Col md={6}>
                     <Form.Group>
-                      <Form.Label>City</Form.Label>
-                      <Form.Control
-                        name="city"
-                        value={currentTemple.city || ""}
-                        onChange={handleChange}
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
-
-                <Row className="mt-2">
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label>State</Form.Label>
-                      <Form.Control
-                        name="state"
-                        value={currentTemple.state || ""}
-                        onChange={handleChange}
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label>Country</Form.Label>
-                      <Form.Control
-                        name="country"
-                        value={currentTemple.country || ""}
-                        onChange={handleChange}
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
-
-                <Row className="mt-2">
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label>Email</Form.Label>
-                      <Form.Control value={currentTemple.email || ""} disabled />
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group>
-                      <Form.Label>Phone</Form.Label>
+                      <Form.Label className="temp-label">Phone</Form.Label>
                       <Form.Control value={currentTemple.phone || ""} disabled />
                     </Form.Group>
                   </Col>
                 </Row>
 
+                <Row className="mt-2">
+                        <LocationState
+                          formData={formData}
+                          handleInputChange={handleInputChangeCity}
+                          // formErrors={errorReason_querys} // Pass errorReason_querys instead of formErrors
+                        />
+                </Row>
+
+                <Row className="mt-2">
+                  <Col md={6}>
+                    <Form.Group>
+                      <Form.Label className="temp-label">Email</Form.Label>
+                      <Form.Control value={currentTemple.email || ""} disabled />
+                    </Form.Group>
+                  </Col>
+                 
+                </Row>
+
                 <Form.Group className="mt-2">
-                  <Form.Label>Temple Address</Form.Label>
+                  <Form.Label className="temp-label">Temple Address</Form.Label>
                   <Form.Control
                     as="textarea"
                     rows={2}
@@ -320,9 +308,8 @@ const fetchTemples = async () => {
     >
       <legend className="visually-hidden">Temple Image</legend>
       <img
-        src="https://cdn-icons-png.flaticon.com/512/1092/1092530.png"
-        alt="upload"
-        style={{ width: "60px", opacity: 0.7 }}
+       src={UploadFile} alt="upload-file"
+        style={{ width: "60px"}}
       />
       <p className="temp-drop-txt my-2">
         Drag &amp; drop files
@@ -339,7 +326,7 @@ const fetchTemples = async () => {
         onChange={handleChange}
       />
 
-      <label className="btn btn-primary mb-1" htmlFor="temple_image">
+      <label className="btn temp-primary-btn mb-1" htmlFor="temple_image">
         Choose file
       </label>
       <p className="temp-upload-file">Upload size up to 2MB (jpg, png)</p>
@@ -452,9 +439,8 @@ const fetchTemples = async () => {
       >
         <legend className="visually-hidden">{label}</legend>
         <img
-          src="https://cdn-icons-png.flaticon.com/512/1092/1092530.png"
-          alt="upload"
-          style={{ width: "60px", opacity: 0.7 }}
+        src={UploadFile} alt="upload-file"
+        style={{ width: "60px"}}
         />
         <p className="temp-drop-txt my-2">
           Drag &amp; drop files
@@ -471,7 +457,7 @@ const fetchTemples = async () => {
           onChange={handleChange}
         />
 
-        <label className="btn btn-primary mb-1" htmlFor={key}>
+        <label className="btn temp-primary-btn mb-1" htmlFor={key}>
           Choose file
         </label>
         <p className="temp-upload-file">Upload size up to 2MB (jpg, png, pdf)</p>
