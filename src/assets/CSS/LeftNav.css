@@ -405,6 +405,94 @@ span.sub-label {
 }
 
 
+/********************Event card-Start*******************/
+.event-heading {
+  font-size: var(--temp-space-400);
+  color: var(--temp-org);
+  text-align: left;
+  font-weight: 500;
+}
+
+.event-heading-sub {
+  font-size: var(--temp-space-350);
+  color: var(--nd-black);
+  text-align: left;
+  font-weight: 500;
+
+}
+
+
+.event-secondary {
+  --bs-bg-opacity: 1;
+  background-color: var(--temp-gary-light) !important;
+  font-weight: 400;
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+.event-active {
+  --bs-bg-opacity: 1;
+  background-color: var(--temp-org) !important;
+  font-weight: 400;
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+.card-text {
+  padding: 0px !important;
+}
+
+.event-time-txt {
+  font-size: var(--temp-space-300);
+  color: var(--nd-black);
+  text-align: left;
+  font-weight: 400;
+}
+
+.event-data-txt {
+  color: var(--temp-org);
+}
+
+.event-box {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: var(--temp-space-400);
+  border: 1px solid #eeeaea !important;
+}
+
+.event-click-btn {
+
+  background-color: var(--temp-primary) !important;
+  color: var(--temp-white);
+
+  border-radius: var(--temp-space-100);
+  font-size: var(--temp-space-300);
+  margin-top: var(--temp-space-200);
+  display: inline-block;
+  transition: all 0.3s ease;
+  border: var(--temp-primary) 1px solid;
+
+}
+
+
+.event-click-btn:hover {
+  background-color: var(--temp-org) !important;
+  color: var(--temp-white) !important;
+  text-decoration: none;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  border: var(--temp-org) 1px solid;
+
+}
+
+
+
+/********************Event card-End*******************/
+
+
+
+
+
+
+
 /* Responsive CSS Here */
 @media only screen and (min-width: 992px) {
 
