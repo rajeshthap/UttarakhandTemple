@@ -223,7 +223,7 @@ const fetchTemples = async () => {
                         <td data-th="State">{temple.state}</td>
                         <td data-th="Country">{temple.country}</td>
                         <td>
-                          <Button className="event-click-btn"  size="sm" onClick={() => handleEdit(temple)}>Edit</Button>{" "}
+                          <Button className="event-click-cancel"  size="sm" onClick={() => handleEdit(temple)}>Edit</Button>{" "}
                           <Button  className="event-click-btn-danger" size="sm" onClick={() => handleDelete(temple.temple_id)}>Delete</Button>
                         </td>
                       </tr>
