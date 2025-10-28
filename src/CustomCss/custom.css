@@ -304,8 +304,6 @@ input[type=number] {
     background: #fff;
     padding: 20px;
     border-radius: 10px;
-
-    margin-top: 90px !important;
     margin: 12px;
 }
 
@@ -315,6 +313,7 @@ input[type=number] {
     padding: 20px;
     background: #f4f6f8;
     margin: 0px 0px 0px 0px;
+    margin-top: 75px !important;
 }
 
 .main-container-box {
@@ -323,22 +322,24 @@ input[type=number] {
     background: #f4f6f8;
     margin: 50px 0px 0px 0px;
 }
-.event-box{
+
+.event-box {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: var(--temp-space-400);
     background-color: var(--temp-white);
     padding: var(--temp-space-300);
     word-wrap: break-word;
-    margin-bottom: var(--temp-space-200);   
-width: 96%;
- 
+    margin-bottom: var(--temp-space-200);
+    width: 96%;
+
 
 }
-.event-row{
+
+.event-row {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-   
+
 }
 
 
@@ -350,7 +351,7 @@ width: 96%;
     .content-box {
         padding: var(--temp-space-200) !important;
         box-shadow: none !important;
-        margin-top: 95px !important;
+
     }
 }
 
@@ -410,7 +411,16 @@ width: 96%;
     .content-box {
         padding: var(--temp-space-200) !important;
         box-shadow: none !important;
-        margin-top: 95px !important;
+
+    }
+
+    .main-container {
+        padding: 0px;
+    }
+
+    .main-container-box {
+        padding: 0px;
+        margin-top: 72px !important;
     }
 
     .temp-container {
