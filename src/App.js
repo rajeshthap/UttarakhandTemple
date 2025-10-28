@@ -115,6 +115,7 @@ import TempleProfile from "./Component/temp_dashboard/TempleProfile";
 import TempleSupport from "./Component/temp_dashboard/support/TempleSupport";
 import Events from "./Component/UpcomingEvent/Events";
 import UserUpcomingEvent from "./Component/dashboard/UserUpcomingEvent";
+import SevaDetails from "./Component/dashboard/UserDetailsCard/SevaDetails";
 
 // import BASE_URLL from "./Component/BaseURL";
 // import DashBoard from "./Component/dashboard/DashBoard";
@@ -181,7 +182,7 @@ function App() {
     "/RegDevotee",
     "/TempleProfile",
     "/TempleSupport",
-   
+     "/SevaDetails",
     "/UserUpcomingEvent"
   ]);
   const shouldHideBars = hiddenPaths.has(location.pathname);
@@ -355,6 +356,7 @@ function App() {
           <Route path="/EventDashBoard" element={<EventDashBoard />} />
           <Route path="/Events" element={<Events />} />
           <Route path="/UserUpcomingEvent" element={<UserUpcomingEvent />} />
+          <Route path="/SevaDetails" element={<SevaDetails />} />
           
         </Routes>
         {!hideFooter && <TempleFooter />}

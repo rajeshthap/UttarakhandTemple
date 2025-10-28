@@ -427,4 +427,7 @@ input[type=number] {
 
         padding: var(--temp-space-200) !important;
     }
+    .add-event-f-mob{
+        padding: 0px !important;
+    }
 }

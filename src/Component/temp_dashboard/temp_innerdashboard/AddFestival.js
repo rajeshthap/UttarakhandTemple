@@ -197,8 +197,7 @@ const AddFestival = () => {
       <aside className="sidebar">
         <TempleLeftNav />
       </aside>
-
-      <main className="">
+      <main className="main-container">
         <div className="content-box">
           <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3 ">
             <h1 className="fw500">
@@ -219,7 +218,7 @@ const AddFestival = () => {
 
               <Form onSubmit={handleSubmit}>
                 <Row>
-                  <Col lg={6}>
+                  <Col lg={6} sm={12} md={6}>
                     <Form.Group className="mb-3">
                       <Form.Label className="temp-label">
                         Name of Temple<span className="temp-span-star"> *</span>
@@ -234,7 +233,7 @@ const AddFestival = () => {
                     </Form.Group>
                   </Col>
 
-                  <Col lg={6}>
+                  <Col lg={6} sm={12} md={6}>
                     <Form.Group className="mb-3">
                       <Form.Label className="temp-label">
                         Name of Festival
@@ -254,7 +253,7 @@ const AddFestival = () => {
                       )}
                     </Form.Group>
                   </Col>
-                  <Col lg={6}>
+                  <Col lg={6} sm={12} md={6}>
                     <Form.Group className="mb-3">
                       <Form.Label className="temp-label">
                         Festival Start Date & Time
@@ -286,7 +285,7 @@ const AddFestival = () => {
                     </Form.Group>
                   </Col>
 
-                  <Col lg={6}>
+                  <Col lg={6} sm={12} md={6}>
                     <Form.Group className="mb-3">
                       <Form.Label className="temp-label">
                         Festival End Date & Time
@@ -317,7 +316,7 @@ const AddFestival = () => {
                       )}
                     </Form.Group>
                   </Col>
-                  <Col lg={12}>
+                  <Col lg={6} sm={12} md={6}>
                     <Form.Group className="mb-3">
                       <Form.Label className="temp-label">
                         Description<span className="temp-span-star"> *</span>
@@ -338,7 +337,7 @@ const AddFestival = () => {
                     </Form.Group>
                   </Col>
 
-                  {/* <Col lg={12}>
+                  <Col g={6} sm={12} md={6} className="add-event-f-mob">
                     <fieldset
                       className={`upload_dropZone text-center ${
                         dragging === "image" ? "drag-over" : ""
@@ -412,7 +411,7 @@ const AddFestival = () => {
                         </div>
                       </div>
                     )}
-                  </Col> */}
+                  </Col>
                   <div className="text-center">
                     <Button type="submit" className="temp-submit-btn mt-3">
                       Submit
