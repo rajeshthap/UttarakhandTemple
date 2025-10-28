@@ -202,7 +202,7 @@ const Events = () => {
                           />
                         </div>
 
-                        <Card.Body>
+                        <Card.Body className="event-card">
                           <div className="d-flex justify-content-between align-items-start">
                             <div>
                               <h5 className="event-heading">{event.temple_name || "Temple Name"}</h5>
