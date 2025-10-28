@@ -16,7 +16,7 @@ const SevaDetails = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `https://mahadevaaya.com/backend/api/donation/?creator_id=${uniqueId}`
+        `https://mahadevaaya.com/backend/api/seva-booking/?creator_id=${uniqueId}`
       );
 
       if (Array.isArray(res.data)) {
@@ -112,12 +112,12 @@ const SevaDetails = () => {
                       {filteredData.length > 0 ? (
                         filteredData.map((item, index) => (
                           <tr key={index}>
-                            <td>{item.seva_id || "—"}</td>
-                            <td>{item.full_name || "—"}</td>
-                            <td>{item.mobile_number || "—"}</td>
-                            <td>{item.temple_name || "—"}</td>
-                            <td>{item.type_of_seva || "—"}</td>
-                            <td>
+                            <td data-th="Seva ID">{item.seva_id || "—"}</td>
+                            <td data-th="Full Name">{item.full_name || "—"}</td>
+                            <td data-th="Mobile Number">{item.mobile_number || "—"}</td>
+                            <td data-th="Temple Name">{item.temple_name || "—"}</td>
+                            <td data-th="Type of Seva">{item.type_of_seva || "—"}</td>
+                            <td data-th="Seva Date & Time">
                               {item.seva_date_and_time
                                 ? new Date(item.seva_date_and_time).toLocaleString(
                                     "en-IN",
@@ -128,10 +128,10 @@ const SevaDetails = () => {
                                   )
                                 : "—"}
                             </td>
-                            <td>{item.frequency || "—"}</td>
+                            <td data-th="Frequency">{item.frequency || "—"}</td>
                             
-                            <td>{item.special_instructions || "—"}</td>
-                            <td>
+                            <td data-th="Instructions">{item.special_instructions || "—"}</td>
+                            <td data-th="Donation Amount">
                               {item.seva_donation_amount
                                 ? `₹${item.seva_donation_amount}`
                                 : "—"}

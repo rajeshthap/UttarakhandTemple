@@ -20,16 +20,12 @@ const DonationsDetails = () => {
           `https://mahadevaaya.com/backend/api/donation/?creator_id=${uniqueId}`
         );
 
-        if (Array.isArray(res.data)) {
-          setDonations(res.data);
-          setFilteredDonations(res.data);
-        } else if (res.data && Array.isArray(res.data.results)) {
-          setDonations(res.data.results);
-          setFilteredDonations(res.data.results);
-        } else {
-          setDonations([]);
-          setFilteredDonations([]);
-        }
+        const data = Array.isArray(res.data)
+          ? res.data
+          : res.data?.results || [];
+
+        setDonations(data);
+        setFilteredDonations(data);
       } catch (error) {
         console.error("Error fetching donation data:", error);
         setDonations([]);
@@ -41,13 +37,18 @@ const DonationsDetails = () => {
   }, [uniqueId]);
 
   useEffect(() => {
-    const filtered = donations.filter(
-      (item) =>
-        item.donatiom_id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.pilgrim_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.mobile_number?.includes(searchTerm) ||
-        item.amount?.toString().includes(searchTerm)
-    );
+    const filtered = donations.filter((item) => {
+      const id = item.donatiom_id?.toString().toLowerCase() || "";
+      const name = item.pilgrim_name?.toLowerCase() || "";
+      const mobile = item.mobile_number?.toString() || "";
+      const amount = item.amount?.toString() || "";
+      return (
+        id.includes(searchTerm.toLowerCase()) ||
+        name.includes(searchTerm.toLowerCase()) ||
+        mobile.includes(searchTerm) ||
+        amount.includes(searchTerm)
+      );
+    });
     setFilteredDonations(filtered);
   }, [searchTerm, donations]);
 
@@ -63,8 +64,8 @@ const DonationsDetails = () => {
         {/* Right-hand Main Container */}
         <main className="main-container-box">
           <div className="content-box">
-            <Row className="">
-              <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3 ">
+            <Row>
+              <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
                 <h1 className="fw500">
                   <Breadcrumb>
                     <Breadcrumb.Item href="/MainDashBoard">
@@ -116,7 +117,10 @@ const DonationsDetails = () => {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="4" className="text-center text-muted fw-bold">
+                        <td
+                          colSpan="4"
+                          className="text-center text-muted fw-bold"
+                        >
                           No donation records found.
                         </td>
                       </tr>
