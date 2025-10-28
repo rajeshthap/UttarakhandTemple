@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { RiDashboard3Line } from "react-icons/ri";
+import { RiCalendarEventLine, RiDashboard3Line } from "react-icons/ri";
 import axios from "axios";
 import { FaAlignLeft, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
@@ -16,6 +16,8 @@ import { Dropdown, Nav } from "react-bootstrap";
 import { useAuth } from "../GlobleAuth/AuthContext";
 import "../../assets/CSS/TopInfo.css";
 import { BiSolidDonateBlood } from "react-icons/bi";
+import { MdAccountCircle, MdEventAvailable } from "react-icons/md";
+ 
 function LeftNav() {
   const { clearAuth } = useAuth();
 
@@ -24,7 +26,9 @@ function LeftNav() {
   const [activePath, setActivePath] = useState("");
   const [openSubMenu, setOpenSubMenu] = useState(null); // Track which submenu is open
   const [hoveredMenu, setHoveredMenu] = useState(null); // Track which menu is hovered
+  
   const location = useLocation();
+
   // alert state
   const [showModifyAlert, setShowModifyAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -156,13 +160,13 @@ function LeftNav() {
 
     },
     {
-      icon: <LiaCalendarCheck />,
+      icon: <MdEventAvailable />,
       label: "Event",
       path: "#",
       hasSubmenu: true,
       subItems: [
         {
-          icon: <LiaCalendarCheck />,
+          icon: <RiCalendarEventLine />,
           label: "Upcoming Event",
           path: "/UserUpcomingEvent"
         },
@@ -170,7 +174,7 @@ function LeftNav() {
       ]
     },
     {
-      icon: <LiaCalendarCheck />,
+      icon: <MdAccountCircle />,
       label: "My Account",
       path: "#",
       hasSubmenu: true,
@@ -229,7 +233,7 @@ function LeftNav() {
       ]
     },
     {
-      icon: <TbPasswordUser />,
+      icon: <LuLogOut />,
       label: "Logout",
       path: "#", // will trigger logout
       isLogout: true, // custom flag to detect logout
