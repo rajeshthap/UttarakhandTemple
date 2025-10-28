@@ -116,6 +116,9 @@ import TempleSupport from "./Component/temp_dashboard/support/TempleSupport";
 import Events from "./Component/UpcomingEvent/Events";
 import UserUpcomingEvent from "./Component/dashboard/UserUpcomingEvent";
 import SevaDetails from "./Component/dashboard/UserDetailsCard/SevaDetails";
+import DarshanDetails from "./Component/dashboard/UserDetailsCard/DarshanDetails";
+import DonationsDetails from "./Component/dashboard/UserDetailsCard/DonationsDetails";
+import PanditDetails from "./Component/dashboard/UserDetailsCard/PanditDetails";
 
 // import BASE_URLL from "./Component/BaseURL";
 // import DashBoard from "./Component/dashboard/DashBoard";
@@ -126,6 +129,9 @@ import SevaDetails from "./Component/dashboard/UserDetailsCard/SevaDetails";
 function App() {
   const location = useLocation();
   const hiddenPaths = new Set([
+    "/PanditDetails",
+    "/DonationsDetails",
+    "/DarshanDetails",
     "/DashBoard",
     "/MainDashBoard",
     "/DonateDashBoard",
@@ -357,6 +363,9 @@ function App() {
           <Route path="/Events" element={<Events />} />
           <Route path="/UserUpcomingEvent" element={<UserUpcomingEvent />} />
           <Route path="/SevaDetails" element={<SevaDetails />} />
+          <Route path="/DonationsDetails" element={<DonationsDetails />} />
+          <Route path="/PanditDetails" element={<PanditDetails />} />
+          <Route path="/DarshanDetails" element={<DarshanDetails />} />
           
         </Routes>
         {!hideFooter && <TempleFooter />}

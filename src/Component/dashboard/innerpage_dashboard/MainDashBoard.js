@@ -164,7 +164,8 @@ const MainDashBoard = () => {
             </div> */}
             <Row>
               <Col lg={3} md={3} sm={12}>
-                <Card className="shadow-sm rounded dbcard-box-1 flex-fill mb-2">
+                <Card className="shadow-sm rounded dbcard-box-1 flex-fill mb-2" onClick={() => navigate("/SevaDetails")}
+    style={{ cursor: "pointer" }} >
                   <Card.Body>
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-wrap">
                       <div>
@@ -186,7 +187,8 @@ const MainDashBoard = () => {
                 </Card>
               </Col>
               <Col lg={3} md={3} sm={12}>
-                <Card className="shadow-sm dbcard-box-2 flex-fill">
+                <Card className="shadow-sm dbcard-box-2 flex-fill" onClick={() => navigate("/DarshanDetails")}
+    style={{ cursor: "pointer" }}>
                   <Card.Body>
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
                       <div>
@@ -209,7 +211,8 @@ const MainDashBoard = () => {
                 </Card>
               </Col>
               <Col lg={3} md={3} sm={12}>
-                <Card className="shadow-sm rounded  flex-fill dbcard-box-4">
+                <Card className="shadow-sm rounded  flex-fill dbcard-box-4" onClick={() => navigate("/PanditDetails")}
+    style={{ cursor: "pointer" }}>
                   <Card.Body>
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
                       <div>
@@ -236,7 +239,8 @@ const MainDashBoard = () => {
                 </Card>
               </Col>
               <Col lg={3} md={3} sm={12}>
-                <Card className="shadow-sm rounded  flex-fill dbcard-box-3">
+                <Card className="shadow-sm rounded  flex-fill dbcard-box-3" onClick={() => navigate("/DonationsDetails")}
+    style={{ cursor: "pointer" }}>
                   <Card.Body>
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
                       <div>
@@ -402,7 +406,7 @@ const MainDashBoard = () => {
               <div class="col-md-12">
                 <table class="rwd-table">
                   <tbody>
-                    jhjhj
+                   
                     <tr>
                       <th>Supplier Code</th>
                       <th>Supplier Name</th>
