@@ -76,6 +76,14 @@ const fetchTemples = async () => {
       }));
 
       setTemples(formatted);
+      const temple = formatted.find((t) => t.temple_id === uniqueId);
+      if (temple) {
+        setFormData({
+          country: temple.country || "",
+          state: temple.state || "",
+          city: temple.city || "",
+        });
+      }
     }
   } catch (err) {
     console.error("Error fetching temples:", err);
@@ -96,6 +104,11 @@ const fetchTemples = async () => {
       return;
     }
     setCurrentTemple({ ...temple });
+    setFormData({
+    country: temple.country || "",
+    state: temple.state || "",
+    city: temple.city || "",
+  });
     setShowModal(true);
   };
 
@@ -210,8 +223,8 @@ const fetchTemples = async () => {
                         <td data-th="State">{temple.state}</td>
                         <td data-th="Country">{temple.country}</td>
                         <td>
-                          <Button variant="info" size="sm" onClick={() => handleEdit(temple)}>Edit</Button>{" "}
-                          <Button variant="danger" size="sm" onClick={() => handleDelete(temple.temple_id)}>Delete</Button>
+                          <Button className="event-click-btn"  size="sm" onClick={() => handleEdit(temple)}>Edit</Button>{" "}
+                          <Button  className="event-click-btn-danger" size="sm" onClick={() => handleDelete(temple.temple_id)}>Delete</Button>
                         </td>
                       </tr>
                     ))
@@ -240,6 +253,7 @@ const fetchTemples = async () => {
                     <Form.Group>
                       <Form.Label className="temp-label">Temple Name</Form.Label>
                       <Form.Control
+                      className="temp-form-control-option"
                         name="temple_name"
                         value={currentTemple.temple_name || ""}
                         onChange={handleChange}
@@ -249,7 +263,9 @@ const fetchTemples = async () => {
                   <Col md={6}>
                     <Form.Group>
                       <Form.Label className="temp-label">Phone</Form.Label>
-                      <Form.Control value={currentTemple.phone || ""} disabled />
+                      <Form.Control 
+                      className="temp-form-control-option"
+                      value={currentTemple.phone || ""} disabled />
                     </Form.Group>
                   </Col>
                 </Row>
@@ -266,7 +282,9 @@ const fetchTemples = async () => {
                   <Col md={6}>
                     <Form.Group>
                       <Form.Label className="temp-label">Email</Form.Label>
-                      <Form.Control value={currentTemple.email || ""} disabled />
+                      <Form.Control 
+                      className="temp-form-control-option"
+                      value={currentTemple.email || ""} disabled />
                     </Form.Group>
                   </Col>
                  
@@ -275,6 +293,7 @@ const fetchTemples = async () => {
                 <Form.Group className="mt-2">
                   <Form.Label className="temp-label">Temple Address</Form.Label>
                   <Form.Control
+                  className="temp-form-control-option"
                     as="textarea"
                     rows={2}
                     name="temple_address"
@@ -598,10 +617,10 @@ const fetchTemples = async () => {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={() => setShowModal(false)}>
+              <Button className="event-click-cancel" onClick={() => setShowModal(false)}>
                 Close
               </Button>
-              <Button variant="primary" onClick={handleUpdate}>
+              <Button className="event-click-btn" onClick={handleUpdate}>
                 Update
               </Button>
             </Modal.Footer>
