@@ -16,7 +16,7 @@ import { Dropdown, Nav } from "react-bootstrap";
 import { useAuth } from "../GlobleAuth/AuthContext";
 import "../../assets/CSS/TopInfo.css";
 import { BiSolidDonateBlood } from "react-icons/bi";
-import { MdAccountCircle, MdEventAvailable } from "react-icons/md";
+import { MdAccountCircle, MdEventAvailable, MdOutlineWorkHistory } from "react-icons/md";
  
 function LeftNav() {
   const { clearAuth } = useAuth();
@@ -24,8 +24,8 @@ function LeftNav() {
   const [isNavClosed, setIsNavClosed] = useState(false);
   const [userName,] = useState("Loading...");
   const [activePath, setActivePath] = useState("");
-  const [openSubMenu, setOpenSubMenu] = useState(null); // Track which submenu is open
-  const [hoveredMenu, setHoveredMenu] = useState(null); // Track which menu is hovered
+  const [openSubMenu, setOpenSubMenu] = useState(null); 
+  const [hoveredMenu, setHoveredMenu] = useState(null); 
   
   const location = useLocation();
 
@@ -114,7 +114,7 @@ function LeftNav() {
     // { icon: <BiDonateHeart />, label: "Online", path: "#" },
 
     {
-      icon: <GiByzantinTemple />,
+      icon: <MdOutlineWorkHistory />,
       label: "Booking History",
       path: "/BookingHistory",
 
@@ -148,8 +148,6 @@ function LeftNav() {
           label: "Event Participation",
           path: "/EventDashBoard"
         },
-
-
 
       ]
     },

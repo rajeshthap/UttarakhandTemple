@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Col, Spinner } from "react-bootstrap";
 import { BsNewspaper } from "react-icons/bs";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; //  only useNavigate, no useLocation
 
 const NewsUpdates = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
-  const perPage = 4; 
+  const perPage = 4;
+  const navigate = useNavigate(); //  for redirect
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -53,6 +55,11 @@ const NewsUpdates = () => {
     if (currentPage > 0) setCurrentPage(currentPage - 1);
   };
 
+  //  Handle click — pass event data safely to next page
+  const handleEventClick = (event) => {
+    navigate("/EventParticipation", { state: { event } });
+  };
+
   return (
     <>
       {/* --- Upcoming Events Section --- */}
@@ -71,7 +78,12 @@ const NewsUpdates = () => {
           ) : (
             <div className="sd-news-list mt-20">
               {currentEvents.map((event, index) => (
-                <div className="item" key={index}>
+                <div
+                  className="item"
+                  key={index}
+                  onClick={() => handleEventClick(event)} // 👈 clickable
+                  style={{ cursor: "pointer" }}
+                >
                   <div className="sd-news-para">
                     <div className="news-icon-text">
                       <BsNewspaper className="up-come-icon" />
@@ -108,7 +120,7 @@ const NewsUpdates = () => {
         </div>
       </Col>
 
-      {/* --- News Updates Section (Dussera Style) --- */}
+      {/* --- News Updates Section --- */}
       <Col lg={12} md={12} sm={12}>
         <div className="sd-news-updates">
           <h2 className="sd-side-heading fw500">

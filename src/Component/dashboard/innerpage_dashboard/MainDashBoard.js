@@ -166,7 +166,7 @@ const MainDashBoard = () => {
               <Col lg={3} md={3} sm={12}>
                 <Card className="shadow-sm rounded dbcard-box-1 flex-fill mb-2" onClick={() => navigate("/SevaDetails")}
     style={{ cursor: "pointer" }} >
-                  <Card.Body>
+                  <Card.Body className="card-body-details">
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-wrap">
                       <div>
                         <span className="text-muted d-block mb-1 user-sub-title">
@@ -189,7 +189,7 @@ const MainDashBoard = () => {
               <Col lg={3} md={3} sm={12}>
                 <Card className="shadow-sm dbcard-box-2 flex-fill" onClick={() => navigate("/DarshanDetails")}
     style={{ cursor: "pointer" }}>
-                  <Card.Body>
+                  <Card.Body className="card-body-details">
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
                       <div>
                         <span className="text-muted d-block mb-1 text-nowrap  user-sub-title">
@@ -213,7 +213,7 @@ const MainDashBoard = () => {
               <Col lg={3} md={3} sm={12}>
                 <Card className="shadow-sm rounded  flex-fill dbcard-box-4" onClick={() => navigate("/PanditDetails")}
     style={{ cursor: "pointer" }}>
-                  <Card.Body>
+                  <Card.Body className="card-body-details">
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
                       <div>
                         <span className="text-muted d-block mb-1 text-nowrap  user-sub-title">
@@ -241,7 +241,7 @@ const MainDashBoard = () => {
               <Col lg={3} md={3} sm={12}>
                 <Card className="shadow-sm rounded  flex-fill dbcard-box-3" onClick={() => navigate("/DonationsDetails")}
     style={{ cursor: "pointer" }}>
-                  <Card.Body>
+                  <Card.Body className="card-body-details">
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
                       <div>
                         <span className="text-muted d-block mb-1 text-nowrap  user-sub-title">
@@ -297,16 +297,17 @@ const MainDashBoard = () => {
                         <FaOm className="seva-come-icon-darshanam" />
                       </Col>
                       <Col lg={10} md={10} sm={12} className="user-seva-text">
-                        <h3>Seva and Darshanam</h3>
+                        <h3>Seva and Darshan name</h3>
                         <p>
                           Darshan and Seva tickets can now be bought offline at
                           the ticket counter and online via our website. Relish
                           by visiting Sri Kanaka Durgamma Devasthanam
                         </p>
                         <div className="clearfix user-btn-all mt-4">
-                          <button className="sd-btn-blue">
+                          <button className="sd-btn-blue" onClick={() => navigate("/SevaRegistrationDashBoard")}
+    style={{ cursor: "pointer" }}>
                             Book Now{" "}
-                            <IoIosArrowForward className="user-seva-btn-icon" />
+                            <IoIosArrowForward className="user-seva-btn-icon"  />
                           </button>
                         </div>
                       </Col>
@@ -333,7 +334,8 @@ const MainDashBoard = () => {
                           Relish by visiting Sri Kanaka Durgamma Devasthanam
                         </p>
                         <div className="clearfix user-btn-all mt-4">
-                          <button className="pandit-btn-blue">
+                          <button className="pandit-btn-blue" onClick={() => navigate("/PanditDashBoard")}
+    style={{ cursor: "pointer" }}>
                             Book Now{" "}
                             <IoIosArrowForward className="user-seva-btn-icon" />
                           </button>
@@ -358,7 +360,8 @@ const MainDashBoard = () => {
                           Relish by visiting Sri Kanaka Durgamma Devasthanam
                         </p>
                         <div className="clearfix user-btn-all mt-4">
-                          <button className="donation-btn-blue">
+                          <button className="donation-btn-blue" onClick={() => navigate("/DonateDashBoard")}
+    style={{ cursor: "pointer" }}>
                             Donate Now{" "}
                             <IoIosArrowForward className="user-seva-btn-icon" />
                           </button>
@@ -377,16 +380,17 @@ const MainDashBoard = () => {
                         <GiByzantinTemple className="seva-come-icon-darshanam" />
                       </Col>
                       <Col lg={10} md={10} sm={12} className="user-seva-text">
-                        <h3>Poojs Booking</h3>
+                        <h3>Seva Registration</h3>
                         <p>
-                          Darshanam and Seva tickets can now be bought offline
+                          Seva and Seva tickets can now be bought offline
                           at the ticket counter and online via our website.
                           Relish by visiting Sri Kanaka Durgamma Devasthanam
                         </p>
                         <div className="clearfix user-btn-all mt-4">
-                          <button className="pooja-btn-blue">
+                          <button className="pooja-btn-blue" onClick={() => navigate("/SevaRegistrationDashBoard")}
+    style={{ cursor: "pointer" }} >
                             Book Now{" "}
-                            <IoIosArrowForward className="user-seva-btn-icon" />
+                            <IoIosArrowForward className="user-seva-btn-icon"  />
                           </button>
                         </div>
                       </Col>
@@ -401,56 +405,7 @@ const MainDashBoard = () => {
               </Col>
             </Row>
 
-            <Row className="mt-3">
-              <h2>Transaction History</h2>
-              <div class="col-md-12">
-                <table class="rwd-table">
-                  <tbody>
-                   
-                    <tr>
-                      <th>Supplier Code</th>
-                      <th>Supplier Name</th>
-                      <th>Invoice Number</th>
-                      <th>Invoice Date</th>
-                      <th>Due Date</th>
-                      <th>Net Amount</th>
-                    </tr>
-                    <tr>
-                      <td data-th="Supplier Code">UPS5005</td>
-                      <td data-th="Supplier Name">UPS</td>
-                      <td data-th="Invoice Number">ASDF19218</td>
-                      <td data-th="Invoice Date">06/25/2016</td>
-                      <td data-th="Due Date">12/25/2016</td>
-                      <td data-th="Net Amount">$8,322.12</td>
-                    </tr>
-                    <tr>
-                      <td data-th="Supplier Code">UPS3449</td>
-                      <td data-th="Supplier Name">UPS South Inc.</td>
-                      <td data-th="Invoice Number">ASDF29301</td>
-                      <td data-th="Invoice Date">6/24/2016</td>
-                      <td data-th="Due Date">12/25/2016</td>
-                      <td data-th="Net Amount">$3,255.49</td>
-                    </tr>
-                    <tr>
-                      <td data-th="Supplier Code">BOX5599</td>
-                      <td data-th="Supplier Name">BOX Pro West</td>
-                      <td data-th="Invoice Number">ASDF43000</td>
-                      <td data-th="Invoice Date">6/27/2016</td>
-                      <td data-th="Due Date">12/25/2016</td>
-                      <td data-th="Net Amount">$45,255.49</td>
-                    </tr>
-                    <tr>
-                      <td data-th="Supplier Code">PAN9999</td>
-                      <td data-th="Supplier Name">Pan Providers and Co.</td>
-                      <td data-th="Invoice Number">ASDF33433</td>
-                      <td data-th="Invoice Date">6/29/2016</td>
-                      <td data-th="Due Date">12/25/2016</td>
-                      <td data-th="Net Amount">$12,335.69</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </Row>
+        
           </div>
         </main>
       </div>

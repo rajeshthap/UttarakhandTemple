@@ -3,7 +3,7 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import OTPModel from "../../OTPModel/OTPModel";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ModifyAlert from "../../Alert/ModifyAlert";
 import DatePicker from "react-datepicker";
 import { setHours, setMinutes } from "date-fns";
@@ -15,7 +15,10 @@ const EventParticipation = () => {
   const { uniqueId } = useAuth();
   const [festivals, setFestivals] = useState([]);
 
+const routerLocation = useLocation();
+  const eventData = routerLocation.state?.event; //  get event object
 
+ 
   // Move useState for selectedDateTime to the top before any logic uses it
   const [selectedDateTime, setSelectedDateTime] = useState(null);
   // Helper to round up to next 30 min interval
@@ -25,6 +28,29 @@ const EventParticipation = () => {
     let nextHour = nextMinutes === 0 ? date.getHours() + 1 : date.getHours();
     return setMinutes(setHours(date, nextHour), nextMinutes);
   };
+ useEffect(() => {
+  if (eventData) {
+    setFormData((prev) => ({
+      ...prev,
+      temple_name: eventData.temple_name || "",
+      event_start_date: eventData.start_date_time
+        ? eventData.start_date_time.split("T")[0]
+        : "",
+      event_end_date: eventData.end_date_time
+        ? eventData.end_date_time.split("T")[0]
+        : "",
+         festival_name: eventData.festival_name || "",
+      
+    }));
+
+    //  Auto-fill DatePicker with event start date & time
+    if (eventData.start_date_time) {
+      setSelectedDateTime(new Date(eventData.start_date_time));
+    }
+  }
+}, [eventData]);
+
+
 
   const today = new Date();
   const isToday =
@@ -124,7 +150,6 @@ const EventParticipation = () => {
   const checkUserExists = async (fieldValue, fieldName) => {
     try {
       if (uniqueId) return;
-
       const res = await axios.get(`${BASE_URLL}api/all-reg/`);
       const userExists = res.data.some((user) => {
         if (fieldName === "mobile_number")
@@ -202,6 +227,7 @@ const EventParticipation = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
 
   const handleChange = async (e) => {
     const { name, value } = e.target;
@@ -550,9 +576,10 @@ const EventParticipation = () => {
                     </Form.Label>
                     <Form.Select
                       className="temp-form-control-option"
-                      name="temple_name"
-                      value={formData.temple_name}
-                      onChange={handleChange}
+  name="temple_name"
+  value={formData.temple_name}
+  onChange={handleChange}
+  disabled={!!formData.temple_name}
                     >
                       <option value="">Select Temple Name</option>
                       {temples.map((temple, index) => (
@@ -569,6 +596,7 @@ const EventParticipation = () => {
                     )}
                   </Form.Group>
                 </Col>
+                
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
                     className="mb-3"
@@ -581,7 +609,7 @@ const EventParticipation = () => {
                       className="temp-form-control-option"
                       name="event_name"
                       value={formData.event_name}
-                      onChange={handleChange}
+                      onChange={handleChange} disabled={!!formData.festival_name}
                     >
                       <option value="">Select Event</option>
                       {festivals.length > 0 ? (
@@ -669,8 +697,9 @@ const EventParticipation = () => {
                         placeholderText="Select Date and time"
                         className="form-control temp-form-control-option w-100"
                         minDate={today}
-                        minTime={minTime}
+                        minTime={minTime}  
                         maxTime={maxTime}
+                     disabled={!!selectedDateTime}
                       />
                     </div>
                     {errors.event_date_and_time && (
