@@ -28,6 +28,9 @@
   display: flex;
   min-height: 100vh;
 }
+.temp-sidebar{
+  background-color: var(--temp-drak-blue) !important;
+}
 
 /* Sidebar */
 
@@ -173,7 +176,7 @@
   position: absolute;
   top: -7px;
   left: 00;
-  box-shadow: 1px 1px 10px rgba(198, 189, 248, 0.825);
+ 
   display: flex;
   flex-direction: column;
   justify-content: space-between;

@@ -374,7 +374,7 @@ function TempleLeftNav() {
 
       {/* Sidebar Navigation */}
       <div className={`navcontainer ${isNavClosed ? "navclose" : ""}`}>
-        <nav className="nav">
+        <nav className="temp-nav">
           <div className="nav-upper-options">
             <div className="nd-menu">
               <FaAlignLeft className="icn menuicn" onClick={toggleNav} />

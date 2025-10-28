@@ -15,6 +15,7 @@ import { TbPasswordUser } from "react-icons/tb";
 import { Dropdown, Nav } from "react-bootstrap";
 import { useAuth } from "../GlobleAuth/AuthContext";
 import "../../assets/CSS/TopInfo.css";
+import { BiSolidDonateBlood } from "react-icons/bi";
 function LeftNav() {
   const { clearAuth } = useAuth();
 
@@ -115,7 +116,7 @@ function LeftNav() {
 
     },
     {
-      icon: <GiByzantinTemple />,
+      icon: <BiSolidDonateBlood />,
       label: "Donate",
       path: "/DonateDashBoard",
 
@@ -163,7 +164,7 @@ function LeftNav() {
         {
           icon: <LiaCalendarCheck />,
           label: "Upcoming Event",
-          path: "/Events"
+          path: "/UserUpcomingEvent"
         },
 
       ]

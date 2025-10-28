@@ -15,7 +15,7 @@ import axios from "axios";
 import { BASE_URLL } from "../BaseURL";
 import { useAuth } from "../GlobleAuth/AuthContext";
 import { useNavigate } from "react-router-dom";
-import LeftNav from "../dashboard/LeftNav";
+
 
 
 const Events = () => {
@@ -131,14 +131,10 @@ const Events = () => {
   }, [events]);
 
   return (
-    <div className="dashboard-wrapper">
-      {uniqueId && (
-        <aside className="sidebar">
-          <LeftNav />
-        </aside>
-      )}
-
-      <main className="main-container-box">
+   
+     
+<>
+      
         <Container className="temp-container">
           <h1>Temple Festival Booking</h1>
           <p>
@@ -349,8 +345,8 @@ const Events = () => {
             </Modal.Footer>
           </Modal>
         </Container>
-      </main>
-    </div>
+     
+   </>
   );
 };
 
