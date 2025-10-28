@@ -192,13 +192,8 @@ const Events = () => {
                           <img
                             src={getImageUrl(event.image)}
                             alt={event.festival_name || "Festival"}
-                            className="card-image"
-                            style={{
-                              width: "100%",
-                              height: "150px",
-                              objectFit: "cover",
-                              borderRadius: "4px 4px 0 0",
-                            }}
+                            className="card-event-image"
+
                           />
                         </div>
 
@@ -222,12 +217,12 @@ const Events = () => {
                           </Card.Text>
 
                           <div className="d-flex justify-content-between mt-3 event-time-txt ">
-                            <small>
+                            <div>
                               <strong className="event-data-txt">Start:</strong> {event.start_day || ""} ({formatDate(event.start_date_time)})
-                            </small>
-                            <small>
+                            </div>
+                            <div>
                               <strong className="event-data-txt">End:</strong> {event.end_day || ""} ({formatDate(event.end_date_time)})
-                            </small>
+                            </div>
                           </div>
 
                           <div className="d-flex justify-content-between mt-3">
