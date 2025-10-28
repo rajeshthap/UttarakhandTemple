@@ -116,11 +116,16 @@ const PanditDetails = () => {
                       {filteredData.length > 0 ? (
                         filteredData.map((item, index) => (
                           <tr key={index}>
-                            <td>{item.full_name || "—"}</td>
-                            <td>{item.mobile_number || "—"}</td>
-                            <td>{item.address || "—"}</td>
-                            <td>{item.pooja_type || "—"}</td>
-                            <td>
+                            <td data-th="Full Name">{item.full_name || "—"}</td>
+                            <td data-th="Mobile Number">
+                              {item.mobile_number || "—"}
+                            </td>
+                            <td data-th="Address">{item.address || "—"}</td>
+                            <td data-th="Pooja Type">
+                              {item.pooja_type || "—"}
+                            </td>
+
+                            <td data-th="Pandit Details">
                               {item.number_of_pandits?.length > 0 ? (
                                 <ul className="mb-0">
                                   {item.number_of_pandits.map((p, i) => (
@@ -133,8 +138,12 @@ const PanditDetails = () => {
                                 "—"
                               )}
                             </td>
-                            <td>{item.language_preference || "—"}</td>
-                            <td>
+
+                            <td data-th="Language Preference">
+                              {item.language_preference || "—"}
+                            </td>
+
+                            <td data-th="Date & Time">
                               {item.date_and_time
                                 ? new Date(item.date_and_time).toLocaleString(
                                     "en-IN",
@@ -145,13 +154,16 @@ const PanditDetails = () => {
                                   )
                                 : "—"}
                             </td>
-                            <td>{item.location || "—"}</td>
-                            <td>{item.special_requirements || "—"}</td>
-                            <td>{item.payment_mode || "—"}</td>
-                            <td>
-                              {item.grand_total
-                                ? `₹${item.grand_total}`
-                                : "—"}
+
+                            <td data-th="Location">{item.location || "—"}</td>
+                            <td data-th="Special Requirements">
+                              {item.special_requirements || "—"}
+                            </td>
+                            <td data-th="Payment Mode">
+                              {item.payment_mode || "—"}
+                            </td>
+                            <td data-th="Grand Total">
+                              {item.grand_total ? `₹${item.grand_total}` : "—"}
                             </td>
                           </tr>
                         ))

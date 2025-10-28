@@ -79,7 +79,9 @@ const DarshanDetails = () => {
                     <Breadcrumb.Item href="/MainDashBoard">
                       <span className="fw700h1">Dashboard</span>
                     </Breadcrumb.Item>
-                    <Breadcrumb.Item active>Temple Booking Details</Breadcrumb.Item>
+                    <Breadcrumb.Item active>
+                      Temple Booking Details
+                    </Breadcrumb.Item>
                   </Breadcrumb>
                 </h1>
 
@@ -106,7 +108,6 @@ const DarshanDetails = () => {
                         <th>State</th>
                         <th>City</th>
                         <th>Address</th>
-                        <th>Devotee Details</th>
                         <th>Pooja Details</th>
                         <th>No. of Persons</th>
                         <th>Payment Mode</th>
@@ -115,69 +116,76 @@ const DarshanDetails = () => {
 
                       {filteredData.length > 0 ? (
                         filteredData.map((item, index) => (
-                          <tr key={index}>
-                            <td>{item.full_name || "—"}</td>
-                            <td>{item.mobile_number || "—"}</td>
-                            <td>
-                              {item.id_proof_type && item.id_proof_number
-                                ? `${item.id_proof_type}: ${item.id_proof_number}`
-                                : "—"}
-                            </td>
-                            <td>{item.temple_name || "—"}</td>
-                            <td>
-                              {item.book_date_and_time
-                                ? new Date(item.book_date_and_time).toLocaleString(
-                                    "en-IN",
-                                    { dateStyle: "medium", timeStyle: "short" }
-                                  )
-                                : "—"}
-                            </td>
-                            <td>{item.state || "—"}</td>
-                            <td>{item.city || "—"}</td>
-                            <td>{item.address || "—"}</td>
+                          <React.Fragment key={index}>
+                            {/* Main Booking Row */}
+                            <tr>
+                              <td data-th="Full Name">{item.full_name || "—"}</td>
+                              <td data-th="Mobile Number">{item.mobile_number || "—"}</td>
+                              <td data-th="ID Proof">
+                                {item.id_proof_type && item.id_proof_number
+                                  ? `${item.id_proof_type}: ${item.id_proof_number}`
+                                  : "—"}
+                              </td>
+                              <td data-th="Temple Name">{item.temple_name || "—"}</td>
+                              <td data-th="Booking Date & Time">
+                                {item.book_date_and_time
+                                  ? new Date(item.book_date_and_time).toLocaleString("en-IN", {
+                                      dateStyle: "medium",
+                                      timeStyle: "short",
+                                    })
+                                  : "—"}
+                              </td>
+                              <td data-th="State">{item.state || "—"}</td>
+                              <td data-th="City">{item.city || "—"}</td>
+                              <td data-th="Address">{item.address || "—"}</td>
+                              <td data-th="Pooja Details">
+                                {item.pooja_details?.length > 0 ? (
+                                  <ul className="mb-0">
+                                    {item.pooja_details.map((pooja, i) => (
+                                      <li key={i}>
+                                        {pooja.pooja_name} ({pooja.pooja_id}) - ₹
+                                        {pooja.pooja_price}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                ) : (
+                                  "—"
+                                )}
+                              </td>
+                              <td data-th="No. of Persons">{item.no_of_persons || "—"}</td>
+                              <td data-th="Payment Mode">{item.payment_mode || "—"}</td>
+                              <td data-th="Grand Total">
+                                {item.grand_total ? `₹${item.grand_total}` : "—"}
+                              </td>
+                            </tr>
 
-                            {/* Devotee Details */}
-                            <td>
-                              {item.devotte_details?.length > 0 ? (
-                                <ul className="mb-0">
-                                  {item.devotte_details.map((dev, i) => (
-                                    <li key={i}>
-                                      {dev.full_name} ({dev.gender}, {dev.age}y) <br />
-                                      {dev.id_proof_type}: {dev.id_proof_number}
-                                    </li>
-                                  ))}
-                                </ul>
-                              ) : (
-                                "—"
-                              )}
-                            </td>
-
-                            {/* Pooja Details */}
-                            <td>
-                              {item.pooja_details?.length > 0 ? (
-                                <ul className="mb-0">
-                                  {item.pooja_details.map((pooja, i) => (
-                                    <li key={i}>
-                                      {pooja.pooja_name} ({pooja.pooja_id}) - ₹
-                                      {pooja.pooja_price}
-                                    </li>
-                                  ))}
-                                </ul>
-                              ) : (
-                                "—"
-                              )}
-                            </td>
-
-                            <td>{item.no_of_persons || "—"}</td>
-                            <td>{item.payment_mode || "—"}</td>
-                            <td>
-                              {item.grand_total ? `₹${item.grand_total}` : "—"}
-                            </td>
-                          </tr>
+                            {/* Devotee Details Row */}
+                            <tr>
+                              <td colSpan="12" >
+                                <strong>Devotee Details:</strong>{" "}
+                                {item.devotte_details?.length > 0 ? (
+                                  <ul className="mb-0 mt-1">
+                                    {item.devotte_details.map((dev, i) => (
+                                      <li key={i}>
+                                        {dev.full_name || "—"}
+                                        {dev.gender ? ` (${dev.gender})` : ""}
+                                        {dev.age ? `, ${dev.age}y` : ""}
+                                        {dev.id_proof_type && dev.id_proof_number
+                                          ? ` - ${dev.id_proof_type}: ${dev.id_proof_number}`
+                                          : ""}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                ) : (
+                                  "—"
+                                )}
+                              </td>
+                            </tr>
+                          </React.Fragment>
                         ))
                       ) : (
                         <tr>
-                          <td colSpan="13" className="text-center py-3">
+                          <td colSpan="12" className="text-center py-3">
                             No records found.
                           </td>
                         </tr>
