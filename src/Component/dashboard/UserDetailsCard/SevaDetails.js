@@ -16,7 +16,7 @@ const SevaDetails = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `https://mahadevaaya.com/backend/api/donation/?creator_id=${uniqueId}`
+        `https://mahadevaaya.com/backend/api/seva-booking/?creator_id=${uniqueId}`
       );
 
       if (Array.isArray(res.data)) {
