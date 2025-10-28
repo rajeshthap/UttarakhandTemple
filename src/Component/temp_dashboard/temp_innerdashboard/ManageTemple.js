@@ -12,9 +12,11 @@ const ManageTemple = () => {
   const [showModal, setShowModal] = useState(false);
   const [currentTemple, setCurrentTemple] = useState({});
   const [loading, setLoading] = useState(false);
+  const [dragging, setDragging] = useState(null);
+
   const uniqueId = sessionStorage.getItem("uniqueId");
 
-  
+
 
   const getImageUrl = (imgPath) => {
     if (!imgPath)
@@ -27,31 +29,50 @@ const ManageTemple = () => {
 
   const BASE_MEDIA_URL = "https://mahadevaaya.com/backend/media/";
 
-  const fetchTemples = async () => {
-    try {
-      setLoading(true);
-      const res = await axios.get(
-        "https://mahadevaaya.com/backend/api/get-temple/",
-        { params: { temple_id: uniqueId } }
-      );
+const fetchTemples = async () => {
+  try {
+    setLoading(true);
+    const res = await axios.get(
+      "https://mahadevaaya.com/backend/api/get-temple/",
+      { params: { temple_id: uniqueId } }
+    );
 
-      if (res.data) {
-        const data = Array.isArray(res.data) ? res.data : [res.data];
-        const formatted = data.map((t) => ({
-          ...t,
-          temple_image_url: t.temple_image ? BASE_MEDIA_URL + t.temple_image : "",
-          land_doc_url: t.land_doc ? BASE_MEDIA_URL + t.land_doc : "",
-          noc_doc_url: t.noc_doc ? BASE_MEDIA_URL + t.noc_doc : "",
-          trust_cert_url: t.trust_cert ? BASE_MEDIA_URL + t.trust_cert : "",
-        }));
-        setTemples(formatted);
-      }
-    } catch (err) {
-      console.error("Error fetching temples:", err);
-    } finally {
-      setLoading(false);
+    if (res.data) {
+      const data = Array.isArray(res.data) ? res.data : [res.data];
+
+      const formatMediaUrl = (filePath) => {
+        if (!filePath) return "";
+
+        // Case 1: Already has backend prefix → use as-is
+        if (filePath.includes("/backend/")) return filePath;
+
+        // Case 2: Full URL but missing /backend/
+        if (filePath.startsWith("http")) {
+          return filePath.replace("https://mahadevaaya.com/", "https://mahadevaaya.com/backend/");
+        }
+
+        // Case 3: Relative path → prepend complete correct base
+        return `https://mahadevaaya.com/backend/media/${filePath}`;
+      };
+
+      const formatted = data.map((t) => ({
+        ...t,
+        temple_image_url: formatMediaUrl(t.temple_image),
+        land_doc_url: formatMediaUrl(t.land_doc),
+        noc_doc_url: formatMediaUrl(t.noc_doc),
+        trust_cert_url: formatMediaUrl(t.trust_cert),
+      }));
+
+      setTemples(formatted);
     }
-  };
+  } catch (err) {
+    console.error("Error fetching temples:", err);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
   useEffect(() => {
     if (uniqueId) fetchTemples();
@@ -274,51 +295,320 @@ const ManageTemple = () => {
                   />
                 </Form.Group>
 
-                {/* DOCUMENT + IMAGE UPLOADS */}
-                {[
-                  { label: "Temple Image", key: "temple_image", type: "image" },
-                  { label: "Land Document", key: "land_doc", type: "doc" },
-                  { label: "NOC Document", key: "noc_doc", type: "doc" },
-                  { label: "Trust Certificate", key: "trust_cert", type: "doc" },
-                ].map(({ label, key, type }) => (
-                  <Form.Group className="mt-3" key={key}>
-                    <Form.Label>{label}</Form.Label>
+{/* Temple Image Upload Section */}
+<Row className="temp-stepform-box mt-4">
+  <Col lg={5} md={5} sm={12}>
+    <fieldset
+      className={`upload_dropZone text-center ${
+        dragging === "temple_image" ? "drag-over" : ""
+      }`}
+      onDragOver={(e) => {
+        e.preventDefault();
+        setDragging("temple_image");
+      }}
+      onDragLeave={() => setDragging(null)}
+      onDrop={(e) => {
+        e.preventDefault();
+        setDragging(null);
+        const file = e.dataTransfer.files[0];
+        if (file) {
+          handleChange({
+            target: { name: "temple_image", files: [file], type: "file" },
+          });
+        }
+      }}
+    >
+      <legend className="visually-hidden">Temple Image</legend>
+      <img
+        src="https://cdn-icons-png.flaticon.com/512/1092/1092530.png"
+        alt="upload"
+        style={{ width: "60px", opacity: 0.7 }}
+      />
+      <p className="temp-drop-txt my-2">
+        Drag &amp; drop files
+        <br />
+        <i>or</i>
+      </p>
 
-                   {/* ✅ IMAGE PREVIEW (Existing from server OR newly uploaded) */}
-    {type === "image" && (
-      <>
-        {currentTemple[`${key}_preview`] ? (
-          <img
-            src={currentTemple[`${key}_preview`]} // new uploaded file
-            alt="Preview"
-            style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "10px" }}
-          />
-        ) : currentTemple[key] ? (
-          <img
-            src={getImageUrl(currentTemple[key])} // existing image from API
-            alt="Temple"
-            style={{ width: "50%", height: "100px", objectFit: "cover", borderRadius: "10px" }}
-          />
-        ) : null}
-      </>
+      <input
+        id="temple_image"
+        name="temple_image"
+        type="file"
+        accept="image/jpeg, image/png"
+        className="invisible"
+        onChange={handleChange}
+      />
+
+      <label className="btn btn-primary mb-1" htmlFor="temple_image">
+        Choose file
+      </label>
+      <p className="temp-upload-file">Upload size up to 2MB (jpg, png)</p>
+    </fieldset>
+  </Col>
+
+  <Col lg={7} md={7} sm={12} className="mt-2">
+    <h5>
+      Temple Image <span style={{ color: "red" }}>*</span>
+    </h5>
+
+    {/*  Existing Temple Image from backend */}
+    {currentTemple.temple_image_url && !currentTemple.temple_image?.name && (
+      <div className="my-2">
+       
+        <img
+          src={currentTemple.temple_image_url}
+          alt="Temple"
+          style={{
+            width: "100%",
+            height: "180px",
+            objectFit: "contain",
+            borderRadius: "10px",
+            border: "1px solid #ccc",
+          }}
+        />
+        <div className="mt-2">
+          <a
+            href={currentTemple.temple_image_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-outline-primary btn-sm"
+          >
+             View Full Image
+          </a>
+        </div>
+      </div>
     )}
 
-                    {/* DOCUMENT LINK */}
-                    {type === "doc" && currentTemple[`${key}_url`] && (
-                      <div className="mb-2">
-                        <a
-                          href={currentTemple[`${key}_url`]}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          View Existing {label}
-                        </a>
-                      </div>
-                    )}
+    {/*  New uploaded image preview */}
+    {currentTemple.temple_image instanceof File && (
+      <div className="mt-2">
+        <p className="fw-bold">New Upload Preview:</p>
+        <img
+          src={URL.createObjectURL(currentTemple.temple_image)}
+          alt="Preview"
+          style={{
+            width: "100%",
+            height: "180px",
+            objectFit: "contain",
+            borderRadius: "10px",
+            border: "1px solid #ccc",
+          }}
+        />
+        <div className="mt-2 d-flex align-items-center gap-3">
+          <a
+            href={URL.createObjectURL(currentTemple.temple_image)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-outline-primary btn-sm"
+          >
+             View Full Image
+          </a>
+          <span
+            className="text-danger"
+            style={{ cursor: "pointer" }}
+            onClick={() =>
+              setCurrentTemple({
+                ...currentTemple,
+                temple_image: "",
+                temple_image_preview: "",
+              })
+            }
+          >
+            ❌ Remove
+          </span>
+        </div>
+      </div>
+    )}
+  </Col>
+</Row>
 
-                    <Form.Control type="file" name={key} onChange={handleChange} />
-                  </Form.Group>
-                ))}
+{/* ===================== DOCUMENTS SECTION ===================== */}
+{[
+  { label: "Land Document", key: "land_doc" },
+  { label: "NOC Document", key: "noc_doc" },
+  { label: "Trust Certificate", key: "trust_cert" },
+].map(({ label, key }) => (
+  <Row className="temp-stepform-box mt-4" key={key}>
+    <Col lg={5} md={5} sm={12}>
+      <fieldset
+        className={`upload_dropZone text-center ${
+          dragging === key ? "drag-over" : ""
+        }`}
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDragging(key);
+        }}
+        onDragLeave={() => setDragging(null)}
+        onDrop={(e) => {
+          e.preventDefault();
+          setDragging(null);
+          const file = e.dataTransfer.files[0];
+          if (file) {
+            handleChange({
+              target: { name: key, files: [file], type: "file" },
+            });
+          }
+        }}
+      >
+        <legend className="visually-hidden">{label}</legend>
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/1092/1092530.png"
+          alt="upload"
+          style={{ width: "60px", opacity: 0.7 }}
+        />
+        <p className="temp-drop-txt my-2">
+          Drag &amp; drop files
+          <br />
+          <i>or</i>
+        </p>
+
+        <input
+          id={key}
+          name={key}
+          type="file"
+          accept="image/jpeg, image/png, application/pdf"
+          className="invisible"
+          onChange={handleChange}
+        />
+
+        <label className="btn btn-primary mb-1" htmlFor={key}>
+          Choose file
+        </label>
+        <p className="temp-upload-file">Upload size up to 2MB (jpg, png, pdf)</p>
+      </fieldset>
+    </Col>
+
+    <Col lg={7} md={7} sm={12} className="mt-2">
+      <h5>
+        {label} <span style={{ color: "red" }}>*</span>
+      </h5>
+
+      {/*  Existing Document from backend */}
+      {currentTemple[`${key}_url`] && !currentTemple[key]?.name && (
+        <div className="my-2">
+          
+
+          {/* Image or PDF */}
+          {/\.(jpg|jpeg|png)$/i.test(currentTemple[`${key}_url`]) ? (
+            <>
+              <img
+                src={currentTemple[`${key}_url`]}
+                alt={label}
+                style={{
+                  width: "100%",
+                  height: "150px",
+                  objectFit: "contain",
+                  borderRadius: "10px",
+                  border: "1px solid #ccc",
+                }}
+              />
+              <div className="mt-2">
+                <a
+                  href={currentTemple[`${key}_url`]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline-primary btn-sm"
+                >
+                   View Full Image
+                </a>
+              </div>
+            </>
+          ) : (
+            <a
+              href={currentTemple[`${key}_url`]}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-outline-primary btn-sm"
+            >
+              📄 View Full PDF
+            </a>
+          )}
+        </div>
+      )}
+
+      {/*  New uploaded file preview */}
+      {currentTemple[key] instanceof File && (
+        <div className="mt-2">
+          
+
+          {currentTemple[key].type.startsWith("image/") ? (
+            <>
+              <img
+                src={URL.createObjectURL(currentTemple[key])}
+                alt="Preview"
+                style={{
+                  width: "100%",
+                  height: "150px",
+                  objectFit: "contain",
+                  borderRadius: "10px",
+                  border: "1px solid #ccc",
+                }}
+              />
+              <div className="mt-2 d-flex align-items-center gap-3">
+                <a
+                  href={URL.createObjectURL(currentTemple[key])}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline-primary btn-sm"
+                >
+                   View Full Image
+                </a>
+                <span
+                  className="text-danger"
+                  style={{ cursor: "pointer" }}
+                  onClick={() =>
+                    setCurrentTemple({
+                      ...currentTemple,
+                      [key]: "",
+                      [`${key}_preview`]: "",
+                    })
+                  }
+                >
+                  ❌ Remove
+                </span>
+              </div>
+            </>
+          ) : currentTemple[key].type === "application/pdf" ? (
+            <div className="mt-2">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/337/337946.png"
+                alt="PDF icon"
+                style={{ width: "50px" }}
+              />
+              <span className="ms-2">{currentTemple[key].name}</span>
+              <div className="mt-2 d-flex align-items-center gap-3">
+                <a
+                  href={URL.createObjectURL(currentTemple[key])}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline-primary btn-sm"
+                >
+                  📄 View Full PDF
+                </a>
+                <span
+                  className="text-danger"
+                  style={{ cursor: "pointer" }}
+                  onClick={() =>
+                    setCurrentTemple({
+                      ...currentTemple,
+                      [key]: "",
+                      [`${key}_preview`]: "",
+                    })
+                  }
+                >
+                  ❌ Remove
+                </span>
+              </div>
+            </div>
+          ) : (
+            <span>{currentTemple[key].name}</span>
+          )}
+        </div>
+      )}
+    </Col>
+  </Row>
+))}
+
               </Form>
             </Modal.Body>
             <Modal.Footer>

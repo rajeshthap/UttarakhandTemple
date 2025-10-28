@@ -13,6 +13,8 @@ import { useAuth } from "../../GlobleAuth/AuthContext";
 
 const EventParticipation = () => {
   const { uniqueId } = useAuth();
+  const [festivals, setFestivals] = useState([]);
+
 
   // Move useState for selectedDateTime to the top before any logic uses it
   const [selectedDateTime, setSelectedDateTime] = useState(null);
@@ -96,18 +98,28 @@ const EventParticipation = () => {
   };
 
   useEffect(() => {
-    const fetchTemples = async () => {
+    const fetchTemplesAndFestivals = async () => {
       try {
-        const res = await axios.get(`${BASE_URLL}api/temple-names-list/`);
-        if (res.data && Array.isArray(res.data.temple_names)) {
-          setTemples(res.data.temple_names);
+        const res = await axios.get(`${BASE_URLL}api/reg-festival/`);
+
+        if (res.data) {
+
+
+          const templeNames = res.data.temples
+            ? res.data.temples.map((t) => t.temple_name)
+            : [...new Set(res.data.map((item) => item.temple_name))];
+
+          setTemples(templeNames);
         }
       } catch (err) {
-        console.error("Error fetching temples:", err);
+        console.error("Error fetching temple names:", err);
+        setTemples([]);
       }
     };
-    fetchTemples();
+
+    fetchTemplesAndFestivals();
   }, []);
+
 
   const checkUserExists = async (fieldValue, fieldName) => {
     try {
@@ -191,7 +203,7 @@ const EventParticipation = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const { name, value } = e.target;
 
     setFormData((prev) => ({
@@ -213,7 +225,28 @@ const EventParticipation = () => {
     if (name === "email" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
       checkUserExists(value, "email");
     }
+
+    if (name === "temple_name" && value) {
+      try {
+        const res = await axios.get(`${BASE_URLL}api/reg-festival/`, {
+          params: { temple_name: value },
+        });
+
+        if (res.data && Array.isArray(res.data)) {
+          const templeFestivals = res.data.filter(
+            (item) => item.temple_name === value
+          );
+          setFestivals(templeFestivals);
+        } else {
+          setFestivals([]);
+        }
+      } catch (err) {
+        console.error("Error fetching festivals:", err);
+        setFestivals([]);
+      }
+    }
   };
+
 
   const handleCheckbox = async (e) => {
     const checked = e.target.checked;
@@ -310,11 +343,11 @@ const EventParticipation = () => {
         setAlertMessage("OTP Verified Successfully!");
         setShowAlert(true);
         setShow(false);
-                setTimeout(() => {
-                navigate("/PaymentConfirmation");
+        setTimeout(() => {
+          navigate("/PaymentConfirmation");
 
-                }
-        , 2000);
+        }
+          , 2000);
       } else {
         setAlertMessage("Invalid OTP, try again.");
         setShowAlert(true);
@@ -335,7 +368,7 @@ const EventParticipation = () => {
           <p>
             <i>Join Sacred Gatherings and Be Part of Divine Celebrations </i>
           </p>
-        
+
           <Row>
             <Col lg={8} md={8} sm={12} className="mt-2">
               <h2>Devotee Information</h2>
@@ -550,12 +583,17 @@ const EventParticipation = () => {
                       value={formData.event_name}
                       onChange={handleChange}
                     >
-                      <option value="">Select Event Name</option>
-                      <option value="Maha Shivratri">Maha Shivratri </option>
-                      <option value="Navratri Pooja">Navratri Pooja</option>
-                      <option value="Rath Yatra">Rath Yatra </option>
-                      <option value="Diwali ">Diwali </option>
-                      <option value="Mahotsav ">Mahotsav </option>
+                      <option value="">Select Event</option>
+                      {festivals.length > 0 ? (
+                        festivals.map((fest) => (
+                          <option key={fest.festival_id} value={fest.festival_name}>
+                            {fest.festival_name}
+                          </option>
+                        ))
+                      ) : (
+                        <option disabled>No festivals found for this temple</option>
+                      )}
+
                     </Form.Select>
                     {errors.event_name && (
                       <small className="text-danger">{errors.event_name}</small>
