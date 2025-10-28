@@ -304,7 +304,7 @@ const Events = () => {
         {/* Event Details Modal */}
         <Modal show={showEventModal} onHide={handleCloseModal} centered size="lg">
           <Modal.Header closeButton>
-            <Modal.Title>{selectedEvent?.festival_name || "Event Details"}</Modal.Title>
+            <Modal.Title className="event-heading-title">{selectedEvent?.festival_name || "Event Details"}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             {selectedEvent ? (
@@ -314,15 +314,17 @@ const Events = () => {
                     <img
                       src={getImageUrl(selectedEvent.image)}
                       alt={selectedEvent.festival_name}
-                      style={{ width: "100%", height: "220px", objectFit: "cover", borderRadius: 6 }}
+                      className="card-event-image"
                     />
                   </Col>
                   <Col md={7}>
-                    <h5>{selectedEvent.temple_name}</h5>
-                    <p className="mb-1"><strong>Start:</strong> {selectedEvent.start_day} ({formatDate(selectedEvent.start_date_time)})</p>
-                    <p className="mb-1"><strong>End:</strong> {selectedEvent.end_day} ({formatDate(selectedEvent.end_date_time)})</p>
-                    <p className="mb-2"><strong>Venue / Notes:</strong> {selectedEvent.venue || "-"}</p>
-                    <p>{selectedEvent.description || "No additional information."}</p>
+                    <h5 className="event-heading">{selectedEvent.temple_name}</h5>
+                    <div className="event-time-txt">
+                      <p className="mb-1"><strong className="event-data-txt">Start:</strong> {selectedEvent.start_day} ({formatDate(selectedEvent.start_date_time)})</p>
+                      <p className="mb-1"><strong className="event-data-txt">End:</strong> {selectedEvent.end_day} ({formatDate(selectedEvent.end_date_time)})</p>
+                      <p className="mb-2"><strong className="event-data-txt">Venue / Notes:</strong> {selectedEvent.venue || "-"}</p>
+                      <p>{selectedEvent.description || "No additional information."}</p>
+                    </div>
                   </Col>
                 </Row>
               </>
@@ -331,10 +333,10 @@ const Events = () => {
             )}
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseModal}>
+            <Button variant="" className="event-click-cancel " onClick={handleCloseModal}>
               Close
             </Button>
-            <Button variant="temp-submit-btn" onClick={() => { if (selectedEvent) handleRegister(selectedEvent); }}>
+            <Button variant="temp-submit-btn" className="event-click-btn btn" onClick={() => { if (selectedEvent) handleRegister(selectedEvent); }}>
               Book Now
             </Button>
           </Modal.Footer>
