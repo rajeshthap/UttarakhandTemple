@@ -20,7 +20,6 @@ const PanditProfile = () => {
   const [alertMsg, setAlertMsg] = useState("");
   const [dragging, setDragging] = useState(null);
 
-  // 🔹 Initial preview is empty (does NOT preselect previous image)
   const [preview, setPreview] = useState({
     pandit_image: "",
     land_document: "",
@@ -57,9 +56,8 @@ const PanditProfile = () => {
         );
         const data = res.data || {};
         setProfile(data);
-        // 🔹 Only show land doc in preview, not profile image
         setPreview({
-          pandit_image: "", // intentionally left blank
+          pandit_image: "", 
           land_document: data.land_document || "",
         });
       } catch (err) {
@@ -148,7 +146,6 @@ const PanditProfile = () => {
       setAlertMsg("Profile updated successfully!");
       setShowAlert(true);
 
-      // 🔹 Refresh data automatically
       const fresh = await axios.get(
         `https://mahadevaaya.com/backend/api/get-pandit/?pandit_id=${uniqueId}`
       );
