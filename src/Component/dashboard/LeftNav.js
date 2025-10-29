@@ -68,7 +68,7 @@ function LeftNav() {
 
   fetchProfile();
 
-  //  Listen for live updates from MyProfile
+  // Listen for live updates from MyProfile
   const handleProfileUpdate = (event) => {
     const updated = event.detail;
     if (updated) {
@@ -95,11 +95,16 @@ useEffect(() => {
       const response = await axios.get(
         `https://mahadevaaya.com/backend/api/get-user/?user_id=${userId}`
       );
+
       if (response.data) {
         const user = response.data;
         setProfile({
           displayName: user.devotee_name || "",
-          devotee_photo: user.devotee_photo || "",
+          devotee_photo: user.devotee_photo
+            ? `https://mahadevaaya.com/backend/media/devotee_photos/${user.devotee_photo
+                .split("/")
+                .pop()}?v=${Date.now()}`
+            : "",
         });
       }
     } catch (error) {
@@ -111,25 +116,25 @@ useEffect(() => {
 
   fetchProfile();
 
-  // ✅ Listen for updates
+  //  Listen for live updates from MyProfile
   const handleProfileUpdate = (event) => {
     const updated = event.detail;
     if (updated) {
       setProfile((prev) => ({
         ...prev,
         displayName: updated.displayName || prev.displayName,
-        devotee_photo: updated.devotee_photo || prev.devotee_photo,
+        devotee_photo: updated.devotee_photo
+          ? `https://mahadevaaya.com/backend/media/devotee_photos/${updated.devotee_photo
+              .split("/")
+              .pop()}?v=${Date.now()}` // 👈 forces new image fetch immediately
+          : prev.devotee_photo,
       }));
     }
   };
 
   window.addEventListener("profileUpdated", handleProfileUpdate);
-  return () => {
-    window.removeEventListener("profileUpdated", handleProfileUpdate);
-  };
+  return () => window.removeEventListener("profileUpdated", handleProfileUpdate);
 }, [uniqueId]);
-
-
   const handleDownload = (fileUrl, fileName) => {
     const a = document.createElement("a");
     a.href = fileUrl;
@@ -333,14 +338,16 @@ useEffect(() => {
                 title="Account Menu"
               >
                 <img
-                  src={
-                    profile.devotee_photo
-                      ? `https://mahadevaaya.com/backend/media/devotee_photos/${profile.devotee_photo.split("/").pop()}`
-                      : "https://mahadevaaya.com/backend/media/devotee_photos/default.png"
-                  }
-                  alt={profile.displayName || "Devotee"}
-                  className="nav-profile-photo"
-                />
+  key={profile.devotee_photo} // 👈 ensures React re-renders image
+  src={
+    profile.devotee_photo
+      ? profile.devotee_photo
+      : "https://mahadevaaya.com/backend/media/devotee_photos/default.png"
+  }
+  alt={profile.displayName || "Devotee"}
+  className="nav-profile-photo"
+/>
+
               </Dropdown.Toggle>
 
               {/* Dropdown menu */}
@@ -362,14 +369,14 @@ useEffect(() => {
 
         </div>
       </header>
-
       {/* Sidebar Navigation */}
       <div className={`navcontainer ${isNavClosed ? "navclose" : ""}`}>
         <nav className="nav">
           <div className="nav-upper-options">
             <div className="nd-menu">
               <FaAlignLeft className="icn menuicn" onClick={toggleNav} />
-              <div className="nd-user">User: {userName}</div>
+              <div className="nd-user">{profile.displayName || "User"}</div>
+              
               <Dropdown align="end" className="user-dp">
                 <Dropdown.Toggle
                   variant=""
@@ -377,9 +384,19 @@ useEffect(() => {
                   className="border-0 bg-transparent"
                   title="Account Menu"
                 >
-                  <div className="nd-log-icon-pandit">
-                    <LuLogOut />
-                  </div>
+                <img
+  src={
+    profile.devotee_photo
+      ? profile.devotee_photo.includes("http")
+        ? profile.devotee_photo
+        : `https://mahadevaaya.com/backend/media/devotee_photos/${profile.devotee_photo
+            .split("/")
+            .pop()}?t=${Date.now()}`
+      : "https://mahadevaaya.com/backend/media/devotee_photos/default.png"
+  }
+  alt={profile.displayName || "Devotee"}
+  className="nav-profile-photo"
+/>
                 </Dropdown.Toggle>
 
                 {/* Dropdown menu */}

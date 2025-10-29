@@ -102,6 +102,9 @@ const EventParticipation = () => {
   const [alertMessage, setAlertMessage] = useState("");
   const [showLoginModal, setShowLoginModal] = useState(false);
 
+
+
+
   const [formData, setFormData] = useState({
     full_name: "",
     gender: "",
@@ -115,6 +118,7 @@ const EventParticipation = () => {
     participation_type: "",
     number_of_participants: "",
     event_date_and_time: "",
+    end_event_date_and_time:"",
     gotra: "",
     nakshatra_rashi: "",
     special_instructions: "",
@@ -149,26 +153,32 @@ const EventParticipation = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchTemplesAndFestivals = async () => {
-      try {
-        const res = await axios.get(`${BASE_URLL}api/reg-festival/`);
+ useEffect(() => {
+  const fetchTemplesAndFestivals = async () => {
+    try {
+      const res = await axios.get(`${BASE_URLL}api/reg-festival/`);
 
-        if (res.data) {
-          const templeNames = res.data.temples
-            ? res.data.temples.map((t) => t.temple_name)
-            : [...new Set(res.data.map((item) => item.temple_name))];
+      if (res.data) {
+        const templeNames = res.data.temples
+          ? res.data.temples.map((t) => t.temple_name)
+          : [...new Set(res.data.map((item) => item.temple_name))];
 
-          setTemples(templeNames);
+        setTemples(templeNames);
+
+        // ✅ NEW: store all festival data for later use
+        if (Array.isArray(res.data)) {
+          setFestivals(res.data);
         }
-      } catch (err) {
-        console.error("Error fetching temple names:", err);
-        setTemples([]);
       }
-    };
+    } catch (err) {
+      console.error("Error fetching temple names:", err);
+      setTemples([]);
+    }
+  };
 
-    fetchTemplesAndFestivals();
-  }, []);
+  fetchTemplesAndFestivals();
+}, []);
+
 
   const checkUserExists = async (fieldValue, fieldName) => {
     try {
@@ -376,6 +386,8 @@ const EventParticipation = () => {
       }
     }
   };
+
+const [selectedFestival, setSelectedFestival] = useState(null); // ✅ add this line
 
   // Verify OTP
   const handleVerifyOtp = async () => {
@@ -622,8 +634,7 @@ const EventParticipation = () => {
                     )}
                   </Form.Group>
                 </Col>
-
-                <Col lg={6} md={6} sm={12}>
+ <Col lg={6} md={6} sm={12}>
                   <Form.Group
                     className="mb-3"
                     controlId="exampleForm.ControlInput1"
@@ -631,29 +642,39 @@ const EventParticipation = () => {
                     <Form.Label className="temp-label">
                       Event Name <span className="temp-span-star">*</span>
                     </Form.Label>
-                    <Form.Select
-                      className="temp-form-control-option"
-                      name="event_name"
-                      value={formData.event_name}
-                      onChange={handleChange}
-                      disabled={!!formData.event_name} // Fixed: Use event_name instead of festival_name
-                    >
-                      <option value="">Select Event</option>
-                      {festivals.length > 0 ? (
-                        festivals.map((fest) => (
-                          <option key={fest.festival_id} value={fest.festival_name}>
-                            {fest.festival_name}
-                          </option>
-                        ))
-                      ) : (
-                        <option disabled>No festivals found for this temple</option>
-                      )}
-                    </Form.Select>
-                    {errors.event_name && (
-                      <small className="text-danger">{errors.event_name}</small>
-                    )}
-                  </Form.Group>
-                </Col>
+               <Form.Select
+  className="temp-form-control-option"
+  name="event_name"
+  value={formData.event_name}
+  onChange={(e) => {
+    handleChange(e); // keep your existing handler
+
+    const selected = festivals.find(
+      (fest) => fest.festival_name === e.target.value
+    );
+
+    if (selected) {
+      setSelectedFestival(selected);
+      // ✅ Automatically fill start/end date fields
+      setSelectedDateTime(new Date(selected.start_date_time));
+      setSelectedEndDateTime(new Date(selected.end_date_time));
+    }
+  }}
+  disabled={!!formData.event_name}
+>
+  <option value="">Select Event</option>
+  {festivals.length > 0 ? (
+    festivals.map((fest) => (
+      <option key={fest.festival_id} value={fest.festival_name}>
+        {fest.festival_name}
+      </option>
+    ))
+  ) : (
+    <option disabled>No festivals found for this temple</option>
+  )}
+</Form.Select>
+ </Form.Group>
+</Col>
 
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group

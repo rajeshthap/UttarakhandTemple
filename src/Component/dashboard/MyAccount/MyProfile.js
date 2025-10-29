@@ -12,7 +12,6 @@ import { FaCamera } from "react-icons/fa";
 import DefaultProfile from "../../../assets/images/Diya.png";
 import { BASE_URLL } from "../../BaseURL";
 
-
 const MyProfile = () => {
   const navigate = useNavigate();
   const { uniqueId } = useAuth(); // user id
@@ -85,22 +84,18 @@ const MyProfile = () => {
     const { name, value } = e.target;
     setProfile((prev) => ({ ...prev, [name]: value }));
   };
-
   const handleEditPhoto = () => {
     fileInputRef.current?.click();
   };
-
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setSelectedFile(file);
-
     // preview
     const reader = new FileReader();
     reader.onload = (ev) => setPreviewUrl(ev.target.result);
     reader.readAsDataURL(file);
   };
-
 const handleSubmit = async (e) => {
   e.preventDefault();
   setSaving(true);
@@ -115,7 +110,7 @@ const handleSubmit = async (e) => {
     if (res.status >= 200 && res.status < 300) {
       const updated = res.data || {};
 
-      // ✅ Build fresh photo URL
+      //  Build fresh photo URL
       const newPhoto = updated.devotee_photo
         ? `https://mahadevaaya.com/backend/media/devotee_photos/${updated.devotee_photo.split("/").pop()}`
         : previewUrl;
@@ -125,24 +120,25 @@ const handleSubmit = async (e) => {
         displayName: updated.devotee_name || prev.displayName,
         devotee_photo: updated.devotee_photo || prev.devotee_photo,
       }));
-
       if (updated.devotee_photo) {
         setPreviewUrl(`${newPhoto}?t=${Date.now()}`); // 💥 cache-buster here too
       }
 
-      // ✅ Emit event for LeftNav
-    window.dispatchEvent(
+      //  Emit event for LeftNav
+//  Emit event for LeftNav with cache-busted URL
+window.dispatchEvent(
   new CustomEvent("profileUpdated", {
     detail: {
       displayName: updated.devotee_name || profile.displayName,
       devotee_photo: updated.devotee_photo
         ? `https://mahadevaaya.com/backend/media/devotee_photos/${updated.devotee_photo
             .split("/")
-            .pop()}?t=${Date.now()}` // 💥 add timestamp for immediate cache refresh
+            .pop()}?t=${Date.now()}` // cache-buster timestamp
         : previewUrl,
     },
   })
 );
+
 
 
    
