@@ -213,7 +213,7 @@ const ChangePassword = () => {
               <div className="project-btn mt-3">
                 <Button
                   type="submit"
-                  className="temp-submit-btn"
+                  className="user-btn-edit"
                   disabled={
                     loading ||
                     validationErrors.newPassword ||
