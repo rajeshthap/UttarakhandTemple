@@ -14,11 +14,10 @@ import { useAuth } from "../../GlobleAuth/AuthContext";
 const EventParticipation = () => {
   const { uniqueId } = useAuth();
   const [festivals, setFestivals] = useState([]);
-
-const routerLocation = useLocation();
+  const routerLocation = useLocation();
   const eventData = routerLocation.state?.event; //  get event object
 
- 
+  const [selectedEndDateTime, setSelectedEndDateTime] = useState(null);
   // Move useState for selectedDateTime to the top before any logic uses it
   const [selectedDateTime, setSelectedDateTime] = useState(null);
   // Helper to round up to next 30 min interval
@@ -28,29 +27,56 @@ const routerLocation = useLocation();
     let nextHour = nextMinutes === 0 ? date.getHours() + 1 : date.getHours();
     return setMinutes(setHours(date, nextHour), nextMinutes);
   };
- useEffect(() => {
-  if (eventData) {
-    setFormData((prev) => ({
-      ...prev,
-      temple_name: eventData.temple_name || "",
-      event_start_date: eventData.start_date_time
-        ? eventData.start_date_time.split("T")[0]
-        : "",
-      event_end_date: eventData.end_date_time
-        ? eventData.end_date_time.split("T")[0]
-        : "",
-         festival_name: eventData.festival_name || "",
-      
-    }));
 
-    //  Auto-fill DatePicker with event start date & time
-    if (eventData.start_date_time) {
-      setSelectedDateTime(new Date(eventData.start_date_time));
+  useEffect(() => {
+    if (eventData) {
+      setFormData((prev) => ({
+        ...prev,
+        temple_name: eventData.temple_name || "",
+        event_name: eventData.festival_name || eventData.event_name || "", // Fixed: Use event_name instead of festival_name
+        event_start_date: eventData.start_date_time
+          ? eventData.start_date_time.split("T")[0]
+          : "",
+        event_end_date: eventData.end_date_time
+          ? eventData.end_date_time.split("T")[0]
+          : "",
+      }));
+
+      // Auto-fill start and end DatePickers
+      if (eventData.start_date_time) {
+        setSelectedDateTime(new Date(eventData.start_date_time));
+      }
+      if (eventData.end_date_time) {
+        setSelectedEndDateTime(new Date(eventData.end_date_time));
+      }
+
+      // If we have eventData, we should fetch festivals for the specific temple
+      if (eventData.temple_name) {
+        fetchFestivalsForTemple(eventData.temple_name);
+      }
     }
-  }
-}, [eventData]);
+  }, [eventData]);
 
+  // Add this function to fetch festivals for a specific temple
+  const fetchFestivalsForTemple = async (templeName) => {
+    try {
+      const res = await axios.get(`${BASE_URLL}api/reg-festival/`, {
+        params: { temple_name: templeName },
+      });
 
+      if (res.data && Array.isArray(res.data)) {
+        const templeFestivals = res.data.filter(
+          (item) => item.temple_name === templeName
+        );
+        setFestivals(templeFestivals);
+      } else {
+        setFestivals([]);
+      }
+    } catch (err) {
+      console.error("Error fetching festivals:", err);
+      setFestivals([]);
+    }
+  };
 
   const today = new Date();
   const isToday =
@@ -129,8 +155,6 @@ const routerLocation = useLocation();
         const res = await axios.get(`${BASE_URLL}api/reg-festival/`);
 
         if (res.data) {
-
-
           const templeNames = res.data.temples
             ? res.data.temples.map((t) => t.temple_name)
             : [...new Set(res.data.map((item) => item.temple_name))];
@@ -145,7 +169,6 @@ const routerLocation = useLocation();
 
     fetchTemplesAndFestivals();
   }, []);
-
 
   const checkUserExists = async (fieldValue, fieldName) => {
     try {
@@ -168,7 +191,7 @@ const routerLocation = useLocation();
     }
   };
 
-  //  Validation logic
+  // Validation logic
   const validateFields = () => {
     const newErrors = {};
 
@@ -211,8 +234,15 @@ const routerLocation = useLocation();
     )
       newErrors.number_of_participants =
         "Valid number of participants required";
-    if (!formData.event_date_and_time)
-      newErrors.event_date_and_time = "Event Date & Time is required";
+
+    if (!selectedDateTime && !eventData?.start_date_time) {
+      newErrors.start_event_date_and_time = "Start Event Date & Time is required";
+    }
+
+    // Validate End Date & Time
+    if (!selectedEndDateTime && !eventData?.end_date_time) {
+      newErrors.end_event_date_and_time = "End Event Date & Time is required";
+    }
 
     if (!formData.gotra.trim()) newErrors.gotra = "Gotra is required";
     if (!formData.nakshatra_rashi.trim())
@@ -227,7 +257,6 @@ const routerLocation = useLocation();
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
 
   const handleChange = async (e) => {
     const { name, value } = e.target;
@@ -272,7 +301,6 @@ const routerLocation = useLocation();
       }
     }
   };
-
 
   const handleCheckbox = async (e) => {
     const checked = e.target.checked;
@@ -349,7 +377,7 @@ const routerLocation = useLocation();
     }
   };
 
-  //  Verify OTP
+  // Verify OTP
   const handleVerifyOtp = async () => {
     if (!otp) {
       setAlertMessage("Enter OTP");
@@ -371,9 +399,7 @@ const routerLocation = useLocation();
         setShow(false);
         setTimeout(() => {
           navigate("/PaymentConfirmation");
-
-        }
-          , 2000);
+        }, 2000);
       } else {
         setAlertMessage("Invalid OTP, try again.");
         setShowAlert(true);
@@ -576,10 +602,10 @@ const routerLocation = useLocation();
                     </Form.Label>
                     <Form.Select
                       className="temp-form-control-option"
-  name="temple_name"
-  value={formData.temple_name}
-  onChange={handleChange}
-  disabled={!!formData.temple_name}
+                      name="temple_name"
+                      value={formData.temple_name}
+                      onChange={handleChange}
+                      disabled={!!formData.temple_name}
                     >
                       <option value="">Select Temple Name</option>
                       {temples.map((temple, index) => (
@@ -596,7 +622,7 @@ const routerLocation = useLocation();
                     )}
                   </Form.Group>
                 </Col>
-                
+
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
                     className="mb-3"
@@ -609,7 +635,8 @@ const routerLocation = useLocation();
                       className="temp-form-control-option"
                       name="event_name"
                       value={formData.event_name}
-                      onChange={handleChange} disabled={!!formData.festival_name}
+                      onChange={handleChange}
+                      disabled={!!formData.event_name} // Fixed: Use event_name instead of festival_name
                     >
                       <option value="">Select Event</option>
                       {festivals.length > 0 ? (
@@ -621,7 +648,6 @@ const routerLocation = useLocation();
                       ) : (
                         <option disabled>No festivals found for this temple</option>
                       )}
-
                     </Form.Select>
                     {errors.event_name && (
                       <small className="text-danger">{errors.event_name}</small>
@@ -683,7 +709,7 @@ const routerLocation = useLocation();
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group className="mb-3 ">
                     <Form.Label className="temp-label mb-2">
-                      Event Date & Time{" "}
+                      Start Event Date & Time{" "}
                       <span className="temp-span-star">*</span>
                     </Form.Label>
                     <div>
@@ -697,14 +723,43 @@ const routerLocation = useLocation();
                         placeholderText="Select Date and time"
                         className="form-control temp-form-control-option w-100"
                         minDate={today}
-                        minTime={minTime}  
+                        minTime={minTime}
                         maxTime={maxTime}
-                     disabled={!!selectedDateTime}
+                        disabled={!!selectedDateTime}
                       />
                     </div>
-                    {errors.event_date_and_time && (
+                    {errors.start_event_date_and_time && (
                       <small className="text-danger">
-                        {errors.event_date_and_time}
+                        {errors.start_event_date_and_time}
+                      </small>
+                    )}
+                  </Form.Group>
+                </Col>
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group className="mb-3 ">
+                    <Form.Label className="temp-label mb-2">
+                      End Event Date & Time{" "}
+                      <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <div>
+                      <DatePicker
+                        selected={selectedEndDateTime}
+                        onChange={setSelectedEndDateTime}
+                        showTimeSelect
+                        timeFormat="hh:mm aa"
+                        timeIntervals={30}
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        placeholderText="Select End Date and Time"
+                        className="form-control temp-form-control-option w-100"
+                        minDate={today}
+                        minTime={minTime}
+                        maxTime={maxTime}
+                        disabled={!!selectedEndDateTime}
+                      />
+                    </div>
+                    {errors.end_event_date_and_time && (
+                      <small className="text-danger">
+                        {errors.end_event_date_and_time}
                       </small>
                     )}
                   </Form.Group>

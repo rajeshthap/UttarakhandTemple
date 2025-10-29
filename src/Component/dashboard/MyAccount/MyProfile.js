@@ -101,42 +101,65 @@ const MyProfile = () => {
     reader.readAsDataURL(file);
   };
 
-   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSaving(true);
-    try {
-      const userId = uniqueId || "";
-      const res = await updateProfile({
-        userId,
-        profileData: profile,
-        file: selectedFile,
-      });
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setSaving(true);
+  try {
+    const userId = uniqueId || "";
+    const res = await updateProfile({
+      userId,
+      profileData: profile,
+      file: selectedFile,
+    });
 
-      if (res.status >= 200 && res.status < 300) {
-        const updated = res.data || {};
-        setProfile((prev) => ({
-          ...prev,
-          displayName: updated.devotee_name || profile.displayName,
-          devotee_photo: updated.devotee_photo || prev.devotee_photo,
-        }));
+    if (res.status >= 200 && res.status < 300) {
+      const updated = res.data || {};
 
-        if (updated.devotee_photo) {
-          const filename = updated.devotee_photo.split("/").pop();
-          setPreviewUrl(
-            `https://mahadevaaya.com/backend/media/devotee_photos/${filename}`
-          );
-        }
-        alert("Profile updated successfully");
-      } else {
-        alert(res.data?.message || "Failed to update profile");
+      // ✅ Build fresh photo URL
+      const newPhoto = updated.devotee_photo
+        ? `https://mahadevaaya.com/backend/media/devotee_photos/${updated.devotee_photo.split("/").pop()}`
+        : previewUrl;
+
+      setProfile((prev) => ({
+        ...prev,
+        displayName: updated.devotee_name || prev.displayName,
+        devotee_photo: updated.devotee_photo || prev.devotee_photo,
+      }));
+
+      if (updated.devotee_photo) {
+        setPreviewUrl(`${newPhoto}?t=${Date.now()}`); // 💥 cache-buster here too
       }
-    } catch (err) {
-      console.error("Profile update error:", err);
-      alert(err.response?.data?.message || err.message || "Error updating profile");
-    } finally {
-      setSaving(false);
+
+      // ✅ Emit event for LeftNav
+    window.dispatchEvent(
+  new CustomEvent("profileUpdated", {
+    detail: {
+      displayName: updated.devotee_name || profile.displayName,
+      devotee_photo: updated.devotee_photo
+        ? `https://mahadevaaya.com/backend/media/devotee_photos/${updated.devotee_photo
+            .split("/")
+            .pop()}?t=${Date.now()}` // 💥 add timestamp for immediate cache refresh
+        : previewUrl,
+    },
+  })
+);
+
+
+   
+
+      alert("Profile updated successfully");
+    } else {
+      alert(res.data?.message || "Failed to update profile");
     }
-  };
+  } catch (err) {
+    console.error("Profile update error:", err);
+    alert(err.response?.data?.message || err.message || "Error updating profile");
+  } finally {
+    setSaving(false);
+  }
+};
+
+
 
   return (
     <div className="dashboard-wrapper">
