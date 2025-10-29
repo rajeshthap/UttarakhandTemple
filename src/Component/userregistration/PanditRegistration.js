@@ -1300,7 +1300,7 @@ function PanditRegistration() {
 
                       <div className="gap-3 mt-3 Temp-btn-submit">
                         <Button
-                          variant="temp-submit-btn"
+                          className="btn-save mt-3"
                           type="submit"
                           disabled={loading}
                         >
