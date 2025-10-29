@@ -258,7 +258,7 @@ const ManageFestival = () => {
                       <Form.Control
                       className="temp-form-control-option"
                         name="temple_name"
-                        value={currentFestival.temple_name || ""}
+                        value={currentFestival.temple_name || ""} disabled
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -344,8 +344,8 @@ const ManageFestival = () => {
                       }}
                     >
                       <legend className="visually-hidden">Festival Image</legend>
-                      <img src={UploadFile} alt="upload" style={{ width: "60px" }} />
-                      
+                      <img src={UploadFile} alt="upload" style={{ width: "35px" }} />
+
                       <p className="temp-drop-txt my-2">
                         Drag &amp; drop file<br />
                         <i>or</i>

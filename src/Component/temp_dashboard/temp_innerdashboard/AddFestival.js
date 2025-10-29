@@ -4,7 +4,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../../assets/CSS/LeftNav.css";
 import TempleLeftNav from "../TempleLeftNav";
-import SearchFeature from "./SearchFeature";
 import { useAuth } from "../../GlobleAuth/AuthContext";
 import axios from "axios";
 import { BASE_URLL } from "../../../Component/BaseURL";
@@ -203,7 +202,6 @@ const AddFestival = () => {
             <h1 className="fw500">
               <span className="fw700h1">Add </span> Festival
             </h1>
-            <SearchFeature />
           </div>
           <div className="temp-container">
             <div className="temp-donate">
@@ -316,6 +314,7 @@ const AddFestival = () => {
                       )}
                     </Form.Group>
                   </Col>
+
                   <Col lg={6} sm={12} md={6}>
                     <Form.Group className="mb-3">
                       <Form.Label className="temp-label">
@@ -323,7 +322,7 @@ const AddFestival = () => {
                       </Form.Label>
                       <Form.Control
                         as="textarea"
-                        rows={2}
+                        rows={4}
                         name="description"
                         className="temp-form-control"
                         value={formData.description}
@@ -337,11 +336,10 @@ const AddFestival = () => {
                     </Form.Group>
                   </Col>
 
-                  <Col g={6} sm={12} md={6} className="add-event-f-mob">
+                  <Col lg={6} sm={12} md={6} className="add-event-f-mob">
                     <fieldset
-                      className={`upload_dropZone text-center ${
-                        dragging === "image" ? "drag-over" : ""
-                      }`}
+                      className={`upload_dropZone text-center ${dragging === "image" ? "drag-over" : ""
+                        }`}
                       onDragOver={(e) => {
                         e.preventDefault();
                         setDragging("image");
@@ -374,6 +372,13 @@ const AddFestival = () => {
                       <label
                         className="btn temp-primary-btn mb-1"
                         htmlFor="image"
+                        style={{
+                          display: "block",
+                          margin: "8px auto 0 auto", 
+                          width: "20%",              
+                          maxWidth: "200px",         
+                          textAlign: "center",
+                        }}
                       >
                         Choose file
                       </label>

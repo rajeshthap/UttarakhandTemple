@@ -323,7 +323,7 @@ const ManageTemple = () => {
                       <legend className="visually-hidden">Temple Image</legend>
                       <img
                         src={UploadFile} alt="upload-file"
-                        style={{ width: "60px" }}
+                        style={{ width: "35px" }}
                       />
                       <p className="temp-drop-txt my-2">
                         Drag &amp; drop files
@@ -454,7 +454,7 @@ const ManageTemple = () => {
                         <legend className="visually-hidden">{label}</legend>
                         <img
                           src={UploadFile} alt="upload-file"
-                          style={{ width: "60px" }}
+                          style={{ width: "35px"}}
                         />
                         <p className="temp-drop-txt my-2">
                           Drag &amp; drop files
