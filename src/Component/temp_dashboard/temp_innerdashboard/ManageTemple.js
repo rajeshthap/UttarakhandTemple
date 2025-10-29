@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import "../../../assets/CSS/LeftNav.css";
 import TempleLeftNav from "../TempleLeftNav";
 import SearchFeature from "./SearchFeature";
+import { BASE_URLL } from "../../../Component/BaseURL";
 import { Button, Modal, Form, Row, Col, } from "react-bootstrap";
 import axios from "axios";
 import LocationState from "../../userregistration/LocationState";
@@ -25,23 +26,17 @@ const ManageTemple = () => {
 
   const handleInputChangeCity = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // validateField(name, value); // live validation on custom handler
+    
   };
 
 
 
-  // const getImageUrl = (imgPath) => {
-  //   if (!imgPath)
-  //     return "https://mahadevaaya.com/backend/media/temple_images/default.png";
-  //   const filename = imgPath.split("/").pop();
-  //   return `https://mahadevaaya.com/backend/media/temple_images/${filename}`;
-  // };
+ 
 
   const fetchTemples = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(
-        "https://mahadevaaya.com/backend/api/get-temple/",
+      const res = await axios.get(`${BASE_URLL}api/get-temple/`,
         { params: { temple_id: uniqueId } }
       );
 
@@ -144,8 +139,7 @@ const ManageTemple = () => {
     });
 
     try {
-      const res = await axios.put(
-        "https://mahadevaaya.com/backend/api/get-temple/",
+      const res = await axios.put(`${BASE_URLL}api/get-temple/`,
         formData,
         {
           params: { temple_id: uniqueId },

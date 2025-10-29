@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../../../assets/CSS/LeftNav.css";
 import TempleLeftNav from "../TempleLeftNav";
 import SearchFeature from "./SearchFeature";
+import { BASE_URLL } from "../../../Component/BaseURL";
 import { Button, Modal, Form, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import UploadFile from "../../../assets/images/upload-icon.png";
@@ -18,8 +19,7 @@ const ManageFestival = () => {
   const fetchFestivals = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(
-        "https://mahadevaaya.com/backend/api/reg-festival/",
+      const res = await axios.get(`${BASE_URLL}api/reg-festival/`,
         { params: { creator_id: uniqueId } }
       );
 
@@ -118,8 +118,7 @@ const ManageFestival = () => {
     formData.append("updated_by", uniqueId);
 
     try {
-      const res = await axios.put(
-        "https://mahadevaaya.com/backend/api/reg-festival/",
+      const res = await axios.put(`${BASE_URLL}api/reg-festival/`,
         formData,
         {
           params: { creator_id: uniqueId, festival_id: currentFestival.festival_id },
