@@ -105,7 +105,7 @@ function PanditLeftNav() {
 
 
   const navigationOptions = [
-    { icon: <RiDashboard3Line />, label: "Dashboard", path: "/TempleDashBoard" },
+    { icon: <RiDashboard3Line />, label: "Dashboard", path: "/Pandit_DashBoard" },
 
     // { icon: <BiDonateHeart />, label: "Online", path: "#" },
 
@@ -119,12 +119,12 @@ function PanditLeftNav() {
         {
           icon: <LiaCalendarCheck />,
           label: "Add New Puja ",
-          path: "/AddTemple"
+          path: "/AddPuja"
         },
         {
           icon: <LiaCalendarCheck />,
           label: "Completed Pujas",
-          path: "/ManageTemple"
+          path: "/CompletedPuja"
         },
 
 
@@ -141,17 +141,17 @@ function PanditLeftNav() {
         {
           icon: <LiaCalendarCheck />,
           label: "Pending ",
-          path: "/SevaRegistrationDashBoard"
+          path: "/PendingRequests"
         },
         {
           icon: <LiaCalendarCheck />,
           label: "Confirmed",
-          path: "/EventDashBoard"
+          path: "/ConfirmedRequests"
         },
         {
           icon: <LiaCalendarCheck />,
           label: "Cancelled",
-          path: "/EventDashBoard"
+          path: "/CancelledRequests"
         },
 
 
@@ -166,26 +166,26 @@ function PanditLeftNav() {
     {
       icon: <GiByzantinTemple />,
       label: "Puja Calendar",
-      path: "/BookingHistory",
+      path: "/PujaCalendar",
 
     },
     {
       icon: <GiByzantinTemple />,
       label: "Earnings & Transactions",
-      path: "/BookingHistory",
+      path: "/EarnAndTrans",
 
     },
 
     {
       icon: <GiByzantinTemple />,
       label: "Reports & Analytics",
-      path: "/BookingHistory",
+      path: "/ReportAnalytics",
 
     },
     {
       icon: <GiByzantinTemple />,
       label: "Reviews & Feedback",
-      path: "/BookingHistory",
+      path: "/ReviewsFeedback",
 
     },
 
@@ -202,18 +202,18 @@ function PanditLeftNav() {
         {
           icon: <LiaCalendarCheck />,
           label: "My Profile",
-          path: "/MyProfile"
+          path: "/PanditProfile"
         },
         {
           icon: <LiaCalendarCheck />,
           label: "Change Password",
-          path: "/MyProfile"
+          path: "/PanditChangePassword"
         },
       ]
     },
 
     {
-      path: "/Support",
+      path: "/PanditSupport",
       icon: <FaRegFileLines />,
       label: "Support",
 

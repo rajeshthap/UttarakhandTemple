@@ -80,8 +80,8 @@ import TempChangePassword from "./Component/temp_dashboard/temp_innerdashboard/T
 import TempSevaRegis from "./Component/temp_dashboard/temp_innerdashboard/TempSevaRegis";
 import TempDarshnBooking from "./Component/temp_dashboard/temp_innerdashboard/TempDarshnBooking";
 import TempBookingDashBoard from "./Component/temp_dashboard/temp_innerdashboard/TempBookingDashBoard";
-import PanditProfile from "./Component/pandit_dashboard/PanditProfile";
-import SendOtpModal from "./Component/OTPModel/SendOtpModal";
+import PanditProfile from "./Component/pandit_dashboard/pandit_profile/PanditProfile";
+import SendOtpModal from "./Component/OTPModel/SendOtpModal"; 
 import KedarnathInfo from "./Component/KedarnathInfo";
 import GangotriInfo from "./Component/GangotriInfo";
 import YamunotriInfo from "./Component/YamunotriInfo";
@@ -119,7 +119,16 @@ import SevaDetails from "./Component/dashboard/UserDetailsCard/SevaDetails";
 import DarshanDetails from "./Component/dashboard/UserDetailsCard/DarshanDetails";
 import DonationsDetails from "./Component/dashboard/UserDetailsCard/DonationsDetails";
 import PanditDetails from "./Component/dashboard/UserDetailsCard/PanditDetails";
-
+import AddPuja from "./Component/pandit_dashboard/pandit_innerdashborad/manage_pujas/AddPuja";
+import CompletedPuja from "./Component/pandit_dashboard/pandit_innerdashborad/manage_pujas/CompletedPuja";
+import PendingRequests from "./Component/pandit_dashboard/pandit_innerdashborad/booking_requests/PendingRequests";
+import ConfirmedRequests from "./Component/pandit_dashboard/pandit_innerdashborad/booking_requests/ConfirmedRequests";
+import CancelledRequests from "./Component/pandit_dashboard/pandit_innerdashborad/booking_requests/CancelledRequests";
+import PujaCalendar from "./Component/pandit_dashboard/pandit_innerdashborad/puja_calendor/PujaCalendar";
+import EarnAndTrans from "./Component/pandit_dashboard/pandit_innerdashborad/earning_transaction/EarnAndTrans";
+import ReportAnalytics from "./Component/pandit_dashboard/pandit_innerdashborad/reports/ReportsAnalytics";
+import ReviewsFeedback from "./Component/pandit_dashboard/pandit_innerdashborad/reviews_feedback/ReviewsFeedback";
+import PanditSupport from "./Component/pandit_dashboard/pandit_innerdashborad/PanditSupport";
 // import BASE_URLL from "./Component/BaseURL";
 // import DashBoard from "./Component/dashboard/DashBoard";
 // import LeftNav from "./Component/dashboard/LeftNav";
@@ -189,7 +198,17 @@ function App() {
     "/TempleProfile",
     "/TempleSupport",
      "/SevaDetails",
-    "/UserUpcomingEvent"
+    "/UserUpcomingEvent",
+    "/AddPuja",
+    "/CompletedPuja",
+    "/PendingRequests",
+    "/ConfirmedRequests",
+    "/CancelledRequests",
+    "/PujaCalendar",
+    "/EarnAndTrans",
+    "/ReportAnalytics",
+    "/ReviewsFeedback",
+    "/PanditSupport",
   ]);
   const shouldHideBars = hiddenPaths.has(location.pathname);
   const hideFooter = location.pathname === "/";
@@ -291,6 +310,19 @@ function App() {
           <Route path="/TempleLeftNav" element={<TempleLeftNav />} />
           <Route path="/Pandit_DashBoard" element={<Pandit_DashBoard />} />
           <Route path="/PanditLeftNav" element={<PanditLeftNav />} />
+          <Route path="/AddPuja" element={<AddPuja />} />
+          <Route path="/CompletedPuja" element={<CompletedPuja />} />
+          <Route path="/PendingRequests" element={<PendingRequests />} />
+          <Route path="/ConfirmedRequests" element={<ConfirmedRequests />} />
+          <Route path="/CancelledRequests" element={<CancelledRequests />} />
+          <Route path="/PujaCalendar" element={<PujaCalendar />} />
+          <Route path="/EarnAndTrans" element={<EarnAndTrans />}/>
+          <Route path="/ReportAnalytics" element={<ReportAnalytics />} />
+                    <Route path="/ReviewsFeedback" element={<ReviewsFeedback />} />
+                    <Route path="/PanditSupport" element={<PanditSupport />} />
+
+          
+
           <Route
             path="/PanditDonateDashBoard"
             element={<PanditDonateDashBoard />}
