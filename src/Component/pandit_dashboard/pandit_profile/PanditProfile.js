@@ -41,11 +41,11 @@ const PanditProfile = () => {
     { value: "other", label: "अन्य" },
   ];
 
-  const getImageUrl = (imgPath, type = "pandit_images") => {
-    if (!imgPath) return DefaultProfile;
-    if (imgPath.startsWith("http")) return imgPath;
+  const getImageUrl = (imgPath) => {
+    if (!imgPath)
+      return "https://mahadevaaya.com/backend/media/temple_images/default.png";
     const filename = imgPath.split("/").pop();
-    return `https://mahadevaaya.com/media/${type}/${filename}`;
+    return `https://mahadevaaya.com/backend/media/pandit_images/${filename}`;
   };
 
   useEffect(() => {
@@ -55,10 +55,14 @@ const PanditProfile = () => {
           `https://mahadevaaya.com/backend/api/get-pandit/?pandit_id=${uniqueId}`
         );
         const data = res.data || {};
+
+        // ✅ Keep backend image only in profile
         setProfile(data);
+
+        // ✅ Keep upload preview empty initially
         setPreview({
-          pandit_image: "", 
-          land_document: data.land_document || "",
+          pandit_image: "",
+          land_document: "",
         });
       } catch (err) {
         console.error("Error fetching profile:", err);
@@ -68,6 +72,7 @@ const PanditProfile = () => {
         setLoading(false);
       }
     };
+
     if (uniqueId) fetchProfile();
   }, [uniqueId]);
 
@@ -430,8 +435,8 @@ const PanditProfile = () => {
                             onClick={() => removeSelectedFile("pandit_image")}
                           >
                             <h3>
-                              <RiDeleteBin6Line className="mx-1" /> Click here to
-                              Remove
+                              <RiDeleteBin6Line className="mx-1" /> Click here
+                              to Remove
                             </h3>
                           </div>
                         </div>
@@ -496,9 +501,7 @@ const PanditProfile = () => {
                       {preview.land_document && (
                         <div className="mt-2">
                           <div className="d-flex temp-doc-info">
-                            <Col lg={3}>
-                              {new Date().toLocaleDateString()}
-                            </Col>
+                            <Col lg={3}>{new Date().toLocaleDateString()}</Col>
                             <Col lg={9} className="px-4 temp-success-doc">
                               <FaCheckCircle /> Uploaded Successfully
                             </Col>
@@ -508,8 +511,8 @@ const PanditProfile = () => {
                             onClick={() => removeSelectedFile("land_document")}
                           >
                             <h3>
-                              <RiDeleteBin6Line className="mx-1" /> Click here to
-                              Remove
+                              <RiDeleteBin6Line className="mx-1" /> Click here
+                              to Remove
                             </h3>
                           </div>
                         </div>
@@ -521,7 +524,7 @@ const PanditProfile = () => {
 
               <div className="gap-3 mt-3 Temp-btn-submit">
                 <Button
-                  variant="temp-submit-btn"
+                  className="btn-save mt-3"
                   type="submit"
                   disabled={saving}
                 >
