@@ -11,7 +11,7 @@ import ModifyAlert from "../Alert/ModifyAlert";
 import { GiByzantinTemple } from "react-icons/gi";
 import { LiaCalendarCheck } from "react-icons/lia";
 import { FaRegFileLines } from "react-icons/fa6";
-import { TbPasswordUser } from "react-icons/tb";
+
 import { Dropdown, Nav } from "react-bootstrap";
 import { useAuth } from "../GlobleAuth/AuthContext";
 import "../../assets/CSS/TopInfo.css";
@@ -44,31 +44,90 @@ function LeftNav() {
   const [, setLoading] = useState(false);
 
   const { uniqueId } = useAuth(); // if you have AuthContext
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        setLoading(true);
-        const userId = uniqueId
-        const response = await axios.get(
-          `https://mahadevaaya.com/backend/api/get-user/?user_id=${userId}`
-        );
-
-        if (response.data) {
-          const user = response.data;
-          setProfile({
-            displayName: user.devotee_name || "",
-            devotee_photo: user.devotee_photo || "",
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching profile data:", error);
-      } finally {
-        setLoading(false);
+ useEffect(() => {
+  const fetchProfile = async () => {
+    try {
+      setLoading(true);
+      const userId = uniqueId;
+      const response = await axios.get(
+        `https://mahadevaaya.com/backend/api/get-user/?user_id=${userId}`
+      );
+      if (response.data) {
+        const user = response.data;
+        setProfile({
+          displayName: user.devotee_name || "",
+          devotee_photo: user.devotee_photo || "",
+        });
       }
-    };
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchProfile();
-  }, [uniqueId]);
+  fetchProfile();
+
+  //  Listen for live updates from MyProfile
+  const handleProfileUpdate = (event) => {
+    const updated = event.detail;
+    if (updated) {
+      setProfile((prev) => ({
+        ...prev,
+        displayName: updated.displayName || prev.displayName,
+        devotee_photo: updated.devotee_photo || prev.devotee_photo,
+      }));
+    }
+  };
+
+  window.addEventListener("profileUpdated", handleProfileUpdate);
+
+  return () => {
+    window.removeEventListener("profileUpdated", handleProfileUpdate);
+  };
+}, [uniqueId]);
+
+useEffect(() => {
+  const fetchProfile = async () => {
+    try {
+      setLoading(true);
+      const userId = uniqueId;
+      const response = await axios.get(
+        `https://mahadevaaya.com/backend/api/get-user/?user_id=${userId}`
+      );
+      if (response.data) {
+        const user = response.data;
+        setProfile({
+          displayName: user.devotee_name || "",
+          devotee_photo: user.devotee_photo || "",
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchProfile();
+
+  // ✅ Listen for updates
+  const handleProfileUpdate = (event) => {
+    const updated = event.detail;
+    if (updated) {
+      setProfile((prev) => ({
+        ...prev,
+        displayName: updated.displayName || prev.displayName,
+        devotee_photo: updated.devotee_photo || prev.devotee_photo,
+      }));
+    }
+  };
+
+  window.addEventListener("profileUpdated", handleProfileUpdate);
+  return () => {
+    window.removeEventListener("profileUpdated", handleProfileUpdate);
+  };
+}, [uniqueId]);
 
 
   const handleDownload = (fileUrl, fileName) => {

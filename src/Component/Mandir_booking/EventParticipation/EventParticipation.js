@@ -18,7 +18,8 @@ const EventParticipation = () => {
 const routerLocation = useLocation();
   const eventData = routerLocation.state?.event; //  get event object
 
- 
+  
+  const [selectedEndDateTime, setSelectedEndDateTime] = useState(null);
   // Move useState for selectedDateTime to the top before any logic uses it
   const [selectedDateTime, setSelectedDateTime] = useState(null);
   // Helper to round up to next 30 min interval
@@ -28,7 +29,7 @@ const routerLocation = useLocation();
     let nextHour = nextMinutes === 0 ? date.getHours() + 1 : date.getHours();
     return setMinutes(setHours(date, nextHour), nextMinutes);
   };
- useEffect(() => {
+useEffect(() => {
   if (eventData) {
     setFormData((prev) => ({
       ...prev,
@@ -39,16 +40,20 @@ const routerLocation = useLocation();
       event_end_date: eventData.end_date_time
         ? eventData.end_date_time.split("T")[0]
         : "",
-         festival_name: eventData.festival_name || "",
-      
+      festival_name: eventData.festival_name || "",
     }));
 
-    //  Auto-fill DatePicker with event start date & time
+    // Auto-fill start and end DatePickers
     if (eventData.start_date_time) {
       setSelectedDateTime(new Date(eventData.start_date_time));
     }
+    if (eventData.end_date_time) {
+      setSelectedEndDateTime(new Date(eventData.end_date_time));
+    }
   }
 }, [eventData]);
+
+
 
 
 
@@ -211,8 +216,16 @@ const routerLocation = useLocation();
     )
       newErrors.number_of_participants =
         "Valid number of participants required";
-    if (!formData.event_date_and_time)
-      newErrors.event_date_and_time = "Event Date & Time is required";
+  
+  if (!selectedDateTime && !eventData?.start_date_time) {
+  newErrors.start_event_date_and_time = "Start Event Date & Time is required";
+}
+
+//  Validate End Date & Time
+if (!selectedEndDateTime && !eventData?.end_date_time) {
+  newErrors.end_event_date_and_time = "End Event Date & Time is required";
+}
+
 
     if (!formData.gotra.trim()) newErrors.gotra = "Gotra is required";
     if (!formData.nakshatra_rashi.trim())
@@ -609,7 +622,7 @@ const routerLocation = useLocation();
                       className="temp-form-control-option"
                       name="event_name"
                       value={formData.event_name}
-                      onChange={handleChange} disabled={!!formData.festival_name}
+                      onChange={handleChange}disabled={!!formData.festival_name}
                     >
                       <option value="">Select Event</option>
                       {festivals.length > 0 ? (
@@ -683,7 +696,7 @@ const routerLocation = useLocation();
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group className="mb-3 ">
                     <Form.Label className="temp-label mb-2">
-                      Event Date & Time{" "}
+                     Start Event Date & Time{" "}
                       <span className="temp-span-star">*</span>
                     </Form.Label>
                     <div>
@@ -701,6 +714,36 @@ const routerLocation = useLocation();
                         maxTime={maxTime}
                      disabled={!!selectedDateTime}
                       />
+                    </div>
+                    {errors.event_date_and_time && (
+                      <small className="text-danger">
+                        {errors.event_date_and_time}
+                      </small>
+                    )}
+                  </Form.Group>
+                </Col>
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group className="mb-3 ">
+                    <Form.Label className="temp-label mb-2">
+                     End Event Date & Time{" "}
+                      <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <div>
+                     <DatePicker
+  selected={selectedEndDateTime}
+  onChange={setSelectedEndDateTime}
+  showTimeSelect
+  timeFormat="hh:mm aa"
+  timeIntervals={30}
+  dateFormat="MMMM d, yyyy h:mm aa"
+  placeholderText="Select End Date and Time"
+  className="form-control temp-form-control-option w-100"
+  minDate={today}
+  minTime={minTime}
+  maxTime={maxTime}
+  disabled={!!selectedEndDateTime}
+/>
+
                     </div>
                     {errors.event_date_and_time && (
                       <small className="text-danger">
