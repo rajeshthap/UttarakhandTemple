@@ -345,142 +345,154 @@ const ManageFestival = () => {
                       />
                     </Form.Group>
                   </Col>
+                  <Col><Form.Group className="mt-2">
+                    <Form.Label className="temp-label">Description</Form.Label>
+                    <Form.Control
+                      className=""
+                      as="textarea"
+                      rows={2}
+                      name="description"
+                      value={currentFestival.description || ""}
+                      onChange={handleChange}
+                      style={{ fontSize: "11px", height: "100px", }}
+                    />
+                  </Form.Group></Col>
+                  <Col md={6}>
+                    <Row className="temp-stepform-box mt-4">
+                      <Col lg={8} md={12} sm={12}>
+                        <fieldset
+                          className={`upload_dropZone text-center ${dragging ? "drag-over" : ""
+                            }`}
+                          onDragOver={(e) => {
+                            e.preventDefault();
+                            setDragging(true);
+                          }}
+                          onDragLeave={() => setDragging(false)}
+                          onDrop={(e) => {
+                            e.preventDefault();
+                            setDragging(false);
+                            const file = e.dataTransfer.files[0];
+                            if (file) {
+                              handleChange({
+                                target: {
+                                  name: "image",
+                                  files: [file],
+                                  type: "file",
+                                },
+                              });
+                            }
+                          }}
+                        >
+                          <legend className="visually-hidden">Festival Image</legend>
+                          <img src={UploadFile} alt="upload" style={{ width: "35px" }} />
+
+                          <p className="temp-drop-txt my-2">
+                            Drag &amp; drop file<br />
+                            <i>or</i>
+                          </p>
+                          <input
+                            id="image"
+                            name="image"
+                            type="file"
+                            accept="image/jpeg,image/png"
+                            className="invisible"
+                            onChange={handleChange}
+                          />
+                          <label className="btn temp-primary-btn mb-1" htmlFor="image">
+                            Choose file
+                          </label>
+                          <p className="temp-upload-file">Upload up to 2MB (jpg, png)</p>
+                        </fieldset>
+                      </Col>
+
+                      <Col lg={4} md={12} sm={12} className="mt-2">
+                        <h6 style={{ fontSize: "11px", fontWeight: "500" }}>
+                          Festival Image <span style={{ color: "red" }}>*</span>
+                        </h6>
+
+                        {currentFestival.image_url && !currentFestival.image?.name && (
+                          <div className="my-2">
+                            <img
+                              src={currentFestival.image_url}
+                              alt="Festival"
+                              style={{
+                                width: "100%",
+                                height: "140px",
+                                objectFit: "contain",
+                                borderRadius: "10px",
+
+                              }}
+                            />
+
+                          </div>
+
+                        )}
+
+                        {/* New Upload Preview */}
+                        {currentFestival.image instanceof File && (
+                          <div className="mt-2">
+                            <p className="fw-bold">New Upload Preview:</p>
+                            <img
+                              src={URL.createObjectURL(currentFestival.image)}
+                              alt="Preview"
+                              style={{
+                                width: "100%",
+                                height: "180px",
+                                objectFit: "contain",
+                                borderRadius: "10px",
+                                border: "1px solid #ccc",
+                              }}
+                            />
+                            <div className="mt-2 d-flex align-items-center gap-3">
+                              <a
+                                href={URL.createObjectURL(currentFestival.image)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn btn-outline-primary btn-sm"
+                              >
+                                View Full Image
+                              </a>
+                              <span
+                                className="text-danger"
+                                style={{ cursor: "pointer" }}
+                                onClick={() =>
+                                  setCurrentFestival({
+                                    ...currentFestival,
+                                    image: "",
+                                    image_preview: "",
+                                  })
+                                }
+                              >
+
+                              </span>
+                            </div>
+                          </div>
+                        )}
+
+
+                      </Col>
+                      <div className="mt-2 d-flex justify-content-center">
+                        <a
+                          href={currentFestival.image_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="event-click-btn"
+                          style={{ fontSize: "12px", padding: "3px 8px", textDecoration: "none" }}
+                        >
+                          View Full Image
+                        </a>
+                      </div>
+                    </Row>
+
+
+
+                  </Col>
                 </Row>
 
-                <Form.Group className="mt-2">
-                  <Form.Label className="temp-label">Description</Form.Label>
-                  <Form.Control
-                    className="temp-form-control-option"
-                    as="textarea"
-                    rows={2}
-                    name="description"
-                    value={currentFestival.description || ""}
-                    onChange={handleChange}
-                  />
-                </Form.Group>
+
 
                 {/* Image Upload */}
-                <Row className="temp-stepform-box mt-4">
-                  <Col lg={5} md={5} sm={12}>
-                    <fieldset
-                      className={`upload_dropZone text-center ${dragging ? "drag-over" : ""
-                        }`}
-                      onDragOver={(e) => {
-                        e.preventDefault();
-                        setDragging(true);
-                      }}
-                      onDragLeave={() => setDragging(false)}
-                      onDrop={(e) => {
-                        e.preventDefault();
-                        setDragging(false);
-                        const file = e.dataTransfer.files[0];
-                        if (file) {
-                          handleChange({
-                            target: {
-                              name: "image",
-                              files: [file],
-                              type: "file",
-                            },
-                          });
-                        }
-                      }}
-                    >
-                      <legend className="visually-hidden">Festival Image</legend>
-                      <img src={UploadFile} alt="upload" style={{ width: "35px" }} />
 
-                      <p className="temp-drop-txt my-2">
-                        Drag &amp; drop file<br />
-                        <i>or</i>
-                      </p>
-                      <input
-                        id="image"
-                        name="image"
-                        type="file"
-                        accept="image/jpeg,image/png"
-                        className="invisible"
-                        onChange={handleChange}
-                      />
-                      <label className="btn temp-primary-btn mb-1" htmlFor="image">
-                        Choose file
-                      </label>
-                      <p className="temp-upload-file">Upload up to 2MB (jpg, png)</p>
-                    </fieldset>
-                  </Col>
-
-                  <Col lg={7} md={7} sm={12} className="mt-2">
-                    <h6 style={{ fontSize: "14px", fontWeight: "600" }}>
-                      Festival Image <span style={{ color: "red" }}>*</span>
-                    </h6>
-
-                    {currentFestival.image_url && !currentFestival.image?.name && (
-                      <div className="my-2">
-                        <img
-                          src={currentFestival.image_url}
-                          alt="Festival"
-                          style={{
-                            width: "100%",
-                            height: "180px",
-                            objectFit: "contain",
-                            borderRadius: "10px",
-                            border: "1px solid #ccc",
-                          }}
-                        />
-                        <div className="mt-2">
-                          <a
-                            href={currentFestival.image_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="btn btn-outline-primary btn-sm"
-                            style={{ fontSize: "12px", padding: "3px 8px" }}
-                          >
-                            View Full Image
-                          </a>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* New Upload Preview */}
-                    {currentFestival.image instanceof File && (
-                      <div className="mt-2">
-                        <p className="fw-bold">New Upload Preview:</p>
-                        <img
-                          src={URL.createObjectURL(currentFestival.image)}
-                          alt="Preview"
-                          style={{
-                            width: "100%",
-                            height: "180px",
-                            objectFit: "contain",
-                            borderRadius: "10px",
-                            border: "1px solid #ccc",
-                          }}
-                        />
-                        <div className="mt-2 d-flex align-items-center gap-3">
-                          <a
-                            href={URL.createObjectURL(currentFestival.image)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="btn btn-outline-primary btn-sm"
-                          >
-                            View Full Image
-                          </a>
-                          <span
-                            className="text-danger"
-                            style={{ cursor: "pointer" }}
-                            onClick={() =>
-                              setCurrentFestival({
-                                ...currentFestival,
-                                image: "",
-                                image_preview: "",
-                              })
-                            }
-                          >
-                            ❌ Remove
-                          </span>
-                        </div>
-                      </div>
-                    )}
-                  </Col>
-                </Row>
               </Form>
             </Modal.Body>
             <Modal.Footer>
