@@ -24,97 +24,97 @@ const ManageTemple = () => {
     city: "",
   });
 
-  
-
- const handleInputChangeCity = (name, value) => {
-  setFormData((prev) => ({ ...prev, [name]: value }));
-  setCurrentTemple((prev) => ({ ...prev, [name]: value }));
-};
 
 
+  const handleInputChangeCity = (name, value) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setCurrentTemple((prev) => ({ ...prev, [name]: value }));
+  };
 
 
 
 
-const fetchTemples = async () => {
-  try {
-    setLoading(true);
-    const res = await axios.get(`${BASE_URLL}api/temple-names-list/`);
 
-    if (res.data) {
-      //  Step 1: Extract temple list safely
-      const data = Array.isArray(res.data.temples) ? res.data.temples : [];
 
-      //  Step 2: Filter temples by user ownership
-      const filteredTemples = data.filter(
-        (t) => t.temple_id === uniqueId || t.created_by === uniqueId
-      );
+  const fetchTemples = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`${BASE_URLL}api/temple-names-list/`);
 
-      console.log(" Filtered temple IDs:", filteredTemples.map(t => t.temple_id));
+      if (res.data) {
+        //  Step 1: Extract temple list safely
+        const data = Array.isArray(res.data.temples) ? res.data.temples : [];
 
-      //  Step 3: Fetch full temple details for each temple_id
-      const detailPromises = filteredTemples.map(async (temple) => {
-        try {
-          const detailRes = await axios.get(`${BASE_URLL}api/get-temple/`, {
-            params: { temple_id: temple.temple_id },
-          });
-          const details = Array.isArray(detailRes.data)
-            ? detailRes.data[0]
-            : detailRes.data;
+        //  Step 2: Filter temples by user ownership
+        const filteredTemples = data.filter(
+          (t) => t.temple_id === uniqueId || t.created_by === uniqueId
+        );
 
-          const formatMediaUrl = (filePath) => {
-            if (!filePath) return "";
-            if (filePath.includes("/backend/")) return filePath;
-            if (filePath.startsWith("http")) {
-              return filePath.replace(
-                "https://mahadevaaya.com/",
-                "https://mahadevaaya.com/backend/"
-              );
-            }
-            return `https://mahadevaaya.com/backend/media/${filePath}`;
-          };
+        console.log(" Filtered temple IDs:", filteredTemples.map(t => t.temple_id));
 
-          // Return merged data (basic + details)
-          return {
-            ...temple,
-            ...details,
-            temple_image_url: formatMediaUrl(details.temple_image),
-            land_doc_url: formatMediaUrl(details.land_doc),
-            noc_doc_url: formatMediaUrl(details.noc_doc),
-            trust_cert_url: formatMediaUrl(details.trust_cert),
-          };
-        } catch (error) {
-          console.error(` Error fetching details for ${temple.temple_id}:`, error);
-          return { ...temple }; // fallback to basic data
-        }
-      });
+        //  Step 3: Fetch full temple details for each temple_id
+        const detailPromises = filteredTemples.map(async (temple) => {
+          try {
+            const detailRes = await axios.get(`${BASE_URLL}api/get-temple/`, {
+              params: { temple_id: temple.temple_id },
+            });
+            const details = Array.isArray(detailRes.data)
+              ? detailRes.data[0]
+              : detailRes.data;
 
-      //  Step 4: Wait for all temple details to load
-      const detailedTemples = await Promise.all(detailPromises);
+            const formatMediaUrl = (filePath) => {
+              if (!filePath) return "";
+              if (filePath.includes("/backend/")) return filePath;
+              if (filePath.startsWith("http")) {
+                return filePath.replace(
+                  "https://mahadevaaya.com/",
+                  "https://mahadevaaya.com/backend/"
+                );
+              }
+              return `https://mahadevaaya.com/backend/media/${filePath}`;
+            };
 
-      console.log(" Detailed Temples Data:", detailedTemples);
-
-      //  Step 5: Save to state
-      setTemples(detailedTemples);
-
-      // Prefill formData (for logged-in user's temple)
-      const userTemple = detailedTemples.find(
-        (t) => t.temple_id === uniqueId || t.created_by === uniqueId
-      );
-      if (userTemple) {
-        setFormData({
-          country: userTemple.country || "",
-          state: userTemple.state || "",
-          city: userTemple.city || "",
+            // Return merged data (basic + details)
+            return {
+              ...temple,
+              ...details,
+              temple_image_url: formatMediaUrl(details.temple_image),
+              land_doc_url: formatMediaUrl(details.land_doc),
+              noc_doc_url: formatMediaUrl(details.noc_doc),
+              trust_cert_url: formatMediaUrl(details.trust_cert),
+            };
+          } catch (error) {
+            console.error(` Error fetching details for ${temple.temple_id}:`, error);
+            return { ...temple }; // fallback to basic data
+          }
         });
+
+        //  Step 4: Wait for all temple details to load
+        const detailedTemples = await Promise.all(detailPromises);
+
+        console.log(" Detailed Temples Data:", detailedTemples);
+
+        //  Step 5: Save to state
+        setTemples(detailedTemples);
+
+        // Prefill formData (for logged-in user's temple)
+        const userTemple = detailedTemples.find(
+          (t) => t.temple_id === uniqueId || t.created_by === uniqueId
+        );
+        if (userTemple) {
+          setFormData({
+            country: userTemple.country || "",
+            state: userTemple.state || "",
+            city: userTemple.city || "",
+          });
+        }
       }
+    } catch (err) {
+      console.error(" Error fetching temples:", err);
+    } finally {
+      setLoading(false);
     }
-  } catch (err) {
-    console.error(" Error fetching temples:", err);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
 
 
@@ -124,20 +124,20 @@ const fetchTemples = async () => {
     if (uniqueId) fetchTemples();
   }, [uniqueId]);
 
-const handleEdit = (temple) => {
-  if (temple.temple_id !== uniqueId && temple.created_by !== uniqueId) {
-    alert("You can only edit temples created by you!");
-    return;
-  }
+  const handleEdit = (temple) => {
+    if (temple.temple_id !== uniqueId && temple.created_by !== uniqueId) {
+      alert("You can only edit temples created by you!");
+      return;
+    }
 
-  setCurrentTemple({ ...temple });
-  setFormData({
-    country: temple.country || "",
-    state: temple.state || "",
-    city: temple.city || "",
-  });
-  setShowModal(true);
-};
+    setCurrentTemple({ ...temple });
+    setFormData({
+      country: temple.country || "",
+      state: temple.state || "",
+      city: temple.city || "",
+    });
+    setShowModal(true);
+  };
 
 
   const handleChange = (e) => {
@@ -154,62 +154,62 @@ const handleEdit = (temple) => {
     }
   };
 
-const handleUpdate = async () => {
-  //  Ownership check (same logic as fetch)
-  if (
-    currentTemple.temple_id !== uniqueId &&
-    currentTemple.created_by !== uniqueId
-  ) {
-    alert("You can only update temples created by you!");
-    return;
-  }
-
-  //  Make sure location data is up-to-date
-  // (if you're storing location in a separate state)
-  if (formData?.country) currentTemple.country = formData.country;
-  if (formData?.state) currentTemple.state = formData.state;
-  if (formData?.city) currentTemple.city = formData.city;
-
-  const formDataToSend = new FormData();
-
-  [
-    "temple_name",
-    "temple_address",
-    "city",
-    "state",
-    "country",
-    "email",
-    "phone",
-  ].forEach((key) => {
-    if (currentTemple[key]) formDataToSend.append(key, currentTemple[key]);
-  });
-
-  ["temple_image", "land_doc", "noc_doc", "trust_cert"].forEach((key) => {
-    if (currentTemple[key] instanceof File) {
-      formDataToSend.append(key, currentTemple[key]);
+  const handleUpdate = async () => {
+    //  Ownership check (same logic as fetch)
+    if (
+      currentTemple.temple_id !== uniqueId &&
+      currentTemple.created_by !== uniqueId
+    ) {
+      alert("You can only update temples created by you!");
+      return;
     }
-  });
 
-  try {
-    const res = await axios.put(
-      `${BASE_URLL}api/get-temple/`,
-      formDataToSend,
-      {
-        params: { temple_id: currentTemple.temple_id },
-        headers: { "Content-Type": "multipart/form-data" },
+    //  Make sure location data is up-to-date
+    // (if you're storing location in a separate state)
+    if (formData?.country) currentTemple.country = formData.country;
+    if (formData?.state) currentTemple.state = formData.state;
+    if (formData?.city) currentTemple.city = formData.city;
+
+    const formDataToSend = new FormData();
+
+    [
+      "temple_name",
+      "temple_address",
+      "city",
+      "state",
+      "country",
+      "email",
+      "phone",
+    ].forEach((key) => {
+      if (currentTemple[key]) formDataToSend.append(key, currentTemple[key]);
+    });
+
+    ["temple_image", "land_doc", "noc_doc", "trust_cert"].forEach((key) => {
+      if (currentTemple[key] instanceof File) {
+        formDataToSend.append(key, currentTemple[key]);
       }
-    );
+    });
 
-    if (res.status === 200) {
-      alert("Temple updated successfully!");
-      setShowModal(false);
-      fetchTemples(); //  refresh data after update
+    try {
+      const res = await axios.put(
+        `${BASE_URLL}api/get-temple/`,
+        formDataToSend,
+        {
+          params: { temple_id: currentTemple.temple_id },
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
+      if (res.status === 200) {
+        alert("Temple updated successfully!");
+        setShowModal(false);
+        fetchTemples(); //  refresh data after update
+      }
+    } catch (err) {
+      console.error("Update error:", err);
+      alert("Failed to update temple!");
     }
-  } catch (err) {
-    console.error("Update error:", err);
-    alert("Failed to update temple!");
-  }
-};
+  };
 
 
 
@@ -313,7 +313,7 @@ const handleUpdate = async () => {
                     <Form.Group>
                       <Form.Label className="temp-label">Phone</Form.Label>
                       <Form.Control
-                        className=""
+                        className="temp-form-control-option"
                         value={currentTemple.phone || ""} disabled />
                     </Form.Group>
                   </Col>
