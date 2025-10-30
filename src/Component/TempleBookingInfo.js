@@ -398,6 +398,7 @@ const [selectedPooja, setSelectedPooja] = useState(null);
                               onClick={() => {
                                 navigate("/MandirBooking", {
                                   state: {
+                                    temple_id: selectedCard.temple_id,
                                     temple_name: selectedCard.temple_name,
                                     pooja_details: `${pooja.temple_pooja_name} - ₹${pooja.temple_pooja_price}`,
                                     no_of_persons: selectedPersons,
@@ -589,6 +590,7 @@ const [selectedPooja, setSelectedPooja] = useState(null);
                               onClick={() => {
                                 navigate("/MandirBooking", {
                                   state: {
+                                    temple_id: selectedCard.temple_id,
                                     temple_name: selectedCard.temple_name,
                                     pooja_details: `${pooja.temple_pooja_name} - ₹${pooja.temple_pooja_price}`,
                                     no_of_persons: selectedPersons,

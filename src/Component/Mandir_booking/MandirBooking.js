@@ -23,6 +23,7 @@ const MandirBooking = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { uniqueId } = useAuth();
+  const { temple_id } = location.state || {};
   
 
   // Array to hold details for each person
@@ -86,6 +87,14 @@ const MandirBooking = () => {
     selectedPoojaId ||
     (pooja && pooja.temple_pooja_id);
 
+    useEffect(() => {
+  if (temple_id) {
+    setFormData((prev) => ({
+      ...prev,
+      temple_id: temple_id, 
+    }));
+  }
+}, [temple_id]);
   useEffect(() => {
     if (!incomingPoojaDetails) return;
 
@@ -761,8 +770,9 @@ useEffect(() => {
 
       const payload = {
         ...formData,
+        temple_id: temple_id,
         book_date_and_time: isoDate,
-        devotee_details: validDevotees,
+        devotte_details: validDevotees,
         pooja_details: poojaPayload,
       };
 
