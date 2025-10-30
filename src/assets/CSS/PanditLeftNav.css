@@ -347,7 +347,7 @@
 
 .nav-icon {
   padding: 16px;
-  font-size: 24px;
+  font-size: 20px;
   padding-top: 0px !important;
   color: var(--nd-white);
 }
@@ -366,7 +366,7 @@
 
 span.nav-label {
   padding-top: var(--nd-space-250);
-  font-size: var(--nd-space-350);
+  font-size: var(--nd-space-300);
   color: var(--nd-white);
 }
 
