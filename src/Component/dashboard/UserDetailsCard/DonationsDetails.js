@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import "../../../assets/CSS/LeftNav.css";
 import LeftNav from "../LeftNav";
 import { Breadcrumb, Row } from "react-bootstrap";
@@ -52,16 +52,20 @@ const DonationsDetails = () => {
     setFilteredDonations(filtered);
   }, [searchTerm, donations]);
 
+  const totalDonation = useMemo(() => {
+    return filteredDonations.reduce(
+      (sum, item) => sum + (parseFloat(item.amount) || 0),
+      0
+    );
+  }, [filteredDonations]);
+
   return (
     <>
-      {/* Main Wrapper */}
       <div className="dashboard-wrapper">
-        {/* Sidebar */}
         <aside className="sidebar">
           <LeftNav />
         </aside>
 
-        {/* Right-hand Main Container */}
         <main className="main-container-box">
           <div className="content-box">
             <Row>
@@ -95,7 +99,6 @@ const DonationsDetails = () => {
                 </div>
               </div>
 
-              {/* Table Section */}
               <div className="col-md-12">
                 <table className="rwd-table">
                   <tbody>
@@ -125,6 +128,13 @@ const DonationsDetails = () => {
                         </td>
                       </tr>
                     )}
+
+                    <tr>
+                      <td colSpan="3" className="text-end fw-bold">
+                        Total Donation:
+                      </td>
+                      <td className="fw-bold">₹{totalDonation.toFixed(2)}</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
