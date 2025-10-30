@@ -5,6 +5,7 @@ import SearchFeature from "./SearchFeature";
 import { BASE_URLL } from "../../../Component/BaseURL";
 import { Button, Modal, Form, Row, Col, InputGroup } from "react-bootstrap";
 import axios from "axios";
+import { useAuth } from "../../GlobleAuth/AuthContext";
 import UploadFile from "../../../assets/images/upload-icon.png";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -35,7 +36,7 @@ const ManageFestival = () => {
   const [dragging, setDragging] = useState(false);
   const [selectedStartDateTime, setSelectedStartDateTime] = useState(null);
   const [selectedEndDateTime, setSelectedEndDateTime] = useState(null);
-  const uniqueId = sessionStorage.getItem("uniqueId");
+  const { uniqueId } = useAuth();
 
   // ================= FETCH FESTIVAL DATA ==================
   const fetchFestivals = async () => {

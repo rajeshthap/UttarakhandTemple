@@ -7,6 +7,7 @@ import SearchFeature from "./SearchFeature";
 import { BASE_URLL } from "../../../Component/BaseURL";
 import { Button, Modal, Form, Row, Col, } from "react-bootstrap";
 import axios from "axios";
+import { useAuth } from "../../GlobleAuth/AuthContext";
 import LocationState from "../../userregistration/LocationState";
 import UploadFile from "../../../assets/images/upload-icon.png";
 
@@ -16,13 +17,14 @@ const ManageTemple = () => {
   const [currentTemple, setCurrentTemple] = useState({});
   const [loading, setLoading] = useState(false);
   const [dragging, setDragging] = useState(null);
+  const { uniqueId } = useAuth();
   const [formData, setFormData] = useState({
     country: "",
     state: "",
     city: "",
   });
 
-  const uniqueId = sessionStorage.getItem("uniqueId");
+  
 
   const handleInputChangeCity = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
