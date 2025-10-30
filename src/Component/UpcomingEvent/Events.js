@@ -66,11 +66,24 @@ const Events = () => {
 
   const getImageUrl = (imgPath) => {
     if (!imgPath) return "https://mahadevaaya.com/backend/media/temple_images/default.png";
-    if (/^https?:\/\//i.test(imgPath)) return imgPath;
-    const filename = imgPath.split("/").pop();
-    return `https://mahadevaaya.com/backend/media/temple_images/${filename}`;
-  };
 
+    // If it's already a full URL, return as-is
+    if (/^https?:\/\//i.test(imgPath)) return imgPath;
+
+    // Define the media base URL
+    const MEDIA_BASE_URL = `${BASE_URLL}/media/`;
+
+    // Remove leading slash if present
+    const normalizedPath = imgPath.startsWith('/') ? imgPath.substring(1) : imgPath;
+
+    // Handle paths that start with "media/"
+    if (normalizedPath.startsWith('media/')) {
+      return `${MEDIA_BASE_URL}${normalizedPath.substring(6)}`;
+    }
+
+    // For all other cases, append to media base
+    return `${MEDIA_BASE_URL}${normalizedPath}`;
+  };
   const formatDate = (dateString) => {
     if (!dateString) return "";
     try {
