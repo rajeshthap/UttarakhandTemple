@@ -330,7 +330,7 @@ function PanditLeftNav() {
 
       {/* Sidebar Navigation */}
       <div className={`navcontainer ${isNavClosed ? "navclose" : ""}`}>
-        <nav className="nav">
+        <nav className="pandit-nav">
           <div className="nav-upper-options">
             <div className="nd-menu">
               <FaAlignLeft className="icn menuicn" onClick={toggleNav} />
@@ -368,7 +368,7 @@ function PanditLeftNav() {
               <React.Fragment key={index}>
                 {option.download ? (
                   <div
-                    className={`nav-option option${index + 1} ${activePath === option.fileUrl ? "active-nav" : ""
+                    className={`pandit-option option${index + 1} ${activePath === option.fileUrl ? "active-nav" : ""
                       } ${hoveredMenu === index ? "hovered-nav" : ""}`}
                     onClick={() => {
                       setActivePath(option.fileUrl);
@@ -385,7 +385,7 @@ function PanditLeftNav() {
                 ) : option.hasSubmenu ? (
                   <>
                     <div
-                      className={`nav-option option${index + 1} ${activePath === option.path || openSubMenu === index ? "active-nav" : ""
+                      className={`pandit-option option${index + 1} ${activePath === option.path || openSubMenu === index ? "active-nav" : ""
                         } ${hoveredMenu === index ? "hovered-nav" : ""}`}
                       onClick={() => toggleSubMenu(index)}
                       onMouseEnter={() => handleMenuHover(index)}
@@ -401,12 +401,12 @@ function PanditLeftNav() {
                         </span>
                       </div>
                     </div>
-                    <div className={`sub-menu ${openSubMenu === index ? 'open' : ''}`}>
+                    <div className={`pandit-sub-menu ${openSubMenu === index ? 'open' : ''}`}>
                       {option.subItems.map((subItem, subIndex) => (
                         <Link
                           key={subIndex}
                           to={subItem.path}
-                          className={`nav-option sub-nav-option ${activePath === subItem.path ? "active-nav" : ""
+                          className={`pandit-option sub-pandit-option ${activePath === subItem.path ? "active-nav" : ""
                             }`}
                           onClick={() => setActivePath(subItem.path)}
                         >
@@ -423,7 +423,7 @@ function PanditLeftNav() {
                 ) : (
                   <Link
                     to={option.path}
-                    className={`nav-option option${index + 1} ${activePath === option.path ? "active-nav" : ""}
+                    className={`pandit-option option${index + 1} ${activePath === option.path ? "active-nav" : ""}
     ${hoveredMenu === index ? "hovered-nav" : ""}`}
                     onClick={() => {
                       if (option.isLogout) {

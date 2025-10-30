@@ -274,7 +274,6 @@ function TempleAuthority() {
     if (!documents.noc_doc) docErrors.noc_doc = "NOC certificate is required";
     if (!documents.trust_cert)
       docErrors.trust_cert = "Trust registration certificate is required";
-
     setFormErrors(errors);
     setDocumentErrors(docErrors);
 

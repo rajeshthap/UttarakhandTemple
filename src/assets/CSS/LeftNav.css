@@ -37,13 +37,10 @@
 }
 
 .sub-menu.open {
-  max-height: 500px;
-  /* Adjust as needed */
-  display: block;
-  background-color: rgb(244, 143, 71);
-  /* Ensure it's displayed when open */
+ max-height: 500px;
+    display: block;
+    background-color: #040d18;
 }
-
 .sub-nav-option {
   padding: 8px 10px 8px 35px;
   font-size: 14px;
@@ -68,7 +65,7 @@
 
 /* Hover effects */
 .nav-option:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color:#3d3e40;
   cursor: pointer;
 }
 
@@ -78,17 +75,18 @@
 }
 
 .sub-nav-option:hover {
-  background-color: rgba(0, 0, 0, 0.15);
+  background-color: #3d3e40;
   border-left: 3px solid #4a89dc;
   padding-left: 0px;
 }
 
 /* Active menu item styling */
-.active-nav {
-  background-color: rgba(0, 0, 0, 0.2);
-  border-left: 3px solid #4a89dc;
-}
 
+.active-nav {
+  background-color:#3d3e40 !important;
+  color: #fff !important;
+  border-left: 4px solid white;
+}
 /* Smooth transitions */
 .nav-option {
   transition: all 0.3s ease;
@@ -109,7 +107,7 @@
 }
 
 .sidebar {
-  background-color: var(--temp-primary);
+  background-color: var(--primary-red-bg);
 }
 
 
@@ -121,11 +119,7 @@
 /* Box inside main content */
 
 
-.active-nav {
-  background-color: var(--temp-org);
-  color: #fff !important;
-  border-left: 4px solid white;
-}
+
 
 .user-nd-header {
   height: 70px;
@@ -258,7 +252,7 @@
 .nav {
   min-height: 100vh;
   width: 250px;
-  background-color: var(--temp-primary);
+  background-color: var(--primary-red-bg);
   position: absolute;
   top: -7px;
   left: 00;
@@ -302,7 +296,7 @@
 
 .nav-option:hover {
   border-left: 2px solid var(--nd-white);
-  background-color: var(--temp-org);
+   background-color: #212529;
   cursor: pointer;
 }
 

@@ -7,7 +7,7 @@
 
 .pandit-rwd-table tr:first-child {
     border-top: none;
-    background: #b04f45;
+     background-color: #7c4654;
     color: #fff;
 }
 
@@ -18,7 +18,7 @@
 }
 
 .pandit-rwd-table tr:hover td {
-    background-color: #e2c0bc !important;
+    background-color: #e5b0bd !important;
 
 }
 
@@ -106,7 +106,35 @@
 .pandit-rwd-table td {
     padding: .5em 1em;
 }
+.dbcard-pditnew-puja-box-1 {
+    border: 2px solid #FFB8E0;
+    border-radius: 10px;
+    background-color: #F7CFD8 !important;
+    color: #BE5985 !important;
+    box-shadow: 0px 6px 16px 2px rgba(0, 0, 0, 0.05) !important;
+}
+ .dbcard-pdit-accept-box-2 {
+    border: 2px solid #E1EACD;
+    border-radius: 10px;
+     background-color: #FFD09B !important;
+    color: #727D73 !important;
+    box-shadow: 0px 6px 16px 2px rgba(0, 0, 0, 0.05) !important;
+}
 
+.pandit-box-3 {
+    border: 2px solid #e9d6cd;
+    border-radius: 10px;
+     background-color: #E7E8D8 !important;
+    color: #9a705b !important;
+    box-shadow: 0px 6px 16px 2px rgba(0, 0, 0, 0.05) !important;
+}
+.pandit-box-4 {
+    border: 2px solid #cae1e7;
+    border-radius: 10px;
+    background-color: #ecfbff !important;
+    color: #397e91 !important;
+    box-shadow: 0px 6px 16px 2px rgba(0, 0, 0, 0.05) !important;
+}
 @media screen and (max-width: 601px) {
     .pandit-rwd-table tr:nth-child(2) {
         border-top: none;

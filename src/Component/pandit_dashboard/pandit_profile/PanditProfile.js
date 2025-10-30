@@ -56,10 +56,10 @@ const PanditProfile = () => {
         );
         const data = res.data || {};
 
-        // ✅ Keep backend image only in profile
+        // Keep backend image only in profile
         setProfile(data);
 
-        // ✅ Keep upload preview empty initially
+        //  Keep upload preview empty initially
         setPreview({
           pandit_image: "",
           land_document: "",
@@ -170,7 +170,7 @@ const PanditProfile = () => {
 
   return (
     <div className="dashboard-wrapper">
-      <aside className="sidebar">
+      <aside className="pandit-sidebar">
         <PanditLeftNav />
       </aside>
 
