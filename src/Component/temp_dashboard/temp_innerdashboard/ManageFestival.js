@@ -1,11 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, forwardRef } from "react";
 import "../../../assets/CSS/LeftNav.css";
 import TempleLeftNav from "../TempleLeftNav";
 import SearchFeature from "./SearchFeature";
 import { BASE_URLL } from "../../../Component/BaseURL";
-import { Button, Modal, Form, Row, Col } from "react-bootstrap";
+import { Button, Modal, Form, Row, Col, InputGroup } from "react-bootstrap";
 import axios from "axios";
 import UploadFile from "../../../assets/images/upload-icon.png";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { FaCalendar } from "react-icons/fa";
+
+// Custom date picker input with calendar icon
+const CustomDatePickerInput = forwardRef(({ value, onClick, placeholder }, ref) => (
+  <InputGroup>
+    <Form.Control
+      ref={ref}
+      value={value}
+      onClick={onClick}
+      placeholder={placeholder}
+      className="temp-form-control-option"
+      readOnly
+    />
+    <InputGroup.Text onClick={onClick} style={{ cursor: 'pointer' }}>
+      <FaCalendar />
+    </InputGroup.Text>
+  </InputGroup>
+));
 
 const ManageFestival = () => {
   const [festivals, setFestivals] = useState([]);
@@ -13,6 +33,8 @@ const ManageFestival = () => {
   const [currentFestival, setCurrentFestival] = useState({});
   const [loading, setLoading] = useState(false);
   const [dragging, setDragging] = useState(false);
+  const [selectedStartDateTime, setSelectedStartDateTime] = useState(null);
+  const [selectedEndDateTime, setSelectedEndDateTime] = useState(null);
   const uniqueId = sessionStorage.getItem("uniqueId");
 
   // ================= FETCH FESTIVAL DATA ==================
@@ -76,6 +98,14 @@ const ManageFestival = () => {
       return;
     }
 
+    // Initialize date picker states
+    if (festival.start_date_time) {
+      setSelectedStartDateTime(new Date(festival.start_date_time));
+    }
+    if (festival.end_date_time) {
+      setSelectedEndDateTime(new Date(festival.end_date_time));
+    }
+
     setCurrentFestival({ ...festival });
     setShowModal(true);
   };
@@ -93,6 +123,25 @@ const ManageFestival = () => {
     } else {
       setCurrentFestival({ ...currentFestival, [name]: value });
     }
+  };
+
+  // ================= HANDLE DATE CHANGE ==================
+  const handleStartDateChange = (date) => {
+    setSelectedStartDateTime(date);
+    setCurrentFestival({
+      ...currentFestival,
+      start_date_time: date ? date.toISOString() : "",
+      start_day: date ? date.toLocaleDateString("en-US", { weekday: "long" }) : "",
+    });
+  };
+
+  const handleEndDateChange = (date) => {
+    setSelectedEndDateTime(date);
+    setCurrentFestival({
+      ...currentFestival,
+      end_date_time: date ? date.toISOString() : "",
+      end_day: date ? date.toLocaleDateString("en-US", { weekday: "long" }) : "",
+    });
   };
 
   // ================= HANDLE UPDATE ==================
@@ -243,7 +292,7 @@ const ManageFestival = () => {
                     <Form.Group>
                       <Form.Label className="temp-label">Festival Name</Form.Label>
                       <Form.Control
-                      className="temp-form-control-option"
+                        className="temp-form-control-option"
                         name="festival_name"
                         value={currentFestival.festival_name || ""}
                         onChange={handleChange}
@@ -255,7 +304,7 @@ const ManageFestival = () => {
                     <Form.Group>
                       <Form.Label className="temp-label">Temple Name</Form.Label>
                       <Form.Control
-                      className="temp-form-control-option"
+                        className="temp-form-control-option"
                         name="temple_name"
                         value={currentFestival.temple_name || ""} disabled
                         onChange={handleChange}
@@ -268,18 +317,15 @@ const ManageFestival = () => {
                   <Col md={6}>
                     <Form.Group>
                       <Form.Label className="temp-label">Start Date & Time</Form.Label>
-                      <Form.Control
-                      className="temp-form-control-option"
-                        type="datetime-local"
-                        name="start_date_time"
-                        value={
-                          currentFestival.start_date_time
-                            ? new Date(currentFestival.start_date_time)
-                              .toISOString()
-                              .slice(0, 16)
-                            : ""
-                        }
-                        onChange={handleChange}
+                      <DatePicker
+                        selected={selectedStartDateTime}
+                        onChange={handleStartDateChange}
+                        showTimeSelect
+                        timeFormat="hh:mm aa"
+                        timeIntervals={30}
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        placeholderText="Select Start Date and Time"
+                        customInput={<CustomDatePickerInput placeholder="Select Start Date and Time" />}
                       />
                     </Form.Group>
                   </Col>
@@ -287,18 +333,15 @@ const ManageFestival = () => {
                   <Col md={6}>
                     <Form.Group>
                       <Form.Label className="temp-label">End Date & Time</Form.Label>
-                      <Form.Control
-                      className="temp-form-control-option"
-                        type="datetime-local"
-                        name="end_date_time"
-                        value={
-                          currentFestival.end_date_time
-                            ? new Date(currentFestival.end_date_time)
-                              .toISOString()
-                              .slice(0, 16)
-                            : ""
-                        }
-                        onChange={handleChange}
+                      <DatePicker
+                        selected={selectedEndDateTime}
+                        onChange={handleEndDateChange}
+                        showTimeSelect
+                        timeFormat="hh:mm aa"
+                        timeIntervals={30}
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        placeholderText="Select End Date and Time"
+                        customInput={<CustomDatePickerInput placeholder="Select End Date and Time" />}
                       />
                     </Form.Group>
                   </Col>
@@ -307,7 +350,7 @@ const ManageFestival = () => {
                 <Form.Group className="mt-2">
                   <Form.Label className="temp-label">Description</Form.Label>
                   <Form.Control
-                  className="temp-form-control-option"
+                    className="temp-form-control-option"
                     as="textarea"
                     rows={2}
                     name="description"

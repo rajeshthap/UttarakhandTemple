@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import React, { useState, useEffect, forwardRef } from "react";
+import { Container, Row, Col, Form, Button, InputGroup } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../../assets/CSS/LeftNav.css";
@@ -9,8 +9,25 @@ import axios from "axios";
 import { BASE_URLL } from "../../../Component/BaseURL";
 import ModifyAlert from "../../Alert/ModifyAlert";
 import UploadFile from "../../../assets/images/upload-icon.png";
-import { FaCheckCircle } from "react-icons/fa";
+import { FaCheckCircle, FaCalendar } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
+
+// Custom date picker input with calendar icon
+const CustomDatePickerInput = forwardRef(({ value, onClick, placeholder }, ref) => (
+  <InputGroup>
+    <Form.Control
+      ref={ref}
+      value={value}
+      onClick={onClick}
+      placeholder={placeholder}
+      className="temp-form-control-option"
+      readOnly
+    />
+    <InputGroup.Text onClick={onClick} style={{ cursor: 'pointer' }}>
+      <FaCalendar />
+    </InputGroup.Text>
+  </InputGroup>
+));
 
 const AddFestival = () => {
   const { uniqueId } = useAuth();
@@ -265,7 +282,7 @@ const AddFestival = () => {
                         timeIntervals={30}
                         dateFormat="MMMM d, yyyy h:mm aa"
                         placeholderText="Select Start Date and Time"
-                        className="form-control temp-form-control-option"
+                        customInput={<CustomDatePickerInput placeholder="Select Start Date and Time" />}
                         minDate={today}
                         minTime={minTime}
                         maxTime={maxTime}
@@ -297,7 +314,7 @@ const AddFestival = () => {
                         timeIntervals={30}
                         dateFormat="MMMM d, yyyy h:mm aa"
                         placeholderText="Select End Date and Time"
-                        className="form-control temp-form-control-option"
+                        customInput={<CustomDatePickerInput placeholder="Select End Date and Time" />}
                         minDate={selectedStartDateTime || today}
                         minTime={minTime}
                         maxTime={maxTime}
@@ -374,9 +391,9 @@ const AddFestival = () => {
                         htmlFor="image"
                         style={{
                           display: "block",
-                          margin: "8px auto 0 auto", 
-                          width: "20%",              
-                          maxWidth: "200px",         
+                          margin: "8px auto 0 auto",
+                          width: "20%",
+                          maxWidth: "200px",
                           textAlign: "center",
                         }}
                       >
