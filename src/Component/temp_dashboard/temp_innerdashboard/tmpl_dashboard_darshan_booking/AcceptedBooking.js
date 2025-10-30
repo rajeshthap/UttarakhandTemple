@@ -2,38 +2,44 @@ import React, { useEffect, useState } from "react";
 import "../../../../assets/CSS/LeftNav.css";
 import TempleLeftNav from "../../TempleLeftNav";
 import SearchFeature from "../SearchFeature";
-import { Form, Button, Modal, Table, Row,Col } from "react-bootstrap";
+import { Form, Button, Modal, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import { useAuth } from "../../../GlobleAuth/AuthContext";
 
 const AcceptedBooking = () => {
   const { uniqueId } = useAuth();
   const [bookings, setBookings] = useState([]);
+  const [filteredBookings, setFilteredBookings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  //  Fetch booking data
   const fetchBookings = async () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `https://mahadevaaya.com/backend/api/get-darshan-pooja-booking/`,
+        "https://mahadevaaya.com/backend/api/get-darshan-pooja-booking/",
         {
-          params: { creator_id: uniqueId },
+          params: {
+            creator_id: uniqueId,
+            status: "accepted",
+          },
         }
       );
 
       if (res.data && Array.isArray(res.data)) {
-        console.log(" Bookings fetched:", res.data);
         setBookings(res.data);
+        setFilteredBookings(res.data);
+      } else if (res.data && Array.isArray(res.data.data)) {
+        setBookings(res.data.data);
+        setFilteredBookings(res.data.data);
       } else {
-        console.warn(" Unexpected API response format:", res.data);
         setBookings([]);
+        setFilteredBookings([]);
       }
     } catch (err) {
-      console.error(" Error fetching bookings:", err);
       setBookings([]);
+      setFilteredBookings([]);
     } finally {
       setLoading(false);
     }
@@ -43,30 +49,74 @@ const AcceptedBooking = () => {
     if (uniqueId) fetchBookings();
   }, [uniqueId]);
 
- const handleView = (booking) => {
-  setSelectedBooking(booking);
-  setShowModal(true);
-};
+  const handleSearch = (query) => {
+    if (!query) {
+      setFilteredBookings(bookings);
+      return;
+    }
 
-// for handling field edits
-const handleBookingChange = (e) => {
-  const { name, value } = e.target;
-  setSelectedBooking((prev) => ({
-    ...prev,
-    [name]: value,
-  }));
-};
+    const lowerQuery = query.toLowerCase();
+    const filtered = bookings.filter(
+      (b) =>
+        b.darshan_pooja_id?.toLowerCase().includes(lowerQuery) ||
+        b.temple_name?.toLowerCase().includes(lowerQuery) ||
+        b.full_name?.toLowerCase().includes(lowerQuery) ||
+        b.email?.toLowerCase().includes(lowerQuery) ||
+        b.mobile_number?.toLowerCase().includes(lowerQuery)
+    );
+    setFilteredBookings(filtered);
+  };
 
-// for updating booking (replace with your real API)
-const handleBookingUpdate = async () => {
-  try {
-    console.log("Updating booking:", selectedBooking);
-    alert("Booking updated successfully!");
-    setShowModal(false);
-  } catch (error) {
-    console.error("Error updating booking:", error);
-  }
-};
+  const handleView = (booking) => {
+    setSelectedBooking(booking);
+    setShowModal(true);
+  };
+
+  const handleBookingChange = (e) => {
+    const { name, value } = e.target;
+    setSelectedBooking((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleBookingUpdate = async () => {
+    if (!selectedBooking) return;
+
+    try {
+      const { darshan_pooja_id, status } = selectedBooking;
+
+      if (!uniqueId || !darshan_pooja_id) {
+        alert("Missing temple_id or darshan_pooja_id — cannot update.");
+        console.error("Missing IDs:", {
+          temple_id: uniqueId,
+          darshan_pooja_id: darshan_pooja_id,
+        });
+        return;
+      }
+
+      const payload = {
+        temple_id: uniqueId,
+        darshan_pooja_id: darshan_pooja_id,
+        status: status?.toLowerCase() || "",
+      };
+
+      await axios.put(
+        "https://mahadevaaya.com/backend/api/get-darshan-pooja-booking/",
+        payload,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      alert("Booking status updated successfully!");
+      setShowModal(false);
+      fetchBookings();
+    } catch (error) {
+      alert("Failed to update booking. Try again!");
+    }
+  };
+
   return (
     <>
       <div className="dashboard-wrapper">
@@ -83,7 +133,7 @@ const handleBookingUpdate = async () => {
                 <span className="fw700h1">Accepted </span>Bookings
               </h1>
               <div>
-                <SearchFeature />
+                <SearchFeature onSearch={handleSearch} />
               </div>
             </div>
 
@@ -94,7 +144,7 @@ const handleBookingUpdate = async () => {
                   <tbody>
                     <tr>
                       <th>S.No</th>
-                      <th>Booking Date & Time</th>
+                      <th>Darshan & Pooja ID</th>
                       <th>Temple Name</th>
                       <th>Devotee Name</th>
                       <th>Devotee Email</th>
@@ -103,25 +153,29 @@ const handleBookingUpdate = async () => {
                       <th>Action</th>
                     </tr>
 
-                    {bookings.length > 0 ? (
-                      bookings.map((booking, index) => (
+                    {filteredBookings.length > 0 ? (
+                      filteredBookings.map((booking, index) => (
                         <tr key={index}>
                           <td data-th="S.No">{index + 1}</td>
-                          <td data-th="Booking Date & Time">
-                            {new Date(booking.book_date_and_time).toLocaleString()}
+                          <td data-th="Darshan & Pooja ID">
+                            {booking.darshan_pooja_id || "N/A"}
                           </td>
                           <td data-th="Temple Name">{booking.temple_name}</td>
                           <td data-th="Devotee Name">{booking.full_name}</td>
-                          <td data-th="Devotee Email">N/A</td>
-                          <td data-th="Devotee Mobile">{booking.mobile_number}</td>
-                          <td data-th="Status">Accepted</td>
+                          <td data-th="Devotee Email">
+                            {booking.email || "N/A"}
+                          </td>
+                          <td data-th="Devotee Mobile">
+                            {booking.mobile_number}
+                          </td>
+                          <td data-th="Status">{booking.status || "accepted"}</td>
                           <td>
                             <Button
                               className="event-click-btn"
                               size="sm"
                               onClick={() => handleView(booking)}
                             >
-                              View
+                              Reject/Pending
                             </Button>
                           </td>
                         </tr>
@@ -129,7 +183,7 @@ const handleBookingUpdate = async () => {
                     ) : (
                       <tr>
                         <td colSpan="8" className="text-center">
-                          {loading ? "Loading..." : "No accepted bookings found."}
+                          {loading ? "Loading..." : "No bookings found."}
                         </td>
                       </tr>
                     )}
@@ -138,10 +192,13 @@ const handleBookingUpdate = async () => {
               </div>
             </Row>
 
-
-
             {/* Edit Booking Modal */}
-            <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered>
+            <Modal
+              show={showModal}
+              onHide={() => setShowModal(false)}
+              size="lg"
+              centered
+            >
               <Modal.Header closeButton>
                 <Modal.Title>Edit Booking</Modal.Title>
               </Modal.Header>
@@ -149,14 +206,15 @@ const handleBookingUpdate = async () => {
               <Modal.Body>
                 {selectedBooking && (
                   <Form>
-                    {/* ROW 1 */}
                     <Row>
                       <Col md={6}>
                         <Form.Group>
-                          <Form.Label className="temp-label">Booking Number</Form.Label>
+                          <Form.Label className="temp-label">
+                            Darshan & Pooja ID
+                          </Form.Label>
                           <Form.Control
                             className="temp-form-control-option"
-                            value={selectedBooking.booking_number || ""}
+                            value={selectedBooking.darshan_pooja_id || ""}
                             disabled
                           />
                         </Form.Group>
@@ -164,7 +222,9 @@ const handleBookingUpdate = async () => {
 
                       <Col md={6}>
                         <Form.Group>
-                          <Form.Label className="temp-label">Temple Name</Form.Label>
+                          <Form.Label className="temp-label">
+                            Temple Name
+                          </Form.Label>
                           <Form.Control
                             className="temp-form-control-option"
                             value={selectedBooking.temple_name || ""}
@@ -174,11 +234,12 @@ const handleBookingUpdate = async () => {
                       </Col>
                     </Row>
 
-                    {/* ROW 2 */}
                     <Row className="mt-2">
                       <Col md={6}>
                         <Form.Group>
-                          <Form.Label className="temp-label">Devotee Name</Form.Label>
+                          <Form.Label className="temp-label">
+                            Devotee Name
+                          </Form.Label>
                           <Form.Control
                             className="temp-form-control-option"
                             value={selectedBooking.full_name || ""}
@@ -189,7 +250,9 @@ const handleBookingUpdate = async () => {
 
                       <Col md={6}>
                         <Form.Group>
-                          <Form.Label className="temp-label">Devotee Mobile</Form.Label>
+                          <Form.Label className="temp-label">
+                            Devotee Mobile
+                          </Form.Label>
                           <Form.Control
                             className="temp-form-control-option"
                             value={selectedBooking.mobile_number || ""}
@@ -199,7 +262,6 @@ const handleBookingUpdate = async () => {
                       </Col>
                     </Row>
 
-                    {/* ROW 3 */}
                     <Row className="mt-2">
                       <Col md={6}>
                         <Form.Group>
@@ -222,53 +284,9 @@ const handleBookingUpdate = async () => {
                             onChange={handleBookingChange}
                           >
                             <option value="">Select Status</option>
-                            <option value="Accepted">Accepted</option>
-                            <option value="Pending">Pending</option>
-                            <option value="Rejected">Rejected</option>
+                            <option value="pending">Pending</option>
+                            <option value="rejected">Rejected</option>
                           </Form.Select>
-                        </Form.Group>
-                      </Col>
-                    </Row>
-
-                    {/* ROW 4 */}
-                    <Row className="mt-2">
-                      <Col md={6}>
-                        <Form.Group>
-                          <Form.Label className="temp-label">Booking Date</Form.Label>
-                          <Form.Control
-                            className="temp-form-control-option"
-                            value={selectedBooking.book_date_and_time || ""}
-                            disabled
-                          />
-                        </Form.Group>
-                      </Col>
-
-                      <Col md={6}>
-                        <Form.Group>
-                          <Form.Label className="temp-label">Total Amount (₹)</Form.Label>
-                          <Form.Control
-                            className="temp-form-control-option"
-                            value={selectedBooking.grand_total || ""}
-                            disabled
-                          />
-                        </Form.Group>
-                      </Col>
-                    </Row>
-
-                    {/* ROW 5 */}
-                    <Row className="mt-2">
-                      <Col md={12}>
-                        <Form.Group>
-                          <Form.Label className="temp-label">Remarks</Form.Label>
-                          <Form.Control
-                            className="temp-form-control-option"
-                            as="textarea"
-                            rows={2}
-                            name="remarks"
-                            placeholder="Add remarks or comments"
-                            value={selectedBooking.remarks || ""}
-                            onChange={handleBookingChange}
-                          />
                         </Form.Group>
                       </Col>
                     </Row>
@@ -284,12 +302,14 @@ const handleBookingUpdate = async () => {
                 >
                   Update
                 </Button>
-                <Button className="event-click-cancel" onClick={() => setShowModal(false)}>
+                <Button
+                  className="event-click-cancel"
+                  onClick={() => setShowModal(false)}
+                >
                   Cancel
                 </Button>
               </Modal.Footer>
             </Modal>
-
           </div>
         </main>
       </div>

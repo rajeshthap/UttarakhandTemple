@@ -9,39 +9,35 @@ import { useAuth } from "../../../GlobleAuth/AuthContext";
 const NewBooking = () => {
   const { uniqueId } = useAuth();
   const [bookings, setBookings] = useState([]);
+  const [filteredBookings, setFilteredBookings] = useState([]); 
   const [loading, setLoading] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  // ✅ FETCH BOOKINGS (GET API)
   const fetchBookings = async () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `https://mahadevaaya.com/backend/api/get-darshan-pooja-booking/`,
+        "https://mahadevaaya.com/backend/api/get-darshan-pooja-booking/",
         {
           params: {
             creator_id: uniqueId,
-            status: "pending",
+            status: "pending", // Fetch only pending bookings
           },
         }
       );
 
-      // ✅ Handle response properly (darshan_and_pooja_id)
-      if (res.data && Array.isArray(res.data)) {
-        console.log("✅ Bookings fetched:", res.data);
-        setBookings(res.data);
-      } else if (res.data && res.data.data) {
-        // In case API returns data inside `data` field
-        console.log("✅ Bookings fetched:", res.data.data);
-        setBookings(res.data.data);
-      } else {
-        console.warn("⚠️ Unexpected API response:", res.data);
-        setBookings([]);
-      }
+      const data = Array.isArray(res.data)
+        ? res.data
+        : Array.isArray(res.data.data)
+        ? res.data.data
+        : [];
+
+      setBookings(data);
+      setFilteredBookings(data); 
     } catch (err) {
-      console.error("❌ Error fetching bookings:", err);
       setBookings([]);
+      setFilteredBookings([]);
     } finally {
       setLoading(false);
     }
@@ -51,13 +47,28 @@ const NewBooking = () => {
     if (uniqueId) fetchBookings();
   }, [uniqueId]);
 
-  // ✅ OPEN MODAL
+  const handleSearch = (query) => {
+    if (!query) {
+      setFilteredBookings(bookings);
+      return;
+    }
+
+    const lowerQuery = query.toLowerCase();
+    const filtered = bookings.filter(
+      (b) =>
+        b.full_name?.toLowerCase().includes(lowerQuery) ||
+        b.email?.toLowerCase().includes(lowerQuery) ||
+        b.temple_name?.toLowerCase().includes(lowerQuery) ||
+        b.darshan_pooja_id?.toLowerCase().includes(lowerQuery)
+    );
+    setFilteredBookings(filtered);
+  };
+
   const handleView = (booking) => {
     setSelectedBooking(booking);
     setShowModal(true);
   };
 
-  // ✅ HANDLE INPUT CHANGE
   const handleBookingChange = (e) => {
     const { name, value } = e.target;
     setSelectedBooking((prev) => ({
@@ -66,237 +77,235 @@ const NewBooking = () => {
     }));
   };
 
-  // ✅ UPDATE BOOKING STATUS (PUT API)
   const handleBookingUpdate = async () => {
     if (!selectedBooking) return;
 
     try {
-      console.log("🔄 Updating booking:", selectedBooking);
+      const { darshan_pooja_id, status } = selectedBooking;
 
-      const formData = new FormData();
-      formData.append("booking_id", selectedBooking.booking_id);
-      formData.append("status", selectedBooking.status || "");
-      if (selectedBooking.remarks) {
-        formData.append("remarks", selectedBooking.remarks);
+      if (!uniqueId || !darshan_pooja_id) {
+        alert("Missing temple_id or darshan_pooja_id — cannot update.");
+        console.error("Missing IDs:", { temple_id: uniqueId, darshan_pooja_id });
+        return;
       }
 
-      const response = await axios.put(
-        `https://mahadevaaya.com/backend/api/update-darshan-pooja-booking/`,
-        formData
+      const payload = {
+        temple_id: uniqueId,
+        darshan_pooja_id,
+        status: status?.toLowerCase() || "",
+      };
+
+      await axios.put(
+        "https://mahadevaaya.com/backend/api/get-darshan-pooja-booking/",
+        payload,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
       );
 
-      console.log("✅ Booking update response:", response.data);
       alert("Booking status updated successfully!");
-
       setShowModal(false);
-      fetchBookings(); // Refresh table
+      fetchBookings();
     } catch (error) {
-      console.error("❌ Error updating booking:", error);
       alert("Failed to update booking. Try again!");
     }
   };
 
   return (
-    <>
-      <div className="dashboard-wrapper">
-        {/* Sidebar */}
-        <aside className="sidebar">
-          <TempleLeftNav />
-        </aside>
+    <div className="dashboard-wrapper">
+      {/* Sidebar */}
+      <aside className="sidebar">
+        <TempleLeftNav />
+      </aside>
 
-        {/* Main Section */}
-        <main className="main-container-box">
-          <div className="content-box">
-            <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
-              <h1 className="fw500">
-                <span className="fw700h1">New </span>Bookings
-              </h1>
-              <div>
-                <SearchFeature />
-              </div>
+      {/* Main Section */}
+      <main className="main-container-box">
+        <div className="content-box">
+          <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
+            <h1 className="fw500">
+              <span className="fw700h1">New </span>Bookings
+            </h1>
+            <div>
+              <SearchFeature onSearch={handleSearch} />
             </div>
+          </div>
 
-            {/* TABLE SECTION */}
-            <Row className="mt-3">
-              <div className="col-md-12">
-                <table className="rwd-table">
-                  <tbody>
-                    <tr>
-                      <th>S.No</th>
-                      <th>Darshan & Pooja ID</th>
-                      <th>Temple Name</th>
-                      <th>Devotee Name</th>
-                      <th>Devotee Email</th>
-                      <th>Devotee Mobile</th>
-                      <th>Status</th>
-                      <th>Action</th>
-                    </tr>
+          {/* TABLE SECTION */}
+          <Row className="mt-3">
+            <div className="col-md-12">
+              <table className="rwd-table">
+                <tbody>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Darshan & Pooja ID</th>
+                    <th>Temple Name</th>
+                    <th>Devotee Name</th>
+                    <th>Devotee Email</th>
+                    <th>Devotee Mobile</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
 
-                    {bookings.length > 0 ? (
-                      bookings.map((booking, index) => (
-                        <tr key={index}>
-                          <td data-th="S.No">{index + 1}</td>
-                          <td data-th="Darshan & Pooja ID">
-                            {booking.darshan_and_pooja_id || booking.darshan_id || "N/A"}
-                          </td>
-                          <td data-th="Temple Name">{booking.temple_name}</td>
-                          <td data-th="Devotee Name">{booking.full_name}</td>
-                          <td data-th="Devotee Email">{booking.email || "N/A"}</td>
-                          <td data-th="Devotee Mobile">{booking.mobile_number}</td>
-                          <td data-th="Status">{booking.status || "New"}</td>
-                          <td>
-                            <Button
-                              className="event-click-btn"
-                              size="sm"
-                              onClick={() => handleView(booking)}
-                            >
-                              View
-                            </Button>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="8" className="text-center">
-                          {loading ? "Loading..." : "No bookings found."}
+                  {filteredBookings.length > 0 ? (
+                    filteredBookings.map((booking, index) => (
+                      <tr key={index}>
+                        <td data-th="S.No">{index + 1}</td>
+                        <td data-th="Darshan & Pooja ID">
+                          {booking.darshan_pooja_id || "N/A"}
+                        </td>
+                        <td data-th="Temple Name">{booking.temple_name}</td>
+                        <td data-th="Devotee Name">{booking.full_name}</td>
+                        <td data-th="Devotee Email">
+                          {booking.email || "N/A"}
+                        </td>
+                        <td data-th="Devotee Mobile">
+                          {booking.mobile_number}
+                        </td>
+                        <td data-th="Status">{booking.status || "pending"}</td>
+                        <td>
+                          <Button
+                            className="event-click-btn"
+                            size="sm"
+                            onClick={() => handleView(booking)}
+                          >
+                            Accept/Reject
+                          </Button>
                         </td>
                       </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </Row>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="8" className="text-center">
+                        {loading ? "Loading..." : "No bookings found."}
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </Row>
 
-            {/* Edit Booking Modal */}
-            <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered>
-              <Modal.Header closeButton>
-                <Modal.Title>Edit Booking</Modal.Title>
-              </Modal.Header>
+          {/* Edit Booking Modal */}
+          <Modal
+            show={showModal}
+            onHide={() => setShowModal(false)}
+            size="lg"
+            centered
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Edit Booking</Modal.Title>
+            </Modal.Header>
 
-              <Modal.Body>
-                {selectedBooking && (
-                  <Form>
-                    <Row>
-                      <Col md={6}>
-                        <Form.Group>
-                          <Form.Label className="temp-label">
-                            Darshan & Pooja ID
-                          </Form.Label>
-                          <Form.Control
-                            className="temp-form-control-option"
-                            value={
-                              selectedBooking.darshan_and_pooja_id ||
-                              selectedBooking.darshan_id ||
-                              ""
-                            }
-                            disabled
-                          />
-                        </Form.Group>
-                      </Col>
+            <Modal.Body>
+              {selectedBooking && (
+                <Form>
+                  <Row>
+                    <Col md={6}>
+                      <Form.Group>
+                        <Form.Label className="temp-label">
+                          Darshan & Pooja ID
+                        </Form.Label>
+                        <Form.Control
+                          className="temp-form-control-option"
+                          value={selectedBooking.darshan_pooja_id || ""}
+                          disabled
+                        />
+                      </Form.Group>
+                    </Col>
 
-                      <Col md={6}>
-                        <Form.Group>
-                          <Form.Label className="temp-label">Temple Name</Form.Label>
-                          <Form.Control
-                            className="temp-form-control-option"
-                            value={selectedBooking.temple_name || ""}
-                            disabled
-                          />
-                        </Form.Group>
-                      </Col>
-                    </Row>
+                    <Col md={6}>
+                      <Form.Group>
+                        <Form.Label className="temp-label">
+                          Temple Name
+                        </Form.Label>
+                        <Form.Control
+                          className="temp-form-control-option"
+                          value={selectedBooking.temple_name || ""}
+                          disabled
+                        />
+                      </Form.Group>
+                    </Col>
+                  </Row>
 
-                    <Row className="mt-2">
-                      <Col md={6}>
-                        <Form.Group>
-                          <Form.Label className="temp-label">Devotee Name</Form.Label>
-                          <Form.Control
-                            className="temp-form-control-option"
-                            value={selectedBooking.full_name || ""}
-                            disabled
-                          />
-                        </Form.Group>
-                      </Col>
+                  <Row className="mt-2">
+                    <Col md={6}>
+                      <Form.Group>
+                        <Form.Label className="temp-label">
+                          Devotee Name
+                        </Form.Label>
+                        <Form.Control
+                          className="temp-form-control-option"
+                          value={selectedBooking.full_name || ""}
+                          disabled
+                        />
+                      </Form.Group>
+                    </Col>
 
-                      <Col md={6}>
-                        <Form.Group>
-                          <Form.Label className="temp-label">Devotee Mobile</Form.Label>
-                          <Form.Control
-                            className="temp-form-control-option"
-                            value={selectedBooking.mobile_number || ""}
-                            disabled
-                          />
-                        </Form.Group>
-                      </Col>
-                    </Row>
+                    <Col md={6}>
+                      <Form.Group>
+                        <Form.Label className="temp-label">
+                          Devotee Mobile
+                        </Form.Label>
+                        <Form.Control
+                          className="temp-form-control-option"
+                          value={selectedBooking.mobile_number || ""}
+                          disabled
+                        />
+                      </Form.Group>
+                    </Col>
+                  </Row>
 
-                    <Row className="mt-2">
-                      <Col md={6}>
-                        <Form.Group>
-                          <Form.Label className="temp-label">Email</Form.Label>
-                          <Form.Control
-                            className="temp-form-control-option"
-                            value={selectedBooking.email || ""}
-                            disabled
-                          />
-                        </Form.Group>
-                      </Col>
+                  <Row className="mt-2">
+                    <Col md={6}>
+                      <Form.Group>
+                        <Form.Label className="temp-label">Email</Form.Label>
+                        <Form.Control
+                          className="temp-form-control-option"
+                          value={selectedBooking.email || ""}
+                          disabled
+                        />
+                      </Form.Group>
+                    </Col>
 
-                      <Col md={6}>
-                        <Form.Group>
-                          <Form.Label className="temp-label">Status</Form.Label>
-                          <Form.Select
-                            className="temp-form-control-option"
-                            name="status"
-                            value={selectedBooking.status || ""}
-                            onChange={handleBookingChange}
-                          >
-                            <option value="">Select Status</option>
-                            <option value="New">New</option>
-                            <option value="Accepted">Accepted</option>
-                            <option value="Rejected">Rejected</option>
-                          </Form.Select>
-                        </Form.Group>
-                      </Col>
-                    </Row>
+                    <Col md={6}>
+                      <Form.Group>
+                        <Form.Label className="temp-label">Status</Form.Label>
+                        <Form.Select
+                          className="temp-form-control-option"
+                          name="status"
+                          value={selectedBooking.status || ""}
+                          onChange={handleBookingChange}
+                        >
+                          <option value="">Select Status</option>
+                          <option value="accepted">Accepted</option>
+                          <option value="rejected">Rejected</option>
+                        </Form.Select>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                </Form>
+              )}
+            </Modal.Body>
 
-                    <Row className="mt-2">
-                      <Col md={12}>
-                        <Form.Group>
-                          <Form.Label className="temp-label">Remarks</Form.Label>
-                          <Form.Control
-                            className="temp-form-control-option"
-                            as="textarea"
-                            rows={2}
-                            name="remarks"
-                            placeholder="Add remarks or comments"
-                            value={selectedBooking.remarks || ""}
-                            onChange={handleBookingChange}
-                          />
-                        </Form.Group>
-                      </Col>
-                    </Row>
-                  </Form>
-                )}
-              </Modal.Body>
-
-              <Modal.Footer>
-                <Button
-                  className="event-click-btn"
-                  onClick={handleBookingUpdate}
-                  disabled={!selectedBooking}
-                >
-                  Update
-                </Button>
-                <Button className="event-click-cancel" onClick={() => setShowModal(false)}>
-                  Cancel
-                </Button>
-              </Modal.Footer>
-            </Modal>
-          </div>
-        </main>
-      </div>
-    </>
+            <Modal.Footer>
+              <Button
+                className="event-click-btn"
+                onClick={handleBookingUpdate}
+                disabled={!selectedBooking}
+              >
+                Update
+              </Button>
+              <Button
+                className="event-click-cancel"
+                onClick={() => setShowModal(false)}
+              >
+                Cancel
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
+      </main>
+    </div>
   );
 };
 

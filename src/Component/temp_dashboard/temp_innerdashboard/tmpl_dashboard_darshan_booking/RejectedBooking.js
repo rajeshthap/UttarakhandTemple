@@ -9,6 +9,7 @@ import { useAuth } from "../../../GlobleAuth/AuthContext";
 const Rejectedbooking = () => {
   const { uniqueId } = useAuth();
   const [bookings, setBookings] = useState([]);
+  const [filteredBookings, setFilteredBookings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -17,25 +18,27 @@ const Rejectedbooking = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `https://mahadevaaya.com/backend/api/get-darshan-pooja-booking/`,
+        "https://mahadevaaya.com/backend/api/get-darshan-pooja-booking/",
         {
           params: {
             creator_id: uniqueId,
-            status: "rejected", // Added status param as per your endpoint
+            status: "rejected",
           },
         }
       );
 
+      let data = [];
       if (res.data && Array.isArray(res.data)) {
-        console.log("Bookings fetched:", res.data);
-        setBookings(res.data);
-      } else {
-        console.warn("Unexpected API response:", res.data);
-        setBookings([]);
+        data = res.data;
+      } else if (res.data && Array.isArray(res.data.data)) {
+        data = res.data.data;
       }
+
+      setBookings(data);
+      setFilteredBookings(data); 
     } catch (err) {
-      console.error("Error fetching bookings:", err);
       setBookings([]);
+      setFilteredBookings([]);
     } finally {
       setLoading(false);
     }
@@ -44,6 +47,22 @@ const Rejectedbooking = () => {
   useEffect(() => {
     if (uniqueId) fetchBookings();
   }, [uniqueId]);
+
+  const handleSearch = (query) => {
+    if (!query.trim()) {
+      setFilteredBookings(bookings);
+    } else {
+      const lowerQuery = query.toLowerCase();
+      const filtered = bookings.filter(
+        (b) =>
+          b.full_name?.toLowerCase().includes(lowerQuery) ||
+          b.email?.toLowerCase().includes(lowerQuery) ||
+          b.darshan_pooja_id?.toLowerCase().includes(lowerQuery) ||
+          b.temple_name?.toLowerCase().includes(lowerQuery)
+      );
+      setFilteredBookings(filtered);
+    }
+  };
 
   const handleView = (booking) => {
     setSelectedBooking(booking);
@@ -61,26 +80,36 @@ const Rejectedbooking = () => {
   const handleBookingUpdate = async () => {
     if (!selectedBooking) return;
 
+    const { darshan_pooja_id, status } = selectedBooking;
+
+    if (!uniqueId || !darshan_pooja_id) {
+      alert("Missing temple_id or darshan_pooja_id — cannot update.");
+      console.error("Missing IDs:", {
+        temple_id: uniqueId,
+        darshan_pooja_id: darshan_pooja_id,
+      });
+      return;
+    }
+
     try {
-      console.log("Updating booking:", selectedBooking);
+      const payload = {
+        temple_id: uniqueId,
+        darshan_pooja_id: darshan_pooja_id,
+        status: status?.toLowerCase() || "",
+      };
 
-      const formData = new FormData();
-      formData.append("booking_id", selectedBooking.booking_id);
-      formData.append("status", selectedBooking.status || "");
-      formData.append("remarks", selectedBooking.remarks || "");
-
-      const response = await axios.put(
-        `https://mahadevaaya.com/backend/api/get-darshan-pooja-booking/`,
-        formData
+      await axios.put(
+        "https://mahadevaaya.com/backend/api/get-darshan-pooja-booking/",
+        payload,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
       );
 
-      console.log("Booking update response:", response.data);
-      alert("Booking updated successfully!");
-
+      alert("Booking status updated successfully!");
       setShowModal(false);
-      fetchBookings(); // Refresh list after update
+      fetchBookings();
     } catch (error) {
-      console.error("Error updating booking:", error);
       alert("Failed to update booking. Try again!");
     }
   };
@@ -98,10 +127,10 @@ const Rejectedbooking = () => {
           <div className="content-box">
             <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
               <h1 className="fw500">
-                <span className="fw700h1">New </span>Bookings
+                <span className="fw700h1">Rejected </span>Bookings
               </h1>
               <div>
-                <SearchFeature />
+                <SearchFeature onSearch={handleSearch} />
               </div>
             </div>
 
@@ -121,25 +150,29 @@ const Rejectedbooking = () => {
                       <th>Action</th>
                     </tr>
 
-                    {bookings.length > 0 ? (
-                      bookings.map((booking, index) => (
+                    {filteredBookings.length > 0 ? (
+                      filteredBookings.map((booking, index) => (
                         <tr key={index}>
                           <td data-th="S.No">{index + 1}</td>
                           <td data-th="Darshan & Pooja ID">
-                            {booking.darshan_and_pooja_id || "N/A"}
+                            {booking.darshan_pooja_id || "N/A"}
                           </td>
                           <td data-th="Temple Name">{booking.temple_name}</td>
                           <td data-th="Devotee Name">{booking.full_name}</td>
-                          <td data-th="Devotee Email">{booking.email || "N/A"}</td>
-                          <td data-th="Devotee Mobile">{booking.mobile_number}</td>
-                          <td data-th="Status">{booking.status || "New"}</td>
+                          <td data-th="Devotee Email">
+                            {booking.email || "N/A"}
+                          </td>
+                          <td data-th="Devotee Mobile">
+                            {booking.mobile_number}
+                          </td>
+                          <td data-th="Status">{booking.status || "rejected"}</td>
                           <td>
                             <Button
                               className="event-click-btn"
                               size="sm"
                               onClick={() => handleView(booking)}
                             >
-                              View
+                              Accept/Pending
                             </Button>
                           </td>
                         </tr>
@@ -147,7 +180,7 @@ const Rejectedbooking = () => {
                     ) : (
                       <tr>
                         <td colSpan="8" className="text-center">
-                          {loading ? "Loading..." : "No bookings found."}
+                          {loading ? "Loading..." : "No rejected bookings found."}
                         </td>
                       </tr>
                     )}
@@ -157,7 +190,12 @@ const Rejectedbooking = () => {
             </Row>
 
             {/* Edit Booking Modal */}
-            <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered>
+            <Modal
+              show={showModal}
+              onHide={() => setShowModal(false)}
+              size="lg"
+              centered
+            >
               <Modal.Header closeButton>
                 <Modal.Title>Edit Booking</Modal.Title>
               </Modal.Header>
@@ -165,7 +203,6 @@ const Rejectedbooking = () => {
               <Modal.Body>
                 {selectedBooking && (
                   <Form>
-                    {/* ROW 1 */}
                     <Row>
                       <Col md={6}>
                         <Form.Group>
@@ -174,7 +211,7 @@ const Rejectedbooking = () => {
                           </Form.Label>
                           <Form.Control
                             className="temp-form-control-option"
-                            value={selectedBooking.darshan_and_pooja_id || ""}
+                            value={selectedBooking.darshan_pooja_id || ""}
                             disabled
                           />
                         </Form.Group>
@@ -182,7 +219,9 @@ const Rejectedbooking = () => {
 
                       <Col md={6}>
                         <Form.Group>
-                          <Form.Label className="temp-label">Temple Name</Form.Label>
+                          <Form.Label className="temp-label">
+                            Temple Name
+                          </Form.Label>
                           <Form.Control
                             className="temp-form-control-option"
                             value={selectedBooking.temple_name || ""}
@@ -192,11 +231,12 @@ const Rejectedbooking = () => {
                       </Col>
                     </Row>
 
-                    {/* ROW 2 */}
                     <Row className="mt-2">
                       <Col md={6}>
                         <Form.Group>
-                          <Form.Label className="temp-label">Devotee Name</Form.Label>
+                          <Form.Label className="temp-label">
+                            Devotee Name
+                          </Form.Label>
                           <Form.Control
                             className="temp-form-control-option"
                             value={selectedBooking.full_name || ""}
@@ -207,7 +247,9 @@ const Rejectedbooking = () => {
 
                       <Col md={6}>
                         <Form.Group>
-                          <Form.Label className="temp-label">Devotee Mobile</Form.Label>
+                          <Form.Label className="temp-label">
+                            Devotee Mobile
+                          </Form.Label>
                           <Form.Control
                             className="temp-form-control-option"
                             value={selectedBooking.mobile_number || ""}
@@ -217,7 +259,6 @@ const Rejectedbooking = () => {
                       </Col>
                     </Row>
 
-                    {/* ROW 3 */}
                     <Row className="mt-2">
                       <Col md={6}>
                         <Form.Group>
@@ -240,28 +281,9 @@ const Rejectedbooking = () => {
                             onChange={handleBookingChange}
                           >
                             <option value="">Select Status</option>
-                            <option value="New">New</option>
-                            <option value="Accepted">Accepted</option>
-                            <option value="Rejected">Rejected</option>
+                            <option value="pending">Pending</option>
+                            <option value="accepted">Accepted</option>
                           </Form.Select>
-                        </Form.Group>
-                      </Col>
-                    </Row>
-
-                    {/* ROW 4 */}
-                    <Row className="mt-2">
-                      <Col md={12}>
-                        <Form.Group>
-                          <Form.Label className="temp-label">Remarks</Form.Label>
-                          <Form.Control
-                            className="temp-form-control-option"
-                            as="textarea"
-                            rows={2}
-                            name="remarks"
-                            placeholder="Add remarks or comments"
-                            value={selectedBooking.remarks || ""}
-                            onChange={handleBookingChange}
-                          />
                         </Form.Group>
                       </Col>
                     </Row>
@@ -277,7 +299,10 @@ const Rejectedbooking = () => {
                 >
                   Update
                 </Button>
-                <Button className="event-click-cancel" onClick={() => setShowModal(false)}>
+                <Button
+                  className="event-click-cancel"
+                  onClick={() => setShowModal(false)}
+                >
                   Cancel
                 </Button>
               </Modal.Footer>
