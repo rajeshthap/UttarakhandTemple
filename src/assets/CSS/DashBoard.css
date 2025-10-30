@@ -489,18 +489,20 @@
 
 .rwd-table tr:first-child {
     border-top: none;
-    background: #ae3d1f;
+    background: var(--temp-drak-blue);
     color: #fff;
 }
 
 .rwd-table tr:nth-child(odd):not(:first-child) {
-    background-color: #ffe2da;
+    background-color: #e6effb;
 }
 
 .rwd-table tr {
-    border-top: 1px solid #fa8a6c;
-    border-bottom: 1px solid #f74f22;
-    background-color: #ffffff;
+    border-top: 1px solid var(--temp-drak-blue);
+    ;
+    border-bottom: 1px solid var(--temp-drak-blue);
+    ;
+    background-color: #f7f7f7;
 }
 
 
@@ -622,7 +624,7 @@
 
 @media screen and (min-width: 600px) {
     .rwd-table tr:hover:not(:first-child) {
-        background-color: #f7e0befa;
+        background-color: #e6effb;
     }
 
     .rwd-table td:before {
