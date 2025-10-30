@@ -26,12 +26,12 @@ const ManageTemple = () => {
 
   const handleInputChangeCity = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
-    
+
   };
 
 
 
- 
+
 
   const fetchTemples = async () => {
     try {
@@ -185,11 +185,14 @@ const ManageTemple = () => {
 
       <main className="main-container-box">
         <div className="content-box">
-          <SearchFeature />
+          <div class="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3 "> <h1 class=" fw500"><span class="fw700h1">Manage </span> Temple </h1>
+
+            <div> <SearchFeature /></div>
+          </div>
 
 
           <Row className="mt-3">
-            <h4>Manage Temple</h4>
+
             <div className="col-md-12">
               <table className="rwd-table">
                 <tbody>
@@ -254,7 +257,7 @@ const ManageTemple = () => {
                     <Form.Group>
                       <Form.Label className="temp-label">Phone</Form.Label>
                       <Form.Control
-                        className="temp-form-control-option"
+                        className=""
                         value={currentTemple.phone || ""} disabled />
                     </Form.Group>
                   </Col>
@@ -277,20 +280,24 @@ const ManageTemple = () => {
                         value={currentTemple.email || ""} disabled />
                     </Form.Group>
                   </Col>
+                  <Col md={6}>
+                    <Form.Group className="mt-2">
+                      <Form.Label className="temp-label">Temple Address</Form.Label>
+                      <Form.Control
+                        className="temp-form-control-option"
+                        as="textarea"
+                        rows={2}
+                        name="temple_address"
+                        value={currentTemple.temple_address || ""}
+                        onChange={handleChange}
+                      />
+                    </Form.Group>
+                  </Col>
+
 
                 </Row>
 
-                <Form.Group className="mt-2">
-                  <Form.Label className="temp-label">Temple Address</Form.Label>
-                  <Form.Control
-                    className="temp-form-control-option"
-                    as="textarea"
-                    rows={2}
-                    name="temple_address"
-                    value={currentTemple.temple_address || ""}
-                    onChange={handleChange}
-                  />
-                </Form.Group>
+
 
                 {/* Temple Image Upload Section */}
                 <Row className="temp-stepform-box mt-4">
@@ -355,10 +362,10 @@ const ManageTemple = () => {
                           alt="Temple"
                           style={{
                             width: "100%",
-                            height: "180px",
+                            height: "140px",
                             objectFit: "contain",
                             borderRadius: "10px",
-                            border: "1px solid #ccc",
+
                           }}
                         />
                         <div className="mt-2">
@@ -366,8 +373,8 @@ const ManageTemple = () => {
                             href={currentTemple.temple_image_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="btn btn-outline-primary btn-sm"
-                            style={{ fontSize: "12px", padding: "3px 8px" }}
+                            className="event-click-btn"
+                            style={{ fontSize: "12px", padding: "3px 8px", textDecoration: "none" }}
                           >
                             View Full Image
                           </a>
@@ -448,7 +455,7 @@ const ManageTemple = () => {
                         <legend className="visually-hidden">{label}</legend>
                         <img
                           src={UploadFile} alt="upload-file"
-                          style={{ width: "35px"}}
+                          style={{ width: "35px" }}
                         />
                         <p className="temp-drop-txt my-2">
                           Drag &amp; drop files
@@ -501,8 +508,8 @@ const ManageTemple = () => {
                                   href={currentTemple[`${key}_url`]}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="btn btn-outline-primary btn-sm"
-                                  style={{ fontSize: "12px", padding: "3px 8px" }}
+                                  className="event-click-btn"
+                                  style={{ fontSize: "12px", padding: "3px 8px", textDecoration: "none" }}
                                 >
                                   View Full Image
                                 </a>
@@ -513,8 +520,8 @@ const ManageTemple = () => {
                               href={currentTemple[`${key}_url`]}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="btn btn-outline-primary btn-sm"
-                              style={{ fontSize: "12px", padding: "3px 8px" }}
+                              className="event-click-btn"
+                              style={{ fontSize: "12px", padding: "3px 8px", textDecoration: "none" }}
                             >
                               📄 View Full PDF
                             </a>

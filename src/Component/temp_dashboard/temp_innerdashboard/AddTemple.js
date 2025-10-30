@@ -22,9 +22,8 @@ const AddTemple = () => {
               <h1 className=" fw500">
                 <span class="fw700h1">Add </span> Temple
               </h1>{" "}
-              
+
             </div>
-            <div>Temple List</div>
             <TempleAuthority />
           </div>
         </main>

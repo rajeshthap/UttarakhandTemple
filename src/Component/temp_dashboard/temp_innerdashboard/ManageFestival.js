@@ -216,9 +216,12 @@ const ManageFestival = () => {
 
       <main className="main-container-box">
         <div className="content-box">
-          <SearchFeature />
+          <div class="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3 "> <h1 class=" fw500"><span class="fw700h1">Manage </span> Festivals </h1>
+
+            <div> <SearchFeature /></div>
+          </div>
           <Row className="mt-3">
-            <h4>Manage Festivals</h4>
+
             <div className="col-md-12">
               <table className="rwd-table">
                 <tbody>
