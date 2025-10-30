@@ -258,43 +258,43 @@ function TempleLeftNav() {
 
     },
 
-    {
-      icon: <LiaCalendarCheck />,
-      label: "Overview",
-      path: "#",
-      hasSubmenu: true,
-      subItems: [
-        {
-          icon: <LiaCalendarCheck />,
-          label: "About Us",
-          path: "/AboutDashBoard"
-        },
+    // {
+    //   icon: <LiaCalendarCheck />,
+    //   label: "Overview",
+    //   path: "#",
+    //   hasSubmenu: true,
+    //   subItems: [
+    //     {
+    //       icon: <LiaCalendarCheck />,
+    //       label: "About Us",
+    //       path: "/AboutDashBoard"
+    //     },
 
-        {
-          icon: <LiaCalendarCheck />,
-          label: "Platform Info",
-          path: "/PlatformInfoDashBoard"
-        },
+    //     {
+    //       icon: <LiaCalendarCheck />,
+    //       label: "Platform Info",
+    //       path: "/PlatformInfoDashBoard"
+    //     },
 
-        {
-          icon: <LiaCalendarCheck />,
-          label: "Mission & Vision",
-          path: "/MissionDashBoard"
-        },
+    //     {
+    //       icon: <LiaCalendarCheck />,
+    //       label: "Mission & Vision",
+    //       path: "/MissionDashBoard"
+    //     },
 
-        {
-          icon: <LiaCalendarCheck />,
-          label: "Mandir Platform",
-          path: "/MandirPlatformDashBoard"
-        },
-        {
-          icon: <LiaCalendarCheck />,
-          label: "Special announcement",
-          path: "/SpecialAnnouncementDashBoard"
-        },
+    //     {
+    //       icon: <LiaCalendarCheck />,
+    //       label: "Mandir Platform",
+    //       path: "/MandirPlatformDashBoard"
+    //     },
+    //     {
+    //       icon: <LiaCalendarCheck />,
+    //       label: "Special announcement",
+    //       path: "/SpecialAnnouncementDashBoard"
+    //     },
 
-      ]
-    },
+    //   ]
+    // },
     {
       icon: <TbPasswordUser />,
       label: "Logout",
@@ -345,7 +345,7 @@ function TempleLeftNav() {
               </Dropdown.Toggle>
               {/* Dropdown menu */}
               <Dropdown.Menu>
-                <Dropdown.Item as={Link} to="/MyProfile">
+                <Dropdown.Item as={Link} to="/TempleProfile">
                   My Profile
                 </Dropdown.Item>
                 <Dropdown.Item as={Link} to="/TempleChangePassword">

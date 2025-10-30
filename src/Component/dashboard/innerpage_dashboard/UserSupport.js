@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../../assets/CSS/TempleLeftNav.css";
+import "../../../assets/CSS/LeftNav.css";
 import {
   Breadcrumb,
   Form,
@@ -11,10 +11,11 @@ import {
   Spinner,
 } from "react-bootstrap";
 import axios from "axios";
-import { BASE_URLL } from "../../BaseURL"; //  Update to your backend base URL
-import TempleLeftNav from "../TempleLeftNav";
 
-const TempleSupport = () => {
+import { BASE_URLL } from "../../BaseURL"; // ✅ Update to your backend base URL
+import LeftNav from "../LeftNav";
+
+const UserSupport = () => {
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
@@ -123,7 +124,7 @@ const TempleSupport = () => {
   return (
     <div className="dashboard-wrapper">
       <aside className="pandit-sidebar">
-        <TempleLeftNav />
+        <LeftNav />
       </aside>
 
       <main className="main-container-box">
@@ -132,7 +133,7 @@ const TempleSupport = () => {
           <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
             <h1 className="fw500">
               <Breadcrumb>
-                <Breadcrumb.Item href="/TempleDashBoard">
+                <Breadcrumb.Item href="/Pandit_DashBoard">
                   <span className="fw700h1">Dashboard</span>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item active>Support</Breadcrumb.Item>
@@ -149,7 +150,7 @@ const TempleSupport = () => {
           )}
 
           {/*  Support Form */}
-          <Row className="">
+       
             <Card className="p-2 shadow-sm rounded-4 border-0">
               <Form onSubmit={handleSubmit}>
                 <Row>
@@ -298,11 +299,11 @@ const TempleSupport = () => {
                 </div>
               </Form>
             </Card>
-          </Row>
+      
         </div>
       </main>
     </div>
   );
 };
 
-export default TempleSupport;
+export default UserSupport;

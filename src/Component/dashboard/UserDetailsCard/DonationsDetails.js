@@ -130,10 +130,12 @@ const DonationsDetails = () => {
                     )}
 
                     <tr>
-                      <td colSpan="3" className="text-end fw-bold">
+                      <td colSpan="3" className="text-end ">
+                        <div className="total-text-bold">
                         Total Donation:
+                        </div>
                       </td>
-                      <td className="fw-bold">₹{totalDonation.toFixed(2)}</td>
+                      <td className="fw-bold"> <div className="total-text-bold">₹{totalDonation.toFixed(2)}</div></td>
                     </tr>
                   </tbody>
                 </table>

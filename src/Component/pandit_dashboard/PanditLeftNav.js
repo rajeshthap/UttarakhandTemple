@@ -219,41 +219,41 @@ function PanditLeftNav() {
 
     },
 
-    {
-      icon: <LiaCalendarCheck />,
-      label: "Overview",
-      path: "#",
-      hasSubmenu: true,
-      subItems: [
-        {
-          icon: <LiaCalendarCheck />,
-          label: "About Us",
-          path: "/PanditAboutUs"
-        },
+    // {
+    //   icon: <LiaCalendarCheck />,
+    //   label: "Overview",
+    //   path: "#",
+    //   hasSubmenu: true,
+    //   subItems: [
+    //     {
+    //       icon: <LiaCalendarCheck />,
+    //       label: "About Us",
+    //       path: "/PanditAboutUs"
+    //     },
 
-        {
-          icon: <LiaCalendarCheck />,
-          label: "Platform Info",
-          path: "/PanditPlatformInfo"
-        },
+    //     {
+    //       icon: <LiaCalendarCheck />,
+    //       label: "Platform Info",
+    //       path: "/PanditPlatformInfo"
+    //     },
 
-        {
-          icon: <LiaCalendarCheck />,
-          label: "Mission & Vision",
-          path: "/PanditMissionVision"
-        },
-        {
-          icon: <LiaCalendarCheck />,
-          label: "Mandir Platform",
-          path: "/PanditMandirMahadevaya"
-        },
-        {
-          icon: <LiaCalendarCheck />,
-          label: "Special announcement",
-          path: "/PanditPlatformInfo"
-        },
-      ]
-    },
+    //     {
+    //       icon: <LiaCalendarCheck />,
+    //       label: "Mission & Vision",
+    //       path: "/PanditMissionVision"
+    //     },
+    //     {
+    //       icon: <LiaCalendarCheck />,
+    //       label: "Mandir Platform",
+    //       path: "/PanditMandirMahadevaya"
+    //     },
+    //     {
+    //       icon: <LiaCalendarCheck />,
+    //       label: "Special announcement",
+    //       path: "/PanditPlatformInfo"
+    //     },
+    //   ]
+    // },
     {
       icon: <TbPasswordUser />,
       label: "Logout",

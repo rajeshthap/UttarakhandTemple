@@ -87,7 +87,7 @@ import GangotriInfo from "./Component/GangotriInfo";
 import YamunotriInfo from "./Component/YamunotriInfo";
 import BookingHistory from "./Component/dashboard/innerpage_dashboard/BookingHistory";
 import MyProfile from "./Component/dashboard/MyAccount/MyProfile";
-import Support from "./Component/dashboard/innerpage_dashboard/Support";
+import UserSupport from "./Component/dashboard/innerpage_dashboard/UserSupport";
 import EventDashBoard from "./Component/dashboard/innerpage_dashboard/EventDashBoard";
 import AboutDashBoard from "./Component/dashboard/AboutUsDashBoard/AboutDashBoard";
 import { AuthProvider } from "./Component/GlobleAuth/AuthContext";
@@ -184,7 +184,7 @@ function App() {
     "/PanditProfile",
     "/BookingHistory",
     "/MyProfile",
-    "/Support",
+    "/UserSupport",
     "/EventDashBoard",
     "/AboutDashBoard",
     "/PlatformInfoDashBoard",
@@ -404,7 +404,7 @@ function App() {
           <Route path="/LeftNav" element={<LeftNav />} />
           <Route path="/SendOtpModal" element={<SendOtpModal />} />
           <Route path="/MyProfile" element={<MyProfile />} />
-          <Route path="/Support" element={<Support />} />
+          <Route path="/UserSupport" element={<UserSupport />} />
           <Route path="/EventDashBoard" element={<EventDashBoard />} />
           <Route path="/Events" element={<Events />} />
           <Route path="/UserUpcomingEvent" element={<UserUpcomingEvent />} />

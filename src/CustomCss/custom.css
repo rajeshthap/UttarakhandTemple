@@ -99,7 +99,9 @@ body {
 }
 
 
-
+.total-text-bold{
+    font-weight: 700;
+}
 .temp-container h1 {
     font-size: var(--temp-space-600);
     color: var(--temp-org);

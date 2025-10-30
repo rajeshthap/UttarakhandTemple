@@ -77,7 +77,7 @@ const TempleChangePassword = () => {
     try {
       setLoading(true);
       const res = await axios.put(
-        `${BASE_URLL}api/get-pandit/?pandit_id=${uniqueId}`,
+        `${BASE_URLL}api/get-temple/?temple_id=${uniqueId}`,
         { password: newPassword }
       );
 
@@ -131,10 +131,10 @@ const TempleChangePassword = () => {
 
                 <Col lg={4} md={4} sm={4}>
                   <Form.Group className="mb-3">
-                    <Form.Label className="temp-label">User Name</Form.Label>
+                    <Form.Label className="temp-label">Temple Name</Form.Label>
                     <Form.Control
                       type="text"
-                      value={profile.first_name || ""}
+                      value={profile.temple_name || ""}
                       disabled
                       className="temp-form-control-option"
                     />

@@ -251,49 +251,49 @@ useEffect(() => {
     },
 
     {
-      path: "/Support",
+      path: "/UserSupport",
       icon: <FaRegFileLines />,
       label: "Support",
 
     },
 
-    {
-      icon: <LiaCalendarCheck />,
-      label: "Overview",
-      path: "#",
-      hasSubmenu: true,
-      subItems: [
-        {
-          icon: <LiaCalendarCheck />,
-          label: "About Us",
-          path: "/AboutDashBoard"
-        },
+    // {
+    //   icon: <LiaCalendarCheck />,
+    //   label: "Overview",
+    //   path: "#",
+    //   hasSubmenu: true,
+    //   subItems: [
+    //     {
+    //       icon: <LiaCalendarCheck />,
+    //       label: "About Us",
+    //       path: "/AboutDashBoard"
+    //     },
 
-        {
-          icon: <LiaCalendarCheck />,
-          label: "Platform Info",
-          path: "/PlatformInfoDashBoard"
-        },
+    //     {
+    //       icon: <LiaCalendarCheck />,
+    //       label: "Platform Info",
+    //       path: "/PlatformInfoDashBoard"
+    //     },
 
-        {
-          icon: <LiaCalendarCheck />,
-          label: "Mission & Vision",
-          path: "/MissionDashBoard"
-        },
+    //     {
+    //       icon: <LiaCalendarCheck />,
+    //       label: "Mission & Vision",
+    //       path: "/MissionDashBoard"
+    //     },
 
-        {
-          icon: <LiaCalendarCheck />,
-          label: "Mandir Platform",
-          path: "/MandirPlatformDashBoard"
-        },
-        {
-          icon: <LiaCalendarCheck />,
-          label: "Special announcement",
-          path: "/SpecialAnnouncementDashBoard"
-        },
+    //     {
+    //       icon: <LiaCalendarCheck />,
+    //       label: "Mandir Platform",
+    //       path: "/MandirPlatformDashBoard"
+    //     },
+    //     {
+    //       icon: <LiaCalendarCheck />,
+    //       label: "Special announcement",
+    //       path: "/SpecialAnnouncementDashBoard"
+    //     },
 
-      ]
-    },
+    //   ]
+    // },
     {
       icon: <LuLogOut />,
       label: "Logout",
