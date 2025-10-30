@@ -356,11 +356,18 @@ input[type=number] {
 .page-link {
     font-size: var(--temp-space-250) !important;
 }
-.user-btn-edit{
+
+.user-btn-edit {
     font-size: var(--temp-space-300) !important;
     background-color: var(--temp-org) !important;
-    border: 1px solid var(--temp-org)  !important;
+    border: 1px solid var(--temp-org) !important;
 }
+
+.nav-item {
+    padding-top: var(--temp-space-150) !important;
+}
+
+
 @media screen and (min-width: 768px) and (max-width: 1024px) {
 
     /* .menubar {
