@@ -297,11 +297,9 @@ const MainDashBoard = () => {
                         <FaOm className="seva-come-icon-darshanam" />
                       </Col>
                       <Col lg={10} md={10} sm={12} className="user-seva-text">
-                        <h3>Seva and Darshan name</h3>
+                        <h3>Seva and Darshan</h3>
                         <p>
-                          Darshan and Seva tickets can now be bought offline at
-                          the ticket counter and online via our website. Relish
-                          by visiting Sri Kanaka Durgamma Devasthanam
+                         Experience divine blessings through sacred Seva and the holy Darshan of the deity.
                         </p>
                         <div className="clearfix user-btn-all mt-4">
                           <button className="sd-btn-blue" onClick={() => navigate("/SevaRegistrationDashBoard")}
@@ -329,9 +327,7 @@ const MainDashBoard = () => {
                       <Col lg={10} md={10} sm={12} className="user-seva-text">
                         <h3>Pandit Booking</h3>
                         <p>
-                          Darshanam and Seva tickets can now be bought offline
-                          at the ticket counter and online via our website.
-                          Relish by visiting Sri Kanaka Durgamma Devasthanam
+                          Book experienced Pandits for your puja and rituals with ease and devotion.
                         </p>
                         <div className="clearfix user-btn-all mt-4">
                           <button className="pandit-btn-blue" onClick={() => navigate("/PanditDashBoard")}
@@ -355,9 +351,7 @@ const MainDashBoard = () => {
                       <Col lg={10} md={10} sm={12} className="user-seva-text">
                         <h3>Donations</h3>
                         <p>
-                          Darshanam and Seva tickets can now be bought offline
-                          at the ticket counter and online via our website.
-                          Relish by visiting Sri Kanaka Durgamma Devasthanam
+                          Offer your humble contribution and be a part of divine service and temple growth.
                         </p>
                         <div className="clearfix user-btn-all mt-4">
                           <button className="donation-btn-blue" onClick={() => navigate("/DonateDashBoard")}
@@ -382,9 +376,7 @@ const MainDashBoard = () => {
                       <Col lg={10} md={10} sm={12} className="user-seva-text">
                         <h3>Seva Registration</h3>
                         <p>
-                          Seva and Seva tickets can now be bought offline
-                          at the ticket counter and online via our website.
-                          Relish by visiting Sri Kanaka Durgamma Devasthanam
+                          Register online to participate in temple Sevas and receive blessings from the Lord.
                         </p>
                         <div className="clearfix user-btn-all mt-4">
                           <button className="pooja-btn-blue" onClick={() => navigate("/SevaRegistrationDashBoard")}

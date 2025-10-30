@@ -1,10 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, forwardRef } from "react";
 import "../../../assets/CSS/LeftNav.css";
 import TempleLeftNav from "../TempleLeftNav";
 import SearchFeature from "./SearchFeature";
-import { Button, Modal, Form, Row, Col } from "react-bootstrap";
+import { BASE_URLL } from "../../../Component/BaseURL";
+import { Button, Modal, Form, Row, Col, InputGroup } from "react-bootstrap";
 import axios from "axios";
+import { useAuth } from "../../GlobleAuth/AuthContext";
 import UploadFile from "../../../assets/images/upload-icon.png";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { FaCalendar } from "react-icons/fa";
+
+// Custom date picker input with calendar icon
+const CustomDatePickerInput = forwardRef(({ value, onClick, placeholder }, ref) => (
+  <InputGroup>
+    <Form.Control
+      ref={ref}
+      value={value}
+      onClick={onClick}
+      placeholder={placeholder}
+      className="temp-form-control-option"
+      readOnly
+    />
+    <InputGroup.Text onClick={onClick} style={{ cursor: 'pointer' }}>
+      <FaCalendar />
+    </InputGroup.Text>
+  </InputGroup>
+));
 
 const ManageFestival = () => {
   const [festivals, setFestivals] = useState([]);
@@ -12,14 +34,15 @@ const ManageFestival = () => {
   const [currentFestival, setCurrentFestival] = useState({});
   const [loading, setLoading] = useState(false);
   const [dragging, setDragging] = useState(false);
-  const uniqueId = sessionStorage.getItem("uniqueId");
+  const [selectedStartDateTime, setSelectedStartDateTime] = useState(null);
+  const [selectedEndDateTime, setSelectedEndDateTime] = useState(null);
+  const { uniqueId } = useAuth();
 
   // ================= FETCH FESTIVAL DATA ==================
   const fetchFestivals = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(
-        "https://mahadevaaya.com/backend/api/reg-festival/",
+      const res = await axios.get(`${BASE_URLL}api/reg-festival/`,
         { params: { creator_id: uniqueId } }
       );
 
@@ -76,6 +99,14 @@ const ManageFestival = () => {
       return;
     }
 
+    // Initialize date picker states
+    if (festival.start_date_time) {
+      setSelectedStartDateTime(new Date(festival.start_date_time));
+    }
+    if (festival.end_date_time) {
+      setSelectedEndDateTime(new Date(festival.end_date_time));
+    }
+
     setCurrentFestival({ ...festival });
     setShowModal(true);
   };
@@ -93,6 +124,25 @@ const ManageFestival = () => {
     } else {
       setCurrentFestival({ ...currentFestival, [name]: value });
     }
+  };
+
+  // ================= HANDLE DATE CHANGE ==================
+  const handleStartDateChange = (date) => {
+    setSelectedStartDateTime(date);
+    setCurrentFestival({
+      ...currentFestival,
+      start_date_time: date ? date.toISOString() : "",
+      start_day: date ? date.toLocaleDateString("en-US", { weekday: "long" }) : "",
+    });
+  };
+
+  const handleEndDateChange = (date) => {
+    setSelectedEndDateTime(date);
+    setCurrentFestival({
+      ...currentFestival,
+      end_date_time: date ? date.toISOString() : "",
+      end_day: date ? date.toLocaleDateString("en-US", { weekday: "long" }) : "",
+    });
   };
 
   // ================= HANDLE UPDATE ==================
@@ -118,8 +168,7 @@ const ManageFestival = () => {
     formData.append("updated_by", uniqueId);
 
     try {
-      const res = await axios.put(
-        "https://mahadevaaya.com/backend/api/reg-festival/",
+      const res = await axios.put(`${BASE_URLL}api/reg-festival/`,
         formData,
         {
           params: { creator_id: uniqueId, festival_id: currentFestival.festival_id },
@@ -168,9 +217,12 @@ const ManageFestival = () => {
 
       <main className="main-container-box">
         <div className="content-box">
-          <SearchFeature />
+          <div class="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3 "> <h1 class=" fw500"><span class="fw700h1">Manage </span> Festivals </h1>
+
+            <div> <SearchFeature /></div>
+          </div>
           <Row className="mt-3">
-            <h4>Manage Festivals</h4>
+
             <div className="col-md-12">
               <table className="rwd-table">
                 <tbody>
@@ -244,7 +296,7 @@ const ManageFestival = () => {
                     <Form.Group>
                       <Form.Label className="temp-label">Festival Name</Form.Label>
                       <Form.Control
-                      className="temp-form-control-option"
+                        className="temp-form-control-option"
                         name="festival_name"
                         value={currentFestival.festival_name || ""}
                         onChange={handleChange}
@@ -256,9 +308,9 @@ const ManageFestival = () => {
                     <Form.Group>
                       <Form.Label className="temp-label">Temple Name</Form.Label>
                       <Form.Control
-                      className="temp-form-control-option"
+                        className="temp-form-control-option"
                         name="temple_name"
-                        value={currentFestival.temple_name || ""}
+                        value={currentFestival.temple_name || ""} disabled
                         onChange={handleChange}
                       />
                     </Form.Group>
@@ -269,18 +321,15 @@ const ManageFestival = () => {
                   <Col md={6}>
                     <Form.Group>
                       <Form.Label className="temp-label">Start Date & Time</Form.Label>
-                      <Form.Control
-                      className="temp-form-control-option"
-                        type="datetime-local"
-                        name="start_date_time"
-                        value={
-                          currentFestival.start_date_time
-                            ? new Date(currentFestival.start_date_time)
-                              .toISOString()
-                              .slice(0, 16)
-                            : ""
-                        }
-                        onChange={handleChange}
+                      <DatePicker
+                        selected={selectedStartDateTime}
+                        onChange={handleStartDateChange}
+                        showTimeSelect
+                        timeFormat="hh:mm aa"
+                        timeIntervals={30}
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        placeholderText="Select Start Date and Time"
+                        customInput={<CustomDatePickerInput placeholder="Select Start Date and Time" />}
                       />
                     </Form.Group>
                   </Col>
@@ -288,157 +337,166 @@ const ManageFestival = () => {
                   <Col md={6}>
                     <Form.Group>
                       <Form.Label className="temp-label">End Date & Time</Form.Label>
-                      <Form.Control
-                      className="temp-form-control-option"
-                        type="datetime-local"
-                        name="end_date_time"
-                        value={
-                          currentFestival.end_date_time
-                            ? new Date(currentFestival.end_date_time)
-                              .toISOString()
-                              .slice(0, 16)
-                            : ""
-                        }
-                        onChange={handleChange}
+                      <DatePicker
+                        selected={selectedEndDateTime}
+                        onChange={handleEndDateChange}
+                        showTimeSelect
+                        timeFormat="hh:mm aa"
+                        timeIntervals={30}
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        placeholderText="Select End Date and Time"
+                        customInput={<CustomDatePickerInput placeholder="Select End Date and Time" />}
                       />
                     </Form.Group>
                   </Col>
+                  <Col><Form.Group className="mt-2">
+                    <Form.Label className="temp-label">Description</Form.Label>
+                    <Form.Control
+                      className=""
+                      as="textarea"
+                      rows={2}
+                      name="description"
+                      value={currentFestival.description || ""}
+                      onChange={handleChange}
+                      style={{ fontSize: "11px", height: "100px", }}
+                    />
+                  </Form.Group></Col>
+                  <Col md={6}>
+                    <Row className="temp-stepform-box mt-4">
+                      <Col lg={8} md={12} sm={12}>
+                        <fieldset
+                          className={`upload_dropZone text-center ${dragging ? "drag-over" : ""
+                            }`}
+                          onDragOver={(e) => {
+                            e.preventDefault();
+                            setDragging(true);
+                          }}
+                          onDragLeave={() => setDragging(false)}
+                          onDrop={(e) => {
+                            e.preventDefault();
+                            setDragging(false);
+                            const file = e.dataTransfer.files[0];
+                            if (file) {
+                              handleChange({
+                                target: {
+                                  name: "image",
+                                  files: [file],
+                                  type: "file",
+                                },
+                              });
+                            }
+                          }}
+                        >
+                          <legend className="visually-hidden">Festival Image</legend>
+                          <img src={UploadFile} alt="upload" style={{ width: "35px" }} />
+
+                          <p className="temp-drop-txt my-2">
+                            Drag &amp; drop file<br />
+                            <i>or</i>
+                          </p>
+                          <input
+                            id="image"
+                            name="image"
+                            type="file"
+                            accept="image/jpeg,image/png"
+                            className="invisible"
+                            onChange={handleChange}
+                          />
+                          <label className="btn temp-primary-btn mb-1" htmlFor="image">
+                            Choose file
+                          </label>
+                          <p className="temp-upload-file">Upload up to 2MB (jpg, png)</p>
+                        </fieldset>
+                      </Col>
+
+                      <Col lg={4} md={12} sm={12} className="mt-2">
+                        <h6 style={{ fontSize: "11px", fontWeight: "500" }}>
+                          Festival Image <span style={{ color: "red" }}>*</span>
+                        </h6>
+
+                        {currentFestival.image_url && !currentFestival.image?.name && (
+                          <div className="my-2">
+                            <img
+                              src={currentFestival.image_url}
+                              alt="Festival"
+                              style={{
+                                width: "100%",
+                                height: "140px",
+                                objectFit: "contain",
+                                borderRadius: "10px",
+
+                              }}
+                            />
+
+                          </div>
+
+                        )}
+
+                        {/* New Upload Preview */}
+                        {currentFestival.image instanceof File && (
+                          <div className="mt-2">
+                            <p className="fw-bold">New Upload Preview:</p>
+                            <img
+                              src={URL.createObjectURL(currentFestival.image)}
+                              alt="Preview"
+                              style={{
+                                width: "100%",
+                                height: "180px",
+                                objectFit: "contain",
+                                borderRadius: "10px",
+                                border: "1px solid #ccc",
+                              }}
+                            />
+                            <div className="mt-2 d-flex align-items-center gap-3">
+                              <a
+                                href={URL.createObjectURL(currentFestival.image)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn btn-outline-primary btn-sm"
+                              >
+                                View Full Image
+                              </a>
+                              <span
+                                className="text-danger"
+                                style={{ cursor: "pointer" }}
+                                onClick={() =>
+                                  setCurrentFestival({
+                                    ...currentFestival,
+                                    image: "",
+                                    image_preview: "",
+                                  })
+                                }
+                              >
+
+                              </span>
+                            </div>
+                          </div>
+                        )}
+
+
+                      </Col>
+                      <div className="mt-2 d-flex justify-content-center">
+                        <a
+                          href={currentFestival.image_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="event-click-btn"
+                          style={{ fontSize: "12px", padding: "3px 8px", textDecoration: "none" }}
+                        >
+                          View Full Image
+                        </a>
+                      </div>
+                    </Row>
+
+
+
+                  </Col>
                 </Row>
 
-                <Form.Group className="mt-2">
-                  <Form.Label className="temp-label">Description</Form.Label>
-                  <Form.Control
-                  className="temp-form-control-option"
-                    as="textarea"
-                    rows={2}
-                    name="description"
-                    value={currentFestival.description || ""}
-                    onChange={handleChange}
-                  />
-                </Form.Group>
+
 
                 {/* Image Upload */}
-                <Row className="temp-stepform-box mt-4">
-                  <Col lg={5} md={5} sm={12}>
-                    <fieldset
-                      className={`upload_dropZone text-center ${dragging ? "drag-over" : ""
-                        }`}
-                      onDragOver={(e) => {
-                        e.preventDefault();
-                        setDragging(true);
-                      }}
-                      onDragLeave={() => setDragging(false)}
-                      onDrop={(e) => {
-                        e.preventDefault();
-                        setDragging(false);
-                        const file = e.dataTransfer.files[0];
-                        if (file) {
-                          handleChange({
-                            target: {
-                              name: "image",
-                              files: [file],
-                              type: "file",
-                            },
-                          });
-                        }
-                      }}
-                    >
-                      <legend className="visually-hidden">Festival Image</legend>
-                      <img src={UploadFile} alt="upload" style={{ width: "60px" }} />
-                      
-                      <p className="temp-drop-txt my-2">
-                        Drag &amp; drop file<br />
-                        <i>or</i>
-                      </p>
-                      <input
-                        id="image"
-                        name="image"
-                        type="file"
-                        accept="image/jpeg,image/png"
-                        className="invisible"
-                        onChange={handleChange}
-                      />
-                      <label className="btn temp-primary-btn mb-1" htmlFor="image">
-                        Choose file
-                      </label>
-                      <p className="temp-upload-file">Upload up to 2MB (jpg, png)</p>
-                    </fieldset>
-                  </Col>
 
-                  <Col lg={7} md={7} sm={12} className="mt-2">
-                    <h6 style={{ fontSize: "14px", fontWeight: "600" }}>
-                      Festival Image <span style={{ color: "red" }}>*</span>
-                    </h6>
-
-                    {currentFestival.image_url && !currentFestival.image?.name && (
-                      <div className="my-2">
-                        <img
-                          src={currentFestival.image_url}
-                          alt="Festival"
-                          style={{
-                            width: "100%",
-                            height: "180px",
-                            objectFit: "contain",
-                            borderRadius: "10px",
-                            border: "1px solid #ccc",
-                          }}
-                        />
-                        <div className="mt-2">
-                          <a
-                            href={currentFestival.image_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="btn btn-outline-primary btn-sm"
-                            style={{ fontSize: "12px", padding: "3px 8px" }}
-                          >
-                            View Full Image
-                          </a>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* New Upload Preview */}
-                    {currentFestival.image instanceof File && (
-                      <div className="mt-2">
-                        <p className="fw-bold">New Upload Preview:</p>
-                        <img
-                          src={URL.createObjectURL(currentFestival.image)}
-                          alt="Preview"
-                          style={{
-                            width: "100%",
-                            height: "180px",
-                            objectFit: "contain",
-                            borderRadius: "10px",
-                            border: "1px solid #ccc",
-                          }}
-                        />
-                        <div className="mt-2 d-flex align-items-center gap-3">
-                          <a
-                            href={URL.createObjectURL(currentFestival.image)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="btn btn-outline-primary btn-sm"
-                          >
-                            View Full Image
-                          </a>
-                          <span
-                            className="text-danger"
-                            style={{ cursor: "pointer" }}
-                            onClick={() =>
-                              setCurrentFestival({
-                                ...currentFestival,
-                                image: "",
-                                image_preview: "",
-                              })
-                            }
-                          >
-                            ❌ Remove
-                          </span>
-                        </div>
-                      </div>
-                    )}
-                  </Col>
-                </Row>
               </Form>
             </Modal.Body>
             <Modal.Footer>

@@ -105,9 +105,9 @@ span.temp-span-star {
 .temp-primary-btn {
     background-color: var(--temp-org);
     border: 1px solid var(--temp-primary-hover) !important;
-    font-size: var(--temp-space-300);
+    font-size: var(--temp-space-250);
     color: var(--temp-white);
-    padding-bottom: var(--temp-space-200);
+
 
 }
 
@@ -151,7 +151,7 @@ span.temp-span-star {
     background-color: var(--temp-org);
     border: 1px var(--temp-org) solid;
     border-radius: var(--temp-space-200);
-    font-size: var(--temp-space-400);
+    font-size: var(--temp-space-350);
     padding-left: var(--temp-space-600);
     padding-right: var(--temp-space-600);
     padding-top: var(--temp-space-200);

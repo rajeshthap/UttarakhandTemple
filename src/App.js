@@ -129,6 +129,11 @@ import EarnAndTrans from "./Component/pandit_dashboard/pandit_innerdashborad/ear
 import ReportAnalytics from "./Component/pandit_dashboard/pandit_innerdashborad/reports/ReportsAnalytics";
 import ReviewsFeedback from "./Component/pandit_dashboard/pandit_innerdashborad/reviews_feedback/ReviewsFeedback";
 import PanditSupport from "./Component/pandit_dashboard/pandit_innerdashborad/PanditSupport";
+import PanditAboutUs from "./Component/pandit_dashboard/pandit_innerdashborad/PanditOverview/PanditAboutUs";
+import PanditMandirMahadevaya from "./Component/pandit_dashboard/pandit_innerdashborad/PanditOverview/PanditMandirMahadevaya";
+import Panditannouncement from "./Component/pandit_dashboard/pandit_innerdashborad/PanditOverview/Panditannouncement";
+import PanditMissionVision from "./Component/pandit_dashboard/pandit_innerdashborad/PanditOverview/PanditMissionVision";
+import PanditPlatformInfo from "./Component/pandit_dashboard/pandit_innerdashborad/PanditOverview/PanditPlatformInfo";
 // import BASE_URLL from "./Component/BaseURL";
 // import DashBoard from "./Component/dashboard/DashBoard";
 // import LeftNav from "./Component/dashboard/LeftNav";
@@ -138,6 +143,12 @@ import PanditSupport from "./Component/pandit_dashboard/pandit_innerdashborad/Pa
 function App() {
   const location = useLocation();
   const hiddenPaths = new Set([
+    "/PanditMandirMahadevaya",
+    "/PanditAboutUs",
+    "/PanditMandirMahadevaya",
+    "/Panditannouncement",
+    "/PanditMissionVision",
+    "/PanditPlatformInfo",
     "/PanditDetails",
     "/DonationsDetails",
     "/DarshanDetails",
@@ -397,7 +408,12 @@ function App() {
           <Route path="/SevaDetails" element={<SevaDetails />} />
           <Route path="/DonationsDetails" element={<DonationsDetails />} />
           <Route path="/PanditDetails" element={<PanditDetails />} />
-          <Route path="/DarshanDetails" element={<DarshanDetails />} />
+          <Route path="/PanditAboutUs" element={<PanditAboutUs />} />
+          <Route path="/Panditannouncement" element={<Panditannouncement />} />
+          <Route path="/PanditMandirMahadevaya" element={<PanditMandirMahadevaya />} />
+          <Route path="/PanditMissionVision" element={<PanditMissionVision />} />
+          <Route path="/PanditPlatformInfo" element={<PanditPlatformInfo />} />
+       
           
         </Routes>
         {!hideFooter && <TempleFooter />}

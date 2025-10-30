@@ -228,32 +228,30 @@ function PanditLeftNav() {
         {
           icon: <LiaCalendarCheck />,
           label: "About Us",
-          path: "/AboutDashBoard"
+          path: "/PanditAboutUs"
         },
 
         {
           icon: <LiaCalendarCheck />,
           label: "Platform Info",
-          path: "/PlatformInfoDashBoard"
+          path: "/PanditPlatformInfo"
         },
 
         {
           icon: <LiaCalendarCheck />,
           label: "Mission & Vision",
-          path: "/MissionDashBoard"
+          path: "/PanditMissionVision"
         },
-
         {
           icon: <LiaCalendarCheck />,
           label: "Mandir Platform",
-          path: "/MandirPlatformDashBoard"
+          path: "/PanditMandirMahadevaya"
         },
         {
           icon: <LiaCalendarCheck />,
           label: "Special announcement",
-          path: "/SpecialAnnouncementDashBoard"
+          path: "/PanditPlatformInfo"
         },
-
       ]
     },
     {
@@ -312,10 +310,10 @@ function PanditLeftNav() {
 
               {/* Dropdown menu */}
               <Dropdown.Menu>
-                <Dropdown.Item as={Link} to="/MyProfile">
+                <Dropdown.Item as={Link} to="/PanditProfile">
                   My Profile
                 </Dropdown.Item>
-                <Dropdown.Item as={Link} to="/ChangePassword">
+                <Dropdown.Item as={Link} to="/PanditChangePassword">
                   Change Password
                 </Dropdown.Item>
                 <Dropdown.Divider />
@@ -351,12 +349,13 @@ function PanditLeftNav() {
 
                 {/* Dropdown menu */}
                 <Dropdown.Menu>
-                  <Dropdown.Item as={Link} to="/MyProfile">
+                  <Dropdown.Item as={Link} to="/PanditProfile">
                     My Profile
                   </Dropdown.Item>
-                  <Dropdown.Item as={Link} to="/DashBoard">
-                    Dashboard
+                   <Dropdown.Item as={Link} to="/PanditChangePassword">
+                    My Profile
                   </Dropdown.Item>
+                 
                   <Dropdown.Divider />
                   <Dropdown.Item onClick={logout} className="text-danger">
                     Logout

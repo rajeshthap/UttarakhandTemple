@@ -1,7 +1,6 @@
 import React from "react";
 import "../../../assets/CSS/LeftNav.css";
 import TempleLeftNav from "../TempleLeftNav";
-import SearchFeature from "./SearchFeature";
 import TempleAuthority from "../../userregistration/TempleAuthority";
 
 const AddTemple = () => {
@@ -23,9 +22,8 @@ const AddTemple = () => {
               <h1 className=" fw500">
                 <span class="fw700h1">Add </span> Temple
               </h1>{" "}
-              <SearchFeature />
+
             </div>
-            <div>Temple List</div>
             <TempleAuthority />
           </div>
         </main>

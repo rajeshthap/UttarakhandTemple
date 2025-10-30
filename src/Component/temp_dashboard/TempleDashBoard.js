@@ -158,8 +158,11 @@ const TempleDashBoard = () => {
                                 </Card>
                             </Col>
 
+
+
+
                             <Col lg={3} md={3} sm={12}>
-                                <Card className="shadow-sm rounded  flex-fill dbcard-box-3">
+                                <Card className="shadow-sm rounded  flex-fill dbcard-box-5">
                                     <Card.Body>
                                         <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
                                             <div>
@@ -168,19 +171,15 @@ const TempleDashBoard = () => {
                                             </div>
 
                                             <div className="lh-1">
-                                                <div className=" avatar-md avatar-rounded Donations-bg flex-shrink-0 d-flex align-items-center justify-content-center ">
+                                                <div className=" avatar-md avatar-rounded totaltemp-bg flex-shrink-0 d-flex align-items-center justify-content-center ">
                                                     <BiSolidDonateBlood /> </div>
                                             </div></div>
 
                                     </Card.Body>
                                 </Card>
                             </Col>
-
-
-
-
                             <Col lg={3} md={3} sm={12}>
-                                <Card className="shadow-sm rounded  flex-fill dbcard-box-3">
+                                <Card className="shadow-sm rounded  flex-fill dbcard-box-6">
                                     <Card.Body>
                                         <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
                                             <div>
@@ -189,7 +188,7 @@ const TempleDashBoard = () => {
                                             </div>
 
                                             <div className="lh-1">
-                                                <div className=" avatar-md avatar-rounded Donations-bg flex-shrink-0 d-flex align-items-center justify-content-center ">
+                                                <div className=" avatar-md avatar-rounded totalfev-bg flex-shrink-0 d-flex align-items-center justify-content-center ">
                                                     <BiSolidDonateBlood /> </div>
                                             </div></div>
 
@@ -198,7 +197,7 @@ const TempleDashBoard = () => {
                             </Col>
 
                             <Col lg={3} md={3} sm={12}>
-                                <Card className="shadow-sm rounded  flex-fill dbcard-box-3">
+                                <Card className="shadow-sm rounded  flex-fill dbcard-box-7">
                                     <Card.Body>
                                         <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
                                             <div>
@@ -207,7 +206,7 @@ const TempleDashBoard = () => {
                                             </div>
 
                                             <div className="lh-1">
-                                                <div className=" avatar-md avatar-rounded Donations-bg flex-shrink-0 d-flex align-items-center justify-content-center ">
+                                                <div className=" avatar-md avatar-rounded total-dev-bg flex-shrink-0 d-flex align-items-center justify-content-center ">
                                                     <BiSolidDonateBlood /> </div>
                                             </div></div>
 

@@ -7,6 +7,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import UploadFile from "../../assets/images/upload-icon.png";
 import LocationState from "./LocationState";
 import { Globaleapi } from "../GlobleAuth/Globleapi";
+import { useAuth } from "../GlobleAuth/AuthContext";
 import SendOtp from "../SendOtp/SendOtp";
 import VerifyOtp from "../VerifyOtp/VerifyOtp";
 import Regimg1 from "../../assets/images/temple-img.jpg";
@@ -24,6 +25,7 @@ function TempleAuthority() {
   const [,] = useState(false);
   const [phone, setPhone] = useState("");
   const [otpSent, setOtpSent] = useState(false);
+   const { uniqueId } = useAuth();
   const [otpVerified, setOtpVerified] = useState(false);
   // const [banks, setBanks] = useState([]);
   const [formErrors, setFormErrors] = useState({});
@@ -98,6 +100,7 @@ function TempleAuthority() {
     role: "temple",
     temple_poojas: [],
     temple_description: "",
+    creator_id: uniqueId || "",
   });
 
   const [documents, setDocuments] = useState({
@@ -484,71 +487,84 @@ function TempleAuthority() {
     return payload;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateForm()) {
-      setAlertMessage("Please fix validation errors before submitting");
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (!validateForm()) {
+    setAlertMessage("Please fix validation errors before submitting");
+    setShowAlert(true);
+    return;
+  }
+
+  setLoading(true);
+
+  const payload = buildPayload();
+
+  //  Filter valid poojas and append to payload
+  const filteredPoojas = temple_poojas.filter(
+    (p) => p.temple_pooja_name && p.temple_pooja_price
+  );
+  payload.append("temple_poojas", JSON.stringify(filteredPoojas));
+
+  //  If uniqueId exists, use it — else send blank string
+  const creatorId = uniqueId || "";
+
+  try {
+    //  Pass creator_id in params
+    const registerResult = await Globaleapi(payload, {
+      params: { creator_id: creatorId },
+    });
+
+      //  Print full API response for debugging
+  console.log("Temple Registration API Response:", registerResult);
+  console.log("Creator ID Sent:", creatorId);
+
+    if (registerResult || registerResult?.status === 201) {
+      setAlertMessage("Temple Registered Successfully!");
       setShowAlert(true);
-      return;
+
+      setTimeout(() => {
+        setShowAlert(false);
+        navigate("/Login");
+      }, 2000);
+    } else {
+      setAlertMessage(
+        "Registration failed: " +
+          (registerResult?.data?.message || "Unknown error")
+      );
+      setShowAlert(true);
     }
+  } catch (error) {
+    if (error.response && error.response.data) {
+      const errorData = error.response.data;
 
-    setLoading(true);
-
-    const payload = buildPayload();
-
-    const filteredPoojas = temple_poojas.filter(
-      (p) => p.temple_pooja_name && p.temple_pooja_price
-    );
-
-    payload.append("temple_poojas", JSON.stringify(filteredPoojas));
-
-    try {
-      const registerResult = await Globaleapi(payload);
-      if (registerResult || registerResult?.status === 201) {
-        setAlertMessage("Temple Registered Successfully!");
-        setShowAlert(true);
-
-        setTimeout(() => {
-          setShowAlert(false);
-          navigate("/Login");
-        }, 2000);
+      if (
+        errorData.error &&
+        errorData.error.toLowerCase().includes("email")
+      ) {
+        setFormErrors((prev) => ({ ...prev, email: errorData.error }));
+        document.getElementsByName("email")[0]?.focus();
+      } else if (
+        errorData.error &&
+        errorData.error.toLowerCase().includes("phone")
+      ) {
+        setFormErrors((prev) => ({ ...prev, phone: errorData.error }));
+        document.getElementsByName("phone")[0]?.focus();
       } else {
         setAlertMessage(
-          "Registration failed: " +
-          (registerResult?.data?.message || "Unknown error")
+          "Error: " + (errorData.message || "Something went wrong")
         );
         setShowAlert(true);
       }
-    } catch (error) {
-      if (error.response && error.response.data) {
-        const errorData = error.response.data;
-
-        if (
-          errorData.error &&
-          errorData.error.toLowerCase().includes("email")
-        ) {
-          setFormErrors((prev) => ({ ...prev, email: errorData.error }));
-          document.getElementsByName("email")[0]?.focus();
-        } else if (
-          errorData.error &&
-          errorData.error.toLowerCase().includes("phone")
-        ) {
-          setFormErrors((prev) => ({ ...prev, phone: errorData.error }));
-          document.getElementsByName("phone")[0]?.focus();
-        } else {
-          setAlertMessage(
-            "Error: " + (errorData.message || "Something went wrong")
-          );
-          setShowAlert(true);
-        }
-      } else {
-        setAlertMessage("Error: " + error.message);
-        setShowAlert(true);
-      }
-    } finally {
-      setLoading(false);
+    } else {
+      setAlertMessage("Error: " + error.message);
+      setShowAlert(true);
     }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="temp-donate">
