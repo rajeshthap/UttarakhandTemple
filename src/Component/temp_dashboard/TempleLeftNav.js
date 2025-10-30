@@ -17,18 +17,16 @@ import { useAuth } from "../GlobleAuth/AuthContext";
 import "../../assets/CSS/TopInfo.css";
 function TempleLeftNav() {
   const { clearAuth } = useAuth();
-
   const [isNavClosed, setIsNavClosed] = useState(false);
   const [userName,] = useState("Loading...");
   const [activePath, setActivePath] = useState("");
-  const [openSubMenu, setOpenSubMenu] = useState(null); // Track which submenu is open
-  const [hoveredMenu, setHoveredMenu] = useState(null); // Track which menu is hovered
+  const [openSubMenu, setOpenSubMenu] = useState(null); 
+  const [hoveredMenu, setHoveredMenu] = useState(null); 
   const location = useLocation();
   // alert state
   const [showModifyAlert, setShowModifyAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const navigate = useNavigate();
-
   const toggleNav = () => {
     setIsNavClosed(!isNavClosed);
   };
@@ -108,7 +106,6 @@ function TempleLeftNav() {
     { icon: <RiDashboard3Line />, label: "Dashboard", path: "/TempleDashBoard" },
 
     // { icon: <BiDonateHeart />, label: "Online", path: "#" },
-
 
     {
       icon: <LiaCalendarCheck />,
@@ -249,7 +246,7 @@ function TempleLeftNav() {
         {
           icon: <LiaCalendarCheck />,
           label: "Change Password",
-          path: "/TempChangePassword"
+          path: "/TempleChangePassword"
         },
       ]
     },
@@ -320,18 +317,13 @@ function TempleLeftNav() {
           <Link to="#" className="logo-page">
             <img src={CompanyLogo} alt="Manadavaaya" title="MAHADAVAAYA" className="logo" />
           </Link>
-
-
         </div>
-
-
         <div className="message">
           <ModifyAlert
             message={alertMessage}
             show={showModifyAlert}
             setShow={setShowModifyAlert}
           />
-
           <div className=" d-flex align-items-center gap-2">
             <div className="nd-msg">{profile.displayName || "User"}</div>
             <Dropdown align="end" className="user-dp">
@@ -351,13 +343,12 @@ function TempleLeftNav() {
                   className="nav-profile-photo"
                 />
               </Dropdown.Toggle>
-
               {/* Dropdown menu */}
               <Dropdown.Menu>
                 <Dropdown.Item as={Link} to="/MyProfile">
                   My Profile
                 </Dropdown.Item>
-                <Dropdown.Item as={Link} to="/ChangePassword">
+                <Dropdown.Item as={Link} to="/TempleChangePassword">
                   Change Password
                 </Dropdown.Item>
                 <Dropdown.Divider />
@@ -390,13 +381,15 @@ function TempleLeftNav() {
                     <LuLogOut />
                   </div>
                 </Dropdown.Toggle>
-
                 {/* Dropdown menu */}
                 <Dropdown.Menu>
                   <Dropdown.Item as={Link} to="/MyProfile">
                     My Profile
                   </Dropdown.Item>
-                  <Dropdown.Item as={Link} to="/DashBoard">
+                   <Dropdown.Item as={Link} to="/TempleChangePassword">
+                   Change Password
+                  </Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/TempleDashBoard">
                     Dashboard
                   </Dropdown.Item>
                   <Dropdown.Divider />
@@ -411,7 +404,7 @@ function TempleLeftNav() {
               <React.Fragment key={index}>
                 {option.download ? (
                   <div
-                    className={`nav-option option${index + 1} ${activePath === option.fileUrl ? "active-nav" : ""
+                    className={`temp-option option${index + 1} ${activePath === option.fileUrl ? "active-nav" : ""
                       } ${hoveredMenu === index ? "hovered-nav" : ""}`}
                     onClick={() => {
                       setActivePath(option.fileUrl);

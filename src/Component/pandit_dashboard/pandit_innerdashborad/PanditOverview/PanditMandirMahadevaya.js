@@ -11,7 +11,7 @@ const PanditMandirMahadevaya = () => {
       {/* Main Wrapper */}
       <div className="dashboard-wrapper">
         {/* Sidebar */}
-        <aside className="sidebar">
+        <aside className="pandit-sidebar">
           <PanditLeftNav />
         </aside>
         {/* Right-hand Main Container */}

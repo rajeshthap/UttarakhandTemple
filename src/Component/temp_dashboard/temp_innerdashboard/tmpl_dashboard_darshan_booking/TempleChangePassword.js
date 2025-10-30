@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import "../../../assets/CSS/LeftNav.css";
 import { Form, Button, Row, Col, Spinner, Alert } from "react-bootstrap";
 import axios from "axios";
-import { useAuth } from "../../GlobleAuth/AuthContext";
-import { BASE_URLL } from "../../BaseURL";
-import PanditLeftNav from "../PanditLeftNav";
+import TempleLeftNav from "../../TempleLeftNav";
+import { BASE_URLL } from "../../../BaseURL";
+import { useAuth } from "../../../GlobleAuth/AuthContext";
 
-const PanditChangePassword = () => {
+const TempleChangePassword = () => {
   const { uniqueId } = useAuth();
   const [profile, setProfile] = useState(null);
   const [oldPassword, setOldPassword] = useState("");
@@ -19,13 +18,12 @@ const PanditChangePassword = () => {
     newPassword: "",
     confirmPassword: "",
   });
-
   //  Fetch user profile
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${BASE_URLL}api/get-pandit/?pandit_id=${uniqueId}`);
+        const res = await axios.get(`${BASE_URLL}/api/get-temple/?temple_id=${uniqueId}`);
         if (res.data) {
           setProfile(res.data);
           // Masked password for display only
@@ -100,8 +98,8 @@ const PanditChangePassword = () => {
 
   return (
     <div className="dashboard-wrapper">
-      <aside className="pandit-sidebar">
-        <PanditLeftNav />
+      <aside className="sidebar">
+        <TempleLeftNav />
       </aside>
 
       <main className="main-container">
@@ -124,7 +122,7 @@ const PanditChangePassword = () => {
                     <Form.Label className="temp-label">Login Type</Form.Label>
                     <Form.Control
                       type="text"
-                      value="Pandit"
+                      value="Temple"
                       disabled
                       className="temp-form-control-option"
                     />
@@ -244,4 +242,4 @@ const PanditChangePassword = () => {
   );
 };
 
-export default PanditChangePassword;
+export default TempleChangePassword;

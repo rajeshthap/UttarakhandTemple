@@ -5,19 +5,18 @@
 }
 
 .dbcard-box-1 {
-    border: 2px solid #cbe6ce;
+    border: 2px solid #e7d0dd;
     border-radius: 10px;
-    background-color: #edffef !important;
-    color: #529c58 !important;
+    background-color: #FFEDFA !important;
+    color: #BE5985 !important;
     box-shadow: 0px 6px 16px 2px rgba(0, 0, 0, 0.05) !important;
-
 }
 
 .dbcard-box-2 {
-    border: 2px solid #dedaef;
+    border: 2px solid #E1EACD;
     border-radius: 10px;
-    background-color: #f4f2ff !important;
-    color: #605599 !important;
+    background-color: #EFF3EA !important;
+    color: #727D73 !important;
     box-shadow: 0px 6px 16px 2px rgba(0, 0, 0, 0.05) !important;
 }
 
@@ -525,21 +524,21 @@
 }
 
 .rwd-table tr:first-child {
-    border-top: none;
-    background: var(--temp-drak-blue);
+     border-top: none;
+    background: #a30909;
     color: #fff;
 }
 
 .rwd-table tr:nth-child(odd):not(:first-child) {
-    background-color: #e6effb;
+      background-color: #dfd6d6;
 }
 
 .rwd-table tr {
     border-top: 1px solid var(--temp-drak-blue);
-    ;
     border-bottom: 1px solid var(--temp-drak-blue);
-    ;
-    background-color: #f7f7f7;
+    background-color: #fff4f4;
+
+    
 }
 
 
@@ -622,11 +621,11 @@
 }
 
 .save-bg {
-    background-color: #cbe6ce !important;
+    background-color: #FFB8E0 !important;
 }
 
 .Darshan-bg {
-    background-color: #dedaef !important;
+    background-color: #D9DFC6 !important;
 }
 
 .pandit-bg {

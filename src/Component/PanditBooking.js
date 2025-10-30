@@ -304,12 +304,14 @@ const cardData = [
     text: "तर्पण श्राद्ध पूजा",
     img: "",
   },
+
   {
     id: "73",
     title: "Pind Daan Shradh Puja",
     text: "पिंड दान श्राद्ध पूजा",
     img: "",
   },
+  
 ];
 
 const PanditBooking = () => {

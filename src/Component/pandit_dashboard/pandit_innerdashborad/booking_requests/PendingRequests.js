@@ -8,7 +8,7 @@ const PendingRequests = () => {
   return (
     <>
       <div className="dashboard-wrapper">
-        <aside className="sidebar">
+        <aside className="pandit-sidebar">
           <PanditLeftNav />
         </aside>
 

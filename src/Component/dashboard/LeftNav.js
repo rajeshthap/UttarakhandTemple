@@ -428,6 +428,7 @@ useEffect(() => {
                     onMouseEnter={() => handleMenuHover(index)}
                     onMouseLeave={handleMenuLeave}
                   >
+
                     <div className="nav-item d-flex">
                       <span className="nav-icon">{option.icon}</span>
                       <span className="nav-label">{option.label}</span>

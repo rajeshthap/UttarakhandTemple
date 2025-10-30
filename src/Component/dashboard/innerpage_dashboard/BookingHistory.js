@@ -26,7 +26,7 @@ const BookingHistory = () => {
               <span class="fw700h1">Booking </span> History
             </h1>
             <Row>
-              <h2>Transaction History</h2>
+             
               <div class="col-md-12">
                 <table class="rwd-table">
                   <tbody>
