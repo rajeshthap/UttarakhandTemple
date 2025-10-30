@@ -364,9 +364,6 @@ input[type=number] {
     border: 1px solid var(--temp-org) !important;
 }
 
-.nav-item {
-    padding-top: var(--temp-space-150) !important;
-}
 
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
