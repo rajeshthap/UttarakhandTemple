@@ -13,21 +13,23 @@ import { FaCheckCircle, FaCalendar } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 // Custom date picker input with calendar icon
-const CustomDatePickerInput = forwardRef(({ value, onClick, placeholder }, ref) => (
-  <InputGroup>
-    <Form.Control
-      ref={ref}
-      value={value}
-      onClick={onClick}
-      placeholder={placeholder}
-      className="temp-form-control-option"
-      readOnly
-    />
-    <InputGroup.Text onClick={onClick} style={{ cursor: 'pointer' }}>
-      <FaCalendar />
-    </InputGroup.Text>
-  </InputGroup>
-));
+const CustomDatePickerInput = forwardRef(
+  ({ value, onClick, placeholder }, ref) => (
+    <InputGroup>
+      <Form.Control
+        ref={ref}
+        value={value}
+        onClick={onClick}
+        placeholder={placeholder}
+        className="temp-form-control-option"
+        readOnly
+      />
+      <InputGroup.Text onClick={onClick} style={{ cursor: "pointer" }}>
+        <FaCalendar />
+      </InputGroup.Text>
+    </InputGroup>
+  )
+);
 
 const AddFestival = () => {
   const { uniqueId } = useAuth();
@@ -87,34 +89,33 @@ const AddFestival = () => {
   };
 
   const handleStartDateChange = (date) => {
-    const startDay = date
-      ? date.toLocaleDateString("en-US", { weekday: "long" })
-      : "";
+    if (!date) return;
+    const startDay = date.toLocaleDateString("en-US", { weekday: "long" });
     setSelectedStartDateTime(date);
     setFormData((prev) => ({
       ...prev,
-      start_date_time: date ? date.toISOString() : "",
+      start_date_time: date.toISOString(),
       start_day: startDay,
-      end_date_time:
-        selectedEndDateTime && date > selectedEndDateTime
-          ? date.toISOString()
-          : prev.end_date_time,
-      end_day:
-        selectedEndDateTime && date > selectedEndDateTime
-          ? startDay
-          : prev.end_day,
     }));
     setErrors((prev) => ({ ...prev, start_date_time: "" }));
   };
 
   const handleEndDateChange = (date) => {
-    const endDay = date
-      ? date.toLocaleDateString("en-US", { weekday: "long" })
-      : "";
+    if (!date) return;
+
+    if (selectedStartDateTime && date < selectedStartDateTime) {
+      setErrors((prev) => ({
+        ...prev,
+        end_date_time: "End Date must be same or after Start Date",
+      }));
+      return;
+    }
+
+    const endDay = date.toLocaleDateString("en-US", { weekday: "long" });
     setSelectedEndDateTime(date);
     setFormData((prev) => ({
       ...prev,
-      end_date_time: date ? date.toISOString() : "",
+      end_date_time: date.toISOString(),
       end_day: endDay,
     }));
     setErrors((prev) => ({ ...prev, end_date_time: "" }));
@@ -282,11 +283,14 @@ const AddFestival = () => {
                         timeIntervals={30}
                         dateFormat="MMMM d, yyyy h:mm aa"
                         placeholderText="Select Start Date and Time"
-                        customInput={<CustomDatePickerInput placeholder="Select Start Date and Time" />}
+                        customInput={
+                          <CustomDatePickerInput placeholder="Select Start Date and Time" />
+                        }
                         minDate={today}
                         minTime={minTime}
                         maxTime={maxTime}
                       />
+
                       {formData.start_day && (
                         <small className="text-muted d-block mt-1">
                           Day: {formData.start_day}
@@ -314,11 +318,21 @@ const AddFestival = () => {
                         timeIntervals={30}
                         dateFormat="MMMM d, yyyy h:mm aa"
                         placeholderText="Select End Date and Time"
-                        customInput={<CustomDatePickerInput placeholder="Select End Date and Time" />}
+                        customInput={
+                          <CustomDatePickerInput placeholder="Select End Date and Time" />
+                        }
                         minDate={selectedStartDateTime || today}
-                        minTime={minTime}
-                        maxTime={maxTime}
+                        minTime={
+                          selectedStartDateTime &&
+                          selectedEndDateTime &&
+                          selectedStartDateTime.toDateString() ===
+                            selectedEndDateTime.toDateString()
+                            ? selectedStartDateTime // same day → only show time after start
+                            : new Date().setHours(0, 0, 0, 0) // next days → show all times
+                        }
+                        maxTime={new Date().setHours(23, 59, 59, 999)}
                       />
+
                       {formData.end_day && (
                         <small className="text-muted d-block mt-1">
                           Day: {formData.end_day}
@@ -355,8 +369,9 @@ const AddFestival = () => {
 
                   <Col lg={6} sm={12} md={6} className="add-event-f-mob">
                     <fieldset
-                      className={`upload_dropZone text-center ${dragging === "image" ? "drag-over" : ""
-                        }`}
+                      className={`upload_dropZone text-center ${
+                        dragging === "image" ? "drag-over" : ""
+                      }`}
                       onDragOver={(e) => {
                         e.preventDefault();
                         setDragging("image");
