@@ -13,26 +13,34 @@ const NewBooking = () => {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  // Fetch New Bookings
+  // ✅ FETCH BOOKINGS (GET API)
   const fetchBookings = async () => {
     try {
       setLoading(true);
       const res = await axios.get(
         `https://mahadevaaya.com/backend/api/get-darshan-pooja-booking/`,
         {
-          params: { creator_id: uniqueId },
+          params: {
+            creator_id: uniqueId,
+            status: "pending",
+          },
         }
       );
 
+      // ✅ Handle response properly (darshan_and_pooja_id)
       if (res.data && Array.isArray(res.data)) {
-        console.log("New Bookings fetched:", res.data);
+        console.log("✅ Bookings fetched:", res.data);
         setBookings(res.data);
+      } else if (res.data && res.data.data) {
+        // In case API returns data inside `data` field
+        console.log("✅ Bookings fetched:", res.data.data);
+        setBookings(res.data.data);
       } else {
-        console.warn("Unexpected API response:", res.data);
+        console.warn("⚠️ Unexpected API response:", res.data);
         setBookings([]);
       }
     } catch (err) {
-      console.error("Error fetching new bookings:", err);
+      console.error("❌ Error fetching bookings:", err);
       setBookings([]);
     } finally {
       setLoading(false);
@@ -43,13 +51,13 @@ const NewBooking = () => {
     if (uniqueId) fetchBookings();
   }, [uniqueId]);
 
-  // Open Modal to View/Edit Booking
+  // ✅ OPEN MODAL
   const handleView = (booking) => {
     setSelectedBooking(booking);
     setShowModal(true);
   };
 
-  // Handle field changes
+  // ✅ HANDLE INPUT CHANGE
   const handleBookingChange = (e) => {
     const { name, value } = e.target;
     setSelectedBooking((prev) => ({
@@ -58,14 +66,33 @@ const NewBooking = () => {
     }));
   };
 
-  // Update Booking
+  // ✅ UPDATE BOOKING STATUS (PUT API)
   const handleBookingUpdate = async () => {
+    if (!selectedBooking) return;
+
     try {
-      console.log("Updating booking:", selectedBooking);
-      alert("Booking updated successfully!");
+      console.log("🔄 Updating booking:", selectedBooking);
+
+      const formData = new FormData();
+      formData.append("booking_id", selectedBooking.booking_id);
+      formData.append("status", selectedBooking.status || "");
+      if (selectedBooking.remarks) {
+        formData.append("remarks", selectedBooking.remarks);
+      }
+
+      const response = await axios.put(
+        `https://mahadevaaya.com/backend/api/update-darshan-pooja-booking/`,
+        formData
+      );
+
+      console.log("✅ Booking update response:", response.data);
+      alert("Booking status updated successfully!");
+
       setShowModal(false);
+      fetchBookings(); // Refresh table
     } catch (error) {
-      console.error("Error updating booking:", error);
+      console.error("❌ Error updating booking:", error);
+      alert("Failed to update booking. Try again!");
     }
   };
 
@@ -96,7 +123,7 @@ const NewBooking = () => {
                   <tbody>
                     <tr>
                       <th>S.No</th>
-                      <th>Booking Date & Time</th>
+                      <th>Darshan & Pooja ID</th>
                       <th>Temple Name</th>
                       <th>Devotee Name</th>
                       <th>Devotee Email</th>
@@ -109,14 +136,14 @@ const NewBooking = () => {
                       bookings.map((booking, index) => (
                         <tr key={index}>
                           <td data-th="S.No">{index + 1}</td>
-                          <td data-th="Booking Date & Time">
-                            {new Date(booking.book_date_and_time).toLocaleString()}
+                          <td data-th="Darshan & Pooja ID">
+                            {booking.darshan_and_pooja_id || booking.darshan_id || "N/A"}
                           </td>
                           <td data-th="Temple Name">{booking.temple_name}</td>
                           <td data-th="Devotee Name">{booking.full_name}</td>
-                          <td data-th="Devotee Email">N/A</td>
+                          <td data-th="Devotee Email">{booking.email || "N/A"}</td>
                           <td data-th="Devotee Mobile">{booking.mobile_number}</td>
-                          <td data-th="Status">New</td>
+                          <td data-th="Status">{booking.status || "New"}</td>
                           <td>
                             <Button
                               className="event-click-btn"
@@ -131,7 +158,7 @@ const NewBooking = () => {
                     ) : (
                       <tr>
                         <td colSpan="8" className="text-center">
-                          {loading ? "Loading..." : "No new bookings found."}
+                          {loading ? "Loading..." : "No bookings found."}
                         </td>
                       </tr>
                     )}
@@ -149,14 +176,19 @@ const NewBooking = () => {
               <Modal.Body>
                 {selectedBooking && (
                   <Form>
-                    {/* ROW 1 */}
                     <Row>
                       <Col md={6}>
                         <Form.Group>
-                          <Form.Label className="temp-label">Booking Number</Form.Label>
+                          <Form.Label className="temp-label">
+                            Darshan & Pooja ID
+                          </Form.Label>
                           <Form.Control
                             className="temp-form-control-option"
-                            value={selectedBooking.booking_number || ""}
+                            value={
+                              selectedBooking.darshan_and_pooja_id ||
+                              selectedBooking.darshan_id ||
+                              ""
+                            }
                             disabled
                           />
                         </Form.Group>
@@ -174,7 +206,6 @@ const NewBooking = () => {
                       </Col>
                     </Row>
 
-                    {/* ROW 2 */}
                     <Row className="mt-2">
                       <Col md={6}>
                         <Form.Group>
@@ -199,7 +230,6 @@ const NewBooking = () => {
                       </Col>
                     </Row>
 
-                    {/* ROW 3 */}
                     <Row className="mt-2">
                       <Col md={6}>
                         <Form.Group>
@@ -230,32 +260,6 @@ const NewBooking = () => {
                       </Col>
                     </Row>
 
-                    {/* ROW 4 */}
-                    <Row className="mt-2">
-                      <Col md={6}>
-                        <Form.Group>
-                          <Form.Label className="temp-label">Booking Date</Form.Label>
-                          <Form.Control
-                            className="temp-form-control-option"
-                            value={selectedBooking.book_date_and_time || ""}
-                            disabled
-                          />
-                        </Form.Group>
-                      </Col>
-
-                      <Col md={6}>
-                        <Form.Group>
-                          <Form.Label className="temp-label">Total Amount (₹)</Form.Label>
-                          <Form.Control
-                            className="temp-form-control-option"
-                            value={selectedBooking.grand_total || ""}
-                            disabled
-                          />
-                        </Form.Group>
-                      </Col>
-                    </Row>
-
-                    {/* ROW 5 */}
                     <Row className="mt-2">
                       <Col md={12}>
                         <Form.Group>
