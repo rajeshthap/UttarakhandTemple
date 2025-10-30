@@ -37,10 +37,11 @@
 }
 
 .sub-menu.open {
- max-height: 500px;
-    display: block;
-    background-color: #040d18;
+  max-height: 500px;
+  display: block;
+  background-color: #040d18;
 }
+
 .sub-nav-option {
   padding: 8px 10px 8px 35px;
   font-size: 14px;
@@ -65,7 +66,7 @@
 
 /* Hover effects */
 .nav-option:hover {
-  background-color:#3d3e40;
+  background-color: #3d3e40;
   cursor: pointer;
 }
 
@@ -83,10 +84,11 @@
 /* Active menu item styling */
 
 .active-nav {
-  background-color:#3d3e40 !important;
+  background-color: #3d3e40 !important;
   color: #fff !important;
   border-left: 4px solid white;
 }
+
 /* Smooth transitions */
 .nav-option {
   transition: all 0.3s ease;
@@ -94,6 +96,7 @@
 
 .nav-icon {
   transition: transform 0.3s ease;
+  padding: 0px 8px 6px 8px;
 }
 
 .nav-option:hover .nav-icon {
@@ -296,7 +299,7 @@
 
 .nav-option:hover {
   border-left: 2px solid var(--nd-white);
-   background-color: #212529;
+  background-color: #212529;
   cursor: pointer;
 }
 
@@ -340,7 +343,7 @@
 
 .nav-icon {
   padding: 16px;
-  font-size: 24px;
+  font-size: 20px;
   padding-top: 0px !important;
   color: var(--nd-white);
 }
@@ -359,7 +362,7 @@
 
 span.nav-label {
   padding-top: var(--nd-space-250);
-  font-size: var(--nd-space-350);
+  font-size: var(--nd-space-300);
   color: var(--nd-white);
 }
 

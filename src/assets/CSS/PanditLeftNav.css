@@ -101,6 +101,7 @@
 
 .nav-icon {
   transition: transform 0.3s ease;
+  padding: 0px 8px 6px 8px;
 }
 
 .pandit-option:hover .nav-icon {
@@ -346,8 +347,8 @@
 }
 
 .nav-icon {
-  padding: 16px;
-  font-size: 24px;
+  padding: 0px 8px 6px 8px;
+  font-size: 20px;
   padding-top: 0px !important;
   color: var(--nd-white);
 }
@@ -366,7 +367,7 @@
 
 span.nav-label {
   padding-top: var(--nd-space-250);
-  font-size: var(--nd-space-350);
+  font-size: var(--nd-space-300);
   color: var(--nd-white);
 }
 
