@@ -91,7 +91,7 @@ function TempleAuthority() {
     email: "",
     trust_committee_type: "",
     trust_committee_details: "",
-    bank_name: "",
+    bank_name: "Punjab National Bank",
     account_number: "",
     confirm_account_number: "",
     account_type: "",
@@ -100,6 +100,7 @@ function TempleAuthority() {
     role: "temple",
     temple_poojas: [],
     temple_description: "",
+    creator_id: uniqueId || "",
   });
 
   const [documents, setDocuments] = useState({
@@ -513,6 +514,10 @@ function TempleAuthority() {
     const registerResult = await Globaleapi(payload, {
       params: { creator_id: creatorId },
     });
+
+      //  Print full API response for debugging
+  console.log("Temple Registration API Response:", registerResult);
+  console.log("Creator ID Sent:", creatorId);
 
     if (registerResult || registerResult?.status === 201) {
       setAlertMessage("Temple Registered Successfully!");
