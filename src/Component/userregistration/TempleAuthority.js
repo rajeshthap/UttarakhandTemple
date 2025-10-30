@@ -91,7 +91,7 @@ function TempleAuthority() {
     email: "",
     trust_committee_type: "",
     trust_committee_details: "",
-    bank_name: "Punjab National Bank",
+    bank_name: "",
     account_number: "",
     confirm_account_number: "",
     account_type: "",

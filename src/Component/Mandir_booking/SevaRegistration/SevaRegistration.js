@@ -37,6 +37,7 @@ const SevaRegistration = () => {
     id_proof_type: "",
     id_proof_number: "",
     temple_name: "",
+    temple_id: "",
     type_of_seva: "",
     seva_date_and_time: "",
     frequency: "",
@@ -47,7 +48,6 @@ const SevaRegistration = () => {
     seva_donation_amount: "",
     payment_mode: "",
     creator_id: uniqueId || "",
-
   });
 
   const handleResendOtp = async () => {
@@ -78,13 +78,19 @@ const SevaRegistration = () => {
     const fetchTemples = async () => {
       try {
         const res = await axios.get(`${BASE_URLL}api/temple-names-list/`);
-        if (res.data && Array.isArray(res.data.temple_names)) {
-          setTemples(res.data.temple_names);
+
+        if (res.data && Array.isArray(res.data.temples)) {
+          setTemples(res.data.temples);
+        } else {
+          console.error("Unexpected API structure:", res.data);
+          setTemples([]);
         }
       } catch (err) {
         console.error("Error fetching temples:", err);
+        setTemples([]);
       }
     };
+
     fetchTemples();
   }, []);
 
@@ -235,10 +241,23 @@ const SevaRegistration = () => {
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
 
+    if (name === "temple_name") {
+      const selectedTemple = temples.find(
+        (t) => String(t.temple_id) === String(value)
+      );
+      setFormData((prev) => ({
+        ...prev,
+        temple_id: selectedTemple ? Number(selectedTemple.temple_id) : "",
+        temple_name: selectedTemple ? selectedTemple.temple_name : "",
+      }));
+      return;
+    }
+
     setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+
     setErrors((prev) => ({ ...prev, [name]: "" }));
 
     if (name === "mobile_number" && value.length === 10) {
@@ -247,14 +266,6 @@ const SevaRegistration = () => {
 
     if (name === "email" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
       checkUserExists(value, "email");
-    }
-
-    if (name === "id_proof_number") {
-      let errorMsg = "";
-      if (value.length > 16) {
-        errorMsg = "ID Proof Number cannot exceed 16 characters";
-      }
-      setErrors((prev) => ({ ...prev, id_proof_number: errorMsg }));
     }
   };
 
@@ -279,83 +290,78 @@ const SevaRegistration = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!validateFields()) {
-      setAlertMessage("Please fill all required fields.");
-      setShowAlert(true);
-      setAgree(false);
-      return;
+  if (!validateFields()) {
+    setAlertMessage("Please fill all required fields.");
+    setShowAlert(true);
+    setAgree(false);
+    return;
+  }
+
+  if (!isVerified) {
+    setAlertMessage("Please verify your phone number before submitting.");
+    setShowAlert(true);
+    setAgree(false);
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const formDataToSend = new FormData();
+    for (let key in formData) {
+      formDataToSend.append(key, formData[key]);
     }
 
-    if (!isVerified) {
-      setAlertMessage("Please verify your phone number before submitting.");
+    const res = await axios.post(`${BASE_URLL}api/seva-booking/`, formDataToSend, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    if (res.data.message === "Seva booking created successfully") {
+      setAlertMessage("Seva Registration Successful!");
       setShowAlert(true);
       setAgree(false);
-      return;
-    }
 
-    setLoading(true);
-
-    try {
-      const formDataToSend = new FormData();
-      for (let key in formData) {
-        formDataToSend.append(key, formData[key]);
-      }
-
-      const res = await axios.post(
-        `${BASE_URLL}api/seva-booking/`,
-        formDataToSend,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      if (res.data.message === "Seva booking created successfully") {
-        setAlertMessage("Seva Registration Successful!");
-        setShowAlert(true);
-        setAgree(false);
-
-        setFormData({
-          full_name: "",
-          gender: "",
-          age: "",
-          mobile_number: "",
-          email: "",
-          id_proof_type: "",
-          id_proof_number: "",
-          temple_name: "",
-          type_of_seva: "",
-          preferred_dates: "",
-          time_slot: "",
-          frequency: "",
-          participation_mode: "",
-          gotra: "",
-          nakshatra_rashi: "",
-          special_instructions: "",
-          seva_donation_amount: "",
-          payment_mode: "",
-          creator_id: uniqueId || "",
-
-        });
-      } else {
-        setAlertMessage(res.data.message || "Seva Registration failed");
-        setShowAlert(true);
-        setAgree(false);
-      }
-    } catch (err) {
-      console.error(err);
-      const errorMsg =
-        err.response?.data?.message || err.message || "Something went wrong!";
-      setAlertMessage(errorMsg);
+      // Reset form
+      setFormData({
+        full_name: "",
+        gender: "",
+        age: "",
+        mobile_number: "",
+        email: "",
+        id_proof_type: "",
+        id_proof_number: "",
+        temple_name: "",
+        temple_id: "",
+        type_of_seva: "",
+        seva_date_and_time: "",
+        frequency: "",
+        participation_mode: "",
+        gotra: "",
+        nakshatra_rashi: "",
+        special_instructions: "",
+        seva_donation_amount: "",
+        payment_mode: "",
+        creator_id: uniqueId || "",
+      });
+    } else {
+      setAlertMessage(res.data.message || "Seva Registration failed");
       setShowAlert(true);
       setAgree(false);
-    } finally {
-      setLoading(false);
     }
-  };
+  } catch (err) {
+    console.error(err);
+    const errorMsg =
+      err.response?.data?.message || err.message || "Something went wrong!";
+    setAlertMessage(errorMsg);
+    setShowAlert(true);
+    setAgree(false);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div>
@@ -589,33 +595,38 @@ const SevaRegistration = () => {
                 <h2>Seva Details </h2>
 
                 <Col lg={6} md={6} sm={12}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput1"
-                  >
-                    <Form.Label className="temp-label">
-                      Temple Name <span className="temp-span-star">*</span>
-                    </Form.Label>
-                    <Form.Select
-                      className="temp-form-control-option"
-                      name="temple_name"
-                      value={formData.temple_name}
-                      onChange={handleInputChange}
-                    >
-                      <option value="">Select Temple Name</option>
-                      {temples.map((temple, index) => (
-                        <option key={index} value={temple}>
-                          {temple}
-                        </option>
-                      ))}
-                    </Form.Select>
+                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+  <Form.Label className="temp-label">
+    Temple Name <span className="temp-span-star">*</span>
+  </Form.Label>
+  <Form.Select
+    className="temp-form-control-option"
+    name="temple_id"   
+    value={formData.temple_id}
+    onChange={(e) => {
+      const selectedTemple = temples.find(
+        (t) => t.temple_id === e.target.value
+      );
+      setFormData({
+        ...formData,
+        temple_id: e.target.value,
+        temple_name: selectedTemple?.temple_name || "",
+      });
+    }}
+  >
+    <option value="">Select Temple Name</option>
+    {temples.map((temple) => (
+      <option key={temple.temple_id} value={temple.temple_id}>
+        {temple.temple_name}
+      </option>
+    ))}
+  </Form.Select>
 
-                    {errors.temple_name && (
-                      <small className="text-danger">
-                        {errors.temple_name}
-                      </small>
-                    )}
-                  </Form.Group>
+  {errors.temple_name && (
+    <small className="text-danger">{errors.temple_name}</small>
+  )}
+</Form.Group>
+
                 </Col>
 
                 <Col lg={6} md={6} sm={12}>

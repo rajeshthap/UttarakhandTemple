@@ -427,15 +427,12 @@ const buildPanditOptionsForPooja = (poojaName, source = apiPandits) => {
 
   
 
-  // Calculate total price based on selected pandits
-  const totalAmount =
-    selectedOptions && selectedOptions.length > 0
-      ? selectedOptions.reduce(
-          (sum, opt) =>
-            sum + Number(opt.meta?.price || selectedCard?.price || 0),
-          0
-        )
-      : Number(selectedCard?.price || 0);
+  // Total should depend only on pandit selection
+const totalAmount =
+  selectedOptions.length > 0
+    ? selectedOptions.reduce((sum, opt) => sum + Number(opt.meta?.price || 0), 0)
+    : 0;
+
 
   return (
     <>
@@ -507,12 +504,8 @@ const buildPanditOptionsForPooja = (poojaName, source = apiPandits) => {
                         );
                         setPanditOptions(opts);
 
-                        if (opts.length > 0) {
-                          const p = opts[0].meta?.price || 0;
-                          setSelectedCard((prev) => ({ ...item, price: p }));
-                        } else {
-                          setSelectedCard(item);
-                        }
+                        setSelectedCard(item);
+setPanditOptions(opts);
                       }}
                     >
                       <div className="card-image-wrapper-temple-page">

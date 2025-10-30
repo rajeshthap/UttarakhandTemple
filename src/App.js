@@ -333,6 +333,7 @@ function App() {
           <Route path="/ReportAnalytics" element={<ReportAnalytics />} />
                     <Route path="/ReviewsFeedback" element={<ReviewsFeedback />} />
                     <Route path="/PanditSupport" element={<PanditSupport />} />
+                    <Route path="/DarshanDetails" element={<DarshanDetails />} />
 
           
 
