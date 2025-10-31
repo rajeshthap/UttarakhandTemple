@@ -17,7 +17,6 @@ import { useAuth } from "../GlobleAuth/AuthContext";
 import "../../assets/CSS/TopInfo.css";
 function PanditLeftNav() {
   const { clearAuth } = useAuth();
-
   const [isNavClosed, setIsNavClosed] = useState(false);
   const [userName,] = useState("Loading...");
   const [activePath, setActivePath] = useState("");
@@ -34,7 +33,7 @@ function PanditLeftNav() {
   };
   const [profile, setProfile] = useState({
     displayName: "",
-    devotee_photo: "",
+    pandit_image: "",
   });
   const [, setLoading] = useState(false);
 
@@ -52,7 +51,7 @@ function PanditLeftNav() {
           const user = response.data;
           setProfile({
             displayName: user.first_name || "",
-            devotee_photo: user.devotee_photo || "",
+            pandit_image: user.pandit_image || "",
           });
         }
       } catch (error) {
@@ -295,9 +294,9 @@ function PanditLeftNav() {
               >
                 <img
                   src={
-                    profile.devotee_photo
-                      ? `https://mahadevaaya.com/backend/media/devotee_photos/${profile.devotee_photo.split("/").pop()}`
-                      : "https://mahadevaaya.com/backend/media/devotee_photos/default.png"
+                    profile.pandit_image
+                      ? `https://mahadevaaya.com/backend/media/pandit_images/${profile.pandit_image.split("/").pop()}`
+                      : "https://mahadevaaya.com/backend/media/pandit_images/default.png"
                   }
                   alt={profile.displayName || "Devotee"}
                   className="nav-profile-photo"

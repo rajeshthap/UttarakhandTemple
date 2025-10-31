@@ -32,7 +32,7 @@ function TempleLeftNav() {
   };
   const [profile, setProfile] = useState({
     displayName: "",
-    devotee_photo: "",
+    temple_image: "",
   });
   const [, setLoading] = useState(false);
 
@@ -43,14 +43,14 @@ function TempleLeftNav() {
         setLoading(true);
         const userId = uniqueId
         const response = await axios.get(
-          `https://mahadevaaya.com/backend/api/get-user/?user_id=${userId}`
+          `https://mahadevaaya.com/backend/api/get-temple/?temple_id=${userId}`
         );
 
         if (response.data) {
           const user = response.data;
           setProfile({
-            displayName: user.devotee_name || "",
-            devotee_photo: user.devotee_photo || "",
+            displayName: user.temple_name || "",
+            temple_image: user.temple_image || "",
           });
         }
       } catch (error) {
@@ -290,9 +290,9 @@ function TempleLeftNav() {
               >
                 <img
                   src={
-                    profile.devotee_photo
-                      ? `https://mahadevaaya.com/backend/media/devotee_photos/${profile.devotee_photo.split("/").pop()}`
-                      : "https://mahadevaaya.com/backend/media/devotee_photos/default.png"
+                    profile.temple_image
+                      ? `https://mahadevaaya.com/backend/media/temple_images/${profile.temple_image.split("/").pop()}`
+                      : "https://mahadevaaya.com/backend/media/temple_images/default.png"
                   }
                   alt={profile.displayName || "Devotee"}
                   className="nav-profile-photo"

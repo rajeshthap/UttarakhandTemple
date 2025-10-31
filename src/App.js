@@ -135,6 +135,8 @@ import Panditannouncement from "./Component/pandit_dashboard/pandit_innerdashbor
 import PanditMissionVision from "./Component/pandit_dashboard/pandit_innerdashborad/PanditOverview/PanditMissionVision";
 import PanditPlatformInfo from "./Component/pandit_dashboard/pandit_innerdashborad/PanditOverview/PanditPlatformInfo";
 import TempleChangePassword from "./Component/temp_dashboard/temp_innerdashboard/tmpl_dashboard_darshan_booking/TempleChangePassword";
+import NewPujaBooking from "./Component/pandit_dashboard/pandit_innerdashborad/PanditDetailsPage/NewPujaBooking";
+
 // import BASE_URLL from "./Component/BaseURL";
 // import DashBoard from "./Component/dashboard/DashBoard";
 // import LeftNav from "./Component/dashboard/LeftNav";
@@ -221,7 +223,10 @@ function App() {
     "/ReportAnalytics",
     "/ReviewsFeedback",
     "/PanditSupport",
-    "/TempleChangePassword"
+    "/TempleChangePassword",
+    "/NewPujaBooking",
+  
+  
   ]);
   const shouldHideBars = hiddenPaths.has(location.pathname);
   const hideFooter = location.pathname === "/";
@@ -417,6 +422,9 @@ function App() {
           <Route path="/PanditMissionVision" element={<PanditMissionVision />} />
           <Route path="/PanditPlatformInfo" element={<PanditPlatformInfo />} />
           <Route path="/TempleChangePassword" element={<TempleChangePassword />} />
+          <Route path="/NewPujaBooking" element={<NewPujaBooking />} />
+         
+         
        
           
         </Routes>
