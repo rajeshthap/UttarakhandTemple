@@ -192,7 +192,7 @@ useEffect(() => {
                   <div className="d-flex align-items-start justify-content-between">
                     <div>
                       <span className="text-muted d-block mb-1">
-                        New Darshan Booking
+                        New  Booking
                       </span>
                       <h4 className="fw-medium mb-0">{newBookingCount}</h4>
                       <div>
@@ -218,7 +218,7 @@ useEffect(() => {
                   <div className="d-flex align-items-start justify-content-between">
                     <div>
                       <span className="text-muted d-block mb-1">
-                        Accepted Darshan Booking
+                        Accepted  Booking
                       </span>
                       <h4 className="fw-medium mb-0">{acceptedBookingCount}</h4>
                       <div>
@@ -244,7 +244,7 @@ useEffect(() => {
                   <div className="d-flex align-items-start justify-content-between">
                     <div>
                       <span className="text-muted d-block mb-1">
-                        Rejected Darshan Booking
+                        Rejected  Booking
                       </span>
                       <h4 className="fw-medium mb-0">{rejectedBookingCount}</h4>
                       <div>
