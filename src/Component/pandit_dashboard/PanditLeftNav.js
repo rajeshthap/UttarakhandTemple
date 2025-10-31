@@ -45,13 +45,13 @@ function PanditLeftNav() {
         setLoading(true);
         const userId = uniqueId
         const response = await axios.get(
-          `https://mahadevaaya.com/backend/api/get-user/?user_id=${userId}`
+          `https://mahadevaaya.com/backend/api/get-pandit/?pandit_id=${userId}`
         );
 
         if (response.data) {
           const user = response.data;
           setProfile({
-            displayName: user.devotee_name || "",
+            displayName: user.first_name || "",
             devotee_photo: user.devotee_photo || "",
           });
         }
@@ -109,7 +109,6 @@ function PanditLeftNav() {
 
     // { icon: <BiDonateHeart />, label: "Online", path: "#" },
 
-
     {
       icon: <LiaCalendarCheck />,
       label: "Manage Pujas",
@@ -126,9 +125,6 @@ function PanditLeftNav() {
           label: "Completed Pujas",
           path: "/CompletedPuja"
         },
-
-
-
       ]
     },
 

@@ -13,7 +13,6 @@ const TempleProfile = () => {
   const { uniqueId } = useAuth();
 
   
-
   return (
     <div className="dashboard-wrapper">
       <aside className="sidebar">

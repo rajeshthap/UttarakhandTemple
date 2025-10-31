@@ -319,7 +319,7 @@
 
   color: white;
   cursor: pointer;
-  margin-top: 7%;
+  /* margin-top: 7%; */
 }
 
 
@@ -621,7 +621,7 @@ span.sub-label {
   }
 
   .option1 {
-    margin-top: 1% !important;
+    /* margin-top: 1% !important; */
   }
 
   .nav-option {
@@ -687,7 +687,7 @@ span.sub-label {
   }
 
   .option1 {
-    margin-top: 1% !important;
+    /* margin-top: 1% !important; */
   }
 
   .nd-menu {

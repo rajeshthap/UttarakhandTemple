@@ -178,59 +178,14 @@ function TempleLeftNav() {
           path: "/AllBooking"
         },
 
-
       ]
     },
-
-
 
     {
       icon: <GiByzantinTemple />,
       label: "View Donation",
       path: "/Donations",
-
     },
-    {
-      icon: <LiaCalendarCheck />,
-      label: "Report",
-      path: "#",
-      hasSubmenu: true,
-      subItems: [
-        {
-          icon: <LiaCalendarCheck />,
-          label: "Darshan Booking ",
-          path: "/DarshanBookingReport"
-        },
-        {
-          icon: <LiaCalendarCheck />,
-          label: "Report of Donation",
-          path: "/DonationReport"
-        },
-        {
-          icon: <LiaCalendarCheck />,
-          label: "Collected Donation",
-          path: "/DonationCollected"
-        },
-        {
-          icon: <LiaCalendarCheck />,
-          label: "Report of Reg Devotee",
-          path: "/RegDevoteeReport"
-        },
-
-
-      ]
-    },
-
-
-
-    {
-      icon: <GiByzantinTemple />,
-      label: "Reg Devotees",
-      path: "/RegDevotee",
-
-    },
-
-
 
     {
       icon: <LiaCalendarCheck />,
