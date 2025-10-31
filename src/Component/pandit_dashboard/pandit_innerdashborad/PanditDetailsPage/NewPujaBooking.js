@@ -48,7 +48,7 @@ const NewPujaBooking = () => {
                     <Breadcrumb.Item href="/Pandit_DashBoard">
                       <span className="fw700h1">Dashboard</span>
                     </Breadcrumb.Item>
-                    <Breadcrumb.Item active>Seva Details</Breadcrumb.Item>
+                    <Breadcrumb.Item active>New Pooja Booking</Breadcrumb.Item>
                   </Breadcrumb>
                 </h1>
 
@@ -77,8 +77,6 @@ const NewPujaBooking = () => {
               <p>Unique ID: {uniqueId}</p>{" "}
             </div> */}
          
-
-          
             <Row className="mt-3">
              
               <div class="col-md-12">
