@@ -168,20 +168,8 @@ const SupportPage = () => {
 
   return (
    
-      
-      <main className="main-container-box">
-        <div className="content-box">
-          {/* Header */}
-          <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
-            <h1 className="fw500">
-              <Breadcrumb>
-                <Breadcrumb.Item href="/TempleDashBoard">
-                  <span className="fw700h1">Dashboard</span>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item active>Support</Breadcrumb.Item>
-              </Breadcrumb>
-            </h1>
-          </div>
+          <>
+         
 
           {errorAlert && (
             <Alert
@@ -396,8 +384,7 @@ const SupportPage = () => {
               </Form>
             </Card>
           </Row>
-        </div>
-      </main>
+       </>
 
   );
 };

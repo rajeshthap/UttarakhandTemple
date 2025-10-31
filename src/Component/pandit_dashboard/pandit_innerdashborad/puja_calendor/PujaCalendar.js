@@ -11,7 +11,6 @@ const PujaCalendar = () => {
         <aside className="sidebar">
           <PanditLeftNav />
         </aside>
-
         <main className="main-container-box">
           <div className="content-box">
             <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
@@ -23,9 +22,7 @@ const PujaCalendar = () => {
                     <Breadcrumb.Item active>Puja Calendar</Breadcrumb.Item>
                   </Breadcrumb>
                 </h1>
-                <div>
-                  <SearchFeature />
-                </div>
+                
               </div>
           </div>
         </main>

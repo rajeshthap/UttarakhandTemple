@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Row, Col, Spinner, Alert } from "react-bootstrap";
+import {
+  Form,
+  Button,
+  Row,
+  Col,
+  Spinner,
+  Alert,
+  Breadcrumb,
+} from "react-bootstrap";
 import axios from "axios";
 import TempleLeftNav from "../../TempleLeftNav";
 import { BASE_URLL } from "../../../BaseURL";
@@ -23,7 +31,9 @@ const TempleChangePassword = () => {
     const fetchProfile = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${BASE_URLL}/api/get-temple/?temple_id=${uniqueId}`);
+        const res = await axios.get(
+          `${BASE_URLL}/api/get-temple/?temple_id=${uniqueId}`
+        );
         if (res.data) {
           setProfile(res.data);
           // Masked password for display only
@@ -69,8 +79,7 @@ const TempleChangePassword = () => {
       validationErrors.confirmPassword ||
       !newPassword ||
       !confirmPassword
-    )
-     {
+    ) {
       setError("Please fix validation errors before submitting");
       return;
     }
@@ -105,7 +114,16 @@ const TempleChangePassword = () => {
       <main className="main-container">
         <div className="content-box">
           <div className="nd-tech-heading">
-            <h1>Change Password</h1>
+            <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
+              <h1 className="fw500">
+                <Breadcrumb>
+                  <Breadcrumb.Item href="/TempleDashBoard">
+                    <span className="fw700h1">DashBoard</span>
+                  </Breadcrumb.Item>
+                  <Breadcrumb.Item active>Change Password</Breadcrumb.Item>
+                </Breadcrumb>
+              </h1>
+            </div>
           </div>
 
           {loading && !profile ? (

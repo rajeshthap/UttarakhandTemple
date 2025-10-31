@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../../../assets/CSS/LeftNav.css";
-import { Form, Button, Row, Col, Spinner, Alert } from "react-bootstrap";
+import { Form, Button, Row, Col, Spinner, Alert, Breadcrumb } from "react-bootstrap";
 import axios from "axios";
 import { useAuth } from "../../GlobleAuth/AuthContext";
 import { BASE_URLL } from "../../BaseURL";
@@ -106,10 +106,19 @@ const PanditChangePassword = () => {
 
       <main className="main-container">
         <div className="content-box">
-          <div className="nd-tech-heading">
-            <h1>Change Password</h1>
-          </div>
-
+         
+   <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
+                            <h1 className="fw500">
+                              <Breadcrumb>
+                                <Breadcrumb.Item href="/Pandit_DashBoard">
+                                  <span className="fw700h1">DashBoard</span>
+                                </Breadcrumb.Item>
+                                <Breadcrumb.Item active>Change Password</Breadcrumb.Item>
+                              </Breadcrumb>
+                            </h1>
+            
+                            
+                          </div>
           {loading && !profile ? (
             <div className="text-center py-4">
               <Spinner animation="border" />

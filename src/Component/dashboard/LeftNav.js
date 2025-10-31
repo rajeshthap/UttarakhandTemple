@@ -344,7 +344,7 @@ useEffect(() => {
       ? profile.devotee_photo
       : "https://mahadevaaya.com/backend/media/devotee_photos/default.png"
   }
-  alt={profile.displayName || "Devotee"}
+  
   className="nav-profile-photo"
 />
 
