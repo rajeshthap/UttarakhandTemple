@@ -136,7 +136,7 @@ import PanditMissionVision from "./Component/pandit_dashboard/pandit_innerdashbo
 import PanditPlatformInfo from "./Component/pandit_dashboard/pandit_innerdashborad/PanditOverview/PanditPlatformInfo";
 import TempleChangePassword from "./Component/temp_dashboard/temp_innerdashboard/tmpl_dashboard_darshan_booking/TempleChangePassword";
 import NewPujaBooking from "./Component/pandit_dashboard/pandit_innerdashborad/PanditDetailsPage/NewPujaBooking";
-
+import UpcomingPuja from "./Component/pandit_dashboard/pandit_innerdashborad/PanditDetailsPage/UpcomingPuja";
 // import BASE_URLL from "./Component/BaseURL";
 // import DashBoard from "./Component/dashboard/DashBoard";
 // import LeftNav from "./Component/dashboard/LeftNav";
@@ -225,6 +225,7 @@ function App() {
     "/PanditSupport",
     "/TempleChangePassword",
     "/NewPujaBooking",
+    "/UpcomingPuja",
   
   
   ]);
@@ -372,6 +373,7 @@ function App() {
             path="/TempDonateDashBoard"
             element={<TempDonateDashBoard />}
           />
+          <Route path="/UpcomingPuja" element={<UpcomingPuja />} />
           <Route path="/TempPanditBooking" element={<TempPanditBooking />} />
           <Route path="/TempPoojaBooking" element={<TempPoojaBooking />} />
           <Route path="/TempChangePassword" element={<TempChangePassword />} />
