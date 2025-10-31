@@ -111,25 +111,24 @@ const TempleBookingInfo = () => {
   };
   const [showAccordionModal, setShowAccordionModal] = useState(false);
 
- const handleCardClick = (item) => {
-  const isMobile = window.innerWidth <= 768;
+  const handleCardClick = (item) => {
+    const isMobile = window.innerWidth <= 768;
 
-  if (!uniqueId) {
-    // Not logged in
-    setShowModal(true);
-    return;
-  }
+    if (!uniqueId) {
+      // Not logged in
+      setShowModal(true);
+      return;
+    }
 
-  // Logged in
-  setSelectedCard(item);
-  if (isMobile) {
-    // On mobile, open accordion inside modal
-    setShowAccordionModal(true);
-  }
-};
+    // Logged in
+    setSelectedCard(item);
+    if (isMobile) {
+      // On mobile, open accordion inside modal
+      setShowAccordionModal(true);
+    }
+  };
 
-const [selectedPooja, setSelectedPooja] = useState(null);
-
+  const [selectedPooja, setSelectedPooja] = useState(null);
 
   return (
     <div className="temp-donate">
@@ -159,9 +158,7 @@ const [selectedPooja, setSelectedPooja] = useState(null);
                   </Col>
                   <Col xs={12} md={6} className="mt-3">
                     <Link to="/DevoteeRegistration">
-                      <Button className="w-100 temp-regis-btn">
-                        Register
-                      </Button>
+                      <Button className="w-100 temp-regis-btn">Register</Button>
                     </Link>
                   </Col>
                 </Row>
@@ -182,10 +179,11 @@ const [selectedPooja, setSelectedPooja] = useState(null);
                   className="d-flex"
                 >
                   <div
-                    className={`card-item flex-fill card card-shadow d-flex flex-column ${selectedCard?.temple_name === item.temple_name
+                    className={`card-item flex-fill card card-shadow d-flex flex-column ${
+                      selectedCard?.temple_name === item.temple_name
                         ? "active-card"
                         : ""
-                      }`}
+                    }`}
                   >
                     <div className="card-image-wrapper">
                       <img
@@ -202,36 +200,67 @@ const [selectedPooja, setSelectedPooja] = useState(null);
                         <Row className="mb-1">
                           <Col lg={12} md={6} className="mb-2 text-center">
                             {item.temple_name === "Kedarnath Temple" && (
-                              <Link
-                                to="/KedarnathInfo"
+                              <Button
                                 className="click-btn btn btn-primary"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  if (!uniqueId) {
+                                    setShowModal(true);
+                                  } else {
+                                    navigate("/KedarnathInfo");
+                                  }
+                                }}
                               >
                                 Read More..
-                              </Link>
+                              </Button>
                             )}
+
                             {item.temple_name === "Badrinath Temple" && (
-                              <Link
-                                to="/BadrinathInfo"
+                              <Button
                                 className="click-btn btn btn-primary"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  if (!uniqueId) {
+                                    setShowModal(true);
+                                  } else {
+                                    navigate("/BadrinathInfo");
+                                  }
+                                }}
                               >
                                 Read More..
-                              </Link>
+                              </Button>
                             )}
+
                             {item.temple_name === "Yamunotri Temple" && (
-                              <Link
-                                to="/YamunotriInfo"
+                              <Button
                                 className="click-btn btn btn-primary"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  if (!uniqueId) {
+                                    setShowModal(true);
+                                  } else {
+                                    navigate("/YamunotriInfo");
+                                  }
+                                }}
                               >
                                 Read More..
-                              </Link>
+                              </Button>
                             )}
+
                             {item.temple_name === "Gangotri Temple" && (
-                              <Link
-                                to="/GangotriInfo"
+                              <Button
                                 className="click-btn btn btn-primary"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  if (!uniqueId) {
+                                    setShowModal(true);
+                                  } else {
+                                    navigate("/GangotriInfo");
+                                  }
+                                }}
                               >
                                 Read More..
-                              </Link>
+                              </Button>
                             )}
                           </Col>
                         </Row>
@@ -249,7 +278,12 @@ const [selectedPooja, setSelectedPooja] = useState(null);
           </Col>
 
           {/* Right side pooja accordion */}
-          <Col lg={5} md={5} sm={12} className="mt-2 temp-right-side rhs-gob-mob">
+          <Col
+            lg={5}
+            md={5}
+            sm={12}
+            className="mt-2 temp-right-side rhs-gob-mob"
+          >
             {!uniqueId && (
               <div className="text-center p-4 my-4 temp-regis">
                 <h5>
@@ -273,8 +307,9 @@ const [selectedPooja, setSelectedPooja] = useState(null);
             )}
 
             <div
-              className={`tem-rhs-info temp-right-side-style ${!uniqueId ? "disabled-section" : ""
-                }`}
+              className={`tem-rhs-info temp-right-side-style ${
+                !uniqueId ? "disabled-section" : ""
+              }`}
               style={{
                 pointerEvents: !uniqueId ? "none" : "auto",
                 opacity: !uniqueId ? 0.5 : 1,
@@ -314,7 +349,8 @@ const [selectedPooja, setSelectedPooja] = useState(null);
                       <Accordion.Body>
                         <Form.Group className="mb-3">
                           <Form.Label className="temp-label">
-                            No. of Person <span className="temp-span-star">*</span>
+                            No. of Person{" "}
+                            <span className="temp-span-star">*</span>
                           </Form.Label>
                           <Form.Select
                             className="temp-form-control-option"
@@ -369,8 +405,7 @@ const [selectedPooja, setSelectedPooja] = useState(null);
                             <p>
                               Applicable Amount:{" "}
                               <span className="amount-span">
-                                ₹{" "}
-                                {pooja.temple_pooja_price * selectedPersons}/-
+                                ₹ {pooja.temple_pooja_price * selectedPersons}/-
                               </span>
                             </p>
                           </div>
@@ -385,8 +420,7 @@ const [selectedPooja, setSelectedPooja] = useState(null);
                               {selectedPersons} × ₹{pooja.temple_pooja_price}
                             </p>
                             <span className="amount-span">
-                              ₹{" "}
-                              {pooja.temple_pooja_price * selectedPersons}/-
+                              ₹ {pooja.temple_pooja_price * selectedPersons}/-
                             </span>
                           </div>
 
@@ -430,8 +464,7 @@ const [selectedPooja, setSelectedPooja] = useState(null);
 
       {/*  Login/Register Modal */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-        <Modal.Header closeButton>
-        </Modal.Header>
+        <Modal.Header closeButton></Modal.Header>
         <Modal.Body className="text-center">
           <div className="text-center p-4 my-4 temp-regis">
             <h5>
@@ -456,274 +489,269 @@ const [selectedPooja, setSelectedPooja] = useState(null);
       </Modal>
 
       {/* Accordion Modal for Logged-in Mobile Users */}
-<Modal
-  show={showAccordionModal}
-  onHide={() => {
-    setShowAccordionModal(false);
-    setSelectedPooja(null); // reset when closing
-  }}
-  centered
-  size="lg"
->
-  <Modal.Header closeButton>
-    <Modal.Title className="temp-container-box">
-      <h1>{selectedCard?.temple_name || "Temple Booking"}</h1>
-    </Modal.Title>
-  </Modal.Header>
+      <Modal
+        show={showAccordionModal}
+        onHide={() => {
+          setShowAccordionModal(false);
+          setSelectedPooja(null); // reset when closing
+        }}
+        centered
+        size="lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title className="temp-container-box">
+            <h1>{selectedCard?.temple_name || "Temple Booking"}</h1>
+          </Modal.Title>
+        </Modal.Header>
 
-  <Modal.Body>
-    {/* Step 1: Show list of poojas if none selected */}
-    {!selectedPooja ? (
-      selectedCard && selectedCard.poojas?.length > 0 ? (
-        <Accordion
-                  activeKey={activeAccordion}
-                  onSelect={handleAccordionChange}
-                  className="temp-accordin-btn"
-                >
-                  {selectedCard.poojas.map((pooja, index) => (
-                    <Accordion.Item
-                      eventKey={String(index)}
-                      key={pooja.temple_pooja_id}
-                      className="temp-accordin-btn"
-                    >
-                      <Accordion.Header>
-                        <div className="d-flex align-items-center">
-                          <img
-                            src={Diya}
-                            alt="pooja"
-                            className="img-fluid temp-img-btn me-2"
-                          />
-                          <div>
-                            <div className="temp-accor-heading">
-                              {pooja.temple_pooja_name}{" "}
-                              <span>
-                                (₹{pooja.temple_pooja_price} per Person)
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </Accordion.Header>
-                      <Accordion.Body className="temp-container-box">
-                        <Form.Group className="mb-3">
-                          <Form.Label className="temp-label">
-                            No. of Person <span className="temp-span-star">*</span>
-                          </Form.Label>
-                          <Form.Select
-                            className="temp-form-control-option"
-                            value={selectedPersons}
-                            onChange={(e) =>
-                              setSelectedPersons(Number(e.target.value))
-                            }
-                          >
-                            {Array.from({ length: 10 }, (_, i) => (
-                              <option key={i + 1} value={i + 1}>
-                                {i + 1}
-                              </option>
-                            ))}
-                          </Form.Select>
-
-                          <Form.Group className="mb-3 mt-3">
-                            <Form.Label className="temp-label mb-2">
-                              Temple Booking Date & Time{" "}
-                              <span className="temp-span-star">*</span>
-                            </Form.Label>
-                            <div>
-                              <DatePicker
-                                selected={selectedDateTime}
-                                onChange={setSelectedDateTime}
-                                showTimeSelect
-                                timeFormat="hh:mm aa"
-                                timeIntervals={30}
-                                dateFormat="MMMM d, yyyy h:mm aa"
-                                placeholderText="Select Date and time"
-                                className="form-control temp-form-control-option w-100"
-                                minDate={today}
-                                minTime={minTime}
-                                maxTime={maxTime}
-                                required
-                              />
-                            </div>
-                          </Form.Group>
-
-                          <div className="mt-3">
-                            <p>
-                              <MdOutlineDateRange className="temple-icon" />{" "}
-                              {formattedDate}
-                            </p>
-                            <p>
-                              <FaUsersLine className="temple-icon" />{" "}
-                              {selectedPersons} Person(s), Charges ₹
-                              {pooja.temple_pooja_price} Per Person
-                            </p>
-                          </div>
-
-                          <div className="text-end mt-2">
-                            <p>
-                              Applicable Amount:{" "}
-                              <span className="amount-span">
-                                ₹{" "}
-                                {pooja.temple_pooja_price * selectedPersons}/-
-                              </span>
-                            </p>
-                          </div>
-
-                          <h2>Cart Total</h2>
-                          <p className="border-temp">
-                            {pooja.temple_pooja_name}
-                          </p>
-
-                          <div className="d-flex justify-content-between">
-                            <p>
-                              {selectedPersons} × ₹{pooja.temple_pooja_price}
-                            </p>
-                            <span className="amount-span">
-                              ₹{" "}
-                              {pooja.temple_pooja_price * selectedPersons}/-
+        <Modal.Body>
+          {/* Step 1: Show list of poojas if none selected */}
+          {!selectedPooja ? (
+            selectedCard && selectedCard.poojas?.length > 0 ? (
+              <Accordion
+                activeKey={activeAccordion}
+                onSelect={handleAccordionChange}
+                className="temp-accordin-btn"
+              >
+                {selectedCard.poojas.map((pooja, index) => (
+                  <Accordion.Item
+                    eventKey={String(index)}
+                    key={pooja.temple_pooja_id}
+                    className="temp-accordin-btn"
+                  >
+                    <Accordion.Header>
+                      <div className="d-flex align-items-center">
+                        <img
+                          src={Diya}
+                          alt="pooja"
+                          className="img-fluid temp-img-btn me-2"
+                        />
+                        <div>
+                          <div className="temp-accor-heading">
+                            {pooja.temple_pooja_name}{" "}
+                            <span>
+                              (₹{pooja.temple_pooja_price} per Person)
                             </span>
                           </div>
+                        </div>
+                      </div>
+                    </Accordion.Header>
+                    <Accordion.Body className="temp-container-box">
+                      <Form.Group className="mb-3">
+                        <Form.Label className="temp-label">
+                          No. of Person{" "}
+                          <span className="temp-span-star">*</span>
+                        </Form.Label>
+                        <Form.Select
+                          className="temp-form-control-option"
+                          value={selectedPersons}
+                          onChange={(e) =>
+                            setSelectedPersons(Number(e.target.value))
+                          }
+                        >
+                          {Array.from({ length: 10 }, (_, i) => (
+                            <option key={i + 1} value={i + 1}>
+                              {i + 1}
+                            </option>
+                          ))}
+                        </Form.Select>
 
-                          <div className="gap-3 mt-3 mb-3 Temp-btn-submit">
-                            <Button
-                              variant="temp-submit-btn"
-                              className="temp-submit-btn mx-3"
-                              type="button"
-                              onClick={() => {
-                                navigate("/MandirBooking", {
-                                  state: {
-                                    temple_id: selectedCard.temple_id,
-                                    temple_name: selectedCard.temple_name,
-                                    pooja_details: `${pooja.temple_pooja_name} - ₹${pooja.temple_pooja_price}`,
-                                    no_of_persons: selectedPersons,
-                                    book_date_and_time: selectedDateTime,
-                                    grand_total:
-                                      pooja.temple_pooja_price *
-                                      selectedPersons,
-                                  },
-                                });
-                              }}
-                            >
-                              <FaCheck /> Proceed for devotee details
-                            </Button>
+                        <Form.Group className="mb-3 mt-3">
+                          <Form.Label className="temp-label mb-2">
+                            Temple Booking Date & Time{" "}
+                            <span className="temp-span-star">*</span>
+                          </Form.Label>
+                          <div>
+                            <DatePicker
+                              selected={selectedDateTime}
+                              onChange={setSelectedDateTime}
+                              showTimeSelect
+                              timeFormat="hh:mm aa"
+                              timeIntervals={30}
+                              dateFormat="MMMM d, yyyy h:mm aa"
+                              placeholderText="Select Date and time"
+                              className="form-control temp-form-control-option w-100"
+                              minDate={today}
+                              minTime={minTime}
+                              maxTime={maxTime}
+                              required
+                            />
                           </div>
                         </Form.Group>
-                      </Accordion.Body>
-                    </Accordion.Item>
-                  ))}
-                </Accordion>
-      ) : (
-        <p className="text-muted">
-          Select a temple to view available Poojas.
-        </p>
-      )
-    ) : (
-      /* Step 2: When a pooja is selected, show its form */
-      <div>
 
+                        <div className="mt-3">
+                          <p>
+                            <MdOutlineDateRange className="temple-icon" />{" "}
+                            {formattedDate}
+                          </p>
+                          <p>
+                            <FaUsersLine className="temple-icon" />{" "}
+                            {selectedPersons} Person(s), Charges ₹
+                            {pooja.temple_pooja_price} Per Person
+                          </p>
+                        </div>
 
-        <h5 className="mb-3">
-          {selectedPooja.temple_pooja_name} (₹{selectedPooja.temple_pooja_price} per Person)
-        </h5>
+                        <div className="text-end mt-2">
+                          <p>
+                            Applicable Amount:{" "}
+                            <span className="amount-span">
+                              ₹ {pooja.temple_pooja_price * selectedPersons}/-
+                            </span>
+                          </p>
+                        </div>
 
-        <Form.Group className="mb-3">
-          <Form.Label className="temp-label">
-            No. of Person <span className="temp-span-star">*</span>
-          </Form.Label>
-          <Form.Select
-            className="temp-form-control-option"
-            value={selectedPersons}
-            onChange={(e) => setSelectedPersons(Number(e.target.value))}
-          >
-            {Array.from({ length: 10 }, (_, i) => (
-              <option key={i + 1} value={i + 1}>
-                {i + 1}
-              </option>
-            ))}
-          </Form.Select>
+                        <h2>Cart Total</h2>
+                        <p className="border-temp">{pooja.temple_pooja_name}</p>
 
-          <Form.Group className="mb-3 mt-3">
-            <Form.Label className="temp-label mb-2">
-              Temple Booking Date & Time{" "}
-              <span className="temp-span-star">*</span>
-            </Form.Label>
+                        <div className="d-flex justify-content-between">
+                          <p>
+                            {selectedPersons} × ₹{pooja.temple_pooja_price}
+                          </p>
+                          <span className="amount-span">
+                            ₹ {pooja.temple_pooja_price * selectedPersons}/-
+                          </span>
+                        </div>
+
+                        <div className="gap-3 mt-3 mb-3 Temp-btn-submit">
+                          <Button
+                            variant="temp-submit-btn"
+                            className="temp-submit-btn mx-3"
+                            type="button"
+                            onClick={() => {
+                              navigate("/MandirBooking", {
+                                state: {
+                                  temple_id: selectedCard.temple_id,
+                                  temple_name: selectedCard.temple_name,
+                                  pooja_details: `${pooja.temple_pooja_name} - ₹${pooja.temple_pooja_price}`,
+                                  no_of_persons: selectedPersons,
+                                  book_date_and_time: selectedDateTime,
+                                  grand_total:
+                                    pooja.temple_pooja_price * selectedPersons,
+                                },
+                              });
+                            }}
+                          >
+                            <FaCheck /> Proceed for devotee details
+                          </Button>
+                        </div>
+                      </Form.Group>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                ))}
+              </Accordion>
+            ) : (
+              <p className="text-muted">
+                Select a temple to view available Poojas.
+              </p>
+            )
+          ) : (
+            /* Step 2: When a pooja is selected, show its form */
             <div>
-              <DatePicker
-                selected={selectedDateTime}
-                onChange={setSelectedDateTime}
-                showTimeSelect
-                timeFormat="hh:mm aa"
-                timeIntervals={30}
-                dateFormat="MMMM d, yyyy h:mm aa"
-                placeholderText="Select Date and time"
-                className="form-control temp-form-control-option w-100"
-                minDate={today}
-                minTime={minTime}
-                maxTime={maxTime}
-                required
-              />
+              <h5 className="mb-3">
+                {selectedPooja.temple_pooja_name} (₹
+                {selectedPooja.temple_pooja_price} per Person)
+              </h5>
+
+              <Form.Group className="mb-3">
+                <Form.Label className="temp-label">
+                  No. of Person <span className="temp-span-star">*</span>
+                </Form.Label>
+                <Form.Select
+                  className="temp-form-control-option"
+                  value={selectedPersons}
+                  onChange={(e) => setSelectedPersons(Number(e.target.value))}
+                >
+                  {Array.from({ length: 10 }, (_, i) => (
+                    <option key={i + 1} value={i + 1}>
+                      {i + 1}
+                    </option>
+                  ))}
+                </Form.Select>
+
+                <Form.Group className="mb-3 mt-3">
+                  <Form.Label className="temp-label mb-2">
+                    Temple Booking Date & Time{" "}
+                    <span className="temp-span-star">*</span>
+                  </Form.Label>
+                  <div>
+                    <DatePicker
+                      selected={selectedDateTime}
+                      onChange={setSelectedDateTime}
+                      showTimeSelect
+                      timeFormat="hh:mm aa"
+                      timeIntervals={30}
+                      dateFormat="MMMM d, yyyy h:mm aa"
+                      placeholderText="Select Date and time"
+                      className="form-control temp-form-control-option w-100"
+                      minDate={today}
+                      minTime={minTime}
+                      maxTime={maxTime}
+                      required
+                    />
+                  </div>
+                </Form.Group>
+
+                <div className="mt-3">
+                  <p>
+                    <MdOutlineDateRange className="temple-icon" />{" "}
+                    {formattedDate}
+                  </p>
+                  <p>
+                    <FaUsersLine className="temple-icon" /> {selectedPersons}{" "}
+                    Person(s), Charges ₹{selectedPooja.temple_pooja_price} Per
+                    Person
+                  </p>
+                </div>
+
+                <div className="text-end mt-2">
+                  <p>
+                    Applicable Amount:{" "}
+                    <span className="amount-span">
+                      ₹{selectedPooja.temple_pooja_price * selectedPersons}/-
+                    </span>
+                  </p>
+                </div>
+
+                <h2>Cart Total</h2>
+                <p className="border-temp">{selectedPooja.temple_pooja_name}</p>
+
+                <div className="d-flex justify-content-between">
+                  <p>
+                    {selectedPersons} × ₹{selectedPooja.temple_pooja_price}
+                  </p>
+                  <span className="amount-span">
+                    ₹{selectedPooja.temple_pooja_price * selectedPersons}/-
+                  </span>
+                </div>
+
+                <div className="gap-3 mt-3 mb-3 Temp-btn-submit">
+                  <Button
+                    variant="temp-submit-btn"
+                    className="temp-submit-btn mx-3"
+                    type="button"
+                    onClick={() => {
+                      navigate("/MandirBooking", {
+                        state: {
+                          temple_name: selectedCard.temple_name,
+                          pooja_details: `${selectedPooja.temple_pooja_name} - ₹${selectedPooja.temple_pooja_price}`,
+                          no_of_persons: selectedPersons,
+                          book_date_and_time: selectedDateTime,
+                          grand_total:
+                            selectedPooja.temple_pooja_price * selectedPersons,
+                        },
+                      });
+                    }}
+                  >
+                    <FaCheck /> Proceed for devotee details
+                  </Button>
+                </div>
+              </Form.Group>
             </div>
-          </Form.Group>
-
-          <div className="mt-3">
-            <p>
-              <MdOutlineDateRange className="temple-icon" /> {formattedDate}
-            </p>
-            <p>
-              <FaUsersLine className="temple-icon" /> {selectedPersons} Person(s),
-              Charges ₹{selectedPooja.temple_pooja_price} Per Person
-            </p>
-          </div>
-
-          <div className="text-end mt-2">
-            <p>
-              Applicable Amount:{" "}
-              <span className="amount-span">
-                ₹{selectedPooja.temple_pooja_price * selectedPersons}/-
-              </span>
-            </p>
-          </div>
-
-          <h2>Cart Total</h2>
-          <p className="border-temp">{selectedPooja.temple_pooja_name}</p>
-
-          <div className="d-flex justify-content-between">
-            <p>
-              {selectedPersons} × ₹{selectedPooja.temple_pooja_price}
-            </p>
-            <span className="amount-span">
-              ₹{selectedPooja.temple_pooja_price * selectedPersons}/-
-            </span>
-          </div>
-
-          <div className="gap-3 mt-3 mb-3 Temp-btn-submit">
-            <Button
-              variant="temp-submit-btn"
-              className="temp-submit-btn mx-3"
-              type="button"
-              onClick={() => {
-                navigate("/MandirBooking", {
-                  state: {
-                    temple_name: selectedCard.temple_name,
-                    pooja_details: `${selectedPooja.temple_pooja_name} - ₹${selectedPooja.temple_pooja_price}`,
-                    no_of_persons: selectedPersons,
-                    book_date_and_time: selectedDateTime,
-                    grand_total:
-                      selectedPooja.temple_pooja_price * selectedPersons,
-                  },
-                });
-              }}
-            >
-              <FaCheck /> Proceed for devotee details
-            </Button>
-          </div>
-        </Form.Group>
-      </div>
-    )}
-  </Modal.Body>
-</Modal>
-
-
+          )}
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };
 
-export default TempleBookingInfo;  
+export default TempleBookingInfo;
