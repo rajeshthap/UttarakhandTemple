@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../../../../assets/CSS/LeftNav.css";
 import TempleLeftNav from "../../TempleLeftNav";
 import SearchFeature from "../SearchFeature";
-import { Form, Button, Modal, Row, Col } from "react-bootstrap";
+import { Form, Button, Modal, Row, Col, Breadcrumb } from "react-bootstrap";
 import axios from "axios";
 import { useAuth } from "../../../GlobleAuth/AuthContext";
 
@@ -27,8 +27,8 @@ const AllBooking = () => {
       const data = Array.isArray(res.data)
         ? res.data
         : Array.isArray(res.data.data)
-        ? res.data.data
-        : [];
+          ? res.data.data
+          : [];
 
       setBookings(data);
       setFilteredBookings(data);
@@ -120,11 +120,18 @@ const AllBooking = () => {
         <div className="content-box">
           <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
             <h1 className="fw500">
-              <span className="fw700h1">All </span>Bookings
+              <Breadcrumb>
+                <Breadcrumb.Item href="/TempleDashBoard">
+                  <span className="fw700h1">DashBoard</span>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item active>All Booking</Breadcrumb.Item>
+              </Breadcrumb>
             </h1>
             <div>
               <SearchFeature onSearch={handleSearch} />
             </div>
+
+
           </div>
 
           {/* Table */}

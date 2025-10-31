@@ -5,6 +5,84 @@ import SearchFeature from "../../../temp_dashboard/temp_innerdashboard/SearchFea
 import PanditLeftNav from "../../PanditLeftNav";
 import axios from "axios";
 
+const poojaOptions = [
+  { pooja_name: "Annaprashan Sanskar Puja" },
+  { pooja_name: "Satyanarayan Puja" },
+  { pooja_name: "Bhoomi Puja" },
+  { pooja_name: "Griha Pravesh Puja" },
+  { pooja_name: "New Office Opening Puja" },
+  { pooja_name: "Vivah (Marriage) Puja" },
+  { pooja_name: "Vishwakarma Puja" },
+  { pooja_name: "Yagnopavit Sanskar" },
+  { pooja_name: "Rudrabhishek Puja" },
+  { pooja_name: "Engagement Ceremony (Sagai)" },
+  { pooja_name: "Naming Ceremony" },
+  { pooja_name: "Ganesh Chaturthi Puja" },
+  { pooja_name: "Vehicle / Vahan Puja" },
+  { pooja_name: "Mundan Sanskar Puja" },
+  { pooja_name: "Navratri Durga Puja" },
+  { pooja_name: "Brihaspati Vrat Udyapan Puja" },
+  { pooja_name: "Ekadashi Vrat Udyapan Puja" },
+  { pooja_name: "Godh Bharai Puja (Baby Shower)" },
+  { pooja_name: "Haldi Ceremony" },
+  { pooja_name: "Janamdin / Birthday Puja" },
+  { pooja_name: "Mahalakshmi Puja" },
+  { pooja_name: "Vastu Shanti Puja" },
+  { pooja_name: "Vishnu Sahastranam Path Puja" },
+  { pooja_name: "Kaal Sarp Dosh Nivaran Puja" },
+  { pooja_name: "Office / Business Puja" },
+  { pooja_name: "Namakarana Puja" },
+  { pooja_name: "Hartalika Teej Puja" },
+  { pooja_name: "Karwa Chauth Puja" },
+  { pooja_name: "Diwali Lakshmi Puja" },
+  { pooja_name: "Dhanteras Puja" },
+  { pooja_name: "Vara Mahalakshmi Puja" },
+  { pooja_name: "Devi Poojan" },
+  { pooja_name: "Kuber Puja" },
+  { pooja_name: "Narak Chaturdashi Puja" },
+  { pooja_name: "Kali Puja" },
+  { pooja_name: "Ganesh Lakshmi Puja" },
+  { pooja_name: "Govardhan Puja" },
+  { pooja_name: "Annakut Puja" },
+  { pooja_name: "Bhai Dooj Puja" },
+  { pooja_name: "Chopda Puja" },
+  { pooja_name: "Ayush Havan" },
+  { pooja_name: "Chandi Path Havan" },
+  { pooja_name: "Lakshmi Kubera Havan" },
+  { pooja_name: "Navagraha Havan" },
+  { pooja_name: "Shuddhikaran Puja and Havan" },
+  { pooja_name: "Maha Ganapati Homa" },
+  { pooja_name: "Dhanvantari Homa" },
+  { pooja_name: "Bhagavathi Homa" },
+  { pooja_name: "Navmi Havan" },
+  { pooja_name: "Drishti Durga Homa" },
+  { pooja_name: "Mahalaxmi Havan" },
+  { pooja_name: "Maha Mrityunjaya Jaap Puja" },
+  { pooja_name: "Gayatri Mantra Jaap Puja" },
+  { pooja_name: "Santan Gopal Mantra Jaap" },
+  { pooja_name: "Shani Dosh Nivaran Jaap" },
+  { pooja_name: "Rahu Graha Shanti Mantra Jaap" },
+  { pooja_name: "Sampoorna Sunderkand Paath" },
+  { pooja_name: "Akhand Ramayana Path" },
+  { pooja_name: "Hanuman Chalisa Paath" },
+  { pooja_name: "Bajrang Baan Path" },
+  { pooja_name: "Navchandi Paath" },
+  { pooja_name: "Durga Saptashati Path" },
+  { pooja_name: "Kanak Dhara Path" },
+  { pooja_name: "Shri Sukt Paath" },
+  { pooja_name: "Lalita Sahasranama Path" },
+  { pooja_name: "Kanakadhara Stotram Path" },
+  { pooja_name: "Pitru Dosh Nivaran Puja" },
+  { pooja_name: "Shradh Puja & Karma for Ancestors Peace" },
+  { pooja_name: "Barsi Puja" },
+  { pooja_name: "Bharani Shradh Pitru Paksha" },
+  { pooja_name: "Tripindi Shradha Puja" },
+  { pooja_name: "Garud Puran Path" },
+  { pooja_name: "Tarpan Shradh Puja" },
+  { pooja_name: "Pind Daan Shradh Puja" },
+];
+
+
 const AddPuja = () => {
   const panditId = "PAN/2025/56779"; // 🔹 Your current logged-in pandit_id
   const BASE_API = "https://mahadevaaya.com/backend/api/get-pandit-pooja/";
@@ -92,6 +170,7 @@ const AddPuja = () => {
         pandit_id: panditId,
         pandit_pooja_details: [
           {
+             pandit_pooja_id: currentPooja.pandit_pooja_id,
             pooja_name: currentPooja.pooja_name,
             pooja_price: parseFloat(currentPooja.pooja_price),
           },
@@ -246,13 +325,21 @@ const AddPuja = () => {
               <Col md={6}>
                 <Form.Group>
                   <Form.Label className="temp-label">Pooja Name</Form.Label>
-                  <Form.Control
+                  <Form.Select
                     className="temp-form-control-option"
                     name="pooja_name"
                     value={currentPooja.pooja_name || ""}
                     onChange={handleChange}
-                  />
+                  >
+                    <option value="">Select Pooja</option>
+                    {poojaOptions.map((option, index) => (
+                      <option key={index} value={option.pooja_name}>
+                        {option.pooja_name}
+                      </option>
+                    ))}
+                  </Form.Select>
                 </Form.Group>
+
               </Col>
             </Row>
 

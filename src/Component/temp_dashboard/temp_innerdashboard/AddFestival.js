@@ -1,5 +1,5 @@
 import React, { useState, useEffect, forwardRef } from "react";
-import { Container, Row, Col, Form, Button, InputGroup } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, InputGroup,Breadcrumb } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../../assets/CSS/LeftNav.css";
@@ -216,11 +216,19 @@ const AddFestival = () => {
       </aside>
       <main className="main-container">
         <div className="content-box">
-          <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3 ">
-            <h1 className="fw500">
-              <span className="fw700h1">Add </span> Festival
-            </h1>
-          </div>
+             <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
+                                      <h1 className="fw500">
+                                        <Breadcrumb>
+                                          <Breadcrumb.Item href="/TempleDashBoard">
+                                            <span className="fw700h1">DashBoard</span>
+                                          </Breadcrumb.Item>
+                                          <Breadcrumb.Item active>Add Festival</Breadcrumb.Item>
+                                        </Breadcrumb>
+                                      </h1>
+                      
+                                      
+                                    </div>
+                
           <div className="temp-container">
             <div className="temp-donate">
               {showAlert && (

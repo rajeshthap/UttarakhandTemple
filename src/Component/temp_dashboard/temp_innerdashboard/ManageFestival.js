@@ -3,7 +3,7 @@ import "../../../assets/CSS/LeftNav.css";
 import TempleLeftNav from "../TempleLeftNav";
 import SearchFeature from "./SearchFeature";
 import { BASE_URLL } from "../../../Component/BaseURL";
-import { Button, Modal, Form, Row, Col, InputGroup } from "react-bootstrap";
+import { Button, Modal, Form, Row, Col, InputGroup,Breadcrumb } from "react-bootstrap";
 import axios from "axios";
 import { useAuth } from "../../GlobleAuth/AuthContext";
 import UploadFile from "../../../assets/images/upload-icon.png";
@@ -234,13 +234,21 @@ const ManageFestival = () => {
 
       <main className="main-container-box">
         <div className="content-box">
-          <div class="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3 "> <h1 class=" fw500"><span class="fw700h1">Manage </span> Festivals </h1>
-
-             {/*  Use SearchFeature with onSearch handler */}
-            <div>
-              <SearchFeature onSearch={handleSearch} />
-            </div>
-          </div>
+          <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
+                                     <h1 className="fw500">
+                                       <Breadcrumb>
+                                         <Breadcrumb.Item href="/TempleDashBoard">
+                                           <span className="fw700h1">DashBoard</span>
+                                         </Breadcrumb.Item>
+                                         <Breadcrumb.Item active>Manage Festival</Breadcrumb.Item>
+                                       </Breadcrumb>
+                                     </h1>
+                                     <div>
+                <SearchFeature onSearch={handleSearch} />
+              </div>
+                     
+                                     
+                                   </div>
           <Row className="mt-3">
 
             <div className="col-md-12">

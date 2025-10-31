@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../../../../assets/CSS/LeftNav.css";
 import TempleLeftNav from "../../TempleLeftNav";
 import SearchFeature from "../SearchFeature";
-import { Form, Button, Modal, Row, Col } from "react-bootstrap";
+import { Form, Button, Modal, Row, Col,Breadcrumb } from "react-bootstrap";
 import axios from "axios";
 import { useAuth } from "../../../GlobleAuth/AuthContext";
 
@@ -121,15 +121,20 @@ const NewBooking = () => {
       {/* Main Section */}
       <main className="main-container-box">
         <div className="content-box">
-          <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
-            <h1 className="fw500">
-              <span className="fw700h1">New </span>Bookings
-            </h1>
-            <div>
-              <SearchFeature onSearch={handleSearch} />
-            </div>
-          </div>
-
+         <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
+                                   <h1 className="fw500">
+                                     <Breadcrumb>
+                                       <Breadcrumb.Item href="/TempleDashBoard">
+                                         <span className="fw700h1">DashBoard</span>
+                                       </Breadcrumb.Item>
+                                       <Breadcrumb.Item active>New Booking</Breadcrumb.Item>
+                                     </Breadcrumb>
+                                   </h1>
+                              <div>
+                                              <SearchFeature onSearch={handleSearch} />
+                                            </div>
+                                   
+                                 </div>
           {/* TABLE SECTION */}
           <Row className="mt-3">
             <div className="col-md-12">

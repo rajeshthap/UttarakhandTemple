@@ -1,5 +1,6 @@
 import React from "react";
 import "../../../assets/CSS/LeftNav.css";
+import {  Breadcrumb } from "react-bootstrap";
 import TempleLeftNav from "../TempleLeftNav";
 import TempleAuthority from "../../userregistration/TempleAuthority";
 
@@ -17,13 +18,18 @@ const AddTemple = () => {
 
         <main className="main-container-box">
           <div className="content-box">
-            <div className="add-temp-style flex-xxl-nowrap flex-wrap mb-3 ">
-              {" "}
-              <h1 className="fw500">
-                <span class="fw700h1">Add </span> Temple
-              </h1>{" "}
- <p>Please enter a different mobile number</p>
-            </div>
+            <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
+                                       <h1 className="fw500">
+                                         <Breadcrumb>
+                                           <Breadcrumb.Item href="/TempleDashBoard">
+                                             <span className="fw700h1">DashBoard</span>
+                                           </Breadcrumb.Item>
+                                           <Breadcrumb.Item active>Add Temple</Breadcrumb.Item>
+                                         </Breadcrumb>
+                                       </h1>
+                       
+                                       
+                                     </div>
             <TempleAuthority />
           </div>
         </main>
