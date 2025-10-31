@@ -329,7 +329,16 @@ function PanditLeftNav() {
           <div className="nav-upper-options">
             <div className="nd-menu">
               <FaAlignLeft className="icn menuicn" onClick={toggleNav} />
-              <div className="nd-user">User: {userName}</div>
+              <div className="nd-user">User: {profile.displayName }</div>
+                <img
+                  src={
+                    profile.pandit_image
+                      ? `https://mahadevaaya.com/backend/media/pandit_images/${profile.pandit_image.split("/").pop()}`
+                      : "https://mahadevaaya.com/backend/media/pandit_images/default.png"
+                  }
+                  alt={profile.displayName || ""}
+                  className="nav-profile-photo"
+                />
               <Dropdown align="end" className="user-dp">
                 <Dropdown.Toggle
                   variant=""
