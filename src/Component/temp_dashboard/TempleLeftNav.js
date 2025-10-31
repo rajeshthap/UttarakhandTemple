@@ -294,7 +294,7 @@ function TempleLeftNav() {
                       ? `https://mahadevaaya.com/backend/media/temple_images/${profile.temple_image.split("/").pop()}`
                       : "https://mahadevaaya.com/backend/media/temple_images/default.png"
                   }
-                  alt={profile.displayName || "Devotee"}
+                  alt={profile.displayName || ""}
                   className="nav-profile-photo"
                 />
               </Dropdown.Toggle>

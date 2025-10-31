@@ -9,7 +9,7 @@ const AddTemple = () => {
       {/* Main Wrapper */}
       <div className="dashboard-wrapper">
         {/* Sidebar */}
-        <aside className="sidebar">
+        <aside className="temp-sidebar">
           <TempleLeftNav />
         </aside>
 
@@ -17,12 +17,12 @@ const AddTemple = () => {
 
         <main className="main-container-box">
           <div className="content-box">
-            <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3 ">
+            <div className="add-temp-style flex-xxl-nowrap flex-wrap mb-3 ">
               {" "}
-              <h1 className=" fw500">
+              <h1 className="fw500">
                 <span class="fw700h1">Add </span> Temple
               </h1>{" "}
-
+ <p>Please enter a different mobile number</p>
             </div>
             <TempleAuthority />
           </div>

@@ -112,10 +112,12 @@
 .dashboard-wrapper {
   display: flex;
   min-height: 100vh;
+  
 }
 
-.sidebar {
-  background-color: #7c4654;
+.pandit-sidebar {
+  background-color: #410c23  !important;
+  
 }
 
 

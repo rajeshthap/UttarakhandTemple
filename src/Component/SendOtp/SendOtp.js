@@ -91,7 +91,9 @@ const SendOtp = ({ phone, setPhone, onOtpSent }) => {
           {phone && phone.length !== 10 && (
             <small className="text-danger">Mobile number must be 10 digits</small>
           )}
+          
         </Form.Group>
+       
       </Col>
 
       <Button
