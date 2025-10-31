@@ -157,7 +157,7 @@ const TempleProfile = () => {
 
   return (
     <div className="dashboard-wrapper">
-      <aside className="sidebar">
+      <aside className="temp-sidebar">
         <TempleLeftNav />
       </aside>
 

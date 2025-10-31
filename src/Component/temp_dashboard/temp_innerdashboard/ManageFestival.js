@@ -31,6 +31,7 @@ const CustomDatePickerInput = forwardRef(({ value, onClick, placeholder }, ref) 
 const ManageFestival = () => {
   const [festivals, setFestivals] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [filteredFestivals, setFilteredFestivals] = useState([]); 
   const [currentFestival, setCurrentFestival] = useState({});
   const [loading, setLoading] = useState(false);
   const [dragging, setDragging] = useState(false);
@@ -72,6 +73,7 @@ const ManageFestival = () => {
           return { ...f, image_url: url };
         });
         setFestivals(formatted);
+        setFilteredFestivals(formatted);
       }
     } catch (err) {
       console.error("Error fetching festivals:", err);
@@ -84,6 +86,21 @@ const ManageFestival = () => {
   useEffect(() => {
     if (uniqueId) fetchFestivals();
   }, [uniqueId]);
+
+  const handleSearch = (query) => {
+    if (!query.trim()) {
+      setFilteredFestivals(festivals);
+    } else {
+      const lowerQuery = query.toLowerCase();
+      const filtered = festivals.filter(
+        (f) =>
+          f.festival_name?.toLowerCase().includes(lowerQuery) ||
+          f.temple_name?.toLowerCase().includes(lowerQuery) ||
+          f.phone?.toLowerCase().includes(lowerQuery)
+      );
+      setFilteredFestivals(filtered);
+    }
+  };
 
   // ================= HANDLE EDIT ==================
   const handleEdit = (festival) => {
@@ -219,7 +236,10 @@ const ManageFestival = () => {
         <div className="content-box">
           <div class="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3 "> <h1 class=" fw500"><span class="fw700h1">Manage </span> Festivals </h1>
 
-            <div> <SearchFeature /></div>
+             {/*  Use SearchFeature with onSearch handler */}
+            <div>
+              <SearchFeature onSearch={handleSearch} />
+            </div>
           </div>
           <Row className="mt-3">
 
@@ -236,8 +256,8 @@ const ManageFestival = () => {
                     <th>Action</th>
                   </tr>
 
-                  {festivals.length > 0 ? (
-                    festivals.map((festival, index) => (
+                  {filteredFestivals.length > 0 ? (
+                    filteredFestivals.map((festival, index) => (
                       <tr key={festival.festival_id}>
                         <td data-th="S.No">{index + 1}</td>
                         <td data-th="Festival Name">{festival.festival_name}</td>
@@ -270,7 +290,7 @@ const ManageFestival = () => {
                   ) : (
                     <tr>
                       <td colSpan="7" className="text-center">
-                        {loading ? "Loading..." : "No Data Available"}
+                        {loading ? "Loading..." : "No matching festivals found."}
                       </td>
                     </tr>
                   )}
