@@ -9,7 +9,7 @@ import Card from 'react-bootstrap/Card';
 import PanditImg from "../../assets/images/pandit-img.png"
 
 import { FaHandsPraying } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, } from "react-router-dom";
 import TempleLeftNav from "./TempleLeftNav";
 import "../../assets/CSS/Temple_DashBoard.css"
 import { FaOm } from "react-icons/fa";
@@ -19,9 +19,13 @@ import { MdEventAvailable } from "react-icons/md";
 import { RiFilePaper2Line } from "react-icons/ri";
 import { IoIosArrowForward } from "react-icons/io";
 import NewsUpdates from "../dashboard/AboutUsDashBoard/NewsUpdate";
+import { useNavigate } from "react-router-dom";
+
 
 
 const TempleDashBoard = () => {
+    const navigate = useNavigate();
+
     useEffect(() => {
         // Push the current page into history so user can't go back
         window.history.pushState(null, "", window.location.href);
@@ -78,7 +82,7 @@ const TempleDashBoard = () => {
             </div> */}
                         <Row>
                             <Col lg={3} md={3} sm={12}>
-                                <Card className="shadow-sm  rounded  dbcard-box-1 flex-fill mb-2">
+                                <Card className="shadow-sm  rounded  dbcard-box-1 flex-fill mb-2" onClick={() => navigate("/NewBooking")}>
                                     <Card.Body>
 
                                         <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
@@ -107,7 +111,7 @@ const TempleDashBoard = () => {
                                 </Card>
                             </Col>
                             <Col lg={3} md={3} sm={12}>
-                                <Card className="shadow-sm dbcard-box-2 flex-fill">
+                                <Card className="shadow-sm dbcard-box-2 flex-fill" onClick={() => navigate("/AcceptedBooking")}>
                                     <Card.Body>
                                         <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
                                             <div>
@@ -122,7 +126,7 @@ const TempleDashBoard = () => {
                                 </Card>
                             </Col>
                             <Col lg={3} md={3} sm={12}>
-                                <Card className="shadow-sm rounded  flex-fill dbcard-box-4">
+                                <Card className="shadow-sm rounded  flex-fill dbcard-box-4" onClick={() => navigate("/RejectedBooking")}>
                                     <Card.Body>
                                         <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
                                             <div>
@@ -141,7 +145,7 @@ const TempleDashBoard = () => {
                                 </Card>
                             </Col>
                             <Col lg={3} md={3} sm={12}>
-                                <Card className="shadow-sm rounded  flex-fill dbcard-box-3">
+                                <Card className="shadow-sm rounded  flex-fill dbcard-box-3" onClick={() => navigate("/Donations")}>
                                     <Card.Body>
                                         <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
                                             <div>
@@ -162,7 +166,7 @@ const TempleDashBoard = () => {
 
 
                             <Col lg={3} md={3} sm={12}>
-                                <Card className="shadow-sm rounded  flex-fill dbcard-box-5">
+                                <Card className="shadow-sm rounded  flex-fill dbcard-box-5" onClick={() => navigate("/ManageTemple")}>
                                     <Card.Body>
                                         <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
                                             <div>
@@ -179,7 +183,7 @@ const TempleDashBoard = () => {
                                 </Card>
                             </Col>
                             <Col lg={3} md={3} sm={12}>
-                                <Card className="shadow-sm rounded  flex-fill dbcard-box-6">
+                                <Card className="shadow-sm rounded  flex-fill dbcard-box-6" onClick={() => navigate("/ManageFestival")}>
                                     <Card.Body>
                                         <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
                                             <div>
@@ -196,23 +200,7 @@ const TempleDashBoard = () => {
                                 </Card>
                             </Col>
 
-                            <Col lg={3} md={3} sm={12}>
-                                <Card className="shadow-sm rounded  flex-fill dbcard-box-7">
-                                    <Card.Body>
-                                        <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
-                                            <div>
-                                                <span className="text-muted d-block mb-1 text-nowrap  user-sub-title">Total Reg Devotees</span> <h4 className="fw-medium mb-0">08</h4>
-                                                <div><span className="user-span">View Details</span></div>
-                                            </div>
-
-                                            <div className="lh-1">
-                                                <div className=" avatar-md avatar-rounded total-dev-bg flex-shrink-0 d-flex align-items-center justify-content-center ">
-                                                    <BiSolidDonateBlood /> </div>
-                                            </div></div>
-
-                                    </Card.Body>
-                                </Card>
-                            </Col>
+                           
 
 
 
@@ -229,55 +217,7 @@ const TempleDashBoard = () => {
                             </Col>
                         </Row>
 
-                        <Row className="mt-3">
-                            <h2>Transaction History</h2>
-                            <div class="col-md-12">
-                                <table class="rwd-table">
-                                    <tbody>
-                                        <tr>
-                                            <th>Supplier Code</th>
-                                            <th>Supplier Name</th>
-                                            <th>Invoice Number</th>
-                                            <th>Invoice Date</th>
-                                            <th>Due Date</th>
-                                            <th>Net Amount</th>
-                                        </tr>
-                                        <tr>
-                                            <td data-th="Supplier Code">UPS5005</td>
-                                            <td data-th="Supplier Name">UPS</td>
-                                            <td data-th="Invoice Number">ASDF19218</td>
-                                            <td data-th="Invoice Date">06/25/2016</td>
-                                            <td data-th="Due Date">12/25/2016</td>
-                                            <td data-th="Net Amount">$8,322.12</td>
-                                        </tr>
-                                        <tr>
-                                            <td data-th="Supplier Code">UPS3449</td>
-                                            <td data-th="Supplier Name">UPS South Inc.</td>
-                                            <td data-th="Invoice Number">ASDF29301</td>
-                                            <td data-th="Invoice Date">6/24/2016</td>
-                                            <td data-th="Due Date">12/25/2016</td>
-                                            <td data-th="Net Amount">$3,255.49</td>
-                                        </tr>
-                                        <tr>
-                                            <td data-th="Supplier Code">BOX5599</td>
-                                            <td data-th="Supplier Name">BOX Pro West</td>
-                                            <td data-th="Invoice Number">ASDF43000</td>
-                                            <td data-th="Invoice Date">6/27/2016</td>
-                                            <td data-th="Due Date">12/25/2016</td>
-                                            <td data-th="Net Amount">$45,255.49</td>
-                                        </tr>
-                                        <tr>
-                                            <td data-th="Supplier Code">PAN9999</td>
-                                            <td data-th="Supplier Name">Pan Providers and Co.</td>
-                                            <td data-th="Invoice Number">ASDF33433</td>
-                                            <td data-th="Invoice Date">6/29/2016</td>
-                                            <td data-th="Due Date">12/25/2016</td>
-                                            <td data-th="Net Amount">$12,335.69</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </Row>
+                       
                     </div>
                 </main>
             </div>
