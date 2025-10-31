@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Row, Col, Form, Button, Spinner } from "react-bootstrap";
+import { Row, Col, Form, Button, Spinner, Breadcrumb } from "react-bootstrap";
 import axios from "axios";
 import TempleLeftNav from "./TempleLeftNav";
 import ModifyAlert from "../Alert/ModifyAlert";
@@ -39,7 +39,7 @@ const TempleProfile = () => {
     return `https://mahadevaaya.com/backend/media/temple_images/${filename}`;
   };
 
-  // ✅ Fetch Temple Profile
+  //  Fetch Temple Profile
   useEffect(() => {
     const fetchTemple = async () => {
       try {
@@ -64,7 +64,7 @@ const TempleProfile = () => {
     if (uniqueId) fetchTemple();
   }, [uniqueId]);
 
-  // ✅ Handle Input Change
+  //  Handle Input Change
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
     if (files && files[0]) {
@@ -91,7 +91,7 @@ const TempleProfile = () => {
     if (fileRefs[field]?.current) fileRefs[field].current.value = "";
   };
 
-  // ✅ Submit Update
+  //  Submit Update
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
@@ -163,9 +163,19 @@ const TempleProfile = () => {
 
       <main className="main-container">
         <div className="content-box">
-          <h1 className="fw500">
-            <span className="fw700h1">Temple </span>Profile
-          </h1>
+          <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
+                            <h1 className="fw500">
+                              <Breadcrumb>
+                                <Breadcrumb.Item href="/TempleDashBoard">
+                                  <span className="fw700h1">DashBoard</span>
+                                </Breadcrumb.Item>
+                                <Breadcrumb.Item active>Temple Profile</Breadcrumb.Item>
+                              </Breadcrumb>
+                            </h1>
+            
+                            
+                          </div>
+      
 
           <ModifyAlert message={alertMsg} show={showAlert} setShow={setShowAlert} />
 
