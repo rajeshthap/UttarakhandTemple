@@ -22,7 +22,7 @@ const PendingRequests = () => {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  // ✅ Fetch all requests
+  //  Fetch all requests
   const fetchRequests = async () => {
     if (!uniqueId) return;
     try {
@@ -32,8 +32,6 @@ const PendingRequests = () => {
       );
 
       const data = Array.isArray(res.data) ? res.data : [];
-
-      // ✅ Filter only "pending" status for current pandit
       const pendingData = data.filter((item) =>
         item.number_of_pandits?.some(
           (p) =>
@@ -56,7 +54,7 @@ const PendingRequests = () => {
     fetchRequests();
   }, [uniqueId]);
 
-  // ✅ Search functionality
+  //  Search
   const handleSearch = (query) => {
     if (!query) {
       setFilteredRequests(requests);
@@ -73,7 +71,7 @@ const PendingRequests = () => {
     setFilteredRequests(filtered);
   };
 
-  // ✅ Open Modal with selected request
+  //  Open Modal
   const handleView = (request) => {
     const pandit = request.number_of_pandits.find(
       (p) => p.pandit_id === uniqueId
@@ -82,7 +80,7 @@ const PendingRequests = () => {
     setShowModal(true);
   };
 
-  // ✅ Update status locally before sending
+  //  Handle status
   const handleStatusChange = (e) => {
     const { name, value } = e.target;
     setSelectedRequest((prev) => ({
@@ -91,10 +89,9 @@ const PendingRequests = () => {
     }));
   };
 
-  // ✅ PUT update status to backend
+  //  Update status
   const handleUpdateStatus = async () => {
     if (!selectedRequest || !uniqueId) return;
-
     try {
       const payload = {
         hire_pandit_id: selectedRequest.hire_pandit_id,
@@ -110,7 +107,7 @@ const PendingRequests = () => {
 
       alert("Booking status updated successfully!");
       setShowModal(false);
-      fetchRequests(); // refresh list after update
+      fetchRequests();
     } catch (error) {
       console.error("Error updating status:", error);
       alert("Failed to update status. Try again!");
@@ -120,15 +117,12 @@ const PendingRequests = () => {
   return (
     <>
       <div className="dashboard-wrapper">
-        {/* Sidebar */}
         <aside className="pandit-sidebar">
           <PanditLeftNav />
         </aside>
 
-        {/* Main */}
         <main className="main-container-box">
           <div className="content-box">
-            {/* Header + Search */}
             <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
               <h1 className="fw500">
                 <Breadcrumb>
@@ -144,11 +138,11 @@ const PendingRequests = () => {
               </div>
             </div>
 
-            {/* Table Section */}
+            {/*  Table Section */}
             <Row className="mt-3">
               <div className="col-md-12">
                 <table className="pandit-rwd-table">
-                  <thead>
+                  <tbody>
                     <tr>
                       <th>S.No</th>
                       <th>Full Name</th>
@@ -159,37 +153,30 @@ const PendingRequests = () => {
                       <th>Status</th>
                       <th>Action</th>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {loading ? (
-                      <tr>
-                        <td colSpan="8" className="text-center">
-                          <Spinner animation="border" />
-                        </td>
-                      </tr>
-                    ) : filteredRequests.length > 0 ? (
+
+                    {filteredRequests.length > 0 ? (
                       filteredRequests.map((req, index) => {
                         const pandit = req.number_of_pandits.find(
                           (p) => p.pandit_id === uniqueId
                         );
                         return (
                           <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{req.full_name}</td>
-                            <td>{req.mobile_number}</td>
-                            <td>{req.pooja_type}</td>
-                            <td>{req.location}</td>
-                            <td>
+                            <td data-th="S.No">{index + 1}</td>
+                            <td data-th="Full Name">{req.full_name}</td>
+                            <td data-th="Mobile">{req.mobile_number}</td>
+                            <td data-th="Pooja Type">{req.pooja_type}</td>
+                            <td data-th="Location">{req.location}</td>
+                            <td data-th="Date & Time">
                               {new Date(req.date_and_time).toLocaleString()}
                             </td>
-                            <td>{pandit?.status || "pending"}</td>
-                            <td>
+                            <td data-th="Status">{pandit?.status || "pending"}</td>
+                            <td data-th="Action">
                               <Button
                                 className="event-click-btn"
                                 size="sm"
                                 onClick={() => handleView(req)}
                               >
-                                Accept / Reject
+                                Change Status
                               </Button>
                             </td>
                           </tr>
@@ -198,7 +185,11 @@ const PendingRequests = () => {
                     ) : (
                       <tr>
                         <td colSpan="8" className="text-center">
-                          No pending requests found.
+                          {loading ? (
+                            <Spinner animation="border" />
+                          ) : (
+                            "No pending requests found."
+                          )}
                         </td>
                       </tr>
                     )}
@@ -207,8 +198,13 @@ const PendingRequests = () => {
               </div>
             </Row>
 
-            {/* ✅ Modal Section (same as ConfirmedRequests) */}
-            <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered>
+            {/* Modal Section */}
+            <Modal
+              show={showModal}
+              onHide={() => setShowModal(false)}
+              size="lg"
+              centered
+            >
               <Modal.Header closeButton>
                 <Modal.Title>Booking Details</Modal.Title>
               </Modal.Header>
@@ -219,18 +215,9 @@ const PendingRequests = () => {
                     <Row>
                       <Col md={6}>
                         <Form.Group>
-                          <Form.Label className="temp-label">Hire Pandit ID</Form.Label>
-                          <Form.Control
-                            className="temp-form-control-option"
-                            value={selectedRequest.hire_pandit_id || ""}
-                            disabled
-                          />
-                        </Form.Group>
-                      </Col>
-
-                      <Col md={6}>
-                        <Form.Group>
-                          <Form.Label className="temp-label">Full Name</Form.Label>
+                          <Form.Label className="temp-label">
+                            Full Name
+                          </Form.Label>
                           <Form.Control
                             className="temp-form-control-option"
                             value={selectedRequest.full_name || ""}
@@ -238,12 +225,12 @@ const PendingRequests = () => {
                           />
                         </Form.Group>
                       </Col>
-                    </Row>
 
-                    <Row className="mt-2">
                       <Col md={6}>
                         <Form.Group>
-                          <Form.Label className="temp-label">Mobile Number</Form.Label>
+                          <Form.Label className="temp-label">
+                            Mobile Number
+                          </Form.Label>
                           <Form.Control
                             className="temp-form-control-option"
                             value={selectedRequest.mobile_number || ""}
@@ -253,7 +240,9 @@ const PendingRequests = () => {
                       </Col>
                       <Col md={6}>
                         <Form.Group>
-                          <Form.Label className="temp-label">Pooja Type</Form.Label>
+                          <Form.Label className="temp-label">
+                            Pooja Type
+                          </Form.Label>
                           <Form.Control
                             className="temp-form-control-option"
                             value={selectedRequest.pooja_type || ""}
@@ -261,12 +250,12 @@ const PendingRequests = () => {
                           />
                         </Form.Group>
                       </Col>
-                    </Row>
 
-                    <Row className="mt-2">
                       <Col md={6}>
                         <Form.Group>
-                          <Form.Label className="temp-label">Language Preference</Form.Label>
+                          <Form.Label className="temp-label">
+                            Language Preference
+                          </Form.Label>
                           <Form.Control
                             className="temp-form-control-option"
                             value={selectedRequest.language_preference || ""}
@@ -276,21 +265,23 @@ const PendingRequests = () => {
                       </Col>
                       <Col md={6}>
                         <Form.Group>
-                          <Form.Label className="temp-label">Date & Time</Form.Label>
+                          <Form.Label className="temp-label">
+                            Date & Time
+                          </Form.Label>
                           <Form.Control
                             className="temp-form-control-option"
                             value={
                               selectedRequest.date_and_time
-                                ? new Date(selectedRequest.date_and_time).toLocaleString()
+                                ? new Date(
+                                    selectedRequest.date_and_time
+                                  ).toLocaleString()
                                 : ""
                             }
                             disabled
                           />
                         </Form.Group>
                       </Col>
-                    </Row>
 
-                    <Row className="mt-2">
                       <Col md={6}>
                         <Form.Group>
                           <Form.Label className="temp-label">Location</Form.Label>
@@ -303,7 +294,9 @@ const PendingRequests = () => {
                       </Col>
                       <Col md={6}>
                         <Form.Group>
-                          <Form.Label className="temp-label">Special Requirements</Form.Label>
+                          <Form.Label className="temp-label">
+                            Special Requirements
+                          </Form.Label>
                           <Form.Control
                             as="textarea"
                             className="temp-form-control-option"
@@ -312,12 +305,12 @@ const PendingRequests = () => {
                           />
                         </Form.Group>
                       </Col>
-                    </Row>
 
-                    <Row className="mt-2">
                       <Col md={6}>
                         <Form.Group>
-                          <Form.Label className="temp-label">Payment Mode</Form.Label>
+                          <Form.Label className="temp-label">
+                            Payment Mode
+                          </Form.Label>
                           <Form.Control
                             className="temp-form-control-option"
                             value={selectedRequest.payment_mode || ""}
@@ -335,10 +328,8 @@ const PendingRequests = () => {
                           />
                         </Form.Group>
                       </Col>
-                    </Row>
 
-                    <Row className="mt-2">
-                      <Col md={12}>
+                      <Col md={6}>
                         <Form.Group>
                           <Form.Label className="temp-label">Status</Form.Label>
                           <Form.Select
@@ -362,7 +353,10 @@ const PendingRequests = () => {
                 <Button className="event-click-btn" onClick={handleUpdateStatus}>
                   Update
                 </Button>
-                <Button className="event-click-cancel" onClick={() => setShowModal(false)}>
+                <Button
+                  className="event-click-cancel"
+                  onClick={() => setShowModal(false)}
+                >
                   Cancel
                 </Button>
               </Modal.Footer>

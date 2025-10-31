@@ -22,7 +22,7 @@ const ConfirmedRequests = () => {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  // ✅ Fetch Accepted Bookings
+  // Fetch Accepted Bookings
   const fetchBookings = async () => {
     if (!uniqueId) return;
     try {
@@ -54,7 +54,7 @@ const ConfirmedRequests = () => {
     fetchBookings();
   }, [uniqueId]);
 
-  // ✅ Search handler
+  // Search handler
   const handleSearch = (query) => {
     if (!query) {
       setFilteredBookings(bookings);
@@ -72,7 +72,7 @@ const ConfirmedRequests = () => {
     setFilteredBookings(filtered);
   };
 
-  // ✅ View modal
+  // View modal
   const handleView = (booking) => {
     const pandit = booking.number_of_pandits.find(
       (p) => p.pandit_id === uniqueId
@@ -81,7 +81,7 @@ const ConfirmedRequests = () => {
     setShowModal(true);
   };
 
-  // ✅ Handle status change
+  // Handle status change
   const handleBookingChange = (e) => {
     const { name, value } = e.target;
     setSelectedBooking((prev) => ({
@@ -90,7 +90,7 @@ const ConfirmedRequests = () => {
     }));
   };
 
-  // ✅ Update booking
+  // Update booking
   const handleBookingUpdate = async () => {
     if (!selectedBooking || !uniqueId) return;
     try {
@@ -164,18 +164,18 @@ const ConfirmedRequests = () => {
                         );
                         return (
                           <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{booking.full_name}</td>
-                            <td>{booking.mobile_number}</td>
-                            <td>{booking.pooja_type}</td>
-                            <td>{booking.location}</td>
-                            <td>
+                            <td data-th="S.No">{index + 1}</td>
+                            <td data-th="Full Name">{booking.full_name}</td>
+                            <td data-th="Mobile">{booking.mobile_number}</td>
+                            <td data-th="Pooja Type">{booking.pooja_type}</td>
+                            <td data-th="Location">{booking.location}</td>
+                            <td data-th="Date & Time">
                               {new Date(
                                 booking.date_and_time
                               ).toLocaleString()}
                             </td>
-                            <td>{pandit?.status || "accepted"}</td>
-                            <td>
+                            <td data-th="Status">{pandit?.status || "accepted"}</td>
+                            <td data-th="Action">
                               <Button
                                 className="event-click-btn"
                                 size="sm"
@@ -221,19 +221,6 @@ const ConfirmedRequests = () => {
                       <Col md={6}>
                         <Form.Group>
                           <Form.Label className="temp-label">
-                            Hire Pandit ID
-                          </Form.Label>
-                          <Form.Control
-                            className="temp-form-control-option"
-                            value={selectedBooking.hire_pandit_id || ""}
-                            disabled
-                          />
-                        </Form.Group>
-                      </Col>
-
-                      <Col md={6}>
-                        <Form.Group>
-                          <Form.Label className="temp-label">
                             Full Name
                           </Form.Label>
                           <Form.Control
@@ -243,9 +230,7 @@ const ConfirmedRequests = () => {
                           />
                         </Form.Group>
                       </Col>
-                    </Row>
 
-                    <Row className="mt-2">
                       <Col md={6}>
                         <Form.Group>
                           <Form.Label className="temp-label">
@@ -271,9 +256,8 @@ const ConfirmedRequests = () => {
                           />
                         </Form.Group>
                       </Col>
-                    </Row>
+                  
 
-                    <Row className="mt-2">
                       <Col md={6}>
                         <Form.Group>
                           <Form.Label className="temp-label">
@@ -303,9 +287,7 @@ const ConfirmedRequests = () => {
                           />
                         </Form.Group>
                       </Col>
-                    </Row>
 
-                    <Row className="mt-2">
                       <Col md={6}>
                         <Form.Group>
                           <Form.Label className="temp-label">Location</Form.Label>
@@ -330,9 +312,7 @@ const ConfirmedRequests = () => {
                           />
                         </Form.Group>
                       </Col>
-                    </Row>
 
-                    <Row className="mt-2">
                       <Col md={6}>
                         <Form.Group>
                           <Form.Label className="temp-label">
@@ -358,10 +338,8 @@ const ConfirmedRequests = () => {
                           />
                         </Form.Group>
                       </Col>
-                    </Row>
 
-                    <Row className="mt-2">
-                      <Col md={12}>
+                      <Col md={6}>
                         <Form.Group>
                           <Form.Label className="temp-label">Status</Form.Label>
                           <Form.Select
