@@ -22,7 +22,7 @@ const AddPuja = () => {
     pooja_price: "",
   });
 
-  // ✅ Fetch Pooja details
+  //  Fetch Pooja details
   const fetchPoojas = async () => {
     try {
       setLoading(true);
@@ -42,27 +42,27 @@ const AddPuja = () => {
     fetchPoojas();
   }, []);
 
-  // ✅ Input change handler
+  //  Input change handler
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCurrentPooja({ ...currentPooja, [name]: value });
   };
 
-  // ✅ Open modal for Add
+  //  Open modal for Add
   const handleAdd = () => {
     setIsEditMode(false);
     setCurrentPooja({ pooja_name: "", pooja_price: "" });
     setShowModal(true);
   };
 
-  // ✅ Open modal for Edit
+  //  Open modal for Edit
   const handleEdit = (pooja) => {
     setIsEditMode(true);
     setCurrentPooja(pooja);
     setShowModal(true);
   };
 
-  // ✅ Add new pooja (POST)
+  //  Add new pooja (POST)
   const handleAddPooja = async () => {
     try {
       const payload = {
@@ -85,7 +85,7 @@ const AddPuja = () => {
     }
   };
 
-  // ✅ Update pooja (PUT)
+  //  Update pooja (PUT)
   const handleUpdate = async () => {
     try {
       const payload = {
@@ -108,7 +108,7 @@ const AddPuja = () => {
     }
   };
 
-  // ✅ Delete pooja (DELETE)
+  //  Delete pooja (DELETE)
   const handleDelete = async (pooja) => {
     if (!window.confirm(`Are you sure you want to delete ${pooja.pooja_name}?`)) return;
 
@@ -124,7 +124,7 @@ const AddPuja = () => {
     }
   };
 
-  // ✅ Submit Handler
+  //  Submit Handler
   const handleSubmit = () => {
     if (isEditMode) {
       handleUpdate();
