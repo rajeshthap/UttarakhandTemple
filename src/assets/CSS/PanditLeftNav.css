@@ -592,7 +592,11 @@ span.sub-label {
 
 }
 
-@media (min-width: 850px) and (max-width: 991px) {}
+@media (min-width: 850px) and (max-width: 991px) {
+
+
+
+}
 
 @media screen and (max-width: 850px) {
 
@@ -661,7 +665,13 @@ span.sub-label {
 
 
 }
-
+@media screen and (max-width: 850px) {
+    .pandit-nav {
+        width: 100%;
+        position: absolute;
+        z-index: 999;
+    }
+}
 @media screen and (max-width: 768px) {
   .nd-log-icon-mob {
     background-color: var(--nd-blue-hover);
