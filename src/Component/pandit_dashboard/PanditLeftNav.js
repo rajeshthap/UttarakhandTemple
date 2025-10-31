@@ -298,7 +298,7 @@ function PanditLeftNav() {
                       ? `https://mahadevaaya.com/backend/media/pandit_images/${profile.pandit_image.split("/").pop()}`
                       : "https://mahadevaaya.com/backend/media/pandit_images/default.png"
                   }
-                  alt={profile.displayName || "Devotee"}
+                  alt={profile.displayName || ""}
                   className="nav-profile-photo"
                 />
               </Dropdown.Toggle>

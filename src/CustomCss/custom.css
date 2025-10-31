@@ -102,6 +102,12 @@ body {
 .total-text-bold{
     font-weight: 700;
 }
+.add-temp-style p{
+    font-size: var(--temp-space-300) !important;
+    font-weight: 500;
+    color: var(--temp-black);
+
+}
 .temp-container h1 {
     font-size: var(--temp-space-600);
     color: var(--temp-org);

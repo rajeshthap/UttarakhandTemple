@@ -9,7 +9,7 @@ const TempChangePassword = () => {
       {/* Main Wrapper */}
       <div className="dashboard-wrapper">
         {/* Sidebar */}
-        <aside className="sidebar">
+        <aside className="temp-sidebar">
           <TempleLeftNav />
         </aside>
 
