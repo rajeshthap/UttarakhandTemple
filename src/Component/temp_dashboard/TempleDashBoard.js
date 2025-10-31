@@ -24,12 +24,12 @@ const TempleDashBoard = () => {
   const [templeCount, setTempleCount] = useState(0);
   const [festivalCount, setFestivalCount] = useState(0);
 
-  // 🧭 Redirect if not logged in
+  //  Redirect if not logged in
   useEffect(() => {
     if (!uniqueId) navigate("/Login");
   }, [uniqueId, navigate]);
 
-  // 🛕 Fetch New Bookings
+  //  Fetch New Bookings
   useEffect(() => {
     if (!uniqueId) return;
     const fetchNewBookings = async () => {
@@ -52,7 +52,7 @@ const TempleDashBoard = () => {
     fetchNewBookings();
   }, [uniqueId]);
 
-  // ✅ Accepted Bookings
+  //  Accepted Bookings
   useEffect(() => {
     if (!uniqueId) return;
     const fetchAcceptedBookings = async () => {
@@ -75,7 +75,7 @@ const TempleDashBoard = () => {
     fetchAcceptedBookings();
   }, [uniqueId]);
 
-  // ❌ Rejected Bookings
+  //  Rejected Bookings
   useEffect(() => {
     if (!uniqueId) return;
     const fetchRejectedBookings = async () => {
@@ -98,7 +98,7 @@ const TempleDashBoard = () => {
     fetchRejectedBookings();
   }, [uniqueId]);
 
-  // 💰 Donations
+  //  Donations
   useEffect(() => {
     if (!uniqueId) return;
     const fetchDonations = async () => {
@@ -121,29 +121,30 @@ const TempleDashBoard = () => {
     fetchDonations();
   }, [uniqueId]);
 
-  // 🛕 Temple count
-  useEffect(() => {
-    const fetchTemples = async () => {
-      try {
-        const res = await axios.get(
-          "https://mahadevaaya.com/backend/api/temple-names-list/"
-        );
-        if (Array.isArray(res.data)) {
-          setTempleCount(res.data.length);
-        } else if (res.data && Array.isArray(res.data.results)) {
-          setTempleCount(res.data.results.length);
-        } else {
-          setTempleCount(0);
-        }
-      } catch (error) {
-        console.error("Error fetching temples:", error);
+ // Temple count
+useEffect(() => {
+  const fetchTemples = async () => {
+    try {
+      const res = await axios.get(
+        "https://mahadevaaya.com/backend/api/temple-names-list/"
+      );
+ 
+      //  API returns { temples: [ ... ] }
+      if (res.data && Array.isArray(res.data.temples)) {
+        setTempleCount(res.data.temples.length);
+      } else {
         setTempleCount(0);
       }
-    };
-    fetchTemples();
-  }, []);
+    } catch (error) {
+      console.error("Error fetching temples:", error);
+      setTempleCount(0);
+    }
+  };
+ 
+  fetchTemples();
+}, []);
 
-  // 🎉 Festival count
+  // Festival count
   useEffect(() => {
     const fetchFestivals = async () => {
       try {
