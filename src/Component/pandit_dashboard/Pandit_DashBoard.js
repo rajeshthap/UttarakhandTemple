@@ -101,7 +101,8 @@ const Pandit_DashBoard = () => {
       </Card>
     </Col>
               <Col lg={3} md={3} sm={12}>
-                <Card className="shadow-sm dbcard-pdit-accept-box-2 flex-fill">
+                <Card className="shadow-sm dbcard-pdit-accept-box-2 flex-fill" onClick={() => navigate("/A")} //  now it works
+        style={{ cursor: "pointer" }}>
                   <Card.Body>
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
                       <div>

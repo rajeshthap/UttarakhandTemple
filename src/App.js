@@ -224,7 +224,8 @@ function App() {
     "/ReviewsFeedback",
     "/PanditSupport",
     "/TempleChangePassword",
-    "/NewPujaBooking"
+    "/NewPujaBooking",
+  
   
   ]);
   const shouldHideBars = hiddenPaths.has(location.pathname);
@@ -422,6 +423,7 @@ function App() {
           <Route path="/PanditPlatformInfo" element={<PanditPlatformInfo />} />
           <Route path="/TempleChangePassword" element={<TempleChangePassword />} />
           <Route path="/NewPujaBooking" element={<NewPujaBooking />} />
+         
          
        
           
