@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../../../assets/CSS/LeftNav.css";
 import "../../../assets/CSS/DashBoard.css";
-import { Col, Row, Form, Button, Spinner } from "react-bootstrap";
+import { Col, Row, Form, Button, Spinner, Breadcrumb } from "react-bootstrap";
 import "../../../assets/CSS/MyProfile.css";
 import LeftNav from "../LeftNav";
 import { useAuth } from "../../GlobleAuth/AuthContext";
@@ -11,6 +11,7 @@ import "../../../assets/CSS/MyProfile.css";
 import { FaCamera } from "react-icons/fa";
 import DefaultProfile from "../../../assets/images/Diya.png";
 import { BASE_URLL } from "../../BaseURL";
+import SearchFeature from "../../temp_dashboard/temp_innerdashboard/SearchFeature";
 
 const MyProfile = () => {
   const navigate = useNavigate();
@@ -166,7 +167,19 @@ window.dispatchEvent(
       <main className="main-container">
         <div className="content-box">
           <h1 className="fw500">
-            <span className="fw700h1">My </span> Profile
+          
+               <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
+                            <h1 className="fw500">
+                              <Breadcrumb>
+                                <Breadcrumb.Item href="/MainDashBoard">
+                                  <span className="fw700h1">DashBoard</span>
+                                </Breadcrumb.Item>
+                                <Breadcrumb.Item active>My Profile</Breadcrumb.Item>
+                              </Breadcrumb>
+                            </h1>
+            
+                            
+                          </div>
           </h1>
 
           {loading ? (

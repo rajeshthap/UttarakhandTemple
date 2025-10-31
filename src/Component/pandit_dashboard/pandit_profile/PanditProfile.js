@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Row, Col, Form, Button, Spinner } from "react-bootstrap";
+import { Row, Col, Form, Button, Spinner, Breadcrumb } from "react-bootstrap";
 import Select from "react-select";
 import axios from "axios";
 import { useAuth } from "../../GlobleAuth/AuthContext";
@@ -176,10 +176,19 @@ const PanditProfile = () => {
 
       <main className="main-container">
         <div className="content-box">
-          <h1 className="fw500">
-            <span className="fw700h1">Pandit </span>Profile
-          </h1>
-
+          
+   <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
+                            <h1 className="fw500">
+                              <Breadcrumb>
+                                <Breadcrumb.Item href="/Pandit_DashBoard">
+                                  <span className="fw700h1">DashBoard</span>
+                                </Breadcrumb.Item>
+                                <Breadcrumb.Item active>Pandit Profile</Breadcrumb.Item>
+                              </Breadcrumb>
+                            </h1>
+            
+                            
+                          </div>
           <ModifyAlert
             message={alertMsg}
             show={showAlert}

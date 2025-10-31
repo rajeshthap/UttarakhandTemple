@@ -17,6 +17,7 @@ const DonateDashBoard = () => {
         {/* Right-hand Main Container */}
         
         <main className="main-container-box">
+          
                <ExtendYourDivine />
         </main>
      

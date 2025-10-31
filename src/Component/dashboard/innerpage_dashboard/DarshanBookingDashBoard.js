@@ -1,7 +1,7 @@
 import React from "react";
 import "../../../assets/CSS/LeftNav.css";
 import "../../../assets/CSS/DashBoard.css";
-import { Button, Col, Row } from "react-bootstrap";
+import { Breadcrumb, Button, Col, Row } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import LeftNav from "../LeftNav";
 import { FaHandsPraying, FaOm } from "react-icons/fa6";
@@ -29,9 +29,19 @@ const DarshanBookingDashBoard = () => {
         {/* Right-hand Main Container */}
         <main className="main-container">
           <div className="content-box">
-            <h1 className=" fw500">
-              <span class="fw700h1">Darshn Booking </span>
-            </h1>
+           
+             <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
+                            <h1 className="fw500">
+                              <Breadcrumb>
+                                <Breadcrumb.Item href="/MainDashBoard">
+                                  <span className="fw700h1">DashBoard</span>
+                                </Breadcrumb.Item>
+                                <Breadcrumb.Item active> Darshn Booking</Breadcrumb.Item>
+                              </Breadcrumb>
+                            </h1>
+            
+                            
+                          </div>
           
 
             <Row>
