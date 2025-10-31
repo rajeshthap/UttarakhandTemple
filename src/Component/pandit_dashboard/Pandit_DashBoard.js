@@ -14,7 +14,7 @@ import { useAuth } from "../GlobleAuth/AuthContext";
 
 const Pandit_DashBoard = () => {
   const navigate = useNavigate();
-  const { uniqueId } = useAuth(); 
+  const { uniqueId } = useAuth();
   const [statusCounts, setStatusCounts] = useState({
     pending: 0,
     accepted: 0,
@@ -24,20 +24,20 @@ const Pandit_DashBoard = () => {
   });
   const [loading, setLoading] = useState(true);
 
+  // Prevent back navigation
   useEffect(() => {
     window.history.pushState(null, "", window.location.href);
     const handlePopState = () => {
       window.history.pushState(null, "", window.location.href);
     };
     window.addEventListener("popstate", handlePopState);
-
-    return () => {
-      window.removeEventListener("popstate", handlePopState);
-    };
+    return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
   useEffect(() => {
   const fetchBookings = async () => {
+    if (!uniqueId) return;
+
     try {
       setLoading(true);
       const response = await axios.get(
@@ -45,41 +45,47 @@ const Pandit_DashBoard = () => {
       );
 
       const bookings = response.data || [];
+      const now = new Date();
 
-      let pending = 0;
-      let accepted = 0;
-      let rejected = 0;
-      let upcoming = 0;
+      let pendingCount = 0;  // New Puja Booking (within 7 days after pooja date)
+      let acceptedCount = 0;
+      let rejectedCount = 0;
+      let upcomingCount = 0; // Upcoming (after 7 days from pooja date)
 
       bookings.forEach((booking) => {
         booking.number_of_pandits.forEach((p) => {
           if (p.pandit_id === uniqueId) {
-            switch (p.status?.toLowerCase()) {
-              case "pending":
-                pending++;
-                break;
-              case "accepted":
-                accepted++;
-                break;
-              case "rejected":
-                rejected++;
-                break;
-              case "upcoming":
-                upcoming++;
-                break;
-              default:
-                break;
+            const status = p.status?.toLowerCase();
+            const bookingDate = new Date(booking.date_and_time);
+            const sevenDaysAfter = new Date(
+              bookingDate.getTime() + 7 * 24 * 60 * 60 * 1000
+            );
+
+            if (status === "pending") {
+              if (now >= bookingDate && now <= sevenDaysAfter) {
+                pendingCount++;
+              }
+              else if (now > sevenDaysAfter) {
+                upcomingCount++;
+              }
+              else if (now < bookingDate) {
+                upcomingCount++;
+              }
+            } else if (status === "accepted") {
+              acceptedCount++;
+            } else if (status === "rejected") {
+              rejectedCount++;
             }
           }
         });
       });
 
       setStatusCounts({
-        pending,
-        accepted,
-        rejected,
-        upcoming,
-        total: pending + accepted + rejected + upcoming,
+        pending: pendingCount,
+        accepted: acceptedCount,
+        rejected: rejectedCount,
+        upcoming: upcomingCount,
+        total: pendingCount + acceptedCount + rejectedCount + upcomingCount,
       });
     } catch (error) {
       console.error("Error fetching bookings:", error);
@@ -88,8 +94,9 @@ const Pandit_DashBoard = () => {
     }
   };
 
-  if (uniqueId) fetchBookings();
+  fetchBookings();
 }, [uniqueId]);
+
 
 
   return (
@@ -223,7 +230,7 @@ const Pandit_DashBoard = () => {
                   <Col lg={3} md={3} sm={12}>
                     <Card
                       className="shadow-sm rounded flex-fill pandit-box-3"
-                      onClick={() => navigate("/UpcomingRequests")}
+                      onClick={() => navigate("/UpcomingPuja")}
                       style={{ cursor: "pointer" }}
                     >
                       <Card.Body>
@@ -251,55 +258,7 @@ const Pandit_DashBoard = () => {
                   </Col>
                 </Row>
 
-                <Row className="mt-3">
-                  <h2>Transaction History</h2>
-                  <div className="col-md-12">
-                    <table className="pandit-rwd-table">
-                      <tbody>
-                        <tr>
-                          <th>Supplier Code</th>
-                          <th>Supplier Name</th>
-                          <th>Invoice Number</th>
-                          <th>Invoice Date</th>
-                          <th>Due Date</th>
-                          <th>Net Amount</th>
-                        </tr>
-                        <tr>
-                          <td>UPS5005</td>
-                          <td>UPS</td>
-                          <td>ASDF19218</td>
-                          <td>06/25/2016</td>
-                          <td>12/25/2016</td>
-                          <td>$8,322.12</td>
-                        </tr>
-                        <tr>
-                          <td>UPS3449</td>
-                          <td>UPS South Inc.</td>
-                          <td>ASDF29301</td>
-                          <td>6/24/2016</td>
-                          <td>12/25/2016</td>
-                          <td>$3,255.49</td>
-                        </tr>
-                        <tr>
-                          <td>BOX5599</td>
-                          <td>BOX Pro West</td>
-                          <td>ASDF43000</td>
-                          <td>6/27/2016</td>
-                          <td>12/25/2016</td>
-                          <td>$45,255.49</td>
-                        </tr>
-                        <tr>
-                          <td>PAN9999</td>
-                          <td>Pan Providers and Co.</td>
-                          <td>ASDF33433</td>
-                          <td>6/29/2016</td>
-                          <td>12/25/2016</td>
-                          <td>$12,335.69</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </Row>
+                
               </>
             )}
           </div>
