@@ -8,15 +8,18 @@ import PanditImg from "../../assets/images/pandit-img.png";
 
 import { FaHandsPraying } from "react-icons/fa6";
 
+
 import "../../assets/CSS/Pandit_DashBoard.css";
 import PanditLeftNav from "./PanditLeftNav";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; 
 import { BiSolidDonateBlood } from "react-icons/bi";
 import { FaOm } from "react-icons/fa";
 import { GiByzantinTemple } from "react-icons/gi";
 
 const Pandit_DashBoard = () => {
+       
   useEffect(() => {
+  
     // Push the current page into history so user can't go back
     window.history.pushState(null, "", window.location.href);
 
@@ -30,6 +33,7 @@ const Pandit_DashBoard = () => {
       window.removeEventListener("popstate", handlePopState);
     };
   }, []);
+  const navigate = useNavigate();
   return (
     <>
       {/* Main Wrapper */}
@@ -70,29 +74,32 @@ const Pandit_DashBoard = () => {
             </div> */}
             <Row>
               <Col lg={3} md={3} sm={12}>
-                <Card className="shadow-sm  rounded  dbcard-pditnew-puja-box-1 flex-fill mb-2">
-                  <Card.Body>
-                    <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
-                      <div>
-                        <span className="text-muted d-block mb-1 text-nowrap  user-sub-title">
-                          {" "}
-                          New Puja Booking
-                        </span>{" "}
-                        <h4 className="fw-medium mb-0">01</h4>
-                        <div>
-                          <span className="user-span">View Details</span>
-                        </div>
-                      </div>
+      <Card
+        className="shadow-sm rounded dbcard-pditnew-puja-box-1 flex-fill mb-2"
+        onClick={() => navigate("/NewPujaBooking")} //  now it works
+        style={{ cursor: "pointer" }}
+      >
+        <Card.Body>
+          <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
+            <div>
+              <span className="text-muted d-block mb-1 text-nowrap user-sub-title">
+                New Puja Booking
+              </span>
+              <h4 className="fw-medium mb-0">01</h4>
+              <div>
+                <span className="user-span">View Details</span>
+              </div>
+            </div>
 
-                      <div className="lh-1">
-                        <div className=" avatar-md avatar-rounded save-bg flex-shrink-0 d-flex align-items-center justify-content-center ">
-                          <FaOm className=" " />{" "}
-                        </div>
-                      </div>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
+            <div className="lh-1">
+              <div className="avatar-md avatar-rounded save-bg flex-shrink-0 d-flex align-items-center justify-content-center">
+                <FaOm />
+              </div>
+            </div>
+          </div>
+        </Card.Body>
+      </Card>
+    </Col>
               <Col lg={3} md={3} sm={12}>
                 <Card className="shadow-sm dbcard-pdit-accept-box-2 flex-fill">
                   <Card.Body>
