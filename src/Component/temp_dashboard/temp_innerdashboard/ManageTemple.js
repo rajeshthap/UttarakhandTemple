@@ -8,6 +8,8 @@ import axios from "axios";
 import { useAuth } from "../../GlobleAuth/AuthContext";
 import LocationState from "../../userregistration/LocationState";
 import UploadFile from "../../../assets/images/upload-icon.png";
+import { FiEdit } from "react-icons/fi";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 const ManageTemple = () => {
   const [temples, setTemples] = useState([]);
@@ -275,14 +277,14 @@ const ManageTemple = () => {
                             size="sm"
                             onClick={() => handleEdit(temple)}
                           >
-                            Edit
+                          <FiEdit className="add-edit-icon" />  Edit
                           </Button>{" "}
                           <Button
                             className="event-click-btn-danger"
                             size="sm"
                             onClick={() => handleDelete(temple.temple_id)}
                           >
-                            Delete
+                          <RiDeleteBin6Line className="add-edit-icon" />   Delete
                           </Button>
                         </td>
                       </tr>
