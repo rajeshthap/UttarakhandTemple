@@ -106,6 +106,7 @@ import AcceptedBooking from "./Component/temp_dashboard/temp_innerdashboard/tmpl
 import RejectedBooking from "./Component/temp_dashboard/temp_innerdashboard/tmpl_dashboard_darshan_booking/RejectedBooking";
 import AllBooking from "./Component/temp_dashboard/temp_innerdashboard/tmpl_dashboard_darshan_booking/AllBookings";
 import Donations from "./Component/temp_dashboard/temp_innerdashboard/view_donation/Donations";
+import CrowdFunding from "./Component/temp_dashboard/temp_innerdashboard/CrowdFunding";
 import DarshanBookingReport from "./Component/temp_dashboard/temp_innerdashboard/reports/DarshanBookingReport";
 import DonationReport from "./Component/temp_dashboard/temp_innerdashboard/reports/DonationReport";
 import DonationCollected from "./Component/temp_dashboard/temp_innerdashboard/reports/DonationCollected";
@@ -137,6 +138,7 @@ import PanditPlatformInfo from "./Component/pandit_dashboard/pandit_innerdashbor
 import TempleChangePassword from "./Component/temp_dashboard/temp_innerdashboard/tmpl_dashboard_darshan_booking/TempleChangePassword";
 import NewPujaBooking from "./Component/pandit_dashboard/pandit_innerdashborad/PanditDetailsPage/NewPujaBooking";
 import UpcomingPuja from "./Component/pandit_dashboard/pandit_innerdashborad/PanditDetailsPage/UpcomingPuja";
+
 // import BASE_URLL from "./Component/BaseURL";
 // import DashBoard from "./Component/dashboard/DashBoard";
 // import LeftNav from "./Component/dashboard/LeftNav";
@@ -397,6 +399,7 @@ function App() {
           <Route path="/RejectedBooking" element={<RejectedBooking />} />
           <Route path="/AllBooking" element={<AllBooking />} />
           <Route path="/Donations" element={<Donations />} />
+          <Route path="/CrowdFunding" element={<CrowdFunding />} />
           <Route
             path="/DarshanBookingReport"
             element={<DarshanBookingReport />}
