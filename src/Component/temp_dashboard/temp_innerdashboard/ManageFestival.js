@@ -10,6 +10,8 @@ import UploadFile from "../../../assets/images/upload-icon.png";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaCalendar } from "react-icons/fa";
+import { FiEdit } from "react-icons/fi";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 // Custom date picker input with calendar icon
 const CustomDatePickerInput = forwardRef(({ value, onClick, placeholder }, ref) => (
@@ -283,14 +285,14 @@ const ManageFestival = () => {
                             size="sm"
                             onClick={() => handleEdit(festival)}
                           >
-                            Edit
+                           <FiEdit className="add-edit-icon" /> Edit
                           </Button>{" "}
                           <Button
                             className="event-click-btn-danger"
                             size="sm"
                             onClick={() => handleDelete(festival)}
                           >
-                            Delete
+                           <RiDeleteBin6Line className="add-edit-icon" />   Delete
                           </Button>
                         </td>
                       </tr>

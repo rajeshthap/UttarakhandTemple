@@ -183,7 +183,7 @@ useEffect(() => {
           </h1>
                    <Button
               variant="primary"
-              className="d-flex align-items-center gap-2 shadow-sm rounded-pill"
+              className="d-flex align-items-center gap-2 shadow-sm event-click-btn"
               onClick={() => navigate("/CrowdFunding")}
             >
               <FaPlus />

@@ -8,7 +8,7 @@ const ReviewsFeedback = () => {
   return (
     <>
       <div className="dashboard-wrapper">
-        <aside className="sidebar">
+        <aside className="pandit-sidebar">
           <PanditLeftNav />
         </aside>
 
@@ -24,7 +24,7 @@ const ReviewsFeedback = () => {
                   </Breadcrumb>
                 </h1>
                 <div>
-                  <SearchFeature />
+                  {/* <SearchFeature /> */}
                 </div>
               </div>
           </div>

@@ -13,6 +13,7 @@ import SearchFeature from "../../../temp_dashboard/temp_innerdashboard/SearchFea
 import PanditLeftNav from "../../PanditLeftNav";
 import axios from "axios";
 import { useAuth } from "../../../GlobleAuth/AuthContext";
+import { PiArrowsCounterClockwiseBold } from "react-icons/pi";
 
 const UpcomingPuja = () => {
   const { uniqueId } = useAuth();
@@ -192,7 +193,7 @@ const UpcomingPuja = () => {
                                 size="sm"
                                 onClick={() => handleView(req)}
                               >
-                                Change Status
+                             <PiArrowsCounterClockwiseBold className="add-edit-icon" />   Change Status
                               </Button>
                             </td>
                           </tr>
