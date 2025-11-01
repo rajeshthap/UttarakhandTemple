@@ -2,24 +2,32 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RiDashboard3Line } from "react-icons/ri";
 import axios from "axios";
-import { FaAlignLeft, FaChevronDown, FaChevronUp } from "react-icons/fa";
-import { LuLogOut } from "react-icons/lu";
+import { FaAlignLeft, FaChevronDown, FaChevronUp, FaRegCheckCircle } from "react-icons/fa";
+import { LuCalendarClock, LuCircleCheck, LuLogOut } from "react-icons/lu";
 import CompanyLogo from "../../assets/images/company-logo.png";
 import MenuIcon from "../../assets/images/menu_icon.png";
 import "../../assets/CSS/PanditLeftNav.css";
 import ModifyAlert from "../Alert/ModifyAlert";
 import { GiByzantinTemple } from "react-icons/gi";
 import { LiaCalendarCheck } from "react-icons/lia";
-import { FaRegFileLines } from "react-icons/fa6";
-import { TbPasswordUser } from "react-icons/tb";
+import { IoCalendarSharp, IoCloseCircleOutline } from "react-icons/io5";
 import { Dropdown, Nav } from "react-bootstrap";
+import { ImProfile } from "react-icons/im";
 import { useAuth } from "../GlobleAuth/AuthContext";
+import Support from "../../assets/images/support.png"
+import { MdAccountCircle, MdEventAvailable, MdPendingActions, MdReviews} from "react-icons/md";
+import { FaRegFileLines, FaUserLock } from "react-icons/fa6";
+import ManagePuja from "../../assets/images/Manage-Pujas.png";
+import Completed from "../../assets/images/completed-puja.png";
+import AddPuja from "../../assets/images/add-puja.png";
+import Transactions from "../../assets/images/Transactions.png"
 import "../../assets/CSS/TopInfo.css";
 function PanditLeftNav() {
   const { clearAuth } = useAuth();
   const [isNavClosed, setIsNavClosed] = useState(false);
   const [userName,] = useState("Loading...");
   const [activePath, setActivePath] = useState("");
+
   const [openSubMenu, setOpenSubMenu] = useState(null); // Track which submenu is open
   const [hoveredMenu, setHoveredMenu] = useState(null); // Track which menu is hovered
   const location = useLocation();
@@ -109,18 +117,18 @@ function PanditLeftNav() {
     // { icon: <BiDonateHeart />, label: "Online", path: "#" },
 
     {
-      icon: <LiaCalendarCheck />,
+      icon: <img src={ManagePuja} alt="Support" className="left-nav-icon" />,
       label: "Manage Pujas",
       path: "#",
       hasSubmenu: true,
       subItems: [
         {
-          icon: <LiaCalendarCheck />,
+          icon: <img src={AddPuja} alt="Support" className="left-nav-icon" />,
           label: "Add New Puja ",
           path: "/AddPuja"
         },
         {
-          icon: <LiaCalendarCheck />,
+          icon: <img src={Completed} alt="Support" className="left-nav-icon" />,
           label: "Completed Pujas",
           path: "/CompletedPuja"
         },
@@ -128,23 +136,23 @@ function PanditLeftNav() {
     },
 
     {
-      icon: <LiaCalendarCheck />,
+      icon: <LuCalendarClock />,
       label: "Booking Requests",
       path: "#",
       hasSubmenu: true,
       subItems: [
         {
-          icon: <LiaCalendarCheck />,
+          icon: <MdPendingActions />,
           label: "Pending ",
           path: "/PendingRequests"
         },
         {
-          icon: <LiaCalendarCheck />,
+          icon: <LuCircleCheck />,
           label: "Confirmed",
           path: "/ConfirmedRequests"
         },
         {
-          icon: <LiaCalendarCheck />,
+          icon: <IoCloseCircleOutline />,
           label: "Cancelled",
           path: "/CancelledRequests"
         },
@@ -159,26 +167,26 @@ function PanditLeftNav() {
 
 
     {
-      icon: <GiByzantinTemple />,
+      icon: <IoCalendarSharp />,
       label: "Puja Calendar",
       path: "/PujaCalendar",
 
     },
     {
-      icon: <GiByzantinTemple />,
+      icon: <img src={Transactions} alt="Support" className="left-nav-icon" />,
       label: "Earnings & Transactions",
       path: "/EarnAndTrans",
 
     },
 
     {
-      icon: <GiByzantinTemple />,
+      icon: <FaRegFileLines />,
       label: "Reports & Analytics",
       path: "/ReportAnalytics",
 
     },
     {
-      icon: <GiByzantinTemple />,
+      icon: <MdReviews />,
       label: "Reviews & Feedback",
       path: "/ReviewsFeedback",
 
@@ -189,18 +197,18 @@ function PanditLeftNav() {
 
 
     {
-      icon: <LiaCalendarCheck />,
+      icon: <MdAccountCircle />,
       label: "My Account",
       path: "#",
       hasSubmenu: true,
       subItems: [
         {
-          icon: <LiaCalendarCheck />,
+          icon: <ImProfile />,
           label: "My Profile",
           path: "/PanditProfile"
         },
         {
-          icon: <LiaCalendarCheck />,
+          icon: <FaUserLock />,
           label: "Change Password",
           path: "/PanditChangePassword"
         },
@@ -209,7 +217,7 @@ function PanditLeftNav() {
 
     {
       path: "/PanditSupport",
-      icon: <FaRegFileLines />,
+      icon: <img src={Support} alt="Support" className="left-nav-icon" />,
       label: "Support",
 
     },
@@ -250,7 +258,7 @@ function PanditLeftNav() {
     //   ]
     // },
     {
-      icon: <TbPasswordUser />,
+      icon: <LuLogOut />,
       label: "Logout",
       path: "#", // will trigger logout
       isLogout: true, // custom flag to detect logout

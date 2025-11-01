@@ -5,6 +5,12 @@ import SearchFeature from "../../../temp_dashboard/temp_innerdashboard/SearchFea
 import PanditLeftNav from "../../PanditLeftNav";
 import axios from "axios";
 
+import { MdOutlineDeleteForever } from "react-icons/md";
+import { FiEdit } from "react-icons/fi";
+import { FaRegTimesCircle } from "react-icons/fa";
+import { RiDeleteBin6Line } from "react-icons/ri";
+
+
 const poojaOptions = [
   { pooja_name: "Annaprashan Sanskar Puja" },
   { pooja_name: "Satyanarayan Puja" },
@@ -278,14 +284,16 @@ const AddPuja = () => {
                               size="sm"
                               onClick={() => handleEdit(pooja)}
                             >
-                              Edit
+                             <FiEdit className="add-edit-icon" />
+ Edit
                             </Button>{" "}
                             <Button
                               className="event-click-btn-danger"
                               size="sm"
                               onClick={() => handleDelete(pooja)}
                             >
-                              Delete
+                            <RiDeleteBin6Line className="add-edit-icon" /> 
+                             Delete
                             </Button>
                           </td>
                         </tr>

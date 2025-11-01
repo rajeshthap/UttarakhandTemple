@@ -10,6 +10,7 @@ import "../../assets/CSS/Pandit_DashBoard.css";
 import PanditLeftNav from "./PanditLeftNav";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import UserSeva from "../../assets/images/user-seva.png";
 import { useAuth } from "../GlobleAuth/AuthContext";
 
 const Pandit_DashBoard = () => {
@@ -157,7 +158,11 @@ const Pandit_DashBoard = () => {
 
                           <div className="lh-1">
                             <div className="avatar-md avatar-rounded save-bg flex-shrink-0 d-flex align-items-center justify-content-center">
-                              <FaOm />
+                              <img
+                            src={UserSeva}
+                            alt="Pandit"
+                            className=" img-fluid img-user-card-icon"
+                          />{" "}
                             </div>
                           </div>
                         </div>

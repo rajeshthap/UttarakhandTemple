@@ -105,6 +105,10 @@ body {
 .img-user-card-icon{
     width: 22px;
 }
+.add-edit-icon{
+    margin-right: var(--temp-space-100);
+    font-size: var(--temp-space-300);
+}
 .total-text-bold{
     font-weight: 700;
 }

@@ -19,6 +19,7 @@ import "../../assets/CSS/TopInfo.css";
 import { BiSolidDonateBlood } from "react-icons/bi";
 import { MdAccountCircle, MdEventAvailable} from "react-icons/md";
  import { IoDocumentTextOutline } from "react-icons/io5";
+ import { FaUserLock } from "react-icons/fa6";
 
 function LeftNav() {
   const { clearAuth } = useAuth();
@@ -244,7 +245,7 @@ useEffect(() => {
       hasSubmenu: true,
       subItems: [
         {
-          icon: <LiaCalendarCheck />,
+          icon: <FaUserLock />,
           label: "My Profile",
           path: "/MyProfile"
         },
