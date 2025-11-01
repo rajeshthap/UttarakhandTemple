@@ -8,7 +8,7 @@ const PujaCalendar = () => {
   return (
     <>
       <div className="dashboard-wrapper">
-        <aside className="sidebar">
+        <aside className="pandit-sidebar">
           <PanditLeftNav />
         </aside>
         <main className="main-container-box">

@@ -9,10 +9,14 @@ import {
   Col,
   Spinner,
 } from "react-bootstrap";
+import { PiArrowsCounterClockwiseBold } from "react-icons/pi";
 import SearchFeature from "../../../temp_dashboard/temp_innerdashboard/SearchFeature";
 import PanditLeftNav from "../../PanditLeftNav";
 import axios from "axios";
 import { useAuth } from "../../../GlobleAuth/AuthContext";
+import { RiDeleteBin6Line, RiExchangeLine } from "react-icons/ri";
+import { TbStatusChange } from "react-icons/tb";
+
 
 const CancelledRequests = () => {
   const { uniqueId } = useAuth();
@@ -182,7 +186,8 @@ const CancelledRequests = () => {
                                 size="sm"
                                 onClick={() => handleView(booking)}
                               >
-                                Change Status
+                                 <PiArrowsCounterClockwiseBold className="add-edit-icon" /> 
+                                  Change Status
                               </Button>
                             </td>
                           </tr>

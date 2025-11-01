@@ -285,7 +285,7 @@ const AddPuja = () => {
                               onClick={() => handleEdit(pooja)}
                             >
                              <FiEdit className="add-edit-icon" />
- Edit
+             Edit
                             </Button>{" "}
                             <Button
                               className="event-click-btn-danger"
