@@ -2,22 +2,24 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RiCalendarEventLine, RiDashboard3Line } from "react-icons/ri";
 import axios from "axios";
-import { FaAlignLeft, FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaAlignLeft, FaChevronDown, FaChevronUp, FaRegCalendarCheck } from "react-icons/fa";
 import { LuLogOut } from "react-icons/lu";
 import CompanyLogo from "../../assets/images/company-logo.png";
 import MenuIcon from "../../assets/images/menu_icon.png";
 import "../../assets/CSS/LeftNav.css";
 import ModifyAlert from "../Alert/ModifyAlert";
-import { GiByzantinTemple } from "react-icons/gi";
+import PoojaSeva from "../../../src/assets/images/Puja-Seva.png"
+import PanditBooking from ".././../assets/images/pandit.png"
 import { LiaCalendarCheck } from "react-icons/lia";
-import { FaRegFileLines } from "react-icons/fa6";
-
-import { Dropdown, Nav } from "react-bootstrap";
+import Support  from "../../assets/images/support.png"
+import { GrDocumentTime } from "react-icons/gr";
+import { Dropdown } from "react-bootstrap";
 import { useAuth } from "../GlobleAuth/AuthContext";
 import "../../assets/CSS/TopInfo.css";
 import { BiSolidDonateBlood } from "react-icons/bi";
-import { MdAccountCircle, MdEventAvailable, MdOutlineWorkHistory } from "react-icons/md";
- 
+import { MdAccountCircle, MdEventAvailable} from "react-icons/md";
+ import { IoDocumentTextOutline } from "react-icons/io5";
+
 function LeftNav() {
   const { clearAuth } = useAuth();
 
@@ -126,7 +128,7 @@ useEffect(() => {
         devotee_photo: updated.devotee_photo
           ? `https://mahadevaaya.com/backend/media/devotee_photos/${updated.devotee_photo
               .split("/")
-              .pop()}?v=${Date.now()}` // 👈 forces new image fetch immediately
+              .pop()}?v=${Date.now()}` //  forces new image fetch immediately
           : prev.devotee_photo,
       }));
     }
@@ -178,7 +180,7 @@ useEffect(() => {
     // { icon: <BiDonateHeart />, label: "Online", path: "#" },
 
     {
-      icon: <MdOutlineWorkHistory />,
+      icon: <GrDocumentTime />,
       label: "Booking History",
       path: "/BookingHistory",
 
@@ -190,20 +192,20 @@ useEffect(() => {
 
     },
     {
-      icon: <GiByzantinTemple />,
+      icon: <FaRegCalendarCheck />,
       label: "Darshan & Puja Booking",
       path: "/MandirBookingInfoDashBoard",
 
     },
 
     {
-      icon: <LiaCalendarCheck />,
+      icon: <img src={PoojaSeva} alt="Puja & Seva" className="left-nav-icon" />,
       label: "Puja & Seva",
       path: "#",
       hasSubmenu: true,
       subItems: [
         {
-          icon: <LiaCalendarCheck />,
+          icon: <IoDocumentTextOutline />,
           label: "Seva Registration",
           path: "/SevaRegistrationDashBoard"
         },
@@ -216,7 +218,7 @@ useEffect(() => {
       ]
     },
     {
-      icon: <GiByzantinTemple />,
+      icon: <img src={PanditBooking} alt="Pandit booking" className="left-nav-icon" />,
       label: "Pandit Booking",
       path: "/PoojaBookingDashBoard",
 
@@ -252,7 +254,7 @@ useEffect(() => {
 
     {
       path: "/UserSupport",
-      icon: <FaRegFileLines />,
+      icon: <img src={Support} alt="Support" className="left-nav-icon" />,
       label: "Support",
 
     },

@@ -98,7 +98,13 @@ body {
     margin-top: var(--temp-space-400);
 }
 
-
+.left-nav-icon{
+    width: 22px;
+    
+}
+.img-user-card-icon{
+    width: 22px;
+}
 .total-text-bold{
     font-weight: 700;
 }

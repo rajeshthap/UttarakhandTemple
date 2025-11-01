@@ -16,6 +16,7 @@ import { useAuth } from "../../GlobleAuth/AuthContext";
 import NewsUpdates from "../AboutUsDashBoard/NewsUpdate";
 import { useNavigate } from "react-router-dom";
 import { BASE_URLL } from "../../BaseURL";
+import UserSeva from "../../../assets/images/user-seva.png"
 const MainDashBoard = () => {
   useEffect(() => {
     window.history.pushState(null, "", window.location.href);
@@ -179,9 +180,15 @@ const MainDashBoard = () => {
                       </div>
                       <div className="lh-1">
                         <div className="avatar-md avatar-rounded save-bg d-flex align-items-center justify-content-center">
-                          <FaOm />
+                         
+                          <img
+                            src={UserSeva}
+                            alt="Pandit"
+                            className=" img-fluid img-user-card-icon"
+                          />{" "}
                         </div>
                       </div>
+                      
                     </div>
                   </Card.Body>
                 </Card>

@@ -107,7 +107,7 @@ const TempleChangePassword = () => {
 
   return (
     <div className="dashboard-wrapper">
-      <aside className="sidebar">
+      <aside className="temp-sidebar">
         <TempleLeftNav />
       </aside>
 
@@ -201,7 +201,6 @@ const TempleChangePassword = () => {
                     )}
                   </Form.Group>
                 </Col>
-
                 {/* Confirm Password Field */}
                 <Col lg={4} md={4} sm={4}>
                   <Form.Group className="mb-2">
