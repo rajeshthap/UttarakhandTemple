@@ -187,6 +187,12 @@ function TempleLeftNav() {
       path: "/Donations",
     },
 
+     {
+      icon: <GiByzantinTemple />,
+      label: "View Funding",
+      path: "/CrowdFunding",
+    },
+
     {
       icon: <LiaCalendarCheck />,
       label: "My Account",

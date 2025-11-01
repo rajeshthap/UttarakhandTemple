@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "../../assets/CSS/TempleLeftNav.css";
 import "../../assets/CSS/DashBoard.css";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row,Button} from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import PanditImg from "../../assets/images/pandit-img.png";
 import { FaOm } from "react-icons/fa";
 import { GiByzantinTemple } from "react-icons/gi";
 import { BiSolidDonateBlood } from "react-icons/bi";
+import { FaPlus } from "react-icons/fa6"; 
 import TempleLeftNav from "./TempleLeftNav";
 import "../../assets/CSS/Temple_DashBoard.css";
 import { useNavigate } from "react-router-dom";
@@ -176,9 +177,19 @@ useEffect(() => {
       {/* Main Content */}
       <main className="main-container">
         <div className="content-box">
+            <div className="d-flex align-items-center justify-content-between mb-4">
           <h1 className="fw500 mb-4">
             <span className="fw700h1">Temple</span> Dashboard
           </h1>
+                   <Button
+              variant="primary"
+              className="d-flex align-items-center gap-2 shadow-sm rounded-pill"
+              onClick={() => navigate("/CrowdFunding")}
+            >
+              <FaPlus />
+              Add Crowd Funding
+            </Button>
+          </div>
 
           <Row>
             {/* New Bookings */}
