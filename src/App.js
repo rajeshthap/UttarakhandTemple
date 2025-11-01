@@ -138,6 +138,7 @@ import PanditPlatformInfo from "./Component/pandit_dashboard/pandit_innerdashbor
 import TempleChangePassword from "./Component/temp_dashboard/temp_innerdashboard/tmpl_dashboard_darshan_booking/TempleChangePassword";
 import NewPujaBooking from "./Component/pandit_dashboard/pandit_innerdashborad/PanditDetailsPage/NewPujaBooking";
 import UpcomingPuja from "./Component/pandit_dashboard/pandit_innerdashborad/PanditDetailsPage/UpcomingPuja";
+import CrowdfundingCard from "./Component/CrowdfundingCard";
 
 // import BASE_URLL from "./Component/BaseURL";
 // import DashBoard from "./Component/dashboard/DashBoard";
@@ -429,6 +430,7 @@ function App() {
           <Route path="/PanditPlatformInfo" element={<PanditPlatformInfo />} />
           <Route path="/TempleChangePassword" element={<TempleChangePassword />} />
           <Route path="/NewPujaBooking" element={<NewPujaBooking />} />
+          <Route path="/CrowdfundingCard" element={<CrowdfundingCard />} />
          
          
        

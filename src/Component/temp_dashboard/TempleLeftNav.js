@@ -13,6 +13,7 @@ import { LiaCalendarCheck } from "react-icons/lia";
 import { FaRegFileLines } from "react-icons/fa6";
 import { TbPasswordUser } from "react-icons/tb";
 import { Dropdown, Nav } from "react-bootstrap";
+import ManagePuja from "../../assets/images/Manage-Pujas.png"
 import { useAuth } from "../GlobleAuth/AuthContext";
 import "../../assets/CSS/TopInfo.css";
 function TempleLeftNav() {
@@ -108,7 +109,7 @@ function TempleLeftNav() {
     // { icon: <BiDonateHeart />, label: "Online", path: "#" },
 
     {
-      icon: <LiaCalendarCheck />,
+    icon: <img src={ManagePuja} alt="Support" className="left-nav-icon" />,
       label: "Temple",
       path: "#",
       hasSubmenu: true,

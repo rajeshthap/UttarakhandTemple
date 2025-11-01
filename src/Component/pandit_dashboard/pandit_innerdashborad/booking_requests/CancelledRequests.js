@@ -14,8 +14,7 @@ import SearchFeature from "../../../temp_dashboard/temp_innerdashboard/SearchFea
 import PanditLeftNav from "../../PanditLeftNav";
 import axios from "axios";
 import { useAuth } from "../../../GlobleAuth/AuthContext";
-import { RiDeleteBin6Line, RiExchangeLine } from "react-icons/ri";
-import { TbStatusChange } from "react-icons/tb";
+
 
 
 const CancelledRequests = () => {
