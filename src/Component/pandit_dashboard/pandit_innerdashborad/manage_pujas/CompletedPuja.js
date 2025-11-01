@@ -69,7 +69,7 @@ const CompletedPuja = () => {
                   <tbody>
                     <tr>
                       <th>S.No</th>
-                      <th>Pandit Name</th>
+                      <th>Full Name</th>
                       <th>Pooja Name</th>
                       <th>Pooja Price (₹)</th>
                       <th>Status</th>
