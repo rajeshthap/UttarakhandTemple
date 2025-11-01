@@ -104,8 +104,8 @@ body {
 }
 .add-temp-style p{
     font-size: var(--temp-space-300) !important;
-    font-weight: 500;
-    color: var(--temp-black);
+    color: var(--temp-black) !important;
+    font-weight: 600;
 
 }
 .temp-container h1 {

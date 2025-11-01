@@ -17,8 +17,8 @@ const AddTemple = () => {
         {/* Right-hand Main Container */}
 
         <main className="main-container-box">
-          <div className="content-box">
-            <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
+          <div className="content-box add-temp-style">
+            <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap ">
                                        <h1 className="fw500">
                                          <Breadcrumb>
                                            <Breadcrumb.Item href="/TempleDashBoard">
@@ -30,6 +30,8 @@ const AddTemple = () => {
                        
                                        
                                      </div>
+                                     <p>Please use a different phone number</p>
+
             <TempleAuthority />
           </div>
         </main>
