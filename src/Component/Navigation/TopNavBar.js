@@ -110,6 +110,7 @@ const TopNavBar = () => {
                       Past Event Gallery
                     </NavDropdown.Item> */}
                   </NavDropdown>
+                   <Nav.Link href="/CrowdfundingCard">Crowd Funding</Nav.Link>
                 </Nav>
                 <Nav.Link href="/">
                   <div>
