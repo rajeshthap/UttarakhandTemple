@@ -86,7 +86,7 @@
 .active-nav {
   background-color: #3d3e40 !important;
   color: #fff !important;
-  border-left: 4px solid white;
+  /* border-left: 4px solid white; */
 }
 
 /* Smooth transitions */

@@ -91,7 +91,7 @@
 .pandit-nav {
   background-color: #7c4654 !important;
   color: #fff !important;
-  border-left: 4px solid white;
+  /* border-left: 4px solid white; */
 }
 
 /* Smooth transitions */

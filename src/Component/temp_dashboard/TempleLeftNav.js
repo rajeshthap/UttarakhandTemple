@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RiDashboard3Line } from "react-icons/ri";
 import axios from "axios";
-import { FaAlignLeft, FaChevronDown, FaChevronUp } from "react-icons/fa";
-import { LuLogOut } from "react-icons/lu";
+import { FaAlignLeft, FaChevronDown, FaChevronUp, FaRegCalendarCheck, FaUserLock } from "react-icons/fa";
+import { LuCircleCheck, LuLogOut } from "react-icons/lu";
 import CompanyLogo from "../../assets/images/company-logo.png";
 import MenuIcon from "../../assets/images/menu_icon.png";
 import "../../assets/CSS/TempleLeftNav.css";
@@ -13,9 +13,16 @@ import { LiaCalendarCheck } from "react-icons/lia";
 import { FaRegFileLines } from "react-icons/fa6";
 import { TbPasswordUser } from "react-icons/tb";
 import { Dropdown, Nav } from "react-bootstrap";
+import { BiSolidDonateBlood } from "react-icons/bi";  
 import ManagePuja from "../../assets/images/Manage-Pujas.png"
+import Festival from "../../assets/images/Festival.png"
 import { useAuth } from "../GlobleAuth/AuthContext";
+import AddPuja from "../../assets/images/add-puja.png";
 import "../../assets/CSS/TopInfo.css";
+import { IoCloseCircleOutline } from "react-icons/io5";
+import { ImProfile } from "react-icons/im";
+import { MdAccountCircle } from "react-icons/md";
+import Support from "../../assets/images/support.png";
 function TempleLeftNav() {
   const { clearAuth } = useAuth();
   const [isNavClosed, setIsNavClosed] = useState(false);
@@ -109,18 +116,18 @@ function TempleLeftNav() {
     // { icon: <BiDonateHeart />, label: "Online", path: "#" },
 
     {
-    icon: <img src={ManagePuja} alt="Support" className="left-nav-icon" />,
+    icon: <img src={ManagePuja} alt="ManagePuja" className="left-nav-icon" />,
       label: "Temple",
       path: "#",
       hasSubmenu: true,
       subItems: [
         {
-          icon: <LiaCalendarCheck />,
+           icon: <img src={AddPuja} alt="ManagePuja" className="left-nav-icon" />,
           label: "Add Temple ",
           path: "/AddTemple"
         },
         {
-          icon: <LiaCalendarCheck />,
+             icon: <img src={ManagePuja} alt="ManagePuja" className="left-nav-icon" />,
           label: "Manage Temple",
           path: "/ManageTemple"
         },
@@ -131,7 +138,8 @@ function TempleLeftNav() {
     },
 
     {
-      icon: <LiaCalendarCheck />,
+      
+      icon: <img src={Festival} alt="Festival" className="left-nav-icon" />,
       label: "Festival",
       path: "#",
       hasSubmenu: true,
@@ -153,7 +161,7 @@ function TempleLeftNav() {
     },
 
     {
-      icon: <LiaCalendarCheck />,
+      icon: <FaRegCalendarCheck />,
       label: "Darshan Booking",
       path: "#",
       hasSubmenu: true,
@@ -164,12 +172,12 @@ function TempleLeftNav() {
           path: "/NewBooking"
         },
         {
-          icon: <LiaCalendarCheck />,
+          icon: <LuCircleCheck />,
           label: "Accepted Booking",
           path: "/AcceptedBooking"
         },
         {
-          icon: <LiaCalendarCheck />,
+          icon: <IoCloseCircleOutline />,
           label: "Rejected Booking",
           path: "/RejectedBooking"
         },
@@ -183,7 +191,7 @@ function TempleLeftNav() {
     },
 
     {
-      icon: <GiByzantinTemple />,
+      icon: <BiSolidDonateBlood />,
       label: "View Donation",
       path: "/Donations",
     },
@@ -195,18 +203,18 @@ function TempleLeftNav() {
     },
 
     {
-      icon: <LiaCalendarCheck />,
+      icon: <MdAccountCircle />,
       label: "My Account",
       path: "#",
       hasSubmenu: true,
       subItems: [
         {
-          icon: <LiaCalendarCheck />,
+          icon: <ImProfile />,
           label: "My Profile",
           path: "/TempleProfile"
         },
         {
-          icon: <LiaCalendarCheck />,
+          icon: <FaUserLock />,
           label: "Change Password",
           path: "/TempleChangePassword"
         },
@@ -215,7 +223,7 @@ function TempleLeftNav() {
 
     {
       path: "/TempleSupport",
-      icon: <FaRegFileLines />,
+      icon: <img src={Support} alt="Support" className="left-nav-icon" />,
       label: "Support",
 
     },
@@ -258,7 +266,7 @@ function TempleLeftNav() {
     //   ]
     // },
     {
-      icon: <TbPasswordUser />,
+      icon: <LuLogOut />,
       label: "Logout",
       path: "#", // will trigger logout
       isLogout: true, // custom flag to detect logout

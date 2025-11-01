@@ -45,7 +45,7 @@
 .active-nav-option {
   background-color: #d43d15 !important;
   color: #fff !important;
-  border-left: 4px solid white;
+  /* border-left: 4px solid white; */
 }
 
 .user-nd-header {

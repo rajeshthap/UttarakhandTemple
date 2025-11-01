@@ -128,7 +128,7 @@ function PanditLeftNav() {
           path: "/AddPuja"
         },
         {
-          icon: <img src={Completed} alt="Support" className="left-nav-icon" />,
+          icon: <img src={Completed} alt="Completed Pujas" className="left-nav-icon" />,
           label: "Completed Pujas",
           path: "/CompletedPuja"
         },
