@@ -7,7 +7,6 @@ import PanditLeftNav from "../../PanditLeftNav";
 const CompletedPuja = () => {
   const [loading] = useState(false);
 
-  // 🔹 Static data
   const filteredPoojas = [
     {
       id: 1,
@@ -32,7 +31,7 @@ const CompletedPuja = () => {
     },
   ];
 
-  // 🔹 Calculate total amount
+  // Calculate total amount
   const totalAmount = filteredPoojas.reduce(
     (sum, pooja) => sum + pooja.pooja_price,
     0
