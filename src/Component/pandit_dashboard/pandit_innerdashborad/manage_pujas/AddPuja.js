@@ -82,9 +82,8 @@ const poojaOptions = [
   { pooja_name: "Pind Daan Shradh Puja" },
 ];
 
-
 const AddPuja = () => {
-  const panditId = "PAN/2025/56779"; // 🔹 Your current logged-in pandit_id
+  const panditId = "PAN/2025/56779";
   const BASE_API = "https://mahadevaaya.com/backend/api/get-pandit-pooja/";
 
   const [panditName, setPanditName] = useState("");
@@ -100,7 +99,7 @@ const AddPuja = () => {
     pooja_price: "",
   });
 
-  //  Fetch Pooja details
+  // ================== FETCH DATA ==================
   const fetchPoojas = async () => {
     try {
       setLoading(true);
@@ -120,27 +119,40 @@ const AddPuja = () => {
     fetchPoojas();
   }, []);
 
-  //  Input change handler
+  // ================== HANDLE SEARCH ==================
+  const handleSearch = (query) => {
+    if (!query.trim()) {
+      setFilteredPoojas(poojas);
+    } else {
+      const lowerQuery = query.toLowerCase();
+      const filtered = poojas.filter(
+        (p) =>
+          p.pooja_name?.toLowerCase().includes(lowerQuery) ||
+          panditName?.toLowerCase().includes(lowerQuery) ||
+          p.pooja_price?.toString().includes(lowerQuery)
+      );
+      setFilteredPoojas(filtered);
+    }
+  };
+
+  // ================== HANDLE FORM ==================
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCurrentPooja({ ...currentPooja, [name]: value });
   };
 
-  //  Open modal for Add
   const handleAdd = () => {
     setIsEditMode(false);
     setCurrentPooja({ pooja_name: "", pooja_price: "" });
     setShowModal(true);
   };
 
-  //  Open modal for Edit
   const handleEdit = (pooja) => {
     setIsEditMode(true);
     setCurrentPooja(pooja);
     setShowModal(true);
   };
 
-  //  Add new pooja (POST)
   const handleAddPooja = async () => {
     try {
       const payload = {
@@ -163,14 +175,13 @@ const AddPuja = () => {
     }
   };
 
-  //  Update pooja (PUT)
   const handleUpdate = async () => {
     try {
       const payload = {
         pandit_id: panditId,
         pandit_pooja_details: [
           {
-             pandit_pooja_id: currentPooja.pandit_pooja_id,
+            pandit_pooja_id: currentPooja.pandit_pooja_id,
             pooja_name: currentPooja.pooja_name,
             pooja_price: parseFloat(currentPooja.pooja_price),
           },
@@ -187,10 +198,8 @@ const AddPuja = () => {
     }
   };
 
-  //  Delete pooja (DELETE)
   const handleDelete = async (pooja) => {
     if (!window.confirm(`Are you sure you want to delete ${pooja.pooja_name}?`)) return;
-
     try {
       await axios.delete(`${BASE_API}?action=remove_pooja&pooja_id=${pooja.pandit_pooja_id}`, {
         data: { pandit_id: panditId },
@@ -203,7 +212,6 @@ const AddPuja = () => {
     }
   };
 
-  //  Submit Handler
   const handleSubmit = () => {
     if (isEditMode) {
       handleUpdate();
@@ -212,15 +220,14 @@ const AddPuja = () => {
     }
   };
 
+  // ================== RENDER ==================
   return (
     <>
       <div className="dashboard-wrapper">
-        {/* Sidebar */}
         <aside className="pandit-sidebar">
           <PanditLeftNav />
         </aside>
 
-        {/* Main Content */}
         <main className="main-container-box">
           <div className="content-box">
             <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
@@ -234,11 +241,12 @@ const AddPuja = () => {
                 </Breadcrumb>
               </h1>
               <div>
-                <SearchFeature />
+                {/* ✅ Connected Search Feature */}
+                <SearchFeature onSearch={handleSearch} />
               </div>
             </div>
 
-            {/* Table Section */}
+            {/* TABLE SECTION */}
             <Row className="mt-3">
               <div className="col-md-12">
                 <div className="d-flex justify-content-end mb-2">
@@ -285,7 +293,7 @@ const AddPuja = () => {
                     ) : (
                       <tr>
                         <td colSpan="5" className="text-center">
-                          {loading ? "Loading..." : "No poojas found."}
+                          {loading ? "Loading..." : "No matching poojas found."}
                         </td>
                       </tr>
                     )}
@@ -297,13 +305,8 @@ const AddPuja = () => {
         </main>
       </div>
 
-      {/* ================= ADD/EDIT MODAL ================= */}
-      <Modal
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        size="lg"
-        centered
-      >
+      {/* ADD / EDIT MODAL */}
+      <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered>
         <Modal.Header closeButton>
           <Modal.Title>{isEditMode ? "Edit Pooja" : "Add New Pooja"}</Modal.Title>
         </Modal.Header>
@@ -339,7 +342,6 @@ const AddPuja = () => {
                     ))}
                   </Form.Select>
                 </Form.Group>
-
               </Col>
             </Row>
 
@@ -360,10 +362,7 @@ const AddPuja = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button
-            className="event-click-cancel"
-            onClick={() => setShowModal(false)}
-          >
+          <Button className="event-click-cancel" onClick={() => setShowModal(false)}>
             Close
           </Button>
           <Button className="event-click-btn" onClick={handleSubmit}>
