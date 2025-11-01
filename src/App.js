@@ -208,6 +208,7 @@ function App() {
     "/ManageFestival",
     "/SearchFeature",
     "/Donations",
+    "/CrowdFunding",
     "/DonationCollected",
     "/RegDevoteeReport",
     "/RegDevotee",
