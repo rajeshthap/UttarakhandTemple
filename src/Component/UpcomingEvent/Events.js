@@ -132,7 +132,14 @@ const Events = () => {
   };
 
   const handleRegister = (event) => {
-    navigate("/EventParticipation", { state: { festival: event } });
+     navigate("/EventParticipation", {
+    state: {
+      festival: event,
+      temple_name: event.temple_name,
+      festival_name: event.festival_name,
+    },
+  });
+
   };
 
   const uniqueTemples = useMemo(() => {

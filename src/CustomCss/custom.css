@@ -472,6 +472,10 @@ input[type=number] {
     .add-event-f-mob {
         padding: 0px !important;
     }
+    .pandit-mob-view{
+        display: flex;
+        
+    }
 }
 
 @media (max-width: 576px) {
