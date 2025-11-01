@@ -13,32 +13,73 @@ const localizer = momentLocalizer(moment);
 const PujaCalendar = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [apiResponse, setApiResponse] = useState(null); // For debugging
 
   // Fetch booking data from API
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        // Replace with your actual API endpoint
-        const response = await fetch('https://your-api-endpoint.com/bookings');
+        setLoading(true);
+        setError(null);
+
+        console.log("Fetching data from API...");
+        const response = await fetch('https://mahadevaaya.com/backend/api/get-darshan-pooja-booking/', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            // Add any required authentication headers here
+            // 'Authorization': 'Bearer YOUR_TOKEN_HERE',
+          },
+        });
+
+        console.log("Response status:", response.status);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
         const data = await response.json();
+        console.log("API Response:", data);
+        setApiResponse(data); // Store for debugging
+
+        // Check if data is an array
+        if (!Array.isArray(data)) {
+          throw new Error("API response is not an array");
+        }
 
         // Transform API data to calendar events format
-        const events = data.map(booking => ({
-          id: booking.id,
-          title: `${booking.pujaName} - ${booking.customerName}`,
-          start: new Date(booking.date),
-          end: new Date(booking.date),
-          allDay: true,
-          resource: {
-            bookingId: booking.id,
-            status: booking.status,
-            location: booking.location
+        const events = data.map(booking => {
+          // Validate required fields
+          if (!booking.id || !booking.pujaName || !booking.customerName || !booking.date) {
+            console.warn("Invalid booking data:", booking);
+            return null;
           }
-        }));
 
+          return {
+            id: booking.id,
+            title: `${booking.pujaName} - ${booking.customerName}`,
+            start: new Date(booking.date),
+            end: new Date(booking.date),
+            allDay: true,
+            resource: {
+              bookingId: booking.id,
+              status: booking.status || 'Confirmed', // Default status if not provided
+              location: booking.location || 'Temple' // Default location if not provided
+            }
+          };
+        }).filter(event => event !== null); // Remove invalid events
+
+        console.log("Transformed events:", events);
         setBookings(events);
+
+        if (events.length === 0) {
+          console.warn("No valid events found in API response");
+        }
       } catch (error) {
         console.error("Error fetching bookings:", error);
+        setError(error.message);
+
         // Fallback to mock data if API fails
         setBookings([
           {
@@ -100,6 +141,13 @@ const PujaCalendar = () => {
     </div>
   );
 
+  // Function to retry API call
+  const retryFetch = () => {
+    setLoading(true);
+    setError(null);
+    // This will trigger the useEffect again
+  };
+
   return (
     <>
       <div className="dashboard-wrapper">
@@ -123,6 +171,29 @@ const PujaCalendar = () => {
                 + Add New Booking
               </button>
             </div>
+
+            {/* Error message */}
+            {error && (
+              <div className="alert alert-danger d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>Error:</strong> {error}
+                  <div className="mt-2">
+                    <small>Check browser console for more details</small>
+                  </div>
+                </div>
+                <button className="btn btn-outline-danger btn-sm" onClick={retryFetch}>
+                  Retry
+                </button>
+              </div>
+            )}
+
+            {/* Debug info (remove in production) */}
+            {process.env.NODE_ENV === 'development' && apiResponse && (
+              <div className="alert alert-info">
+                <strong>Debug Info:</strong>
+                <pre>{JSON.stringify(apiResponse, null, 2)}</pre>
+              </div>
+            )}
 
             {/* Calendar Controls */}
             <div className="d-flex justify-content-between align-items-center mb-3">
