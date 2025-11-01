@@ -3,7 +3,7 @@ import "../../../assets/CSS/LeftNav.css";
 import TempleLeftNav from "../TempleLeftNav";
 import SearchFeature from "./SearchFeature";
 import { BASE_URLL } from "../../../Component/BaseURL";
-import { Button, Modal, Form, Row, Breadcrumb } from "react-bootstrap";
+import { Button, Modal, Form, Row,Col, Breadcrumb } from "react-bootstrap";
 import axios from "axios";
 import { useAuth } from "../../GlobleAuth/AuthContext";
 import LocationState from "../../userregistration/LocationState";
@@ -11,7 +11,7 @@ import UploadFile from "../../../assets/images/upload-icon.png";
 
 const ManageTemple = () => {
   const [temples, setTemples] = useState([]);
-  const [filteredTemples, setFilteredTemples] = useState([]); 
+  const [filteredTemples, setFilteredTemples] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [currentTemple, setCurrentTemple] = useState({});
   const [loading, setLoading] = useState(false);
@@ -232,19 +232,19 @@ const ManageTemple = () => {
       <main className="main-container-box">
         <div className="content-box">
           <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
-                                     <h1 className="fw500">
-                                       <Breadcrumb>
-                                         <Breadcrumb.Item href="/TempleDashBoard">
-                                           <span className="fw700h1">DashBoard</span>
-                                         </Breadcrumb.Item>
-                                         <Breadcrumb.Item active>Manage Temple</Breadcrumb.Item>
-                                       </Breadcrumb>
-                                     </h1>
-                             <div>
-                <SearchFeature onSearch={handleSearch} />
-              </div>
-                                     
-                                   </div>
+            <h1 className="fw500">
+              <Breadcrumb>
+                <Breadcrumb.Item href="/TempleDashBoard">
+                  <span className="fw700h1">DashBoard</span>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item active>Manage Temple</Breadcrumb.Item>
+              </Breadcrumb>
+            </h1>
+            <div>
+              <SearchFeature onSearch={handleSearch} />
+            </div>
+
+          </div>
 
           <Row className="mt-3">
             <div className="col-md-12">
@@ -299,8 +299,397 @@ const ManageTemple = () => {
             </div>
           </Row>
 
-          {/* Existing Edit Modal remains unchanged */}
-          {/* ... */}
+         {/* Edit Modal */}
+          <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered>
+            <Modal.Header closeButton>
+              <Modal.Title>Edit Temple</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                {/* TEXT FIELDS */}
+                <Row>
+                  <Col md={6}>
+                    <Form.Group>
+                      <Form.Label className="temp-label">Temple Name</Form.Label>
+                      <Form.Control
+                        className="temp-form-control-option"
+                        name="temple_name"
+                        value={currentTemple.temple_name || ""}
+                        onChange={handleChange}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group>
+                      <Form.Label className="temp-label">Phone</Form.Label>
+                      <Form.Control
+                        className="temp-form-control-option"
+                        value={currentTemple.phone || ""} disabled />
+                    </Form.Group>
+                  </Col>
+                </Row>
+
+                <Row className="mt-2">
+                  <LocationState
+                    formData={formData}
+                    handleInputChange={handleInputChangeCity}
+                  // formErrors={errorReason_querys} // Pass errorReason_querys instead of formErrors
+                  />
+                </Row>
+
+                <Row className="mt-2">
+                  <Col md={6}>
+                    <Form.Group>
+                      <Form.Label className="temp-label">Email</Form.Label>
+                      <Form.Control
+                        className="temp-form-control-option"
+                        value={currentTemple.email || ""} disabled />
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group className="mt-2">
+                      <Form.Label className="temp-label">Temple Address</Form.Label>
+                      <Form.Control
+                        className="temp-form-control-option"
+                        as="textarea"
+                        rows={2}
+                        name="temple_address"
+                        value={currentTemple.temple_address || ""}
+                        onChange={handleChange}
+                      />
+                    </Form.Group>
+                  </Col>
+
+
+                </Row>
+
+
+
+                {/* Temple Image Upload Section */}
+                <Row className="temp-stepform-box mt-4">
+                  <Col lg={5} md={5} sm={12}>
+                    <fieldset
+                      className={`upload_dropZone text-center ${dragging === "temple_image" ? "drag-over" : ""
+                        }`}
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                        setDragging("temple_image");
+                      }}
+                      onDragLeave={() => setDragging(null)}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        setDragging(null);
+                        const file = e.dataTransfer.files[0];
+                        if (file) {
+                          handleChange({
+                            target: { name: "temple_image", files: [file], type: "file" },
+                          });
+                        }
+                      }}
+                    >
+                      <legend className="visually-hidden">Temple Image</legend>
+                      <img
+                        src={UploadFile} alt="upload-file"
+                        style={{ width: "35px" }}
+                      />
+                      <p className="temp-drop-txt my-2">
+                        Drag &amp; drop files
+                        <br />
+                        <i>or</i>
+                      </p>
+
+                      <input
+                        id="temple_image"
+                        name="temple_image"
+                        type="file"
+                        accept="image/jpeg, image/png"
+                        className="invisible"
+                        onChange={handleChange}
+                      />
+
+                      <label className="btn temp-primary-btn mb-1" htmlFor="temple_image">
+                        Choose file
+                      </label>
+                      <p className="temp-upload-file">Upload size up to 2MB (jpg, png)</p>
+                    </fieldset>
+                  </Col>
+
+                  <Col lg={7} md={7} sm={12} className="mt-2">
+                    <h6 style={{ fontSize: "14px", fontWeight: "600" }}>
+                      Temple Image <span style={{ color: "red" }}>*</span>
+                    </h6>
+
+                    {/*  Existing Temple Image from backend */}
+                    {currentTemple.temple_image_url && !currentTemple.temple_image?.name && (
+                      <div className="my-2">
+
+                        <img
+                          src={currentTemple.temple_image_url}
+                          alt="Temple"
+                          style={{
+                            width: "100%",
+                            height: "140px",
+                            objectFit: "contain",
+                            borderRadius: "10px",
+
+                          }}
+                        />
+                        <div className="mt-2">
+                          <a
+                            href={currentTemple.temple_image_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="event-click-btn"
+                            style={{ fontSize: "12px", padding: "3px 8px", textDecoration: "none" }}
+                          >
+                            View Full Image
+                          </a>
+                        </div>
+                      </div>
+                    )}
+
+                    {/*  New uploaded image preview */}
+                    {currentTemple.temple_image instanceof File && (
+                      <div className="mt-2">
+                        <p className="fw-bold">New Upload Preview:</p>
+                        <img
+                          src={URL.createObjectURL(currentTemple.temple_image)}
+                          alt="Preview"
+                          style={{
+                            width: "100%",
+                            height: "180px",
+                            objectFit: "contain",
+                            borderRadius: "10px",
+                            border: "1px solid #ccc",
+                          }}
+                        />
+                        <div className="mt-2 d-flex align-items-center gap-3">
+                          <a
+                            href={URL.createObjectURL(currentTemple.temple_image)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-outline-primary btn-sm"
+                          >
+                            View Full Image
+                          </a>
+                          <span
+                            className="text-danger"
+                            style={{ cursor: "pointer" }}
+                            onClick={() =>
+                              setCurrentTemple({
+                                ...currentTemple,
+                                temple_image: "",
+                                temple_image_preview: "",
+                              })
+                            }
+                          >
+                            ❌ Remove
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </Col>
+                </Row>
+
+                {/* ===================== DOCUMENTS SECTION ===================== */}
+                {[
+                  { label: "Land Document", key: "land_doc" },
+                  { label: "NOC Document", key: "noc_doc" },
+                  { label: "Trust Certificate", key: "trust_cert" },
+                ].map(({ label, key }) => (
+                  <Row className="temp-stepform-box mt-4" key={key}>
+                    <Col lg={5} md={5} sm={12}>
+                      <fieldset
+                        className={`upload_dropZone text-center ${dragging === key ? "drag-over" : ""
+                          }`}
+                        onDragOver={(e) => {
+                          e.preventDefault();
+                          setDragging(key);
+                        }}
+                        onDragLeave={() => setDragging(null)}
+                        onDrop={(e) => {
+                          e.preventDefault();
+                          setDragging(null);
+                          const file = e.dataTransfer.files[0];
+                          if (file) {
+                            handleChange({
+                              target: { name: key, files: [file], type: "file" },
+                            });
+                          }
+                        }}
+                      >
+                        <legend className="visually-hidden">{label}</legend>
+                        <img
+                          src={UploadFile} alt="upload-file"
+                          style={{ width: "35px" }}
+                        />
+                        <p className="temp-drop-txt my-2">
+                          Drag &amp; drop files
+                          <br />
+                          <i>or</i>
+                        </p>
+
+                        <input
+                          id={key}
+                          name={key}
+                          type="file"
+                          accept="image/jpeg, image/png, application/pdf"
+                          className="invisible"
+                          onChange={handleChange}
+                        />
+
+                        <label className="btn temp-primary-btn mb-1" htmlFor={key}>
+                          Choose file
+                        </label>
+                        <p className="temp-upload-file">Upload size up to 2MB (jpg, png, pdf)</p>
+                      </fieldset>
+                    </Col>
+
+                    <Col lg={7} md={7} sm={12} className="mt-2">
+                      <h6 style={{ fontSize: "14px", fontWeight: "600" }}>
+                        {label} <span style={{ color: "red" }}>*</span>
+                      </h6>
+
+                      {/*  Existing Document from backend */}
+                      {currentTemple[`${key}_url`] && !currentTemple[key]?.name && (
+                        <div className="my-2">
+
+
+                          {/* Image or PDF */}
+                          {/\.(jpg|jpeg|png)$/i.test(currentTemple[`${key}_url`]) ? (
+                            <>
+                              <img
+                                src={currentTemple[`${key}_url`]}
+                                alt={label}
+                                style={{
+                                  width: "100%",
+                                  height: "150px",
+                                  objectFit: "contain",
+                                  borderRadius: "10px",
+                                  border: "1px solid #ccc",
+                                }}
+                              />
+                              <div className="mt-2">
+                                <a
+                                  href={currentTemple[`${key}_url`]}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="event-click-btn"
+                                  style={{ fontSize: "12px", padding: "3px 8px", textDecoration: "none" }}
+                                >
+                                  View Full Image
+                                </a>
+                              </div>
+                            </>
+                          ) : (
+                            <a
+                              href={currentTemple[`${key}_url`]}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="event-click-btn"
+                              style={{ fontSize: "12px", padding: "3px 8px", textDecoration: "none" }}
+                            >
+                              📄 View Full PDF
+                            </a>
+                          )}
+                        </div>
+                      )}
+
+                      {/*  New uploaded file preview */}
+                      {currentTemple[key] instanceof File && (
+                        <div className="mt-2">
+
+
+                          {currentTemple[key].type.startsWith("image/") ? (
+                            <>
+                              <img
+                                src={URL.createObjectURL(currentTemple[key])}
+                                alt="Preview"
+                                style={{
+                                  width: "100%",
+                                  height: "150px",
+                                  objectFit: "contain",
+                                  borderRadius: "10px",
+                                  border: "1px solid #ccc",
+                                }}
+                              />
+                              <div className="mt-2 d-flex align-items-center gap-3">
+                                <a
+                                  href={URL.createObjectURL(currentTemple[key])}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="btn btn-outline-primary btn-sm"
+                                >
+                                  View Full Image
+                                </a>
+                                <span
+                                  className="text-danger"
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() =>
+                                    setCurrentTemple({
+                                      ...currentTemple,
+                                      [key]: "",
+                                      [`${key}_preview`]: "",
+                                    })
+                                  }
+                                >
+                                  ❌ Remove
+                                </span>
+                              </div>
+                            </>
+                          ) : currentTemple[key].type === "application/pdf" ? (
+                            <div className="mt-2">
+                              <img
+                                src="https://cdn-icons-png.flaticon.com/512/337/337946.png"
+                                alt="PDF icon"
+                                style={{ width: "50px" }}
+                              />
+                              <span className="ms-2">{currentTemple[key].name}</span>
+                              <div className="mt-2 d-flex align-items-center gap-3">
+                                <a
+                                  href={URL.createObjectURL(currentTemple[key])}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="btn btn-outline-primary btn-sm"
+                                >
+                                  📄 View Full PDF
+                                </a>
+                                <span
+                                  className="text-danger"
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() =>
+                                    setCurrentTemple({
+                                      ...currentTemple,
+                                      [key]: "",
+                                      [`${key}_preview`]: "",
+                                    })
+                                  }
+                                >
+                                  ❌ Remove
+                                </span>
+                              </div>
+                            </div>
+                          ) : (
+                            <span>{currentTemple[key].name}</span>
+                          )}
+                        </div>
+                      )}
+                    </Col>
+                  </Row>
+                ))}
+
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button className="event-click-cancel" onClick={() => setShowModal(false)}>
+                Close
+              </Button>
+              <Button className="event-click-btn" onClick={handleUpdate}>
+                Update
+              </Button>
+            </Modal.Footer>
+          </Modal>
+
         </div>
       </main>
     </div>
