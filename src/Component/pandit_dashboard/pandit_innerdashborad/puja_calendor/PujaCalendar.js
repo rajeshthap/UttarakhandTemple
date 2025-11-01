@@ -165,17 +165,11 @@ const PujaCalendar = () => {
     </div>
   );
 
-  //  Custom Toolbar (with Today working)
+  // Custom Toolbar
   const CustomToolbar = (toolbar) => {
-    const goToToday = () => {
-      toolbar.onNavigate("TODAY");
-    };
-    const goToBack = () => {
-      toolbar.onNavigate("PREV");
-    };
-    const goToNext = () => {
-      toolbar.onNavigate("NEXT");
-    };
+    const goToToday = () => toolbar.onNavigate("TODAY");
+    const goToBack = () => toolbar.onNavigate("PREV");
+    const goToNext = () => toolbar.onNavigate("NEXT");
 
     return (
       <div className="d-flex justify-content-between align-items-center mb-2">
@@ -228,6 +222,23 @@ const PujaCalendar = () => {
         </div>
       </div>
     );
+  };
+
+  //  Prevent past dates
+  const handleSelectEvent = (event) => {
+    const eventDate = new Date(event.start);
+    const today = new Date();
+
+    // Compare only dates (ignore time)
+    const isPast = eventDate.setHours(0, 0, 0, 0) < today.setHours(0, 0, 0, 0);
+
+    if (isPast) {
+      alert("Date has been Passed.");
+      return; // do not open modal
+    }
+
+    setSelectedBooking(event);
+    setShowModal(true);
   };
 
   return (
@@ -289,7 +300,7 @@ const PujaCalendar = () => {
             </div>
           </div>
 
-          {/*  Calendar */}
+          {/* 🔹 Calendar */}
           <div
             className="calendar-container shadow-sm border rounded p-2"
             style={{ height: "75vh", background: "#fff" }}
@@ -318,17 +329,14 @@ const PujaCalendar = () => {
                   toolbar: CustomToolbar,
                 }}
                 eventPropGetter={eventStyleGetter}
-                onSelectEvent={(event) => {
-                  setSelectedBooking(event);
-                  setShowModal(true);
-                }}
+                onSelectEvent={handleSelectEvent}
               />
             )}
           </div>
         </div>
       </main>
 
-      {/*  Modal */}
+      {/* 🔹 Modal */}
       <Modal show={showModal} onHide={handleClose} size="lg" centered>
         <Modal.Header closeButton>
           <Modal.Title>Booking Details</Modal.Title>
@@ -457,7 +465,7 @@ const PujaCalendar = () => {
                     <Form.Label className="temp-label">Status</Form.Label>
                     <Form.Select
                       className="temp-form-control-option"
-                      value={selectedBooking.resource.status}
+                      value={selectedBooking.resource.status || ""}
                       onChange={(e) =>
                         setSelectedBooking((prev) => ({
                           ...prev,
@@ -468,9 +476,20 @@ const PujaCalendar = () => {
                         }))
                       }
                     >
-                      <option value="pending">Pending</option>
-                      <option value="accepted">Accepted</option>
-                      <option value="rejected">Rejected</option>
+                      <option value="">Select</option>
+                      {["pending", "accepted", "rejected"]
+                        .filter(
+                          (status) =>
+                            status.toLowerCase() !==
+                            (
+                              selectedBooking.resource.status || ""
+                            ).toLowerCase()
+                        )
+                        .map((status) => (
+                          <option key={status} value={status}>
+                            {status.charAt(0).toUpperCase() + status.slice(1)}
+                          </option>
+                        ))}
                     </Form.Select>
                   </Form.Group>
                 </Col>
