@@ -241,7 +241,7 @@ const AddPuja = () => {
                 </Breadcrumb>
               </h1>
               <div>
-                {/* ✅ Connected Search Feature */}
+                {/*  Connected Search Feature */}
                 <SearchFeature onSearch={handleSearch} />
               </div>
             </div>
@@ -255,7 +255,7 @@ const AddPuja = () => {
                   </Button>
                 </div>
 
-                <table className="rwd-table">
+                <table className="pandit-rwd-table">
                   <tbody>
                     <tr>
                       <th>S.No</th>
