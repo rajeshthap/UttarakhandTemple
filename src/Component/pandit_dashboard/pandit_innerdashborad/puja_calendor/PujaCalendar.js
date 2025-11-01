@@ -1,248 +1,494 @@
 import React, { useState, useEffect } from "react";
 import "../../../../assets/CSS/PanditLeftNav.css";
-import { Breadcrumb } from "react-bootstrap";
-import SearchFeature from "../../../temp_dashboard/temp_innerdashboard/SearchFeature";
+import {
+  Breadcrumb,
+  Button,
+  Modal,
+  Form,
+  Row,
+  Col,
+  Spinner,
+} from "react-bootstrap";
 import PanditLeftNav from "../../PanditLeftNav";
-import { Calendar, momentLocalizer } from 'react-big-calendar';
-import moment from 'moment';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { Calendar, momentLocalizer } from "react-big-calendar";
+import moment from "moment";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import axios from "axios";
+import { useAuth } from "../../../GlobleAuth/AuthContext";
 
-// Setup localizer using moment
 const localizer = momentLocalizer(moment);
 
 const PujaCalendar = () => {
+  const { uniqueId } = useAuth();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [apiResponse, setApiResponse] = useState(null); // For debugging
+  const [currentView, setCurrentView] = useState("month");
+  const [date, setDate] = useState(new Date());
 
-  // Fetch booking data from API
-  useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+  // modal states
+  const [showModal, setShowModal] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState(null);
 
-        console.log("Fetching data from API...");
-        const response = await fetch('https://mahadevaaya.com/backend/api/get-darshan-pooja-booking/', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            // Add any required authentication headers here
-            // 'Authorization': 'Bearer YOUR_TOKEN_HERE',
-          },
-        });
+  const handleClose = () => {
+    setShowModal(false);
+    setSelectedBooking(null);
+  };
 
-        console.log("Response status:", response.status);
+  //  Fetch requests
+  const fetchRequests = async () => {
+    if (!uniqueId) return;
+    try {
+      setLoading(true);
+      setError(null);
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+      const res = await axios.get(
+        `https://mahadevaaya.com/backend/api/get-hire-pandit/?pandit_id=${uniqueId}`
+      );
 
-        const data = await response.json();
-        console.log("API Response:", data);
-        setApiResponse(data); // Store for debugging
+      const data = Array.isArray(res.data) ? res.data : [];
 
-        // Check if data is an array
-        if (!Array.isArray(data)) {
-          throw new Error("API response is not an array");
-        }
+      const events = data
+        .map((item) => {
+          if (!item.date_and_time) return null;
+          const bookingDate = new Date(item.date_and_time);
 
-        // Transform API data to calendar events format
-        const events = data.map(booking => {
-          // Validate required fields
-          if (!booking.id || !booking.pujaName || !booking.customerName || !booking.date) {
-            console.warn("Invalid booking data:", booking);
-            return null;
-          }
+          const panditData = item.number_of_pandits?.find(
+            (p) => p.pandit_id === uniqueId
+          );
+          if (!panditData) return null;
+
+          const status =
+            panditData.status?.toLowerCase() === "accepted"
+              ? "Accepted"
+              : panditData.status?.toLowerCase() === "rejected"
+              ? "Rejected"
+              : "Pending";
 
           return {
-            id: booking.id,
-            title: `${booking.pujaName} - ${booking.customerName}`,
-            start: new Date(booking.date),
-            end: new Date(booking.date),
+            id: item.hire_pandit_id || item.id,
+            title: `${item.pooja_type || "Pooja"} - ${status}`,
+            start: bookingDate,
+            end: bookingDate,
             allDay: true,
             resource: {
-              bookingId: booking.id,
-              status: booking.status || 'Confirmed', // Default status if not provided
-              location: booking.location || 'Temple' // Default location if not provided
-            }
+              ...item,
+              status,
+              hireId: item.hire_pandit_id,
+            },
           };
-        }).filter(event => event !== null); // Remove invalid events
+        })
+        .filter(Boolean);
 
-        console.log("Transformed events:", events);
-        setBookings(events);
-
-        if (events.length === 0) {
-          console.warn("No valid events found in API response");
-        }
-      } catch (error) {
-        console.error("Error fetching bookings:", error);
-        setError(error.message);
-
-        // Fallback to mock data if API fails
-        setBookings([
-          {
-            id: 1,
-            title: "Ganesh Puja - Ramesh Kumar",
-            start: new Date(2023, 8, 19),
-            end: new Date(2023, 8, 19),
-            allDay: true,
-            resource: { bookingId: 1, status: "Confirmed", location: "Temple A" }
-          },
-          {
-            id: 2,
-            title: "Navratri Pooja - Sita Sharma",
-            start: new Date(2023, 9, 15),
-            end: new Date(2023, 9, 15),
-            allDay: true,
-            resource: { bookingId: 2, status: "Pending", location: "Home" }
-          }
-        ]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchBookings();
-  }, []);
-
-  // Custom event styling based on status
-  const eventStyleGetter = (event) => {
-    let backgroundColor = '#3174ad'; // Default color
-
-    if (event.resource.status === 'Confirmed') {
-      backgroundColor = '#28a745'; // Green
-    } else if (event.resource.status === 'Pending') {
-      backgroundColor = '#ffc107'; // Yellow
-    } else if (event.resource.status === 'Cancelled') {
-      backgroundColor = '#dc3545'; // Red
+      setBookings(events);
+    } catch (error) {
+      console.error("Error fetching bookings:", error);
+      setError("Failed to fetch booking data. Please try again later.");
+      setBookings([]);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    fetchRequests();
+  }, [uniqueId]);
+
+  //  Update status
+  const handleUpdateStatus = async () => {
+    if (!selectedBooking || !selectedBooking.resource?.hireId) return;
+    try {
+      const payload = {
+        hire_pandit_id: selectedBooking.resource.hireId,
+        pandit_id: uniqueId,
+        status: selectedBooking.resource.status,
+      };
+
+      await axios.put(
+        "https://mahadevaaya.com/backend/api/get-hire-pandit/",
+        payload,
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      alert("Booking status updated successfully!");
+      handleClose();
+      fetchRequests();
+    } catch (error) {
+      console.error("Error updating status:", error);
+      alert("Failed to update status. Try again!");
+    }
+  };
+
+  //  Color coding
+  const eventStyleGetter = (event) => {
+    let backgroundColor = "#3174ad";
+    if (event.resource.status === "Accepted") backgroundColor = "#28a745";
+    else if (event.resource.status === "Pending") backgroundColor = "#ffc107";
+    else if (event.resource.status === "Rejected") backgroundColor = "#dc3545";
 
     return {
       style: {
         backgroundColor,
-        borderRadius: '5px',
-        color: 'white',
-        border: 'none',
-        display: 'block'
-      }
+        borderRadius: "6px",
+        color: "white",
+        border: "none",
+        display: "block",
+        padding: "4px 6px",
+        textAlign: "center",
+      },
     };
   };
 
-  // Custom event component
+  //  Custom Event Display
   const CustomEvent = ({ event }) => (
     <div>
-      <strong>{event.title.split(' - ')[0]}</strong>
-      <div>{event.title.split(' - ')[1]}</div>
-      <div style={{ fontSize: '0.8em' }}>
-        {event.resource.location} | {event.resource.status}
+      <strong style={{ display: "block", fontSize: "12px" }}>
+        {event.title.split(" - ")[0]}
+      </strong>
+      <div
+        style={{
+          fontSize: "0.8em",
+          marginTop: "2px",
+          padding: "1px 4px",
+          borderRadius: "4px",
+          background:
+            event.resource.status === "Accepted"
+              ? "#1e7e34"
+              : event.resource.status === "Pending"
+              ? "#e0a800"
+              : "#b02a37",
+          color: "white",
+        }}
+      >
+        {event.resource.status}
       </div>
     </div>
   );
 
-  // Function to retry API call
-  const retryFetch = () => {
-    setLoading(true);
-    setError(null);
-    // This will trigger the useEffect again
+  //  Custom Toolbar (with Today working)
+  const CustomToolbar = (toolbar) => {
+    const goToToday = () => {
+      toolbar.onNavigate("TODAY");
+    };
+    const goToBack = () => {
+      toolbar.onNavigate("PREV");
+    };
+    const goToNext = () => {
+      toolbar.onNavigate("NEXT");
+    };
+
+    return (
+      <div className="d-flex justify-content-between align-items-center mb-2">
+        <div>
+          <Button
+            size="sm"
+            variant="outline-primary"
+            className="me-2"
+            onClick={goToBack}
+          >
+            ←
+          </Button>
+          <Button
+            size="sm"
+            variant="outline-primary"
+            className="me-2"
+            onClick={goToToday}
+          >
+            Today
+          </Button>
+          <Button size="sm" variant="outline-primary" onClick={goToNext}>
+            →
+          </Button>
+        </div>
+        <h5 className="m-0 fw-semibold">{toolbar.label}</h5>
+        <div>
+          <Button
+            size="sm"
+            variant={toolbar.view === "month" ? "primary" : "outline-primary"}
+            className="me-2"
+            onClick={() => toolbar.onView("month")}
+          >
+            Month
+          </Button>
+          <Button
+            size="sm"
+            variant={toolbar.view === "week" ? "primary" : "outline-primary"}
+            className="me-2"
+            onClick={() => toolbar.onView("week")}
+          >
+            Week
+          </Button>
+          <Button
+            size="sm"
+            variant={toolbar.view === "day" ? "primary" : "outline-primary"}
+            onClick={() => toolbar.onView("day")}
+          >
+            Day
+          </Button>
+        </div>
+      </div>
+    );
   };
 
   return (
-    <>
-      <div className="dashboard-wrapper">
-        <aside className="pandit-sidebar">
-          <PanditLeftNav />
-        </aside>
-        <main className="main-container-box">
-          <div className="content-box">
-            <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
-              <h1 className="fw500">
-                <Breadcrumb>
-                  <Breadcrumb.Item href="/Pandit_DashBoard">
-                    <span className="fw700h1">Dashboard</span>
-                  </Breadcrumb.Item>
-                  <Breadcrumb.Item active>Puja Calendar</Breadcrumb.Item>
-                </Breadcrumb>
-              </h1>
+    <div className="dashboard-wrapper">
+      <aside className="pandit-sidebar">
+        <PanditLeftNav />
+      </aside>
 
-              {/* Add booking button */}
-              <button className="btn btn-primary">
-                + Add New Booking
-              </button>
+      <main className="main-container-box">
+        <div className="content-box">
+          <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
+            <h1 className="fw500">
+              <Breadcrumb>
+                <Breadcrumb.Item href="/Pandit_DashBoard">
+                  <span className="fw700h1">Dashboard</span>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item active>Puja Calendar</Breadcrumb.Item>
+              </Breadcrumb>
+            </h1>
+          </div>
+
+          {/*  Status Legend */}
+          <div className="d-flex justify-content-start align-items-center mb-3 gap-4 flex-wrap">
+            <div className="d-flex align-items-center">
+              <span
+                style={{
+                  width: 18,
+                  height: 18,
+                  borderRadius: 4,
+                  background: "#28a745",
+                  marginRight: 8,
+                }}
+              ></span>
+              <span className="fw-semibold">Accepted</span>
             </div>
-
-            {/* Error message */}
-            {error && (
-              <div className="alert alert-danger d-flex justify-content-between align-items-center">
-                <div>
-                  <strong>Error:</strong> {error}
-                  <div className="mt-2">
-                    <small>Check browser console for more details</small>
-                  </div>
-                </div>
-                <button className="btn btn-outline-danger btn-sm" onClick={retryFetch}>
-                  Retry
-                </button>
-              </div>
-            )}
-
-            {/* Debug info (remove in production) */}
-            {process.env.NODE_ENV === 'development' && apiResponse && (
-              <div className="alert alert-info">
-                <strong>Debug Info:</strong>
-                <pre>{JSON.stringify(apiResponse, null, 2)}</pre>
-              </div>
-            )}
-
-            {/* Calendar Controls */}
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <div>
-                <span className="me-3">
-                  <span className="badge bg-success me-1"></span> Confirmed
-                </span>
-                <span className="me-3">
-                  <span className="badge bg-warning me-1"></span> Pending
-                </span>
-                <span>
-                  <span className="badge bg-danger me-1"></span> Cancelled
-                </span>
-              </div>
-
-              <SearchFeature placeholder="Search bookings..." />
+            <div className="d-flex align-items-center">
+              <span
+                style={{
+                  width: 18,
+                  height: 18,
+                  borderRadius: 4,
+                  background: "#ffc107",
+                  marginRight: 8,
+                }}
+              ></span>
+              <span className="fw-semibold">Pending</span>
             </div>
-
-            {/* Calendar Component */}
-            <div className="calendar-container" style={{ height: '70vh', minHeight: '500px' }}>
-              {loading ? (
-                <div className="d-flex justify-content-center align-items-center h-100">
-                  <div className="spinner-border text-primary" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                  </div>
-                </div>
-              ) : (
-                <Calendar
-                  localizer={localizer}
-                  events={bookings}
-                  startAccessor="start"
-                  endAccessor="end"
-                  style={{ height: '100%' }}
-                  views={['month', 'week', 'day']}
-                  defaultView="month"
-                  components={{
-                    event: CustomEvent
-                  }}
-                  eventPropGetter={eventStyleGetter}
-                  onSelectEvent={(event) => {
-                    alert(`Booking Details:\n\nPuja: ${event.title.split(' - ')[0]}\nCustomer: ${event.title.split(' - ')[1]}\nStatus: ${event.resource.status}\nLocation: ${event.resource.location}`);
-                  }}
-                />
-              )}
+            <div className="d-flex align-items-center">
+              <span
+                style={{
+                  width: 18,
+                  height: 18,
+                  borderRadius: 4,
+                  background: "#dc3545",
+                  marginRight: 8,
+                }}
+              ></span>
+              <span className="fw-semibold">Rejected</span>
             </div>
           </div>
-        </main>
-      </div>
-    </>
+
+          {/*  Calendar */}
+          <div
+            className="calendar-container shadow-sm border rounded p-2"
+            style={{ height: "75vh", background: "#fff" }}
+          >
+            {loading ? (
+              <div className="d-flex justify-content-center align-items-center h-100">
+                <Spinner animation="border" variant="primary" />
+              </div>
+            ) : error ? (
+              <div className="alert alert-danger text-center">{error}</div>
+            ) : (
+              <Calendar
+                localizer={localizer}
+                events={bookings}
+                startAccessor="start"
+                endAccessor="end"
+                date={date}
+                onNavigate={(newDate) => setDate(newDate)}
+                views={["month", "week", "day"]}
+                view={currentView}
+                onView={(view) => setCurrentView(view)}
+                defaultView="month"
+                popup
+                components={{
+                  event: CustomEvent,
+                  toolbar: CustomToolbar,
+                }}
+                eventPropGetter={eventStyleGetter}
+                onSelectEvent={(event) => {
+                  setSelectedBooking(event);
+                  setShowModal(true);
+                }}
+              />
+            )}
+          </div>
+        </div>
+      </main>
+
+      {/*  Modal */}
+      <Modal show={showModal} onHide={handleClose} size="lg" centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Booking Details</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          {selectedBooking && (
+            <Form>
+              <Row>
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label className="temp-label">Full Name</Form.Label>
+                    <Form.Control
+                      className="temp-form-control-option"
+                      value={selectedBooking.resource.full_name || ""}
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label className="temp-label">
+                      Mobile Number
+                    </Form.Label>
+                    <Form.Control
+                      className="temp-form-control-option"
+                      value={selectedBooking.resource.mobile_number || ""}
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label className="temp-label">Pooja Type</Form.Label>
+                    <Form.Control
+                      className="temp-form-control-option"
+                      value={selectedBooking.resource.pooja_type || ""}
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label className="temp-label">
+                      Language Preference
+                    </Form.Label>
+                    <Form.Control
+                      className="temp-form-control-option"
+                      value={selectedBooking.resource.language_preference || ""}
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label className="temp-label">Date & Time</Form.Label>
+                    <Form.Control
+                      className="temp-form-control-option"
+                      value={
+                        selectedBooking.resource.date_and_time
+                          ? new Date(
+                              selectedBooking.resource.date_and_time
+                            ).toLocaleString()
+                          : ""
+                      }
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label className="temp-label">Location</Form.Label>
+                    <Form.Control
+                      className="temp-form-control-option"
+                      value={selectedBooking.resource.location || ""}
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label className="temp-label">
+                      Special Requirements
+                    </Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      className="temp-form-control-option"
+                      value={
+                        selectedBooking.resource.special_requirements || ""
+                      }
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label className="temp-label">Payment Mode</Form.Label>
+                    <Form.Control
+                      className="temp-form-control-option"
+                      value={selectedBooking.resource.payment_mode || ""}
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label className="temp-label">Grand Total</Form.Label>
+                    <Form.Control
+                      className="temp-form-control-option"
+                      value={selectedBooking.resource.grand_total || ""}
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label className="temp-label">Status</Form.Label>
+                    <Form.Select
+                      className="temp-form-control-option"
+                      value={selectedBooking.resource.status}
+                      onChange={(e) =>
+                        setSelectedBooking((prev) => ({
+                          ...prev,
+                          resource: {
+                            ...prev.resource,
+                            status: e.target.value,
+                          },
+                        }))
+                      }
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="accepted">Accepted</option>
+                      <option value="rejected">Rejected</option>
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Form>
+          )}
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button className="event-click-btn" onClick={handleUpdateStatus}>
+            Update
+          </Button>
+          <Button className="event-click-cancel" onClick={handleClose}>
+            Cancel
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
   );
 };
 
