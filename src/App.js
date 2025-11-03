@@ -144,6 +144,8 @@ import AdminDashBoard from "./Component/admin_dashboard/AdminDashBoard";
 import CrowdfundingCard from "./Component/CrowdfundingCard";
 import AllDarshanBooking from "./Component/admin_dashboard/admin_innerdashboard/AllDarshanBooking";
 import AllRegistrationBooking from "./Component/admin_dashboard/admin_innerdashboard/AllRegistrationBooking";
+import AllPanditBooking from "./Component/admin_dashboard/admin_innerdashboard/AllPanditBooking";
+
 
 // import BASE_URLL from "./Component/BaseURL";
 // import DashBoard from "./Component/dashboard/DashBoard";
@@ -238,7 +240,9 @@ function App() {
     "/AdminLeftnav",
     "/AdminDashBoard",
     "/AllDarshanBooking",
-    "/AllRegistrationBooking"
+    "/AllRegistrationBooking",
+    "/AllPanditBooking",
+ 
   
   
   ]);
@@ -445,6 +449,8 @@ function App() {
           <Route path="/AdminDashBoard" element={<AdminDashBoard />} />
           <Route path="/AllDarshanBooking" element={<AllDarshanBooking />} />
           <Route path="/AllRegistrationBooking" element={<AllRegistrationBooking />} />
+          <Route path="/AllPanditBooking" element={<AllPanditBooking />} />
+          
          
       
        
