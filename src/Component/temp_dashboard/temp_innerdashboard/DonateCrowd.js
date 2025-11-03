@@ -26,6 +26,7 @@ const DonateCrowd = () => {
     fund_name: fund_raise_name || "",
     fund_id: fund_id || "",
     mobile_number: "",
+    pilgrim_name: "",
     email_id: "",
     amount: "",
     creator_id: uniqueId || "",
@@ -36,7 +37,7 @@ const DonateCrowd = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [showOtpModal, setShowOtpModal] = useState(false);
   const [otp, setOtp] = useState("");
-  const [isVerified, setIsVerified] = useState(false);
+  const [, setIsVerified] = useState(false);
   const [loading, setLoading] = useState(false);
   const [verifying, setVerifying] = useState(false);
   const [resending, setResending] = useState(false);
@@ -55,6 +56,7 @@ const DonateCrowd = () => {
   const validateForm = () => {
     let formErrors = {};
     if (!formData.amount) formErrors.amount = "Donation amount is required.";
+    if (!formData.pilgrim_name) formErrors.pilgrim_name = "Pilgrim Name is required.";
     if (!formData.mobile_number)
       formErrors.mobile_number = "Mobile number is required.";
     else if (!/^[6-9]\d{9}$/.test(formData.mobile_number))
@@ -177,12 +179,13 @@ const DonateCrowd = () => {
         fund_name: formData.fund_name,
         fund_id: formData.fund_id,
         mobile_number: formData.mobile_number,
+        pilgrim_name: formData.pilgrim_name,
         email_id: formData.email_id,
         amount: formData.amount,
         creator_id: formData.creator_id,
       };
 
-      const res = await axios.post(`${BASE_URLL}api/reg-fund-raise/`, payload);
+      const res = await axios.post(`${BASE_URLL}api/crowdfund/donate/`, payload);
 
       if (res.status === 200 && res.data?.status === "success") {
         setAlertMessage("Donation successful!");
@@ -241,18 +244,40 @@ const DonateCrowd = () => {
                 </Col>
 
                 {/* Donator Details */}
+
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="temp-label">
+                      Pilgrim Name <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="pilgrim_name"
+                      value={formData.pilgrim_name}
+                      onChange={handleInputChange}
+                      className="temp-form-control"
+                      placeholder="Enter Your Name"
+                    />
+                    {errors.pilgrim_name && (
+                      <small className="text-danger">
+                        {errors.pilgrim_name}
+                      </small>
+                    )}
+                  </Form.Group>
+                </Col>
+
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group className="mb-3">
                     <Form.Label className="temp-label">
                       Mobile Number <span className="temp-span-star">*</span>
                     </Form.Label>
                     <Form.Control
-                      type="text"
+                      type="number"
                       name="mobile_number"
                       value={formData.mobile_number}
                       onChange={handleInputChange}
                       className="temp-form-control"
-                      placeholder="Enter your mobile number"
+                      placeholder="Enter Your Number"
                     />
                     {errors.mobile_number && (
                       <small className="text-danger">
@@ -273,7 +298,7 @@ const DonateCrowd = () => {
                       value={formData.email_id}
                       onChange={handleInputChange}
                       className="temp-form-control"
-                      placeholder="Enter your email"
+                      placeholder="Enter Your Email"
                     />
                     {errors.email_id && (
                       <small className="text-danger">{errors.email_id}</small>
@@ -293,7 +318,7 @@ const DonateCrowd = () => {
                       value={formData.amount}
                       onChange={handleInputChange}
                       className="temp-form-control"
-                      placeholder="Enter donation amount"
+                      placeholder="Enter Donation Amount"
                     />
                     {errors.amount && (
                       <small className="text-danger">{errors.amount}</small>
