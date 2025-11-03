@@ -345,7 +345,8 @@ const PanditProfile = () => {
                             profile.pandit_role?.includes(o.value)
                           )}
                           onChange={handleRoleChange}
-                          className="temp-form-control-input"
+                          className="temp-form-control-input basic-multi-select"
+                          classNamePrefix="basic-multi-select"
                           closeMenuOnSelect={false}
                         />
                       </Form.Group>

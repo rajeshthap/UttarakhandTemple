@@ -671,7 +671,8 @@ const PanditBooking = () => {
                             options={panditOptions}
                             placeholder="Select Available Pandits"
                             closeMenuOnSelect={false}
-                            className="temp-form-control-input"
+                            className="temp-form-control-input basic-multi-select "
+                            classNamePrefix="basic-multi-select"
                             value={selectedOptions}
                             onChange={setSelectedOptions}
                           />

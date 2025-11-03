@@ -413,6 +413,10 @@ input[type=number] {
     display: flex !important;
 }
    
+.basic-multi-select__value-container {
+  max-height: 38px !important;
+  overflow-y: auto !important;
+}
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
 

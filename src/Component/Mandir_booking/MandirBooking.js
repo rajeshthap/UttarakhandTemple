@@ -1009,10 +1009,11 @@ const MandirBooking = () => {
                           )
                       )}
                       className="basic-multi-select"
-                      classNamePrefix="select"
+                      classNamePrefix="basic-multi-select"
                       value={selectedPoojas}
                       onChange={handlePoojaChange} // use the fixed function
                       placeholder="Select one or more Poojas"
+                      
                     />
 
                     {errors.pooja_details && (

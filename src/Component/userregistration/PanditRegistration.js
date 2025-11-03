@@ -833,7 +833,8 @@ function PanditRegistration() {
                               options={roleOptions}
                               placeholder="Select Role"
                               closeMenuOnSelect={false}
-                              className="temp-form-control-input"
+                              className="temp-form-control-input basic-multi-select"
+                              classNamePrefix="basic-multi-select"
                               value={roleOptions.filter((option) =>
                                 formData.pandit_role?.includes(option.value)
                               )}
@@ -845,13 +846,6 @@ function PanditRegistration() {
                                   ...prev,
                                   pandit_role: values,
                                 }));
-                              }}
-                              styles={{
-                                valueContainer: (provided) => ({
-                                  ...provided,
-                                  maxHeight: "38px",
-                                  overflowY: "auto",
-                                }),
                               }}
                             />
                             {errorReason_querys.pandit_role && (

@@ -870,6 +870,8 @@ const OnlineHirePandit = () => {
                     <Select
                       isMulti
                       options={panditOptions}
+                      className="basic-multi-select"
+                      classNamePrefix="basic-multi-select"
                       value={selectedPanditOptions}
                       onChange={(opts) => {
                         const selected = opts || [];
