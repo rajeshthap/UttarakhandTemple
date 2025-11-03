@@ -10,11 +10,15 @@ import {
   Form,
   Badge,
   Pagination,
+  OverlayTrigger,
+  Tooltip,
 } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { BASE_URLL } from "../Component/BaseURL";
 import { useAuth } from "./GlobleAuth/AuthContext";
+import { AiFillEye } from "react-icons/ai";
+
 
 const CrowdfundingCard = () => {
   const { uniqueId } = useAuth();
@@ -23,7 +27,6 @@ const CrowdfundingCard = () => {
   const [funds, setFunds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
   const [currentPage, setCurrentPage] = useState(1);
   const fundsPerPage = 6;
   const [searchQuery, setSearchQuery] = useState("");
@@ -120,15 +123,14 @@ const CrowdfundingCard = () => {
   };
 
   const handleDonateClick = (fund) => {
-  navigate("/DonateCrowd", {
-    state: {
-      temple_name: fund.temple_name,
-      fund_raise_name: fund.fund_raise_name,
-      fund_id: fund.fund_id,
-    },
-  });
-};
-
+    navigate("/DonateCrowd", {
+      state: {
+        temple_name: fund.temple_name,
+        fund_raise_name: fund.fund_raise_name,
+        fund_id: fund.fund_id,
+      },
+    });
+  };
 
   const uniqueTemples = useMemo(() => {
     const setT = new Set();
@@ -191,35 +193,22 @@ const CrowdfundingCard = () => {
               <>
                 <Row className="g-4">
                   {currentFunds.map((fund, index) => {
-                    const docUrl = getFileUrl(fund.documents);
-                    const isPdf = docUrl && docUrl.endsWith(".pdf");
+                    const fundImageUrl = getFileUrl(fund.fund_image); //  ADDED: Fund image
+                    const docUrl = getFileUrl(fund.documents); //  ADDED: Document URL
+
                     return (
                       <Col lg={6} md={6} sm={12} key={fund.id ?? index}>
                         <Card className="event-box h-100">
+                          {/*  Updated: Show fund image on card */}
                           <div>
-                            {isPdf ? (
-                              <iframe
-                                src={`${docUrl}#toolbar=0&navpanes=0&scrollbar=0`}
-                                title={fund.fund_raise_name}
-                                className="card-event-image"
-                                style={{
-                                  height: "220px",
-                                  width: "100%",
-                                  border: "none",
-                                  overflow: "hidden",
-                                  pointerEvents: "none",
-                                }}
-                              />
-                            ) : (
-                              <img
-                                src={
-                                  docUrl ||
-                                  "https://via.placeholder.com/400x250?text=No+Image+Available"
-                                }
-                                alt="Crowdfunding"
-                                className="card-event-image"
-                              />
-                            )}
+                            <img
+                              src={
+                                fundImageUrl ||
+                                "https://via.placeholder.com/400x250?text=No+Image+Available"
+                              }
+                              alt="Crowdfunding"
+                              className="card-event-image"
+                            />
                           </div>
 
                           <Card.Body className="event-card">
@@ -241,7 +230,50 @@ const CrowdfundingCard = () => {
                               {fund.description || "No description available."}
                             </Card.Text>
 
-                            <div className="d-flex justify-content-between mt-3 event-time-txt">
+                            {/* Progress bar with tooltip */}
+                            <div className="mt-3">
+                              <div className="d-flex justify-content-between small">
+                                <span>
+                                  <strong>Collected:</strong>{" "}
+                                  ₹{parseFloat(fund.amount_collected || 0).toLocaleString("en-IN")}
+                                </span>
+                                <span>
+                                  <strong>Remaining:</strong>{" "}
+                                  ₹{(
+                                    parseFloat(fund.estimated_cost || 0) -
+                                    parseFloat(fund.amount_collected || 0)
+                                  ).toLocaleString("en-IN")}
+                                </span>
+                              </div>
+
+                              <OverlayTrigger
+                                placement="top"
+                                overlay={
+                                  <Tooltip id={`tooltip-${fund.fund_id}`}>
+                                    Collected ₹{parseFloat(fund.amount_collected || 0).toLocaleString("en-IN")} of ₹
+                                    {parseFloat(fund.estimated_cost || 0).toLocaleString("en-IN")}
+                                  </Tooltip>
+                                }
+                              >
+                                <div className="progress mt-2" style={{ height: "8px", cursor: "pointer" }}>
+                                  <div
+                                    className="progress-bar bg-success"
+                                    role="progressbar"
+                                    style={{
+                                      width: `${Math.min(
+                                        (parseFloat(fund.amount_collected || 0) /
+                                          parseFloat(fund.estimated_cost || 1)) *
+                                        100,
+                                        100
+                                      )}%`,
+                                    }}
+                                  ></div>
+                                </div>
+                              </OverlayTrigger>
+                            </div>
+
+                            {/* Fund ID + Date */}
+                            <div className="d-flex justify-content-between mt-2 event-time-txt">
                               <div>
                                 <strong className="event-data-txt">Fund ID:</strong>{" "}
                                 {fund.fund_id}
@@ -251,6 +283,8 @@ const CrowdfundingCard = () => {
                                 {formatDate(fund.created_at)}
                               </div>
                             </div>
+
+
 
                             <div className="d-flex justify-content-between mt-3">
                               <Button
@@ -263,7 +297,7 @@ const CrowdfundingCard = () => {
                               <Button
                                 variant="temp-submit-btn"
                                 className="event-click-btn"
-                                onClick={() => handleDonateClick(fund)} //  CHANGE: navigate to DonateCrowd
+                                onClick={() => handleDonateClick(fund)}
                               >
                                 Donate
                               </Button>
@@ -331,29 +365,15 @@ const CrowdfundingCard = () => {
             {selectedFund ? (
               <Row>
                 <Col md={5} className="mb-3">
-                  {selectedFund.documents &&
-                    getFileUrl(selectedFund.documents)?.endsWith(".pdf") ? (
-                    <iframe
-                      src={`${getFileUrl(selectedFund.documents)}#toolbar=0&navpanes=0&scrollbar=0`}
-                      title="PDF Preview"
-                      style={{
-                        width: "100%",
-                        height: "250px",
-                        border: "none",
-                        overflow: "hidden",
-                        pointerEvents: "none",
-                      }}
-                    />
-                  ) : (
-                    <img
-                      src={
-                        getFileUrl(selectedFund.documents) ||
-                        "https://via.placeholder.com/400x250?text=No+Image+Available"
-                      }
-                      alt={selectedFund.fund_raise_name}
-                      className="card-event-image"
-                    />
-                  )}
+                  {/*  Fund Image in modal */}
+                  <img
+                    src={
+                      getFileUrl(selectedFund.fund_image) ||
+                      "https://via.placeholder.com/400x250?text=No+Image+Available"
+                    }
+                    alt={selectedFund.fund_raise_name}
+                    className="card-event-image"
+                  />
                 </Col>
                 <Col md={7}>
                   <h5 className="event-heading">{selectedFund.temple_name}</h5>
@@ -373,17 +393,18 @@ const CrowdfundingCard = () => {
                     <strong className="event-data-txt">Description:</strong>{" "}
                     {selectedFund.description}
                   </p>
+
+                  {/*  Added document view button */}
                   {selectedFund.documents && (
-                    <p>
-                      <strong className="event-data-txt">Document:</strong>{" "}
-                      <Button
-                        variant="link"
-                        onClick={() =>
-                          window.open(getFileUrl(selectedFund.documents), "_blank")
-                        }
+                    <p className="mb-1 d-flex align-items-center">
+                      <strong className="event-data-txt me-1">Document:</strong>
+                      <span
+                        onClick={() => window.open(getFileUrl(selectedFund.documents), "_blank")}
+                        className="text-primary text-decoration-none event-data-txt d-inline-flex align-items-center"
+                        style={{ cursor: "pointer" }}
                       >
-                        View Document
-                      </Button>
+                        <AiFillEye className="me-1" size={14} /> View Document
+                      </span>
                     </p>
                   )}
                 </Col>
@@ -399,7 +420,7 @@ const CrowdfundingCard = () => {
             <Button
               variant="temp-submit-btn"
               className="event-click-btn"
-              onClick={() => handleDonateClick(selectedFund)} //  CHANGE: same donate navigation in modal
+              onClick={() => handleDonateClick(selectedFund)}
             >
               Donate
             </Button>
