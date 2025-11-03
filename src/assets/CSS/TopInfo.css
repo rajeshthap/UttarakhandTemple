@@ -274,7 +274,8 @@ button.accordion-button.collapsed {
 }
 
 .css-13cymwt-control {
-    height: 48px;
+    min-height: 48px;
+    height: auto !important;
     border-radius: var(--temp-space-200);
     border: var(--awc-space-25) var(--temp-search-border);
     ;
