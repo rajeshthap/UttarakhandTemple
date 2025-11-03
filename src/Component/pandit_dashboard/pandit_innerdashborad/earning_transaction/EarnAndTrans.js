@@ -7,7 +7,8 @@ import PanditLeftNav from "../../PanditLeftNav";
 const EarnAndTrans = () => {
   const [loading] = useState(false);
 
-  const filteredPoojas = [
+// Static Data
+  const poojas = [
     {
       id: 1,
       pandit_name: "Ramesh Sharma",
@@ -31,6 +32,26 @@ const EarnAndTrans = () => {
     },
   ];
 
+  // Filtered data for display
+  const [filteredPoojas, setFilteredPoojas] = useState(poojas);
+
+  // Search handler
+  const handleSearch = (query) => {
+    const lowerQuery = query.toLowerCase();
+
+    if (!query.trim()) {
+      setFilteredPoojas(poojas);
+    } else {
+      const filtered = poojas.filter(
+        (p) =>
+          p.pooja_name?.toLowerCase().includes(lowerQuery) ||
+          p.pandit_name?.toLowerCase().includes(lowerQuery) ||
+          p.pooja_price?.toString().includes(lowerQuery)
+      );
+      setFilteredPoojas(filtered);
+    }
+  };
+
   // Calculate total amount
   const totalAmount = filteredPoojas.reduce(
     (sum, pooja) => sum + pooja.pooja_price,
@@ -53,11 +74,13 @@ const EarnAndTrans = () => {
                   <Breadcrumb.Item href="/Pandit_DashBoard">
                     <span className="fw700h1">Dashboard</span>
                   </Breadcrumb.Item>
-                  <Breadcrumb.Item active>Earnings & Transactions</Breadcrumb.Item>
+                  <Breadcrumb.Item active>
+                    Earnings & Transactions
+                  </Breadcrumb.Item>
                 </Breadcrumb>
               </h1>
               <div>
-                <SearchFeature />
+                <SearchFeature onSearch={handleSearch} />
               </div>
             </div>
 

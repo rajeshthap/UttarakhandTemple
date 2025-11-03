@@ -7,7 +7,8 @@ import PanditLeftNav from "../../PanditLeftNav";
 const CompletedPuja = () => {
   const [loading] = useState(false);
 
-  const filteredPoojas = [
+  // Original full pooja list
+  const poojas = [
     {
       id: 1,
       pandit_name: "Ramesh Sharma",
@@ -31,11 +32,30 @@ const CompletedPuja = () => {
     },
   ];
 
+  // Filtered list (for search results)
+  const [filteredPoojas, setFilteredPoojas] = useState(poojas);
+
   // Calculate total amount
   const totalAmount = filteredPoojas.reduce(
     (sum, pooja) => sum + pooja.pooja_price,
     0
   );
+
+  const handleSearch = (query) => {
+    const lowerQuery = query.toLowerCase();
+
+    if (!query.trim()) {
+      setFilteredPoojas(poojas);
+    } else {
+      const filtered = poojas.filter(
+        (p) =>
+          p.pooja_name?.toLowerCase().includes(lowerQuery) ||
+          p.pandit_name?.toLowerCase().includes(lowerQuery) ||
+          p.pooja_price?.toString().includes(lowerQuery)
+      );
+      setFilteredPoojas(filtered);
+    }
+  };
 
   return (
     <>
@@ -58,7 +78,7 @@ const CompletedPuja = () => {
                 </Breadcrumb>
               </h1>
               <div>
-                <SearchFeature />
+                <SearchFeature onSearch={handleSearch} />
               </div>
             </div>
 

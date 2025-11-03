@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
 import {
   Accordion,
   Button,
@@ -7,6 +7,7 @@ import {
   Row,
   Form,
   Modal,
+  InputGroup,
 } from "react-bootstrap";
 import { FaCheck } from "react-icons/fa6";
 import { MdOutlineDateRange } from "react-icons/md";
@@ -18,6 +19,7 @@ import Diya from "../assets/images/Diya.png";
 import "../assets/CSS/TempleBooking.css";
 import PagingNation from "./paging/PagingNation";
 import { useAuth } from "../Component/GlobleAuth/AuthContext";
+import { FaCalendar } from "react-icons/fa";
 
 const TempleBookingInfo = () => {
   const [templeData, setTempleData] = useState([]);
@@ -53,7 +55,23 @@ const TempleBookingInfo = () => {
       })
       .catch((error) => console.error("Error fetching temple data:", error));
   }, []);
-
+const CustomDatePickerInput = forwardRef(
+  ({ value, onClick, placeholder }, ref) => (
+    <InputGroup>
+      <Form.Control
+        ref={ref}
+        value={value}
+        onClick={onClick}
+        placeholder={placeholder}
+        className="temp-form-control-option"
+        readOnly
+      />
+      <InputGroup.Text onClick={onClick} style={{ cursor: "pointer" }}>
+        <FaCalendar />
+      </InputGroup.Text>
+    </InputGroup>
+  )
+);
   const getImageUrl = (imgPath) => {
     if (!imgPath)
       return "https://mahadevaaya.com/backend/media/temple_images/default.png";
@@ -381,10 +399,14 @@ const TempleBookingInfo = () => {
                                 dateFormat="MMMM d, yyyy h:mm aa"
                                 placeholderText="Select Date and time"
                                 className="form-control temp-form-control-option w-100"
+                                 customInput={
+                          <CustomDatePickerInput placeholder="Select Start Date and Time" />
+                        }
                                 minDate={today}
                                 minTime={minTime}
                                 maxTime={maxTime}
                                 required
+
                               />
                             </div>
                           </Form.Group>
