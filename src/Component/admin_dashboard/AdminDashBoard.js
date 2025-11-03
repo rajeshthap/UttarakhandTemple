@@ -8,6 +8,7 @@ import "../../assets/CSS/AdminDashBoard.css";
 import { useNavigate } from "react-router-dom";
 import UserSeva from "../../assets/images/user-seva.png";
 import { useAuth } from "../GlobleAuth/AuthContext";
+import { FaRegUserCircle } from "react-icons/fa";
 import AdminLeftnav from "./AdminLeftnav";
 
 const AdminDashBoard = () => {
@@ -17,15 +18,15 @@ const AdminDashBoard = () => {
   return (
     <>
       <div className="dashboard-wrapper">
-        <aside className="pandit-sidebar">
+        <aside className="admin-sidebar">
           <AdminLeftnav />
         </aside>
 
         <main className="main-container">
           <div className="content-box">
-            <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3 ">
+            <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3 admin-heading ">
               <h1 className="fw500">
-                <span className="fw700h1">Admin</span> Dashboard
+                <span className="">Admin</span> DashBoard
               </h1>
               <div>
                 <div className="d-flex justify-content-center h-100">
@@ -46,11 +47,11 @@ const AdminDashBoard = () => {
             {/* Dashboard Cards */}
             <Row>
               <Col lg={4} md={4} sm={12}>
-                <Card className="shadow-sm rounded dbcard-pditnew-puja-box-1 flex-fill mb-2">
+                <Card className="shadow-sm rounded dbcard-adminnew-puja-box-1 flex-fill mb-2">
                   <Card.Body>
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
                       <div>
-                        <span className="text-muted d-block mb-1 text-nowrap user-sub-title">
+                        <span className=" d-block mb-1 text-nowrap user-sub-title">
                           User
                         </span>
                         <h4 className="fw-medium mb-0">0</h4>
@@ -59,12 +60,8 @@ const AdminDashBoard = () => {
                         </div>
                       </div>
                       <div className="lh-1">
-                        <div className="avatar-md avatar-rounded save-bg flex-shrink-0 d-flex align-items-center justify-content-center">
-                          <img
-                            src={UserSeva}
-                            alt="Pandit"
-                            className="img-fluid img-user-card-icon"
-                          />
+                        <div className="avatar-md avatar-rounded ad-save-bg flex-shrink-0 d-flex align-items-center justify-content-center">
+                         <FaRegUserCircle/>
                         </div>
                       </div>
                     </div>
@@ -73,12 +70,12 @@ const AdminDashBoard = () => {
               </Col>
 
               <Col lg={4} md={4} sm={12}>
-                <Card className="shadow-sm dbcard-pdit-accept-box-2 flex-fill">
+                <Card className="shadow-sm dbcard-admin-accept-box-2 flex-fill">
                   <Card.Body>
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
                       <div>
-                        <span className="text-muted d-block mb-1 text-nowrap user-sub-title">
-                          Pandit
+                        <span className=" d-block mb-1 text-nowrap user-sub-title">
+                          Temple
                         </span>
                         <h4 className="fw-medium mb-0">0</h4>
                         <div>
@@ -96,12 +93,12 @@ const AdminDashBoard = () => {
               </Col>
 
               <Col lg={4} md={4} sm={12}>
-                <Card className="shadow-sm rounded flex-fill dbcard-box-4">
+                <Card className="shadow-sm rounded flex-fill dbcard-admin-4">
                   <Card.Body>
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
                       <div>
-                        <span className="text-muted d-block mb-1 text-nowrap user-sub-title">
-                         Temple
+                        <span className=" d-block mb-1 text-nowrap user-sub-title">
+                         Pandit
                         </span>
                         <h4 className="fw-medium mb-0">0</h4>
                         <div>

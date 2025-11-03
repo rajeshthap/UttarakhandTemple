@@ -22,7 +22,7 @@ const PanditSupport = () => {
                                 <Breadcrumb.Item href="/MainDashBoard">
                                   <span className="fw700h1">DashBoard</span>
                                 </Breadcrumb.Item>
-                                <Breadcrumb.Item active>My Profile</Breadcrumb.Item>
+                                <Breadcrumb.Item active>Support</Breadcrumb.Item>
                               </Breadcrumb>
                             </h1>
             
