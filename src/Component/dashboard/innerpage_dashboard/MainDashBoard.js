@@ -194,7 +194,7 @@ const MainDashBoard = () => {
                 </Card>
               </Col>
               <Col lg={3} md={3} sm={12}>
-                <Card className="shadow-sm dbcard-box-2 flex-fill" onClick={() => navigate("/DarshanDetails")}
+                <Card className="shadow-sm dbcard-box-2 flex-fill mb-2" onClick={() => navigate("/DarshanDetails")}
     style={{ cursor: "pointer" }}>
                   <Card.Body className="card-body-details">
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
@@ -218,7 +218,7 @@ const MainDashBoard = () => {
                 </Card>
               </Col>
               <Col lg={3} md={3} sm={12}>
-                <Card className="shadow-sm rounded  flex-fill dbcard-box-4" onClick={() => navigate("/PanditDetails")}
+                <Card className="shadow-sm rounded  flex-fill dbcard-box-4 mb-2" onClick={() => navigate("/PanditDetails")}
     style={{ cursor: "pointer" }}>
                   <Card.Body className="card-body-details">
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
@@ -246,7 +246,7 @@ const MainDashBoard = () => {
                 </Card>
               </Col>
               <Col lg={3} md={3} sm={12}>
-                <Card className="shadow-sm rounded  flex-fill dbcard-box-3" onClick={() => navigate("/DonationsDetails")}
+                <Card className="shadow-sm rounded  flex-fill dbcard-box-3 mb-2" onClick={() => navigate("/DonationsDetails")}
     style={{ cursor: "pointer" }}>
                   <Card.Body className="card-body-details">
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap  ">
@@ -274,7 +274,7 @@ const MainDashBoard = () => {
 
             <Row>
               <Col lg={8} md={8} sm={12} className=" mt-3">
-                <div class="sd-upcoming-bookings">
+                <div class="sd-upcoming-bookings mb-2">
                   <div class="">
                     <h3 class="sd-side-heading-2 fw600">
                       {" "}

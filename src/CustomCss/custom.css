@@ -450,7 +450,9 @@ input[type=number] {
         /* padding: var(--temp-space-200) !important; */
         padding: 4px !important
     }
-
+.mob-view-bt{
+    margin-bottom: 12px;
+}
     .social-icon {
         display: none !important;
         margin-top: var(--temp-space-200) !important;

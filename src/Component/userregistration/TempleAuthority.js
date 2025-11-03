@@ -395,58 +395,60 @@ function TempleAuthority() {
 
   // Updated file handler to work with both drag-drop and file input
   const handleFileChange = (e, field) => {
-    let file;
+  let file;
 
-    // Handle both file input and drag-drop events
-    if (e.target && e.target.files) {
-      file = e.target.files[0];
-      // Reset the file input value to allow selecting the same file again
-      if (fileInputRefs[field]?.current) {
-        fileInputRefs[field].current.value = "";
-      }
-    } else if (e.dataTransfer && e.dataTransfer.files) {
-      file = e.dataTransfer.files[0];
+  // Handle both file input and drag-drop events
+  if (e.target && e.target.files) {
+    file = e.target.files[0];
+    // Reset the file input value to allow selecting the same file again
+    if (fileInputRefs[field]?.current) {
+      fileInputRefs[field].current.value = "";
     }
+  } else if (e.dataTransfer && e.dataTransfer.files) {
+    file = e.dataTransfer.files[0];
+  }
 
-    if (!file) return;
+  if (!file) return;
 
-    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/pdf"];
+  //  Fixed: Correct MIME type for PDF
+  const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "application/pdf"];
 
-    // Reset previous errors
+  // Reset previous errors
+  setFileErrors((prev) => ({
+    ...prev,
+    [field]: "",
+  }));
+
+  setDocumentErrors((prev) => ({
+    ...prev,
+    [field]: "",
+  }));
+
+  // Type check
+  if (!allowedTypes.includes(file.type)) {
     setFileErrors((prev) => ({
       ...prev,
-      [field]: "",
+      [field]: "Only JPG, PNG, or PDF files are allowed.",
     }));
+    return;
+  }
 
-    setDocumentErrors((prev) => ({
+  // Size check (100KB)
+  if (file.size > 2 * 1024 * 1024) {
+    setFileErrors((prev) => ({
       ...prev,
-      [field]: "",
+      [field]: "File size must be less than or equal to 2MB.",
     }));
+    return;
+  }
 
-    // Type check
-    if (!allowedTypes.includes(file.type)) {
-      setFileErrors((prev) => ({
-        ...prev,
-        [field]: "Only JPG, PNG, or PDF  files are allowed.",
-      }));
-      return;
-    }
+  // If valid, save file
+  setDocuments({
+    ...documents,
+    [field]: file,
+  });
+};
 
-    // Size check (100KB)
-    if (file.size > 2 * 1024 * 1024) {
-      setFileErrors((prev) => ({
-        ...prev,
-        [field]: "File size must be less than or equal to 2MB.",
-      }));
-      return;
-    }
-
-    // If valid, save file
-    setDocuments({
-      ...documents,
-      [field]: file,
-    });
-  };
 
   const removeFile = (field) => {
     setDocuments({
@@ -1333,7 +1335,7 @@ function TempleAuthority() {
                                     id={`${doc.key}_upload`}
                                     className="invisible"
                                     type="file"
-                                    accept="image/jpeg, image/png, image/svg+xml"
+                                     accept="image/jpeg, image/png, image/svg+xml, application/pdf"
                                     onChange={(e) =>
                                       handleFileChange(e, doc.key)
                                     }
