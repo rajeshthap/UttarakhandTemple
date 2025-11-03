@@ -6,7 +6,7 @@ import { FaAlignLeft, FaChevronDown, FaChevronUp, FaRegCheckCircle } from "react
 import { LuCalendarClock, LuCircleCheck, LuLogOut } from "react-icons/lu";
 import CompanyLogo from "../../assets/images/company-logo.png";
 import MenuIcon from "../../assets/images/menu_icon.png";
-import "../../assets/CSS/PanditLeftNav.css";
+import "../../assets/CSS/AdminLeftNav.css";
 import ModifyAlert from "../Alert/ModifyAlert";
 import { GiByzantinTemple } from "react-icons/gi";
 import { LiaCalendarCheck } from "react-icons/lia";
@@ -107,7 +107,6 @@ function AdminLeftnav() {
     }
   };
 
-
   const navigationOptions = [
     { icon: <RiDashboard3Line />, label: "Dashboard", path: "/AdminDashBoard" },
 
@@ -115,7 +114,7 @@ function AdminLeftnav() {
 
     { icon: <RiDashboard3Line />, label: "All Darshan Booking", path: "/AllDarshanBooking" },
 
- { icon: <RiDashboard3Line />, label: "All Registration Booking", path: "/AllRegistrationBooking" },
+ { icon: <RiDashboard3Line />, label: "All Temple Booking", path: "/AllRegistrationBooking" },
  { icon: <RiDashboard3Line />, label: "All Pandit Booking", path: "/AllPanditBooking" },
 
     {
@@ -127,52 +126,31 @@ function AdminLeftnav() {
         {
           icon: <MdPendingActions />,
           label: "UpComing Event ",
-          path: "/AllDarshanBooking"
+          path: "#"
         },
         {
           icon: <LuCircleCheck />,
           label: "Past Event",
-          path: "/ConfirmedRequests"
+          path: "#"
         },
-      
-
-
-
 
       ]
     },
 
-
-
-
     {
       icon: <IoCalendarSharp />,
       label: "Donate Amount",
-      path: "/PujaCalendar",
+      path: "#",
 
     },
     {
       icon: <img src={Transactions} alt="Support" className="left-nav-icon" />,
       label: "Crowdfunding",
-      path: "/EarnAndTrans",
+      path: "#",
 
     },
 
-  
-  
-
-
-
-
-
-   
-
-    {
-      path: "/PanditSupport",
-      icon: <img src={Support} alt="Support" className="left-nav-icon" />,
-      label: "Support",
-
-    },
+    
 
     
     {
@@ -210,7 +188,7 @@ function AdminLeftnav() {
           />
 
           <div className=" d-flex align-items-center gap-2">
-            <div className="nd-msg">{profile.displayName || "User"}</div>
+            <div className="nd-msg">{profile.displayName || "Admin"}</div>
             <Dropdown align="end" className="user-dp">
               <Dropdown.Toggle
                 variant=""
@@ -231,10 +209,10 @@ function AdminLeftnav() {
 
               {/* Dropdown menu */}
               <Dropdown.Menu>
-                <Dropdown.Item as={Link} to="/PanditProfile">
+                <Dropdown.Item as={Link} to="#">
                   My Profile
                 </Dropdown.Item>
-                <Dropdown.Item as={Link} to="/PanditChangePassword">
+                <Dropdown.Item as={Link} to="#">
                   Change Password
                 </Dropdown.Item>
                 <Dropdown.Divider />
@@ -251,11 +229,11 @@ function AdminLeftnav() {
 
       {/* Sidebar Navigation */}
       <div className={`navcontainer ${isNavClosed ? "navclose" : ""}`}>
-        <nav className="pandit-nav">
-          <div className="nav-upper-options">
+        <nav className="admin-nav">
+          <div className="temp-upper-options">
             <div className="nd-menu">
               <FaAlignLeft className="icn menuicn" onClick={toggleNav} />
-              <div className="nd-user">User: {profile.displayName }</div>
+              <div className="nd-user">Admin: {profile.displayName }</div>
                 <img
                   src={
                     profile.pandit_image
@@ -298,7 +276,7 @@ function AdminLeftnav() {
               <React.Fragment key={index}>
                 {option.download ? (
                   <div
-                    className={`pandit-option option${index + 1} ${activePath === option.fileUrl ? "active-nav" : ""
+                    className={`admin-option option${index + 1} ${activePath === option.fileUrl ? "active-nav-admin" : ""
                       } ${hoveredMenu === index ? "hovered-nav" : ""}`}
                     onClick={() => {
                       setActivePath(option.fileUrl);
@@ -315,7 +293,7 @@ function AdminLeftnav() {
                 ) : option.hasSubmenu ? (
                   <>
                     <div
-                      className={`pandit-option option${index + 1} ${activePath === option.path || openSubMenu === index ? "active-nav" : ""
+                      className={`admin-option option${index + 1} ${activePath === option.path || openSubMenu === index ? "active-nav-admin" : ""
                         } ${hoveredMenu === index ? "hovered-nav" : ""}`}
                       onClick={() => toggleSubMenu(index)}
                       onMouseEnter={() => handleMenuHover(index)}
@@ -331,12 +309,12 @@ function AdminLeftnav() {
                         </span>
                       </div>
                     </div>
-                    <div className={`pandit-sub-menu ${openSubMenu === index ? 'open' : ''}`}>
+                    <div className={`admin-sub-menu ${openSubMenu === index ? 'open' : ''}`}>
                       {option.subItems.map((subItem, subIndex) => (
                         <Link
                           key={subIndex}
                           to={subItem.path}
-                          className={`pandit-option sub-pandit-option ${activePath === subItem.path ? "active-nav" : ""
+                          className={`admin-option sub-admin-option ${activePath === subItem.path ? "active-nav-admin" : ""
                             }`}
                           onClick={() => setActivePath(subItem.path)}
                         >
@@ -353,7 +331,7 @@ function AdminLeftnav() {
                 ) : (
                   <Link
                     to={option.path}
-                    className={`pandit-option option${index + 1} ${activePath === option.path ? "active-nav" : ""}
+                    className={`admin-option option${index + 1} ${activePath === option.path ? "active-nav-admin" : ""}
     ${hoveredMenu === index ? "hovered-nav" : ""}`}
                     onClick={() => {
                       if (option.isLogout) {

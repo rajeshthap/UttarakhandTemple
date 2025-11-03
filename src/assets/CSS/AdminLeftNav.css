@@ -26,7 +26,7 @@
 /* Existing styles remain unchanged */
 
 /* Submenu styles */
-.pandit-sub-menu {
+.admin-sub-menu {
   /* padding-left: 20px; */
   background-color: rgba(0, 0, 0, 0.05);
   max-height: 0;
@@ -36,13 +36,13 @@
   /* Ensure it's displayed */
 }
 
-.pandit-sub-menu.open {
+.admin-sub-menu.open {
   max-height: 500px;
   display: block;
-  background-color: #653642;
+  background-color:#3f474e !important;
 }
 
-.sub-pandit-option {
+.sub-admin-option {
   padding: 8px 10px 8px 35px;
   font-size: 14px;
   transition: all 0.3s ease;
@@ -51,8 +51,8 @@
   /* Ensure it's displayed */
 }
 
-.active-nav-pandit {
-  background-color: #45212a !important;
+.active-nav-admin {
+  background-color: #007bff !important;
   color: #fff !important;
   border-left: 4px solid white;
 }
@@ -71,8 +71,8 @@
 }
 
 /* Hover effects */
-.pandit-option:hover {
-  background-color: #3d3e40;
+.admin-option:hover {
+  background-color:  #007bff !important;
   cursor: pointer;
 }
 
@@ -81,21 +81,21 @@
   border-left: 3px solid #4a89dc;
 }
 
-.sub-pandit-option:hover {
-  background-color: #3d3e40;
-  border-left: 3px solid #4a89dc;
+.sub-admin-option:hover {
+  background-color: #007bff;
+  border-left: 3px solid #56606a;;
   padding-left: 0px;
 }
 
 /* Active menu item styling */
-.pandit-nav {
-  background-color: #7c4654 !important;
+.admin-nav {
+  background-color: #343a40 !important;
   color: #fff !important;
   /* border-left: 4px solid white; */
 }
 
 /* Smooth transitions */
-.pandit-option {
+.admin-option {
   transition: all 0.3s ease;
 }
 
@@ -104,7 +104,7 @@
   padding: 0px 24px 6px 8px;
 }
 
-.pandit-option:hover .nav-icon {
+.admin-option:hover .nav-icon {
   transform: scale(1.1);
 }
 
@@ -115,8 +115,8 @@
   
 }
 
-.pandit-sidebar {
-  background-color: #410c23  !important;
+.admin-sidebar {
+  background-color: #343a40 !important;
   
 }
 
@@ -259,10 +259,10 @@
 }
 
 
-.pandit-nav {
+.admin-nav {
   min-height: 100vh;
   width: 250px;
-  background-color: #410c23 !important;
+  background-color: #343a40 !important;
   position: absolute;
   top: -7px;
   left: 00;
@@ -296,7 +296,7 @@
   width: 68px;
 }
 
-.pandit-option {
+.admin-option {
   width: 250px;
   align-items: center;
   padding: 0px 30px 0 20px;
@@ -304,7 +304,7 @@
   transition: all 0.1s ease-in-out;
 }
 
-.pandit-option:hover {
+.admin-option:hover {
   border-left: 2px solid var(--nd-white);
   background-color: #212529;
   cursor: pointer;
@@ -314,7 +314,7 @@
   height: 30px;
 }
 
-.nav-upper-options {
+.temp-upper-options {
   display: flex;
   flex-direction: column;
   gap: 0px;
@@ -343,7 +343,7 @@
   font-size: var(--nd-space-300) !important;
 }
 
-.nav-upper-options a {
+.temp-upper-options a {
   color: white;
   text-decoration: none;
 }
@@ -582,11 +582,11 @@ span.sub-label {
 
 
 
-  .pandit-option {
+  .admin-option {
     gap: 30px;
   }
 
-  .pandit-option h3 {
+  .admin-option h3 {
     font-size: 15px;
   }
 
@@ -635,12 +635,12 @@ span.sub-label {
     margin-top: 1% !important;
   }
 
-  .pandit-option {
+  .admin-option {
     gap: 30px;
     width: 100%;
   }
 
-  .pandit-option h3 {
+  .admin-option h3 {
     font-size: 20px;
   }
 
@@ -666,7 +666,7 @@ span.sub-label {
 
 }
 @media screen and (max-width: 850px) {
-    .pandit-nav {
+    .admin-nav {
         width: 100%;
         position: absolute;
         z-index: 999;
@@ -752,12 +752,12 @@ span.sub-label {
 
 
 
-  .pandit-option {
+  .admin-option {
     gap: 25px;
     width: 100%;
   }
 
-  .pandit-option h3 {
+  .admin-option h3 {
     font-size: 12px;
   }
 

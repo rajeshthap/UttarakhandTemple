@@ -523,6 +523,9 @@ input[type=number] {
    .data-mob-view{
 font-size: var(--temp-space-300);
     }
+    #user-dropdown{
+        color: var(--temp-white);
+    }
 }
 
 @media (max-width: 576px) {

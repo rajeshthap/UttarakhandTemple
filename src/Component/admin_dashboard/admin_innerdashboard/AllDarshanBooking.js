@@ -14,7 +14,7 @@ const AllDarshanBooking = () => {
   return (
     <>
       <div className="dashboard-wrapper">
-        <aside className="pandit-sidebar">
+        <aside className="admin-sidebar">
           <AdminLeftnav />
         </aside>
 

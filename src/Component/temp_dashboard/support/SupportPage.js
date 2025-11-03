@@ -169,8 +169,6 @@ const SupportPage = () => {
   return (
    
           <>
-         
-
           {errorAlert && (
             <Alert
               variant="danger"
@@ -197,7 +195,7 @@ const SupportPage = () => {
                         onChange={handleChange}
                         placeholder="Enter your name"
                         className={`temp-form-control-option ${
-                          errors.name ? "is-invalid" : ""
+                          errors.name ? "" : ""
                         }`}
                       />
                       {errors.name && (
@@ -219,7 +217,7 @@ const SupportPage = () => {
                         onChange={handleChange}
                         placeholder="Enter your mobile number"
                         className={`temp-form-control-option ${
-                          errors.mobile ? "is-invalid" : ""
+                          errors.mobile ? "" : ""
                         }`}
                       />
                       {errors.mobile && (
@@ -241,7 +239,7 @@ const SupportPage = () => {
                         onChange={handleChange}
                         placeholder="Enter your email"
                         className={`temp-form-control-option ${
-                          errors.email ? "is-invalid" : ""
+                          errors.email ? "" : ""
                         }`}
                       />
                       {errors.email && (
@@ -263,7 +261,7 @@ const SupportPage = () => {
                         onChange={handleChange}
                         placeholder="Enter subject here..."
                         className={`temp-form-control-option ${
-                          errors.subject ? "is-invalid" : ""
+                          errors.subject ? "" : ""
                         }`}
                       />
                       {errors.subject && (
@@ -286,7 +284,7 @@ const SupportPage = () => {
                         onChange={handleChange}
                         placeholder="Enter your message"
                         className={`temp-form-control-option ${
-                          errors.message ? "is-invalid" : ""
+                          errors.message ? "" : ""
                         }`}
                       />
                       {errors.message && (

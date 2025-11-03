@@ -172,7 +172,7 @@ const Pandit_DashBoard = () => {
 
                   <Col lg={3} md={3} sm={12}>
                     <Card
-                      className="shadow-sm dbcard-pdit-accept-box-2 flex-fill"
+                      className="shadow-sm dbcard-pdit-accept-box-2 flex-fill mb-2"
                       onClick={() => navigate("/ConfirmedRequests")}
                       style={{ cursor: "pointer" }}
                     >
@@ -201,7 +201,7 @@ const Pandit_DashBoard = () => {
 
                   <Col lg={3} md={3} sm={12}>
                     <Card
-                      className="shadow-sm rounded flex-fill dbcard-box-4"
+                      className="shadow-sm rounded flex-fill dbcard-box-4 mb-2"
                       onClick={() => navigate("/CancelledRequests")}
                       style={{ cursor: "pointer" }}
                     >
@@ -234,9 +234,9 @@ const Pandit_DashBoard = () => {
 
                   <Col lg={3} md={3} sm={12}>
                     <Card
-                      className="shadow-sm rounded flex-fill pandit-box-3"
+                      className="shadow-sm rounded flex-fill pandit-box-3 "
                       onClick={() => navigate("/UpcomingPuja")}
-                      style={{ cursor: "pointer" }}
+                      style={{ cursor: "pointer" }} 
                     >
                       <Card.Body>
                         <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
