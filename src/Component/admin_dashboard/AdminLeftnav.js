@@ -116,7 +116,7 @@ function AdminLeftnav() {
     { icon: <RiDashboard3Line />, label: "All Darshan Booking", path: "/AllDarshanBooking" },
 
  { icon: <RiDashboard3Line />, label: "All Registration Booking", path: "/AllRegistrationBooking" },
- { icon: <RiDashboard3Line />, label: "All Pandit Booking", path: "/AdminDashBoard" },
+ { icon: <RiDashboard3Line />, label: "All Pandit Booking", path: "/AllPanditBooking" },
 
     {
       icon: <LuCalendarClock />,
@@ -127,7 +127,7 @@ function AdminLeftnav() {
         {
           icon: <MdPendingActions />,
           label: "UpComing Event ",
-          path: "/PendingRequests"
+          path: "/AllDarshanBooking"
         },
         {
           icon: <LuCircleCheck />,
