@@ -119,6 +119,17 @@ const CrowdfundingCard = () => {
     setShowFundModal(false);
   };
 
+  const handleDonateClick = (fund) => {
+  navigate("/DonateCrowd", {
+    state: {
+      temple_name: fund.temple_name,
+      fund_raise_name: fund.fund_raise_name,
+      fund_id: fund.fund_id,
+    },
+  });
+};
+
+
   const uniqueTemples = useMemo(() => {
     const setT = new Set();
     funds.forEach((f) => {
@@ -252,7 +263,7 @@ const CrowdfundingCard = () => {
                               <Button
                                 variant="temp-submit-btn"
                                 className="event-click-btn"
-                                onClick={() => alert("Redirect to donation page")}
+                                onClick={() => handleDonateClick(fund)} //  CHANGE: navigate to DonateCrowd
                               >
                                 Donate
                               </Button>
@@ -388,7 +399,7 @@ const CrowdfundingCard = () => {
             <Button
               variant="temp-submit-btn"
               className="event-click-btn"
-              onClick={() => alert("Redirect to donation page")}
+              onClick={() => handleDonateClick(selectedFund)} //  CHANGE: same donate navigation in modal
             >
               Donate
             </Button>

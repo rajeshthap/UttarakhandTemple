@@ -107,6 +107,7 @@ import RejectedBooking from "./Component/temp_dashboard/temp_innerdashboard/tmpl
 import AllBooking from "./Component/temp_dashboard/temp_innerdashboard/tmpl_dashboard_darshan_booking/AllBookings";
 import Donations from "./Component/temp_dashboard/temp_innerdashboard/view_donation/Donations";
 import CrowdFunding from "./Component/temp_dashboard/temp_innerdashboard/CrowdFunding";
+import DonateCrowd from "./Component/temp_dashboard/temp_innerdashboard/DonateCrowd";
 import DarshanBookingReport from "./Component/temp_dashboard/temp_innerdashboard/reports/DarshanBookingReport";
 import DonationReport from "./Component/temp_dashboard/temp_innerdashboard/reports/DonationReport";
 import DonationCollected from "./Component/temp_dashboard/temp_innerdashboard/reports/DonationCollected";
@@ -402,6 +403,7 @@ function App() {
           <Route path="/AllBooking" element={<AllBooking />} />
           <Route path="/Donations" element={<Donations />} />
           <Route path="/CrowdFunding" element={<CrowdFunding />} />
+          <Route path="/DonateCrowd" element={<DonateCrowd />} />
           <Route
             path="/DarshanBookingReport"
             element={<DarshanBookingReport />}
