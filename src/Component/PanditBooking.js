@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Modal } from "react-bootstrap";
+import React, { useState, useEffect, forwardRef } from "react";
+import { InputGroup, Modal } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Accordion, Button, Col, Container, Row, Form } from "react-bootstrap";
 import Select from "react-select";
 import { FaCheck, FaUsersLine } from "react-icons/fa6";
-import { MdOutlineDateRange} from "react-icons/md";
+import { MdOutlineDateRange } from "react-icons/md";
 import { Link } from "react-router-dom";
 //import Kedarnath from "../assets/images/Kedarnath-Temple.png";
 //import Gangotri from "../assets/images/Gangotri-Temple.png";
@@ -27,6 +27,7 @@ import PagingNation from "./paging/PagingNation";
 import { BsInfoCircleFill } from "react-icons/bs";
 import { BASE_URLL } from "./BaseURL";
 import axios from "axios";
+import { FaCalendar } from "react-icons/fa";
 
 const cardData = [
   // ------------------ Puja / Sanskar ------------------
@@ -311,9 +312,24 @@ const cardData = [
     text: "पिंड दान श्राद्ध पूजा",
     img: "",
   },
-  
 ];
-
+const CustomDatePickerInput = forwardRef(
+  ({ value, onClick, placeholder }, ref) => (
+    <InputGroup>
+      <Form.Control
+        ref={ref}
+        value={value}
+        onClick={onClick}
+        placeholder={placeholder}
+        className="temp-form-control-option"
+        readOnly
+      />
+      <InputGroup.Text onClick={onClick} style={{ cursor: "pointer" }}>
+        <FaCalendar />
+      </InputGroup.Text>
+    </InputGroup>
+  )
+);
 const PanditBooking = () => {
   // Move selectedDateTime useState to the top before any logic uses it
   const [selectedDateTime, setSelectedDateTime] = useState(null);
@@ -382,7 +398,7 @@ const PanditBooking = () => {
       setSelectedCard(cardData[0]);
     }
   }, []);
-const buildPanditOptionsForPooja = (poojaName, source = apiPandits) => {
+  const buildPanditOptionsForPooja = (poojaName, source = apiPandits) => {
     if (!poojaName || !Array.isArray(source)) return [];
     const n = normalize(poojaName);
     const opts = [];
@@ -425,14 +441,14 @@ const buildPanditOptionsForPooja = (poojaName, source = apiPandits) => {
     fetchPanditPoojas();
   }, []);
 
-  
-
   // Total should depend only on pandit selection
-const totalAmount =
-  selectedOptions.length > 0
-    ? selectedOptions.reduce((sum, opt) => sum + Number(opt.meta?.price || 0), 0)
-    : 0;
-
+  const totalAmount =
+    selectedOptions.length > 0
+      ? selectedOptions.reduce(
+          (sum, opt) => sum + Number(opt.meta?.price || 0),
+          0
+        )
+      : 0;
 
   return (
     <>
@@ -505,7 +521,7 @@ const totalAmount =
                         setPanditOptions(opts);
 
                         setSelectedCard(item);
-setPanditOptions(opts);
+                        setPanditOptions(opts);
                       }}
                     >
                       <div className="card-image-wrapper-temple-page">
@@ -675,6 +691,9 @@ setPanditOptions(opts);
                                 timeIntervals={30}
                                 dateFormat="MMMM d, yyyy h:mm aa"
                                 placeholderText="Select Date and time"
+                                customInput={
+                                  <CustomDatePickerInput placeholder="Select Date and Time" />
+                                }
                                 className="form-control temp-form-control-option w-100"
                                 minDate={today}
                                 minTime={minTime}

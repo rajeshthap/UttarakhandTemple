@@ -1,5 +1,5 @@
-import React from "react";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import React, { forwardRef } from "react";
+import { Button, Col, Container, InputGroup, Row } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import OTPModel from "../../OTPModel/OTPModel";
@@ -10,6 +10,7 @@ import DatePicker from "react-datepicker";
 import LoginPopup from "../../OTPModel/LoginPopup";
 import { BASE_URLL } from "../../BaseURL";
 import { useAuth } from "../../GlobleAuth/AuthContext";
+import { FaCalendar } from "react-icons/fa";
 
 const SevaRegistration = () => {
   const [show, setShow] = useState(false);
@@ -50,6 +51,23 @@ const SevaRegistration = () => {
     creator_id: uniqueId || "",
   });
 
+  const CustomDatePickerInput = forwardRef(
+    ({ value, onClick, placeholder }, ref) => (
+      <InputGroup>
+        <Form.Control
+          ref={ref}
+          value={value}
+          onClick={onClick}
+          placeholder={placeholder}
+          className="temp-form-control-option"
+          readOnly
+        />
+        <InputGroup.Text onClick={onClick} style={{ cursor: "pointer" }}>
+          <FaCalendar />
+        </InputGroup.Text>
+      </InputGroup>
+    )
+  );
   const handleResendOtp = async () => {
     try {
       const res = await axios.post(`${BASE_URLL}api/send-otp/`, {
@@ -290,78 +308,81 @@ const SevaRegistration = () => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!validateFields()) {
-    setAlertMessage("Please fill all required fields.");
-    setShowAlert(true);
-    setAgree(false);
-    return;
-  }
-
-  if (!isVerified) {
-    setAlertMessage("Please verify your phone number before submitting.");
-    setShowAlert(true);
-    setAgree(false);
-    return;
-  }
-
-  setLoading(true);
-
-  try {
-    const formDataToSend = new FormData();
-    for (let key in formData) {
-      formDataToSend.append(key, formData[key]);
-    }
-
-    const res = await axios.post(`${BASE_URLL}api/seva-booking/`, formDataToSend, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-
-    if (res.data.message === "Seva booking created successfully") {
-      setAlertMessage("Seva Registration Successful!");
+    if (!validateFields()) {
+      setAlertMessage("Please fill all required fields.");
       setShowAlert(true);
       setAgree(false);
+      return;
+    }
 
-      // Reset form
-      setFormData({
-        full_name: "",
-        gender: "",
-        age: "",
-        mobile_number: "",
-        email: "",
-        id_proof_type: "",
-        id_proof_number: "",
-        temple_name: "",
-        temple_id: "",
-        type_of_seva: "",
-        seva_date_and_time: "",
-        frequency: "",
-        participation_mode: "",
-        gotra: "",
-        nakshatra_rashi: "",
-        special_instructions: "",
-        seva_donation_amount: "",
-        payment_mode: "",
-        creator_id: uniqueId || "",
-      });
-    } else {
-      setAlertMessage(res.data.message || "Seva Registration failed");
+    if (!isVerified) {
+      setAlertMessage("Please verify your phone number before submitting.");
       setShowAlert(true);
       setAgree(false);
+      return;
     }
-  } catch (err) {
-    console.error(err);
-    const errorMsg =
-      err.response?.data?.message || err.message || "Something went wrong!";
-    setAlertMessage(errorMsg);
-    setShowAlert(true);
-    setAgree(false);
-  } finally {
-    setLoading(false);
-  }
-};
 
+    setLoading(true);
+
+    try {
+      const formDataToSend = new FormData();
+      for (let key in formData) {
+        formDataToSend.append(key, formData[key]);
+      }
+
+      const res = await axios.post(
+        `${BASE_URLL}api/seva-booking/`,
+        formDataToSend,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
+      if (res.data.message === "Seva booking created successfully") {
+        setAlertMessage("Seva Registration Successful!");
+        setShowAlert(true);
+        setAgree(false);
+
+        // Reset form
+        setFormData({
+          full_name: "",
+          gender: "",
+          age: "",
+          mobile_number: "",
+          email: "",
+          id_proof_type: "",
+          id_proof_number: "",
+          temple_name: "",
+          temple_id: "",
+          type_of_seva: "",
+          seva_date_and_time: "",
+          frequency: "",
+          participation_mode: "",
+          gotra: "",
+          nakshatra_rashi: "",
+          special_instructions: "",
+          seva_donation_amount: "",
+          payment_mode: "",
+          creator_id: uniqueId || "",
+        });
+      } else {
+        setAlertMessage(res.data.message || "Seva Registration failed");
+        setShowAlert(true);
+        setAgree(false);
+      }
+    } catch (err) {
+      console.error(err);
+      const errorMsg =
+        err.response?.data?.message || err.message || "Something went wrong!";
+      setAlertMessage(errorMsg);
+      setShowAlert(true);
+      setAgree(false);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -595,38 +616,42 @@ const SevaRegistration = () => {
                 <h2>Seva Details </h2>
 
                 <Col lg={6} md={6} sm={12}>
-                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-  <Form.Label className="temp-label">
-    Temple Name <span className="temp-span-star">*</span>
-  </Form.Label>
-  <Form.Select
-    className="temp-form-control-option"
-    name="temple_id"   
-    value={formData.temple_id}
-    onChange={(e) => {
-      const selectedTemple = temples.find(
-        (t) => t.temple_id === e.target.value
-      );
-      setFormData({
-        ...formData,
-        temple_id: e.target.value,
-        temple_name: selectedTemple?.temple_name || "",
-      });
-    }}
-  >
-    <option value="">Select Temple Name</option>
-    {temples.map((temple) => (
-      <option key={temple.temple_id} value={temple.temple_id}>
-        {temple.temple_name}
-      </option>
-    ))}
-  </Form.Select>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label className="temp-label">
+                      Temple Name <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Select
+                      className="temp-form-control-option"
+                      name="temple_id"
+                      value={formData.temple_id}
+                      onChange={(e) => {
+                        const selectedTemple = temples.find(
+                          (t) => t.temple_id === e.target.value
+                        );
+                        setFormData({
+                          ...formData,
+                          temple_id: e.target.value,
+                          temple_name: selectedTemple?.temple_name || "",
+                        });
+                      }}
+                    >
+                      <option value="">Select Temple Name</option>
+                      {temples.map((temple) => (
+                        <option key={temple.temple_id} value={temple.temple_id}>
+                          {temple.temple_name}
+                        </option>
+                      ))}
+                    </Form.Select>
 
-  {errors.temple_name && (
-    <small className="text-danger">{errors.temple_name}</small>
-  )}
-</Form.Group>
-
+                    {errors.temple_name && (
+                      <small className="text-danger">
+                        {errors.temple_name}
+                      </small>
+                    )}
+                  </Form.Group>
                 </Col>
 
                 <Col lg={6} md={6} sm={12}>
@@ -683,7 +708,9 @@ const SevaRegistration = () => {
                       timeFormat="hh:mm aa"
                       timeIntervals={30}
                       dateFormat="MMMM d, yyyy h:mm aa"
-                      placeholderText="Select Date and time"
+                      customInput={
+                        <CustomDatePickerInput placeholder="Select Start Date and Time" />
+                      }
                       className="form-control temp-form-control-option w-100"
                       minDate={new Date()}
                       required

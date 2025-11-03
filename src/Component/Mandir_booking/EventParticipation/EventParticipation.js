@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import React, { useState, useEffect, forwardRef } from "react";
+import { Button, Col, Container, InputGroup, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import OTPModel from "../../OTPModel/OTPModel";
 import axios from "axios";
@@ -10,6 +10,7 @@ import { setHours, setMinutes } from "date-fns";
 import LoginPopup from "../../OTPModel/LoginPopup";
 import { BASE_URLL } from "../../BaseURL";
 import { useAuth } from "../../GlobleAuth/AuthContext";
+import { FaCalendar } from "react-icons/fa";
 
 const EventParticipation = () => {
   const { uniqueId } = useAuth();
@@ -57,6 +58,23 @@ const EventParticipation = () => {
   }, [eventData]);
   const location = useLocation();
   const { festival, temple_name, festival_name } = location.state || {};
+  const CustomDatePickerInput = forwardRef(
+    ({ value, onClick, placeholder }, ref) => (
+      <InputGroup>
+        <Form.Control
+          ref={ref}
+          value={value}
+          onClick={onClick}
+          placeholder={placeholder}
+          className="temp-form-control-option"
+          readOnly
+        />
+        <InputGroup.Text onClick={onClick} style={{ cursor: "pointer" }}>
+          <FaCalendar />
+        </InputGroup.Text>
+      </InputGroup>
+    )
+  );
 
   // Add this function to fetch festivals for a specific temple
   const fetchFestivalsForTemple = async (templeName) => {
@@ -151,17 +169,16 @@ const EventParticipation = () => {
       setShowAlert(true);
     }
   };
-useEffect(() => {
-  if (location.state) {
-    const { temple_name } = location.state;
+  useEffect(() => {
+    if (location.state) {
+      const { temple_name } = location.state;
 
-    setFormData((prev) => ({
-      ...prev,
-      temple_name: temple_name || prev.temple_name,
-    
-    }));
-  }
-}, [location.state]);
+      setFormData((prev) => ({
+        ...prev,
+        temple_name: temple_name || prev.temple_name,
+      }));
+    }
+  }, [location.state]);
   useEffect(() => {
     const fetchTemplesAndFestivals = async () => {
       try {
@@ -363,53 +380,55 @@ useEffect(() => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!validateFields()) {
-    setAlertMessage("Please fill all required fields.");
-    setShowAlert(true);
-    return;
-  }
+    if (!validateFields()) {
+      setAlertMessage("Please fill all required fields.");
+      setShowAlert(true);
+      return;
+    }
 
-  if (!otpVerified) {
-    setAlertMessage("Please verify OTP before registering.");
-    setShowAlert(true);
-    return;
-  }
+    if (!otpVerified) {
+      setAlertMessage("Please verify OTP before registering.");
+      setShowAlert(true);
+      return;
+    }
 
-  try {
-    const formattedFormData = {
-      ...formData,
-      event_date_and_time: formData.event_date_and_time
-        ? new Date(formData.event_date_and_time).toISOString()
-        : null,
-      end_event_date_and_time: formData.end_event_date_and_time
-        ? new Date(formData.end_event_date_and_time).toISOString()
-        : null,
-    };
+    try {
+      const formattedFormData = {
+        ...formData,
+        event_date_and_time: formData.event_date_and_time
+          ? new Date(formData.event_date_and_time).toISOString()
+          : null,
+        end_event_date_and_time: formData.end_event_date_and_time
+          ? new Date(formData.end_event_date_and_time).toISOString()
+          : null,
+      };
 
-    // POST request
-    const res = await axios.post(`${BASE_URLL}api/event-booking/`, formattedFormData);
+      // POST request
+      const res = await axios.post(
+        `${BASE_URLL}api/event-booking/`,
+        formattedFormData
+      );
 
-    if (res.status === 200 || res.status === 201) {
-      setTimeout(() => {
-        setAlertMessage("Event Registered Successfully!");
+      if (res.status === 200 || res.status === 201) {
+        setTimeout(() => {
+          setAlertMessage("Event Registered Successfully!");
+          setShowAlert(true);
+        }, 2000);
+      }
+    } catch (err) {
+      if (err.response && err.response.data) {
+        console.error("Server Error:", err.response.data);
+        setAlertMessage("Booking failed: " + JSON.stringify(err.response.data));
         setShowAlert(true);
-      }, 2000);
+      } else {
+        console.error("Error:", err);
+        setAlertMessage("Something went wrong. Please try again.");
+        setShowAlert(true);
+      }
     }
-  } catch (err) {
-    if (err.response && err.response.data) {
-      console.error("Server Error:", err.response.data);
-      setAlertMessage("Booking failed: " + JSON.stringify(err.response.data));
-      setShowAlert(true);
-    } else {
-      console.error("Error:", err);
-      setAlertMessage("Something went wrong. Please try again.");
-      setShowAlert(true);
-    }
-  }
-};
-
+  };
 
   const [selectedFestival, setSelectedFestival] = useState(null);
 
@@ -641,7 +660,7 @@ useEffect(() => {
                       name="temple_name"
                       value={formData.temple_name}
                       onChange={handleChange}
-                      disabled={!!formData.temple_name }
+                      disabled={!!formData.temple_name}
                     >
                       <option value="">Select Temple Name</option>
                       {temples.map((temple, index) => (
@@ -778,7 +797,9 @@ useEffect(() => {
                         timeFormat="hh:mm aa"
                         timeIntervals={30}
                         dateFormat="MMMM d, yyyy h:mm aa"
-                        placeholderText="Select Date and time"
+                        customInput={
+                          <CustomDatePickerInput placeholder="Select Start Date and Time" />
+                        }
                         className="form-control temp-form-control-option w-100"
                         minDate={today}
                         minTime={minTime}
@@ -807,7 +828,9 @@ useEffect(() => {
                         timeFormat="hh:mm aa"
                         timeIntervals={30}
                         dateFormat="MMMM d, yyyy h:mm aa"
-                        placeholderText="Select End Date and Time"
+                        customInput={
+                          <CustomDatePickerInput placeholder="Select Start Date and Time" />
+                        }
                         className="form-control temp-form-control-option w-100"
                         minDate={today}
                         minTime={minTime}

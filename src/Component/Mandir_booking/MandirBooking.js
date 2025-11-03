@@ -1,7 +1,7 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import Select from "react-select";
 
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, InputGroup, Row } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import OTPModel from "../OTPModel/OTPModel";
@@ -15,7 +15,7 @@ import LoginPopup from "../OTPModel/LoginPopup";
 import { useLocation } from "react-router-dom";
 import { BASE_URLL } from "../BaseURL";
 import { useAuth } from "../GlobleAuth/AuthContext";
-
+import { FaCalendar } from "react-icons/fa";
 
 const MandirBooking = () => {
   const [show, setShow] = useState(false);
@@ -24,7 +24,6 @@ const MandirBooking = () => {
   const navigate = useNavigate();
   const { uniqueId } = useAuth();
   const { temple_id } = location.state || {};
-  
 
   // Array to hold details for each person
   const [persons, setPersons] = useState([]);
@@ -47,12 +46,9 @@ const MandirBooking = () => {
     grand_total: "",
     payment_mode: "",
     no_of_persons: "",
-    devotee_details: [
-
-    ],
+    devotee_details: [],
     pooja_details: [],
     creator_id: uniqueId || "",
-
   });
 
   const handleClose = () => setShow(false);
@@ -70,6 +66,23 @@ const MandirBooking = () => {
   const [selectedPoojas, setSelectedPoojas] = useState([]);
   const [, setTempleOptions] = useState([]);
 
+  const CustomDatePickerInput = forwardRef(
+    ({ value, onClick, placeholder }, ref) => (
+      <InputGroup>
+        <Form.Control
+          ref={ref}
+          value={value}
+          onClick={onClick}
+          placeholder={placeholder}
+          className="temp-form-control-option"
+          readOnly
+        />
+        <InputGroup.Text onClick={onClick} style={{ cursor: "pointer" }}>
+          <FaCalendar />
+        </InputGroup.Text>
+      </InputGroup>
+    )
+  );
   const {
     temple_name,
     no_of_persons,
@@ -87,14 +100,14 @@ const MandirBooking = () => {
     selectedPoojaId ||
     (pooja && pooja.temple_pooja_id);
 
-    useEffect(() => {
-  if (temple_id) {
-    setFormData((prev) => ({
-      ...prev,
-      temple_id: temple_id, 
-    }));
-  }
-}, [temple_id]);
+  useEffect(() => {
+    if (temple_id) {
+      setFormData((prev) => ({
+        ...prev,
+        temple_id: temple_id,
+      }));
+    }
+  }, [temple_id]);
   useEffect(() => {
     if (!incomingPoojaDetails) return;
 
@@ -359,8 +372,9 @@ const MandirBooking = () => {
       if (value && value.trim() !== "") {
         delete newErrors[fieldName]; // Clear only the current field's error
       } else {
-        newErrors[fieldName] = `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
-          } is required`;
+        newErrors[fieldName] = `${
+          fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
+        } is required`;
       }
       return newErrors;
     });
@@ -375,29 +389,31 @@ const MandirBooking = () => {
       // Don't clear city error here - it should remain until filled
     }
   };
-//Fetch Users Data
-useEffect(() => {
-  const fetchUserData = async () => {
-    if (!uniqueId) return;
-    try {
-      const res = await axios.get(`${BASE_URLL}api/all-reg/`);
-      if (res.data && Array.isArray(res.data)) {
-        const user = res.data.find((u) => u.unique_id === uniqueId);
-        if (user) {
-          const phone = user.phone ? String(user.phone).replace(/\D/g, "") : "";
-          setFormData((prev) => ({
-            ...prev,
-            mobile_number: phone,
-            email: user.email || prev.email,
-          }));
+  //Fetch Users Data
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (!uniqueId) return;
+      try {
+        const res = await axios.get(`${BASE_URLL}api/all-reg/`);
+        if (res.data && Array.isArray(res.data)) {
+          const user = res.data.find((u) => u.unique_id === uniqueId);
+          if (user) {
+            const phone = user.phone
+              ? String(user.phone).replace(/\D/g, "")
+              : "";
+            setFormData((prev) => ({
+              ...prev,
+              mobile_number: phone,
+              email: user.email || prev.email,
+            }));
+          }
         }
+      } catch (err) {
+        console.error("Error fetching user data:", err);
       }
-    } catch (err) {
-      console.error("Error fetching user data:", err);
-    }
-  };
-  fetchUserData();
-}, [uniqueId]);
+    };
+    fetchUserData();
+  }, [uniqueId]);
 
   useEffect(() => {
     const fetchTemples = async () => {
@@ -439,13 +455,15 @@ useEffect(() => {
           devoteeHasError = true;
         }
         if (!person.gender) {
-          newErrors[`person_${idx}_gender`] = `Gender is required for person ${idx + 1
-            }`;
+          newErrors[`person_${idx}_gender`] = `Gender is required for person ${
+            idx + 1
+          }`;
           devoteeHasError = true;
         }
         if (!person.age || isNaN(person.age) || person.age <= 0) {
-          newErrors[`person_${idx}_age`] = `Valid age is required for person ${idx + 1
-            }`;
+          newErrors[`person_${idx}_age`] = `Valid age is required for person ${
+            idx + 1
+          }`;
           devoteeHasError = true;
         }
         if (!person.id_proof_type) {
@@ -462,7 +480,9 @@ useEffect(() => {
         } else if (person.id_proof_number.length > 16) {
           newErrors[
             `person_${idx}_id_proof_number`
-          ] = `ID Proof Number cannot exceed 16 characters for person ${idx + 1}`;
+          ] = `ID Proof Number cannot exceed 16 characters for person ${
+            idx + 1
+          }`;
           devoteeHasError = true;
         }
       });
@@ -648,14 +668,15 @@ useEffect(() => {
       const key = `person_${idx}_${field}`;
 
       const isValid = (() => {
-        if (field === "full_name")
-          return value && String(value).trim() !== "";
+        if (field === "full_name") return value && String(value).trim() !== "";
         if (field === "age")
           return value !== "" && !isNaN(Number(value)) && Number(value) > 0;
         if (field === "gender" || field === "id_proof_type")
           return value && String(value).trim() !== "";
         if (field === "id_proof_number")
-          return value && String(value).trim() !== "" && String(value).length <= 16;
+          return (
+            value && String(value).trim() !== "" && String(value).length <= 16
+          );
         return true;
       })();
 
@@ -668,9 +689,12 @@ useEffect(() => {
             age: `Valid age is required for person ${idx + 1}`,
             gender: `Gender is required for person ${idx + 1}`,
             id_proof_type: `ID Proof Type is required for person ${idx + 1}`,
-            id_proof_number: `ID Proof Number is required for person ${idx + 1}`,
+            id_proof_number: `ID Proof Number is required for person ${
+              idx + 1
+            }`,
           };
-          newErr[key] = messages[field] || `Invalid value for person ${idx + 1}`;
+          newErr[key] =
+            messages[field] || `Invalid value for person ${idx + 1}`;
         }
       }
 
@@ -747,10 +771,10 @@ useEffect(() => {
           );
           return found
             ? {
-              pooja_id: id,
-              pooja_name: found.temple_pooja_name || found.name || "",
-              pooja_price: found.temple_pooja_price || found.price || 0,
-            }
+                pooja_id: id,
+                pooja_name: found.temple_pooja_name || found.name || "",
+                pooja_price: found.temple_pooja_price || found.price || 0,
+              }
             : { pooja_id: id };
         });
       }
@@ -787,15 +811,12 @@ useEffect(() => {
 
       console.log("Darshan payload:", payload);
 
-      
-
       const res = await axios.post(
         `${BASE_URLL}api/darshan-pooja-booking/`,
         payload,
         {
           headers: {
             "Content-Type": "application/json",
-            
           },
         }
       );
@@ -840,43 +861,50 @@ useEffect(() => {
               <h2>Personal Details</h2>
               <Row>
                 <Col lg={6} md={6} sm={12}>
-  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-    <Form.Label className="temp-label">
-      Mobile Number <span className="temp-span-star">*</span>
-    </Form.Label>
-    <Form.Control
-  type="text"       // <- use text
-  placeholder="Enter Mobile Number"
-  className="temp-form-control"
-  name="mobile_number"
-  value={formData.mobile_number || ""}
-  disabled           // <- keep disabled
-/>
-    {errors.mobile_number && (
-      <small className="text-danger">{errors.mobile_number}</small>
-    )}
-  </Form.Group>
-</Col>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label className="temp-label">
+                      Mobile Number <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text" // <- use text
+                      placeholder="Enter Mobile Number"
+                      className="temp-form-control"
+                      name="mobile_number"
+                      value={formData.mobile_number || ""}
+                      disabled // <- keep disabled
+                    />
+                    {errors.mobile_number && (
+                      <small className="text-danger">
+                        {errors.mobile_number}
+                      </small>
+                    )}
+                  </Form.Group>
+                </Col>
 
-<Col lg={6} md={6} sm={12}>
-  <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-    <Form.Label className="temp-label">
-      Email ID <span className="temp-span-star">*</span>
-    </Form.Label>
-    <Form.Control
-      type="email"
-      placeholder="Enter Email ID"
-      className="temp-form-control"
-      name="email"
-      value={formData.email || ""}
-      disabled // disable editing
-    />
-    {errors.email && (
-      <small className="text-danger">{errors.email}</small>
-    )}
-  </Form.Group>
-</Col>
-
+                <Col lg={6} md={6} sm={12}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <Form.Label className="temp-label">
+                      Email ID <span className="temp-span-star">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="email"
+                      placeholder="Enter Email ID"
+                      className="temp-form-control"
+                      name="email"
+                      value={formData.email || ""}
+                      disabled // disable editing
+                    />
+                    {errors.email && (
+                      <small className="text-danger">{errors.email}</small>
+                    )}
+                  </Form.Group>
+                </Col>
 
                 <Col lg={6} md={6} sm={12}>
                   <Form.Group
@@ -946,8 +974,10 @@ useEffect(() => {
                         timeFormat="hh:mm aa"
                         timeIntervals={30}
                         dateFormat="MMMM d, yyyy h:mm aa"
-                        placeholderText="Select Date and time"
                         className="form-control temp-form-control-option w-100"
+                        customInput={
+                          <CustomDatePickerInput placeholder="Select Date and Time" />
+                        }
                         minDate={today}
                         minTime={minTime}
                         maxTime={maxTime}

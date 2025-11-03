@@ -1,5 +1,5 @@
-import React from "react";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import React, { forwardRef } from "react";
+import { Button, Col, Container, InputGroup, Row } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import OTPModel from "../../OTPModel/OTPModel";
@@ -11,6 +11,7 @@ import DatePicker from "react-datepicker";
 import { setHours, setMinutes } from "date-fns";
 import LoginPopup from "../../OTPModel/LoginPopup";
 import { BASE_URLL } from "../../BaseURL";
+import { FaCalendar } from "react-icons/fa";
 
 const PoojaBooking = () => {
   const [show, setShow] = useState(false);
@@ -35,6 +36,23 @@ const PoojaBooking = () => {
     return setMinutes(setHours(date, nextHour), nextMinutes);
   };
 
+  const CustomDatePickerInput = forwardRef(
+    ({ value, onClick, placeholder }, ref) => (
+      <InputGroup>
+        <Form.Control
+          ref={ref}
+          value={value}
+          onClick={onClick}
+          placeholder={placeholder}
+          className="temp-form-control-option"
+          readOnly
+        />
+        <InputGroup.Text onClick={onClick} style={{ cursor: "pointer" }}>
+          <FaCalendar />
+        </InputGroup.Text>
+      </InputGroup>
+    )
+  );
   const today = new Date();
   const isToday =
     selectedDateTime &&
@@ -81,9 +99,7 @@ const PoojaBooking = () => {
 
   const checkUserExists = async (fieldValue, fieldName) => {
     try {
-      const res = await axios.get(
-        `${BASE_URLL}api/all-reg/`
-      );
+      const res = await axios.get(`${BASE_URLL}api/all-reg/`);
 
       const userExists = res.data.some((user) => {
         if (fieldName === "mobile_number") return user.phone === fieldValue;
@@ -102,12 +118,9 @@ const PoojaBooking = () => {
 
   const handleResendOtp = async () => {
     try {
-      const res = await axios.post(
-        `${BASE_URLL}api/send-otp/`,
-        {
-          phone: formData.mobile_number,
-        }
-      );
+      const res = await axios.post(`${BASE_URLL}api/send-otp/`, {
+        phone: formData.mobile_number,
+      });
 
       if (res.data.success) {
       } else {
@@ -136,9 +149,7 @@ const PoojaBooking = () => {
   useEffect(() => {
     const fetchTemples = async () => {
       try {
-        const res = await axios.get(
-          `${BASE_URLL}api/temple-names-list/`
-        );
+        const res = await axios.get(`${BASE_URLL}api/temple-names-list/`);
         if (res.data && Array.isArray(res.data.temple_names)) {
           setTemples(res.data.temple_names);
         }
@@ -283,12 +294,9 @@ const PoojaBooking = () => {
 
     //  otherwise send OTP
     try {
-      const res = await axios.post(
-        `${BASE_URLL}api/send-otp/`,
-        {
-          phone: formData.mobile_number,
-        }
-      );
+      const res = await axios.post(`${BASE_URLL}api/send-otp/`, {
+        phone: formData.mobile_number,
+      });
 
       if (res.data.success) {
         setOtpSent(true);
@@ -317,13 +325,10 @@ const PoojaBooking = () => {
 
   const handleVerifyOtp = async () => {
     try {
-      const res = await axios.post(
-        `${BASE_URLL}api/verify-otp/`,
-        {
-          phone: formData.mobile_number,
-          otp: otp,
-        }
-      );
+      const res = await axios.post(`${BASE_URLL}api/verify-otp/`, {
+        phone: formData.mobile_number,
+        otp: otp,
+      });
 
       if (res.data.success) {
         setIsVerified(true);
@@ -755,12 +760,15 @@ const PoojaBooking = () => {
                     <div>
                       <DatePicker
                         selected={selectedDateTime}
-                        onChange={handleDateChange} 
+                        onChange={handleDateChange}
                         showTimeSelect
                         timeFormat="hh:mm aa"
                         timeIntervals={30}
                         dateFormat="MMMM d, yyyy h:mm aa"
                         placeholderText="Select Date and time"
+                        customInput={
+                          <CustomDatePickerInput placeholder="Select Date and Time" />
+                        }
                         className="form-control temp-form-control-option w-100"
                         minDate={today}
                         minTime={minTime}
