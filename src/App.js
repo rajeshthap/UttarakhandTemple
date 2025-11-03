@@ -139,7 +139,11 @@ import PanditPlatformInfo from "./Component/pandit_dashboard/pandit_innerdashbor
 import TempleChangePassword from "./Component/temp_dashboard/temp_innerdashboard/tmpl_dashboard_darshan_booking/TempleChangePassword";
 import NewPujaBooking from "./Component/pandit_dashboard/pandit_innerdashborad/PanditDetailsPage/NewPujaBooking";
 import UpcomingPuja from "./Component/pandit_dashboard/pandit_innerdashborad/PanditDetailsPage/UpcomingPuja";
+import AdminLeftnav from "./Component/admin_dashboard/AdminLeftnav";
+import AdminDashBoard from "./Component/admin_dashboard/AdminDashBoard";
 import CrowdfundingCard from "./Component/CrowdfundingCard";
+import AllDarshanBooking from "./Component/admin_dashboard/admin_innerdashboard/AllDarshanBooking";
+import AllRegistrationBooking from "./Component/admin_dashboard/admin_innerdashboard/AllRegistrationBooking";
 
 // import BASE_URLL from "./Component/BaseURL";
 // import DashBoard from "./Component/dashboard/DashBoard";
@@ -231,6 +235,10 @@ function App() {
     "/TempleChangePassword",
     "/NewPujaBooking",
     "/UpcomingPuja",
+    "/AdminLeftnav",
+    "/AdminDashBoard",
+    "/AllDarshanBooking",
+    "/AllRegistrationBooking"
   
   
   ]);
@@ -433,8 +441,12 @@ function App() {
           <Route path="/TempleChangePassword" element={<TempleChangePassword />} />
           <Route path="/NewPujaBooking" element={<NewPujaBooking />} />
           <Route path="/CrowdfundingCard" element={<CrowdfundingCard />} />
+          <Route path="/AdminLeftnav" element={<AdminLeftnav />} />
+          <Route path="/AdminDashBoard" element={<AdminDashBoard />} />
+          <Route path="/AllDarshanBooking" element={<AllDarshanBooking />} />
+          <Route path="/AllRegistrationBooking" element={<AllRegistrationBooking />} />
          
-         
+      
        
           
         </Routes>
