@@ -11,6 +11,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaCamera } from "react-icons/fa";
 import DefaultProfile from "../../../assets/images/Diya.png";
+
 const PanditProfile = () => {
   const { uniqueId } = useAuth();
   const [profile, setProfile] = useState({});
@@ -20,27 +21,36 @@ const PanditProfile = () => {
   const [alertMsg, setAlertMsg] = useState("");
   const [dragging, setDragging] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
-
   const [previewUrl, setPreviewUrl] = useState("");
-
-  const handleEditPhoto = () => {
-    fileInputRef.current?.click();
-  };
+  const [imageVersion, setImageVersion] = useState(Date.now()); // Add this for cache busting
   const [preview, setPreview] = useState({
     pandit_image: "",
     land_document: "",
   });
+
+  const fileInputRef = useRef(null);
+  const docInputRef = useRef(null);
+
+  const handleEditPhoto = () => {
+    fileInputRef.current?.click();
+  };
+
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    
+    // Store the file in profile state
+    setProfile(prev => ({ ...prev, pandit_image: file }));
     setSelectedFile(file);
-    // preview
+    
+    // Create preview URL
     const reader = new FileReader();
-    reader.onload = (ev) => setPreviewUrl(ev.target.result);
+    reader.onload = (ev) => {
+      setPreviewUrl(ev.target.result);
+      setImageVersion(Date.now()); // Update version to force re-render
+    };
     reader.readAsDataURL(file);
   };
-  const fileInputRef = useRef(null);
-  const docInputRef = useRef(null);
 
   const roleOptions = [
     { value: "pooja", label: "पूजा विशेषज्ञ" },
@@ -55,14 +65,12 @@ const PanditProfile = () => {
     { value: "other", label: "अन्य" },
   ];
 
+  // Updated image URL resolver with cache busting
   const getImageUrl = (imgPath) => {
     if (!imgPath) return DefaultProfile;
-
-    // If the image is already a base64 string (local preview before upload)
-    if (imgPath.startsWith("data:image")) return imgPath;
-
+    if (imgPath.startsWith("data:image")) return imgPath; // local preview
     const filename = imgPath.split("/").pop();
-    return `https://mahadevaaya.com/backend/media/pandit_images/${filename}?t=${Date.now()}`;
+    return `https://mahadevaaya.com/backend/media/pandit_images/${filename}?v=${imageVersion}`;
   };
 
   useEffect(() => {
@@ -74,21 +82,14 @@ const PanditProfile = () => {
         const data = res.data || {};
         setProfile(data);
 
-        //  if backend has image, build proper URL
         if (data.pandit_image) {
           const filename = data.pandit_image.split("/").pop();
           setPreviewUrl(
-            `https://mahadevaaya.com/backend/media/pandit_images/${filename}`
+            `https://mahadevaaya.com/backend/media/pandit_images/${filename}?v=${imageVersion}`
           );
         } else {
-          setPreviewUrl("");
+          setPreviewUrl(DefaultProfile);
         }
-
-        // keep preview object for document
-        setPreview({
-          pandit_image: "",
-          land_document: "",
-        });
       } catch (err) {
         console.error("Error fetching profile:", err);
         setAlertMsg("Failed to fetch profile data.");
@@ -99,7 +100,7 @@ const PanditProfile = () => {
     };
 
     if (uniqueId) fetchProfile();
-  }, [uniqueId]);
+  }, [uniqueId, imageVersion]);
 
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
@@ -129,12 +130,16 @@ const PanditProfile = () => {
   const removeSelectedFile = (field) => {
     setPreview((p) => ({ ...p, [field]: "" }));
     setProfile((p) => ({ ...p, [field]: "" }));
-    if (field === "pandit_image" && fileInputRef.current)
-      fileInputRef.current.value = "";
+    if (field === "pandit_image") {
+      setSelectedFile(null);
+      setPreviewUrl(DefaultProfile);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
     if (field === "land_document" && docInputRef.current)
       docInputRef.current.value = "";
   };
 
+  // Updated handleSubmit with more robust image refresh
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
@@ -155,9 +160,7 @@ const PanditProfile = () => {
         "phone",
         "email",
       ];
-      keys.forEach((k) => {
-        if (profile[k] !== undefined) fd.append(k, profile[k] ?? "");
-      });
+      keys.forEach((k) => fd.append(k, profile[k] ?? ""));
 
       if (profile.pandit_role)
         fd.append("pandit_role", JSON.stringify(profile.pandit_role));
@@ -176,21 +179,27 @@ const PanditProfile = () => {
       setAlertMsg("Profile updated successfully!");
       setShowAlert(true);
 
+      // Fetch updated profile
       const fresh = await axios.get(
         `https://mahadevaaya.com/backend/api/get-pandit/?pandit_id=${uniqueId}`
       );
-      //  Update preview first, then profile
+
+      // Update profile state
+      setProfile(fresh.data || {});
+
+      // Update image version to force refresh
+      setImageVersion(Date.now());
+
+      // If there's a new image, update the preview URL
       if (fresh.data?.pandit_image) {
         const filename = fresh.data.pandit_image.split("/").pop();
-        const newUrl = `https://mahadevaaya.com/backend/media/pandit_images/${filename}?t=${Date.now()}`;
+        const newUrl = `https://mahadevaaya.com/backend/media/pandit_images/${filename}?v=${Date.now()}`;
         setPreviewUrl(newUrl);
       } else {
         setPreviewUrl(DefaultProfile);
       }
 
-      setProfile(fresh.data || {});
-
-      //  Reset file input and selected file
+      // Reset file input and selected file
       setSelectedFile(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
 
@@ -199,6 +208,7 @@ const PanditProfile = () => {
         land_document: fresh.data?.land_document || "",
       });
 
+      // Sidebar update
       window.dispatchEvent(
         new CustomEvent("profileUpdated", {
           detail: {
@@ -206,7 +216,7 @@ const PanditProfile = () => {
             devotee_photo: fresh.data.pandit_image
               ? `https://mahadevaaya.com/backend/media/pandit_images/${fresh.data.pandit_image
                   .split("/")
-                  .pop()}?t=${Date.now()}`
+                  .pop()}?v=${Date.now()}`
               : DefaultProfile,
           },
         })
@@ -251,15 +261,14 @@ const PanditProfile = () => {
           ) : (
             <Form onSubmit={handleSubmit} className="profile-form mt-4">
               <Row>
-                {/* Circular Profile Image */}
                 <Col lg={2} md={4} sm={12} className="text-center">
                   <div className="profile-photo-wrapper position-relative mx-auto">
                     <img
                       src={getImageUrl(previewUrl || profile.pandit_image)}
                       alt={profile.first_name || "Pandit"}
                       className="profile-photo"
+                      key={`${previewUrl}-${imageVersion}`} // More robust key
                     />
-
                     <div className="edit-overlay" onClick={handleEditPhoto}>
                       <FaCamera className="edit-icon" />
                     </div>
@@ -305,7 +314,7 @@ const PanditProfile = () => {
                     <Col lg={4}>
                       <Form.Group className="mb-3">
                         <Form.Label className="temp-label">
-                          Father’s Name
+                          Father's Name
                         </Form.Label>
                         <Form.Control
                           name="father_name"
