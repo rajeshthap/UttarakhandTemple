@@ -16,6 +16,7 @@ import { BASE_URLL } from "../../BaseURL";
 import UploadFileIcon from "../../../assets/images/upload-icon.png";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaCheckCircle } from "react-icons/fa";
+import "../../../assets/CSS/Support.css"
 
 const SupportPage = () => {
   // Basic Form State

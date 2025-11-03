@@ -397,7 +397,7 @@ useEffect(() => {
             .pop()}?t=${Date.now()}`
       : "https://mahadevaaya.com/backend/media/devotee_photos/default.png"
   }
-  alt={profile.displayName || "Devotee"}
+  alt={profile.displayName || ""}
   className="nav-profile-photo"
 />
                 </Dropdown.Toggle>

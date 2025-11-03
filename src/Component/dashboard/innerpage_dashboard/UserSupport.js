@@ -11,7 +11,7 @@ import LeftNav from "../LeftNav";
 const UserSupport = () => {
   return (
     <div className="dashboard-wrapper">
-      <aside className="pandit-sidebar">
+      <aside className="sidebar">
         <LeftNav />
       </aside>
 
