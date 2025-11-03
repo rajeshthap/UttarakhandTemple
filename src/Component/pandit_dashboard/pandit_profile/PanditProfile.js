@@ -7,7 +7,6 @@ import PanditLeftNav from "../PanditLeftNav";
 import ModifyAlert from "../../Alert/ModifyAlert";
 import LocationState from "../../userregistration/LocationState";
 import UploadFile from "../../../assets/images/upload-icon.png";
-import DefaultProfile from "../../../assets/images/Diya.png";
 import { FaCheckCircle } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
