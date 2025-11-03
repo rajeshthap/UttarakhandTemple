@@ -38,11 +38,11 @@ const MyProfile = () => {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const displayImageUrl = useMemo(() => {
-    // ✅ Check if there's a selected file (local preview)
+    //   Check if there's a selected file (local preview)
     if (selectedFile) {
       return URL.createObjectURL(selectedFile);
     }
-    // ✅ Otherwise, use the server image with cache-busting
+    //   Otherwise, use the server image with cache-busting
     if (profile.devotee_photo) {
       const filename = profile.devotee_photo.split("/").pop();
       return `https://mahadevaaya.com/backend/media/devotee_photos/${filename}?v=${imageVersion}`;
@@ -83,16 +83,16 @@ const MyProfile = () => {
       if (res.status >= 200 && res.status < 300) {
         const updated = res.data || {};
         
-        // ✅ Update the image version to force refresh
+        //   Update the image version to force refresh
         setImageVersion(Date.now());
         
-        // ✅ Update profile state with the new image path
+        //   Update profile state with the new image path
         setProfile((prev) => ({
           ...prev,
           devotee_photo: updated.devotee_photo || prev.devotee_photo,
         }));
         
-        // ✅ Emit event for LeftNav with cache-busted URL
+        //   Emit event for LeftNav with cache-busted URL
         const photoUrl = updated.devotee_photo
           ? `https://mahadevaaya.com/backend/media/devotee_photos/${updated.devotee_photo
               .split("/")
@@ -120,7 +120,7 @@ const MyProfile = () => {
       setShowAlert(true);
     } finally {
       setImageUploading(false);
-      // ✅ Clear the selected file state to show the server image
+      //   Clear the selected file state to show the server image
       setSelectedFile(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
     }
@@ -219,7 +219,7 @@ const MyProfile = () => {
         setOriginalProfile(JSON.parse(JSON.stringify(profileData)));
         setHasChanges(false);
 
-        // ✅ Create a proper URL for the event
+        //   Create a proper URL for the event
         const photoUrl = updated.devotee_photo
           ? `https://mahadevaaya.com/backend/media/devotee_photos/${updated.devotee_photo
               .split("/")
