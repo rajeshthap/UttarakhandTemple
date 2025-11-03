@@ -45,13 +45,13 @@ const AdminDashBoard = () => {
 
             {/* Dashboard Cards */}
             <Row>
-              <Col lg={3} md={3} sm={12}>
+              <Col lg={4} md={4} sm={12}>
                 <Card className="shadow-sm rounded dbcard-pditnew-puja-box-1 flex-fill mb-2">
                   <Card.Body>
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
                       <div>
                         <span className="text-muted d-block mb-1 text-nowrap user-sub-title">
-                          New Puja Booking
+                          User
                         </span>
                         <h4 className="fw-medium mb-0">0</h4>
                         <div>
@@ -72,13 +72,13 @@ const AdminDashBoard = () => {
                 </Card>
               </Col>
 
-              <Col lg={3} md={3} sm={12}>
+              <Col lg={4} md={4} sm={12}>
                 <Card className="shadow-sm dbcard-pdit-accept-box-2 flex-fill">
                   <Card.Body>
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
                       <div>
                         <span className="text-muted d-block mb-1 text-nowrap user-sub-title">
-                          Accepted Puja Booking
+                          Pandit
                         </span>
                         <h4 className="fw-medium mb-0">0</h4>
                         <div>
@@ -95,13 +95,13 @@ const AdminDashBoard = () => {
                 </Card>
               </Col>
 
-              <Col lg={3} md={3} sm={12}>
+              <Col lg={4} md={4} sm={12}>
                 <Card className="shadow-sm rounded flex-fill dbcard-box-4">
                   <Card.Body>
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
                       <div>
                         <span className="text-muted d-block mb-1 text-nowrap user-sub-title">
-                          Rejected Puja Booking
+                         Temple
                         </span>
                         <h4 className="fw-medium mb-0">0</h4>
                         <div>
@@ -122,28 +122,7 @@ const AdminDashBoard = () => {
                 </Card>
               </Col>
 
-              <Col lg={3} md={3} sm={12}>
-                <Card className="shadow-sm rounded flex-fill pandit-box-3">
-                  <Card.Body>
-                    <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
-                      <div>
-                        <span className="text-muted d-block mb-1 text-nowrap user-sub-title">
-                          Upcoming Pujas
-                        </span>
-                        <h4 className="fw-medium mb-0">0</h4>
-                        <div>
-                          <span className="user-span">View Details</span>
-                        </div>
-                      </div>
-                      <div className="lh-1">
-                        <div className="avatar-md avatar-rounded Donations-bg flex-shrink-0 d-flex align-items-center justify-content-center">
-                          <BiSolidDonateBlood />
-                        </div>
-                      </div>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
+             
             </Row>
           </div>
         </main>
