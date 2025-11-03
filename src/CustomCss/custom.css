@@ -217,6 +217,7 @@ body {
 
 }
 
+
 .custom-arrow {
     position: absolute;
     top: 50%;
@@ -352,6 +353,28 @@ input[type=number] {
 
 
 }
+/* Proper icon positioning inside password input */
+.password-toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 15px;              /* Distance from right edge */
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #6c757d;
+  font-size: 1.2rem;
+  z-index: 2;
+  transition: color 0.2s ease;
+}
+
+/* Slight hover color change */
+.password-toggle-icon:hover {
+  color: #000;
+}
+
+/* Add padding so text doesn’t overlap icon */
+.temp-form-control-option {
+  padding-right: 45px !important;
+}
 
 .event-row {
     display: flex;
@@ -382,7 +405,14 @@ input[type=number] {
     border: 1px solid var(--temp-org) !important;
 }
 
-
+.d-flex.justify-content-between.align-items-center.desktop-view-none {
+    display: none !important;
+}
+.d-flex.justify-content-between.align-items-center.mobile-view-none {
+    display: inline-block !important;
+    display: flex !important;
+}
+   
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
 
@@ -454,6 +484,16 @@ input[type=number] {
         box-shadow: none !important;
 
     }
+    .mobile-view-none{
+        display: none !important;
+    }
+    .d-flex.justify-content-between.align-items-center.desktop-view-none {
+    display: inline-block !important;
+    display: flex !important;
+}
+.d-flex.justify-content-between.align-items-center.mobile-view-none {
+    display: none !important;
+}
 
     .main-container {
         padding: 0px;
@@ -475,6 +515,9 @@ input[type=number] {
     .pandit-mob-view{
         display: flex;
         
+    }
+   .data-mob-view{
+font-size: var(--temp-space-300);
     }
 }
 

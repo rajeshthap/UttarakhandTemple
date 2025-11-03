@@ -145,7 +145,7 @@ const PujaCalendar = () => {
       <strong style={{ display: "block", fontSize: "12px" }}>
         {event.title.split(" - ")[0]}
       </strong>
-      <div
+      <div className="pandit-cla-style"
         style={{
           fontSize: "0.8em",
           marginTop: "2px",
@@ -173,7 +173,7 @@ const PujaCalendar = () => {
 
     return (
      <>
-      <div className="d-flex justify-content-between align-items-center mb-2">
+      <div className="d-flex justify-content-between align-items-center mobile-view-none mb-2">
         <div>
           <Button
             size="sm"
@@ -224,8 +224,8 @@ const PujaCalendar = () => {
       </div>
 
  
- {/* <div className="d-flex justify-content-between align-items-center mb-2">
-        <div>
+ <div className="d-flex justify-content-between align-items-center desktop-view-none mb-2">
+        <div className="pandit-mob-view">
           <Button
             size="sm"
             variant="outline-primary"
@@ -246,7 +246,7 @@ const PujaCalendar = () => {
             →
           </Button>
         </div>
-        <h5 className="m-0 fw-semibold">{toolbar.label}</h5>
+        <h5 className="m-0 fw-semibold data-mob-view">{toolbar.label}</h5>
         <div className="pandit-mob-view">
           <Button
             size="sm"
@@ -272,7 +272,7 @@ const PujaCalendar = () => {
             D
           </Button>
         </div>
-      </div> */}
+      </div> 
   </>
 
     );
