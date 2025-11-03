@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
+import { Button, Col, Container, InputGroup, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
 import SendOtpModal from "../OTPModel/SendOtpModal";
@@ -11,6 +11,7 @@ import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useAuth } from "../GlobleAuth/AuthContext";
+import { FaCalendar } from "react-icons/fa";
 
 const OnlineHirePandit = () => {
   const [show, setShow] = useState(false); // OTP modal
@@ -36,6 +37,23 @@ const OnlineHirePandit = () => {
       ? new Date(incoming.selected_date_and_time)
       : null
   );
+  const CustomDatePickerInput = forwardRef(
+  ({ value, onClick, placeholder }, ref) => (
+<InputGroup>
+<Form.Control
+        ref={ref}
+        value={value}
+        onClick={onClick}
+        placeholder={placeholder}
+        className="temp-form-control-option"
+        readOnly
+      />
+<InputGroup.Text onClick={onClick} style={{ cursor: "pointer" }}>
+<FaCalendar />
+</InputGroup.Text>
+</InputGroup>
+  )
+);
 
   // helper to normalize names
   const normalize = (s = "") =>
@@ -807,6 +825,9 @@ const OnlineHirePandit = () => {
                       className="form-control temp-form-control"
                       minDate={new Date()}
                       placeholderText="Select Date and time"
+                      customInput={
+                          <CustomDatePickerInput placeholder="Select Date and Time" />
+                        }
                     />
                     {newErrors.date_and_time && (
                       <small className="text-danger">
