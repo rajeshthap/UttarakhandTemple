@@ -9,7 +9,8 @@ import LocationState from "../../userregistration/LocationState";
 import UploadFile from "../../../assets/images/upload-icon.png";
 import { FaCheckCircle } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
-
+import { FaCamera } from "react-icons/fa";
+import DefaultProfile from "../../../assets/images/Diya.png";
 const PanditProfile = () => {
   const { uniqueId } = useAuth();
   const [profile, setProfile] = useState({});
@@ -18,12 +19,26 @@ const PanditProfile = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
   const [dragging, setDragging] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
+  const [previewUrl, setPreviewUrl] = useState("");
+
+  const handleEditPhoto = () => {
+    fileInputRef.current?.click();
+  };
   const [preview, setPreview] = useState({
     pandit_image: "",
     land_document: "",
   });
-
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setSelectedFile(file);
+    // preview
+    const reader = new FileReader();
+    reader.onload = (ev) => setPreviewUrl(ev.target.result);
+    reader.readAsDataURL(file);
+  };
   const fileInputRef = useRef(null);
   const docInputRef = useRef(null);
 
@@ -41,10 +56,13 @@ const PanditProfile = () => {
   ];
 
   const getImageUrl = (imgPath) => {
-    if (!imgPath)
-      return "https://mahadevaaya.com/backend/media/temple_images/default.png";
+    if (!imgPath) return DefaultProfile;
+
+    // If the image is already a base64 string (local preview before upload)
+    if (imgPath.startsWith("data:image")) return imgPath;
+
     const filename = imgPath.split("/").pop();
-    return `https://mahadevaaya.com/backend/media/pandit_images/${filename}`;
+    return `https://mahadevaaya.com/backend/media/pandit_images/${filename}?t=${Date.now()}`;
   };
 
   useEffect(() => {
@@ -54,11 +72,19 @@ const PanditProfile = () => {
           `https://mahadevaaya.com/backend/api/get-pandit/?pandit_id=${uniqueId}`
         );
         const data = res.data || {};
-
-        // Keep backend image only in profile
         setProfile(data);
 
-        //  Keep upload preview empty initially
+        //  if backend has image, build proper URL
+        if (data.pandit_image) {
+          const filename = data.pandit_image.split("/").pop();
+          setPreviewUrl(
+            `https://mahadevaaya.com/backend/media/pandit_images/${filename}`
+          );
+        } else {
+          setPreviewUrl("");
+        }
+
+        // keep preview object for document
         setPreview({
           pandit_image: "",
           land_document: "",
@@ -153,11 +179,38 @@ const PanditProfile = () => {
       const fresh = await axios.get(
         `https://mahadevaaya.com/backend/api/get-pandit/?pandit_id=${uniqueId}`
       );
+      //  Update preview first, then profile
+      if (fresh.data?.pandit_image) {
+        const filename = fresh.data.pandit_image.split("/").pop();
+        const newUrl = `https://mahadevaaya.com/backend/media/pandit_images/${filename}?t=${Date.now()}`;
+        setPreviewUrl(newUrl);
+      } else {
+        setPreviewUrl(DefaultProfile);
+      }
+
       setProfile(fresh.data || {});
+
+      //  Reset file input and selected file
+      setSelectedFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+
       setPreview({
-        pandit_image: "", // still blank (no preselection)
+        pandit_image: "",
         land_document: fresh.data?.land_document || "",
       });
+
+      window.dispatchEvent(
+        new CustomEvent("profileUpdated", {
+          detail: {
+            displayName: fresh.data.first_name || "",
+            devotee_photo: fresh.data.pandit_image
+              ? `https://mahadevaaya.com/backend/media/pandit_images/${fresh.data.pandit_image
+                  .split("/")
+                  .pop()}?t=${Date.now()}`
+              : DefaultProfile,
+          },
+        })
+      );
     } catch (err) {
       console.error("Update error:", err);
       setAlertMsg("Error updating profile. Please try again.");
@@ -175,19 +228,16 @@ const PanditProfile = () => {
 
       <main className="main-container">
         <div className="content-box">
-          
-   <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
-                            <h1 className="fw500">
-                              <Breadcrumb>
-                                <Breadcrumb.Item href="/Pandit_DashBoard">
-                                  <span className="fw700h1">DashBoard</span>
-                                </Breadcrumb.Item>
-                                <Breadcrumb.Item active>Pandit Profile</Breadcrumb.Item>
-                              </Breadcrumb>
-                            </h1>
-            
-                            
-                          </div>
+          <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
+            <h1 className="fw500">
+              <Breadcrumb>
+                <Breadcrumb.Item href="/Pandit_DashBoard">
+                  <span className="fw700h1">DashBoard</span>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item active>Pandit Profile</Breadcrumb.Item>
+              </Breadcrumb>
+            </h1>
+          </div>
           <ModifyAlert
             message={alertMsg}
             show={showAlert}
@@ -202,16 +252,23 @@ const PanditProfile = () => {
             <Form onSubmit={handleSubmit} className="profile-form mt-4">
               <Row>
                 {/* Circular Profile Image */}
-                <Col lg={3} md={4} sm={12} className="text-center mb-3">
-                  <div className="card-image-wrapper-temple">
+                <Col lg={2} md={4} sm={12} className="text-center">
+                  <div className="profile-photo-wrapper position-relative mx-auto">
                     <img
-                      src={
-                        preview.pandit_image
-                          ? preview.pandit_image
-                          : getImageUrl(profile.pandit_image)
-                      }
-                      alt="Pandit Profile"
-                      className="card-image"
+                      src={getImageUrl(previewUrl || profile.pandit_image)}
+                      alt={profile.first_name || "Pandit"}
+                      className="profile-photo"
+                    />
+
+                    <div className="edit-overlay" onClick={handleEditPhoto}>
+                      <FaCamera className="edit-icon" />
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      ref={fileInputRef}
+                      style={{ display: "none" }}
+                      onChange={handleFileChange}
                     />
                   </div>
                 </Col>
@@ -374,82 +431,6 @@ const PanditProfile = () => {
                           <option value="Independent">Independent</option>
                         </Form.Select>
                       </Form.Group>
-                    </Col>
-
-                    {/* Profile Image Upload */}
-                    <Col lg={6} md={6} sm={12} className="add-event-f-mob">
-                      <fieldset
-                        className={`upload_dropZone text-center ${
-                          dragging === "pandit_image" ? "drag-over" : ""
-                        }`}
-                        onDragOver={(e) => {
-                          e.preventDefault();
-                          setDragging("pandit_image");
-                        }}
-                        onDragLeave={() => setDragging(null)}
-                        onDrop={(e) => {
-                          e.preventDefault();
-                          setDragging(null);
-                          const file = e.dataTransfer.files[0];
-                          if (file) {
-                            const sizeKB = file.size / 1024;
-                            if (sizeKB < 10 || sizeKB > 2048) {
-                              alert("File size must be between 10KB and 2MB.");
-                              return;
-                            }
-                            handleInputChange({
-                              target: { name: "pandit_image", files: [file] },
-                            });
-                          }
-                        }}
-                      >
-                        <legend className="visually-hidden">
-                          Upload Profile Image
-                        </legend>
-                        <img src={UploadFile} alt="upload-file" />
-                        <p className="temp-drop-txt my-2">
-                          Profile Image <br /> <i>or drag & drop here</i>
-                        </p>
-                        <input
-                          id="pandit_image"
-                          name="pandit_image"
-                          type="file"
-                          accept="image/jpeg, image/png, image/jpg"
-                          className="invisible"
-                          onChange={handleInputChange}
-                          ref={fileInputRef}
-                        />
-                        <label
-                          className="btn temp-primary-btn mb-1"
-                          htmlFor="pandit_image"
-                        >
-                          Choose file
-                        </label>
-                        <p className="temp-upload-file">
-                          Upload size 10KB–2MB (jpg, png, jpeg)
-                        </p>
-                      </fieldset>
-
-                      {/* Uploaded Preview / Delete */}
-                      {preview.pandit_image && (
-                        <div className="mt-2">
-                          <div className="d-flex temp-doc-info">
-                            <Col lg={3}>{new Date().toLocaleDateString()}</Col>
-                            <Col lg={9} className="px-4 temp-success-doc">
-                              <FaCheckCircle /> Uploaded Successfully
-                            </Col>
-                          </div>
-                          <div
-                            className="col temp-delete-icon"
-                            onClick={() => removeSelectedFile("pandit_image")}
-                          >
-                            <h3>
-                              <RiDeleteBin6Line className="mx-1" /> Click here
-                              to Remove
-                            </h3>
-                          </div>
-                        </div>
-                      )}
                     </Col>
 
                     {/* Land Document Upload */}
