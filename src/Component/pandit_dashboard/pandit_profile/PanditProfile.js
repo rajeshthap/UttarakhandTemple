@@ -18,6 +18,7 @@ const PanditProfile = () => {
   const [originalProfile, setOriginalProfile] = useState({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [imageUploading, setImageUploading] = useState(false); // Separate state for image upload
   const [showAlert, setShowAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
   const [dragging, setDragging] = useState(null);
@@ -83,19 +84,83 @@ const PanditProfile = () => {
     const currentStr = JSON.stringify(currentProfile);
     const originalStr = JSON.stringify(original);
     const hasChanged = currentStr !== originalStr;
-    const imageChanged = selectedFile instanceof File;
-    setHasChanges(hasChanged || imageChanged);
+    setHasChanges(hasChanged);
   };
 
   const handleEditPhoto = () => {
     fileInputRef.current?.click();
   };
 
+  // New function to handle profile image upload
+  const handleProfileImageUpload = async (file) => {
+    if (!file) return;
+    
+    setImageUploading(true);
+    
+    try {
+      const fd = new FormData();
+      fd.append("pandit_image", file);
+      
+      await axios.put(
+        `https://mahadevaaya.com/backend/api/get-pandit/?pandit_id=${uniqueId}`,
+        fd,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+      
+      setAlertMsg("Profile picture updated successfully!");
+      setShowAlert(true);
+      
+      // Update the image version to force refresh
+      setImageVersion(Date.now());
+      
+      // Fetch updated profile data
+      const fresh = await axios.get(
+        `https://mahadevaaya.com/backend/api/get-pandit/?pandit_id=${uniqueId}`
+      );
+      
+      setProfile(fresh.data || {});
+      setOriginalProfile(JSON.parse(JSON.stringify(fresh.data || {})));
+      
+      // Update sidebar with new image
+      window.dispatchEvent(
+        new CustomEvent("profileUpdated", {
+          detail: {
+            displayName: fresh.data.first_name || "",
+            devotee_photo: fresh.data.pandit_image
+              ? `https://mahadevaaya.com/backend/media/pandit_images/${fresh.data.pandit_image
+                  .split("/")
+                  .pop()}?v=${Date.now()}`
+              : DefaultProfile,
+          },
+        })
+      );
+    } catch (err) {
+      console.error("Error updating profile image:", err);
+      setAlertMsg("Error updating profile picture. Please try again.");
+      setShowAlert(true);
+    } finally {
+      setImageUploading(false);
+      setSelectedFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    
+    // Check file size
+    const sizeKB = file.size / 1024;
+    if (sizeKB < 10 || sizeKB > 2048) {
+      alert("File size must be between 10KB and 2MB.");
+      return;
+    }
+    
+    // Set the selected file for preview
     setSelectedFile(file);
-    checkForChanges(profile, originalProfile);
+    
+    // Immediately upload the profile image
+    handleProfileImageUpload(file);
   };
 
   const handleInputChange = (e) => {
@@ -185,9 +250,7 @@ const PanditProfile = () => {
         fd.append("pandit_role", JSON.stringify(profile.pandit_role));
       }
 
-      if (selectedFile instanceof File) {
-        fd.append("pandit_image", selectedFile);
-      }
+      // Don't include pandit_image here as it's already uploaded separately
       if (profile.aadhar_document instanceof File) {
         fd.append("aadhar_document", profile.aadhar_document);
       }
@@ -201,10 +264,6 @@ const PanditProfile = () => {
       setAlertMsg("Profile updated successfully!");
       setShowAlert(true);
 
-      setSelectedFile(null);
-      if (fileInputRef.current) fileInputRef.current.value = "";
-      setImageVersion(Date.now());
-
       const fresh = await axios.get(
         `https://mahadevaaya.com/backend/api/get-pandit/?pandit_id=${uniqueId}`
       );
@@ -217,19 +276,6 @@ const PanditProfile = () => {
         pandit_image: "",
         aadhar_document: fresh.data?.aadhar_document || "",
       });
-
-      window.dispatchEvent(
-        new CustomEvent("profileUpdated", {
-          detail: {
-            displayName: fresh.data.first_name || "",
-            devotee_photo: fresh.data.pandit_image
-              ? `https://mahadevaaya.com/backend/media/pandit_images/${fresh.data.pandit_image
-                  .split("/")
-                  .pop()}?v=${Date.now()}`
-              : DefaultProfile,
-          },
-        })
-      );
     } catch (err) {
       console.error("Update error:", err);
       setAlertMsg("Error updating profile. Please try again.");
@@ -288,7 +334,11 @@ const PanditProfile = () => {
                   <div className="profile-photo-wrapper position-relative mx-auto">
                     <img src={displayImageUrl} alt={profile.first_name || "Pandit"} className="profile-photo" key={displayImageUrl} />
                     <div className="edit-overlay" onClick={handleEditPhoto}>
-                      <FaCamera className="edit-icon" />
+                      {imageUploading ? (
+                        <Spinner animation="border" size="sm" />
+                      ) : (
+                        <FaCamera className="edit-icon" />
+                      )}
                     </div>
                     <input type="file" accept="image/*" ref={fileInputRef} style={{ display: "none" }} onChange={handleFileChange} />
                   </div>
