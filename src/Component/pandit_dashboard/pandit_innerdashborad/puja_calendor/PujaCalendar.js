@@ -145,7 +145,7 @@ const PujaCalendar = () => {
       <strong style={{ display: "block", fontSize: "12px" }}>
         {event.title.split(" - ")[0]}
       </strong>
-      <div
+      <div className="pandit-cla-style"
         style={{
           fontSize: "0.8em",
           marginTop: "2px",
@@ -172,7 +172,8 @@ const PujaCalendar = () => {
     const goToNext = () => toolbar.onNavigate("NEXT");
 
     return (
-      <div className="d-flex justify-content-between align-items-center mb-2">
+     <>
+      <div className="d-flex justify-content-between align-items-center mobile-view-none mb-2">
         <div>
           <Button
             size="sm"
@@ -221,6 +222,59 @@ const PujaCalendar = () => {
           </Button>
         </div>
       </div>
+
+ 
+ <div className="d-flex justify-content-between align-items-center desktop-view-none mb-2">
+        <div className="pandit-mob-view">
+          <Button
+            size="sm"
+            variant="outline-primary"
+            className="me-2"
+            onClick={goToBack}
+          >
+            ←
+          </Button>
+          <Button
+            size="sm"
+            variant="outline-primary"
+            className="me-2"
+            onClick={goToToday}
+          >
+            T
+          </Button>
+          <Button size="sm" variant="outline-primary" onClick={goToNext}>
+            →
+          </Button>
+        </div>
+        <h5 className="m-0 fw-semibold data-mob-view">{toolbar.label}</h5>
+        <div className="pandit-mob-view">
+          <Button
+            size="sm"
+            variant={toolbar.view === "month" ? "primary" : "outline-primary"}
+            className="me-2"
+            onClick={() => toolbar.onView("month")}
+          >
+            M
+          </Button>
+          <Button
+            size="sm"
+            variant={toolbar.view === "week" ? "primary" : "outline-primary"}
+            className="me-2"
+            onClick={() => toolbar.onView("week")}
+          >
+            W
+          </Button>
+          <Button
+            size="sm"
+            variant={toolbar.view === "day" ? "primary" : "outline-primary"}
+            onClick={() => toolbar.onView("day")}
+          >
+            D
+          </Button>
+        </div>
+      </div> 
+  </>
+
     );
   };
 

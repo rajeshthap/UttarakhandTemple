@@ -10,7 +10,7 @@ const TempleSupport = () => {
 
   return (
     <div className="dashboard-wrapper">
-      <aside className="pandit-sidebar">
+      <aside className="temp-sidebar">
         <TempleLeftNav />
       </aside>
  <main className="main-container-box">

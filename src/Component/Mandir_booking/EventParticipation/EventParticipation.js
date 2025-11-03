@@ -55,6 +55,8 @@ const EventParticipation = () => {
       }
     }
   }, [eventData]);
+  const location = useLocation();
+  const { festival, temple_name, festival_name } = location.state || {};
 
   // Add this function to fetch festivals for a specific temple
   const fetchFestivalsForTemple = async (templeName) => {
@@ -149,7 +151,17 @@ const EventParticipation = () => {
       setShowAlert(true);
     }
   };
+useEffect(() => {
+  if (location.state) {
+    const { temple_name } = location.state;
 
+    setFormData((prev) => ({
+      ...prev,
+      temple_name: temple_name || prev.temple_name,
+    
+    }));
+  }
+}, [location.state]);
   useEffect(() => {
     const fetchTemplesAndFestivals = async () => {
       try {
@@ -629,7 +641,7 @@ const EventParticipation = () => {
                       name="temple_name"
                       value={formData.temple_name}
                       onChange={handleChange}
-                      disabled={!!formData.temple_name}
+                      disabled={!!formData.temple_name }
                     >
                       <option value="">Select Temple Name</option>
                       {temples.map((temple, index) => (

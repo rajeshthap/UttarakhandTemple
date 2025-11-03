@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RiDashboard3Line } from "react-icons/ri";
 import axios from "axios";
-import { FaAlignLeft, FaChevronDown, FaChevronUp, FaRegCalendarCheck, FaUserLock } from "react-icons/fa";
+import { FaAlignLeft, FaChevronDown, FaChevronUp, FaRegCalendarCheck, FaRegCalendarPlus, FaUserLock } from "react-icons/fa";
 import { LuCircleCheck, LuLogOut } from "react-icons/lu";
 import CompanyLogo from "../../assets/images/company-logo.png";
 import MenuIcon from "../../assets/images/menu_icon.png";
@@ -13,6 +13,7 @@ import { LiaCalendarCheck } from "react-icons/lia";
 import { FaRegFileLines } from "react-icons/fa6";
 import { TbPasswordUser } from "react-icons/tb";
 import { Dropdown, Nav } from "react-bootstrap";
+import Funding from "../../assets/images/Transactions.png"
 import { BiSolidDonateBlood } from "react-icons/bi";  
 import ManagePuja from "../../assets/images/Manage-Pujas.png"
 import Festival from "../../assets/images/Festival.png"
@@ -21,7 +22,7 @@ import AddPuja from "../../assets/images/add-puja.png";
 import "../../assets/CSS/TopInfo.css";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { ImProfile } from "react-icons/im";
-import { MdAccountCircle } from "react-icons/md";
+import { MdAccountCircle, MdEditCalendar } from "react-icons/md";
 import Support from "../../assets/images/support.png";
 function TempleLeftNav() {
   const { clearAuth } = useAuth();
@@ -145,12 +146,12 @@ function TempleLeftNav() {
       hasSubmenu: true,
       subItems: [
         {
-          icon: <LiaCalendarCheck />,
+          icon: <FaRegCalendarPlus />,
           label: "Add Festival ",
           path: "/AddFestival"
         },
         {
-          icon: <LiaCalendarCheck />,
+          icon: <MdEditCalendar />,
           label: "Manage Festival",
           path: "/ManageFestival"
         },
@@ -191,7 +192,7 @@ function TempleLeftNav() {
     },
 
     {
-      icon: <BiSolidDonateBlood />,
+      icon: <img src={Funding} alt="Festival" className="left-nav-icon" />,
       label: "View Donation",
       path: "/Donations",
     },
