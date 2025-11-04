@@ -2,7 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RiDashboard3Line } from "react-icons/ri";
 import axios from "axios";
-import { FaAlignLeft, FaChevronDown, FaChevronUp, FaRegCalendarCheck, FaRegCalendarPlus, FaUserLock } from "react-icons/fa";
+import {
+  FaAlignLeft,
+  FaChevronDown,
+  FaChevronUp,
+  FaRegCalendarCheck,
+  FaRegCalendarPlus,
+  FaUserLock,
+} from "react-icons/fa";
 import { LuCircleCheck, LuLogOut } from "react-icons/lu";
 import CompanyLogo from "../../assets/images/company-logo.png";
 import MenuIcon from "../../assets/images/menu_icon.png";
@@ -13,10 +20,10 @@ import { LiaCalendarCheck } from "react-icons/lia";
 import { FaRegFileLines } from "react-icons/fa6";
 import { TbPasswordUser } from "react-icons/tb";
 import { Dropdown, Nav } from "react-bootstrap";
-import Funding from "../../assets/images/Transactions.png"
-import { BiSolidDonateBlood } from "react-icons/bi";  
-import ManagePuja from "../../assets/images/Manage-Pujas.png"
-import Festival from "../../assets/images/Festival.png"
+import Funding from "../../assets/images/Transactions.png";
+import { BiSolidDonateBlood } from "react-icons/bi";
+import ManagePuja from "../../assets/images/Manage-Pujas.png";
+import Festival from "../../assets/images/Festival.png";
 import { useAuth } from "../GlobleAuth/AuthContext";
 import AddPuja from "../../assets/images/add-puja.png";
 import "../../assets/CSS/TopInfo.css";
@@ -27,10 +34,10 @@ import Support from "../../assets/images/support.png";
 function TempleLeftNav() {
   const { clearAuth } = useAuth();
   const [isNavClosed, setIsNavClosed] = useState(false);
-  const [userName,] = useState("Loading...");
+  const [userName] = useState("Loading...");
   const [activePath, setActivePath] = useState("");
-  const [openSubMenu, setOpenSubMenu] = useState(null); 
-  const [hoveredMenu, setHoveredMenu] = useState(null); 
+  const [openSubMenu, setOpenSubMenu] = useState(null);
+  const [hoveredMenu, setHoveredMenu] = useState(null);
   const location = useLocation();
   // alert state
   const [showModifyAlert, setShowModifyAlert] = useState(false);
@@ -45,12 +52,37 @@ function TempleLeftNav() {
   });
   const [, setLoading] = useState(false);
 
+  // Safe helper to build nav image URL from different shapes of profile.temple_image
+  const getNavImageUrl = (img) => {
+    const defaultUrl =
+      "https://mahadevaaya.com/backend/media/temple_images/default.png";
+    if (!img) return defaultUrl;
+    if (typeof img === "string") {
+      try {
+        const filename = img.split("/").pop();
+        return `https://mahadevaaya.com/backend/media/temple_images/${filename}`;
+      } catch (e) {
+        return defaultUrl;
+      }
+    }
+    if (typeof img === "object") {
+      if (img.url && typeof img.url === "string") return img.url;
+      if (img.path && typeof img.path === "string") {
+        const filename = img.path.split("/").pop();
+        return `https://mahadevaaya.com/backend/media/temple_images/${filename}`;
+      }
+      if (img.name && typeof img.name === "string")
+        return `https://mahadevaaya.com/backend/media/temple_images/${img.name}`;
+    }
+    return defaultUrl;
+  };
+
   const { uniqueId } = useAuth(); // if you have AuthContext
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         setLoading(true);
-        const userId = uniqueId
+        const userId = uniqueId;
         const response = await axios.get(
           `https://mahadevaaya.com/backend/api/get-temple/?temple_id=${userId}`
         );
@@ -72,6 +104,18 @@ function TempleLeftNav() {
     fetchProfile();
   }, [uniqueId]);
 
+  // Listen for profile updates from other components (e.g. TempleProfile)
+  useEffect(() => {
+    const handler = (e) => {
+      const data = (e && e.detail) || {};
+      setProfile((p) => ({
+        displayName: data.temple_name || data.displayName || p.displayName,
+        temple_image: data.temple_image || p.temple_image,
+      }));
+    };
+    window.addEventListener("temple_profile_updated", handler);
+    return () => window.removeEventListener("temple_profile_updated", handler);
+  }, []);
 
   const handleDownload = (fileUrl, fileName) => {
     const a = document.createElement("a");
@@ -110,36 +154,39 @@ function TempleLeftNav() {
     }
   };
 
-
   const navigationOptions = [
-    { icon: <RiDashboard3Line />, label: "Dashboard", path: "/TempleDashBoard" },
+    {
+      icon: <RiDashboard3Line />,
+      label: "Dashboard",
+      path: "/TempleDashBoard",
+    },
 
     // { icon: <BiDonateHeart />, label: "Online", path: "#" },
 
     {
-    icon: <img src={ManagePuja} alt="ManagePuja" className="left-nav-icon" />,
+      icon: <img src={ManagePuja} alt="ManagePuja" className="left-nav-icon" />,
       label: "Temple",
       path: "#",
       hasSubmenu: true,
       subItems: [
         {
-           icon: <img src={AddPuja} alt="ManagePuja" className="left-nav-icon" />,
+          icon: (
+            <img src={AddPuja} alt="ManagePuja" className="left-nav-icon" />
+          ),
           label: "Add Temple ",
-          path: "/AddTemple"
+          path: "/AddTemple",
         },
         {
-             icon: <img src={ManagePuja} alt="ManagePuja" className="left-nav-icon" />,
+          icon: (
+            <img src={ManagePuja} alt="ManagePuja" className="left-nav-icon" />
+          ),
           label: "Manage Temple",
-          path: "/ManageTemple"
+          path: "/ManageTemple",
         },
-
-
-
-      ]
+      ],
     },
 
     {
-      
       icon: <img src={Festival} alt="Festival" className="left-nav-icon" />,
       label: "Festival",
       path: "#",
@@ -148,17 +195,14 @@ function TempleLeftNav() {
         {
           icon: <FaRegCalendarPlus />,
           label: "Add Festival ",
-          path: "/AddFestival"
+          path: "/AddFestival",
         },
         {
           icon: <MdEditCalendar />,
           label: "Manage Festival",
-          path: "/ManageFestival"
+          path: "/ManageFestival",
         },
-
-
-
-      ]
+      ],
     },
 
     {
@@ -170,25 +214,24 @@ function TempleLeftNav() {
         {
           icon: <LiaCalendarCheck />,
           label: "New Booking ",
-          path: "/NewBooking"
+          path: "/NewBooking",
         },
         {
           icon: <LuCircleCheck />,
           label: "Accepted Booking",
-          path: "/AcceptedBooking"
+          path: "/AcceptedBooking",
         },
         {
           icon: <IoCloseCircleOutline />,
           label: "Rejected Booking",
-          path: "/RejectedBooking"
+          path: "/RejectedBooking",
         },
         {
           icon: <LiaCalendarCheck />,
           label: "All Booking",
-          path: "/AllBooking"
+          path: "/AllBooking",
         },
-
-      ]
+      ],
     },
 
     {
@@ -197,7 +240,7 @@ function TempleLeftNav() {
       path: "/Donations",
     },
 
-     {
+    {
       icon: <GiByzantinTemple />,
       label: "View Funding",
       path: "/CrowdFunding",
@@ -212,21 +255,20 @@ function TempleLeftNav() {
         {
           icon: <ImProfile />,
           label: "My Profile",
-          path: "/TempleProfile"
+          path: "/TempleProfile",
         },
         {
           icon: <FaUserLock />,
           label: "Change Password",
-          path: "/TempleChangePassword"
+          path: "/TempleChangePassword",
         },
-      ]
+      ],
     },
 
     {
       path: "/TempleSupport",
       icon: <img src={Support} alt="Support" className="left-nav-icon" />,
       label: "Support",
-
     },
 
     // {
@@ -286,7 +328,12 @@ function TempleLeftNav() {
             onClick={toggleNav}
           />
           <Link to="#" className="logo-page">
-            <img src={CompanyLogo} alt="Manadavaaya" title="MAHADAVAAYA" className="logo" />
+            <img
+              src={CompanyLogo}
+              alt="Manadavaaya"
+              title="MAHADAVAAYA"
+              className="logo"
+            />
           </Link>
         </div>
         <div className="message">
@@ -305,11 +352,7 @@ function TempleLeftNav() {
                 title="Account Menu"
               >
                 <img
-                  src={
-                    profile.temple_image
-                      ? `https://mahadevaaya.com/backend/media/temple_images/${profile.temple_image.split("/").pop()}`
-                      : "https://mahadevaaya.com/backend/media/temple_images/default.png"
-                  }
+                  src={getNavImageUrl(profile.temple_image)}
                   alt={profile.displayName || ""}
                   className="nav-profile-photo"
                 />
@@ -329,8 +372,6 @@ function TempleLeftNav() {
               </Dropdown.Menu>
             </Dropdown>
           </div>
-
-
         </div>
       </header>
 
@@ -341,15 +382,11 @@ function TempleLeftNav() {
             <div className="nd-menu">
               <FaAlignLeft className="icn menuicn" onClick={toggleNav} />
               <div className="nd-user">{profile.displayName || "User"}</div>
-               <img
-                  src={
-                    profile.temple_image
-                      ? `https://mahadevaaya.com/backend/media/temple_images/${profile.temple_image.split("/").pop()}`
-                      : "https://mahadevaaya.com/backend/media/temple_images/default.png"
-                  }
-                  alt={profile.displayName || ""}
-                  className="nav-profile-photo"
-                />
+              <img
+                src={getNavImageUrl(profile.temple_image)}
+                alt={profile.displayName || ""}
+                className="nav-profile-photo"
+              />
               <Dropdown align="end" className="user-dp">
                 <Dropdown.Toggle
                   variant=""
@@ -360,15 +397,14 @@ function TempleLeftNav() {
                   <div className="nd-log-icon-pandit">
                     <LuLogOut />
                   </div>
-
                 </Dropdown.Toggle>
                 {/* Dropdown menu */}
                 <Dropdown.Menu>
                   <Dropdown.Item as={Link} to="/MyProfile">
                     My Profile
                   </Dropdown.Item>
-                   <Dropdown.Item as={Link} to="/TempleChangePassword">
-                   Change Password
+                  <Dropdown.Item as={Link} to="/TempleChangePassword">
+                    Change Password
                   </Dropdown.Item>
                   <Dropdown.Item as={Link} to="/TempleDashBoard">
                     Dashboard
@@ -385,8 +421,9 @@ function TempleLeftNav() {
               <React.Fragment key={index}>
                 {option.download ? (
                   <div
-                    className={`temp-option option${index + 1} ${activePath === option.fileUrl ? "active-nav" : ""
-                      } ${hoveredMenu === index ? "hovered-nav" : ""}`}
+                    className={`temp-option option${index + 1} ${
+                      activePath === option.fileUrl ? "active-nav" : ""
+                    } ${hoveredMenu === index ? "hovered-nav" : ""}`}
                     onClick={() => {
                       setActivePath(option.fileUrl);
                       handleDownload(option.fileUrl, option.fileName);
@@ -402,8 +439,11 @@ function TempleLeftNav() {
                 ) : option.hasSubmenu ? (
                   <>
                     <div
-                      className={`nav-option option${index + 1} ${activePath === option.path || openSubMenu === index ? "active-nav" : ""
-                        } ${hoveredMenu === index ? "hovered-nav" : ""}`}
+                      className={`nav-option option${index + 1} ${
+                        activePath === option.path || openSubMenu === index
+                          ? "active-nav"
+                          : ""
+                      } ${hoveredMenu === index ? "hovered-nav" : ""}`}
                       onClick={() => toggleSubMenu(index)}
                       onMouseEnter={() => handleMenuHover(index)}
                       onMouseLeave={handleMenuLeave}
@@ -414,23 +454,30 @@ function TempleLeftNav() {
                           <span className="nav-label">{option.label}</span>
                         </div>
                         <span className="nav-arrow">
-                          {openSubMenu === index ? <FaChevronUp /> : <FaChevronDown />}
+                          {openSubMenu === index ? (
+                            <FaChevronUp />
+                          ) : (
+                            <FaChevronDown />
+                          )}
                         </span>
                       </div>
                     </div>
-                    <div className={`sub-menu ${openSubMenu === index ? 'open' : ''}`}>
+                    <div
+                      className={`sub-menu ${
+                        openSubMenu === index ? "open" : ""
+                      }`}
+                    >
                       {option.subItems.map((subItem, subIndex) => (
                         <Link
                           key={subIndex}
                           to={subItem.path}
-                          className={`nav-option sub-nav-option ${activePath === subItem.path ? "active-nav" : ""
-                            }`}
+                          className={`nav-option sub-nav-option ${
+                            activePath === subItem.path ? "active-nav" : ""
+                          }`}
                           onClick={() => setActivePath(subItem.path)}
                         >
                           <div className="sub-item-label d-flex">
-                            <span className="nav-icon">
-                              {subItem.icon}
-                            </span>
+                            <span className="nav-icon">{subItem.icon}</span>
                             <span className="sub-label">{subItem.label}</span>
                           </div>
                         </Link>
@@ -440,7 +487,9 @@ function TempleLeftNav() {
                 ) : (
                   <Link
                     to={option.path}
-                    className={`nav-option option${index + 1} ${activePath === option.path ? "active-nav" : ""}
+                    className={`nav-option option${index + 1} ${
+                      activePath === option.path ? "active-nav" : ""
+                    }
     ${hoveredMenu === index ? "hovered-nav" : ""}`}
                     onClick={() => {
                       if (option.isLogout) {
@@ -457,8 +506,6 @@ function TempleLeftNav() {
                       <span className="nav-label">{option.label}</span>
                     </div>
                   </Link>
-
-
                 )}
               </React.Fragment>
             ))}

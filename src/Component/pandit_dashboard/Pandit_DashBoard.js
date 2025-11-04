@@ -36,69 +36,65 @@ const Pandit_DashBoard = () => {
   }, []);
 
   useEffect(() => {
-  const fetchBookings = async () => {
-    if (!uniqueId) return;
+    const fetchBookings = async () => {
+      if (!uniqueId) return;
 
-    try {
-      setLoading(true);
-      const response = await axios.get(
-        `https://mahadevaaya.com/backend/api/get-hire-pandit/?pandit_id=${uniqueId}`
-      );
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `https://mahadevaaya.com/backend/api/get-hire-pandit/?pandit_id=${uniqueId}`
+        );
 
-      const bookings = response.data || [];
-      const now = new Date();
+        const bookings = response.data || [];
+        const now = new Date();
 
-      let pendingCount = 0;  // New Puja Booking (within 7 days after pooja date)
-      let acceptedCount = 0;
-      let rejectedCount = 0;
-      let upcomingCount = 0; // Upcoming (after 7 days from pooja date)
+        let pendingCount = 0; // New Puja Booking (within 7 days after pooja date)
+        let acceptedCount = 0;
+        let rejectedCount = 0;
+        let upcomingCount = 0; // Upcoming (after 7 days from pooja date)
 
-      bookings.forEach((booking) => {
-        booking.number_of_pandits.forEach((p) => {
-          if (p.pandit_id === uniqueId) {
-            const status = p.status?.toLowerCase();
-            const bookingDate = new Date(booking.date_and_time);
-            const sevenDaysAfter = new Date(
-              bookingDate.getTime() + 7 * 24 * 60 * 60 * 1000
-            );
+        bookings.forEach((booking) => {
+          booking.number_of_pandits.forEach((p) => {
+            if (p.pandit_id === uniqueId) {
+              const status = p.status?.toLowerCase();
+              const bookingDate = new Date(booking.date_and_time);
+              const sevenDaysAfter = new Date(
+                bookingDate.getTime() + 7 * 24 * 60 * 60 * 1000
+              );
 
-            if (status === "pending") {
-              if (now >= bookingDate && now <= sevenDaysAfter) {
-                pendingCount++;
+              if (status === "pending") {
+                if (now >= bookingDate && now <= sevenDaysAfter) {
+                  pendingCount++;
+                } else if (now > sevenDaysAfter) {
+                  upcomingCount++;
+                } else if (now < bookingDate) {
+                  upcomingCount++;
+                }
+              } else if (status === "accepted") {
+                acceptedCount++;
+              } else if (status === "rejected") {
+                rejectedCount++;
               }
-              else if (now > sevenDaysAfter) {
-                upcomingCount++;
-              }
-              else if (now < bookingDate) {
-                upcomingCount++;
-              }
-            } else if (status === "accepted") {
-              acceptedCount++;
-            } else if (status === "rejected") {
-              rejectedCount++;
             }
-          }
+          });
         });
-      });
 
-      setStatusCounts({
-        pending: pendingCount,
-        accepted: acceptedCount,
-        rejected: rejectedCount,
-        upcoming: upcomingCount,
-        total: pendingCount + acceptedCount + rejectedCount + upcomingCount,
-      });
-    } catch (error) {
-      console.error("Error fetching bookings:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+        setStatusCounts({
+          pending: pendingCount,
+          accepted: acceptedCount,
+          rejected: rejectedCount,
+          upcoming: upcomingCount,
+          total: pendingCount + acceptedCount + rejectedCount + upcomingCount,
+        });
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  fetchBookings();
-}, [uniqueId]);
-
-
+    fetchBookings();
+  }, [uniqueId]);
 
   return (
     <>
@@ -159,10 +155,10 @@ const Pandit_DashBoard = () => {
                           <div className="lh-1">
                             <div className="avatar-md avatar-rounded save-bg flex-shrink-0 d-flex align-items-center justify-content-center">
                               <img
-                            src={UserSeva}
-                            alt="Pandit"
-                            className=" img-fluid img-user-card-icon"
-                          />{" "}
+                                src={UserSeva}
+                                alt="Pandit"
+                                className=" img-fluid img-user-card-icon"
+                              />{" "}
                             </div>
                           </div>
                         </div>
@@ -234,9 +230,9 @@ const Pandit_DashBoard = () => {
 
                   <Col lg={3} md={3} sm={12}>
                     <Card
-                      className="shadow-sm rounded flex-fill pandit-box-3  "
+                      className="shadow-sm rounded flex-fill pandit-box-3 mb-2  "
                       onClick={() => navigate("/UpcomingPuja")}
-                      style={{ cursor: "pointer" }} 
+                      style={{ cursor: "pointer" }}
                     >
                       <Card.Body>
                         <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
@@ -262,8 +258,6 @@ const Pandit_DashBoard = () => {
                     </Card>
                   </Col>
                 </Row>
-
-                
               </>
             )}
           </div>

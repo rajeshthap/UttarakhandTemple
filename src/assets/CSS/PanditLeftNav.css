@@ -344,7 +344,7 @@
 }
 
 .nav-upper-options a {
-  color: white;
+  color: black !important;
   text-decoration: none;
 }
 
@@ -599,7 +599,9 @@ span.sub-label {
 }
 
 @media screen and (max-width: 850px) {
-
+#user-dropdown{
+color: var(--temp-white) !important;
+}
   .nd-menu {
     font-size: 22px;
     padding: 18px 0px 10px 35px;

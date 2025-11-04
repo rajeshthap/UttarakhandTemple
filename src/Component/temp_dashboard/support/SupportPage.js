@@ -313,7 +313,7 @@ const SupportPage = () => {
                           <p className="temp-drop-txt my-2">
                             Drag & drop photo <br /> <i>or</i>
                           </p>
-                          <input
+                          <p>   <input
                             id="devotee_photo"
                             name="devotee_photo"
                             type="file"
@@ -326,7 +326,8 @@ const SupportPage = () => {
                             htmlFor="devotee_photo"
                           >
                             Choose file
-                          </label>
+                          </label></p>
+                       
                           <p className="temp-upload-file">
                             Upload size 10KB–2MB (jpg, png, jpeg)
                           </p>

@@ -92,7 +92,7 @@ const ReportAnalytics = () => {
                           <td colSpan="3" className="text-end fw-bold">
                             Total Revenue:
                           </td>
-                          <td colSpan="2" className="fw-bold">
+                          <td colSpan="2" className="fw-bold text-end text-md-start">
                             ₹{totalRevenue.toLocaleString("en-IN")}
                           </td>
                         </tr>

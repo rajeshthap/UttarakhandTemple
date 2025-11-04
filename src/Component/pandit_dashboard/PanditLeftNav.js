@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RiDashboard3Line } from "react-icons/ri";
 import axios from "axios";
-import { FaAlignLeft, FaChevronDown, FaChevronUp, FaRegCheckCircle } from "react-icons/fa";
+import {
+  FaAlignLeft,
+  FaChevronDown,
+  FaChevronUp,
+  FaRegCheckCircle,
+} from "react-icons/fa";
 import { LuCalendarClock, LuCircleCheck, LuLogOut } from "react-icons/lu";
 import CompanyLogo from "../../assets/images/company-logo.png";
 import MenuIcon from "../../assets/images/menu_icon.png";
@@ -14,18 +19,23 @@ import { IoCalendarSharp, IoCloseCircleOutline } from "react-icons/io5";
 import { Dropdown, Nav } from "react-bootstrap";
 import { ImProfile } from "react-icons/im";
 import { useAuth } from "../GlobleAuth/AuthContext";
-import Support from "../../assets/images/support.png"
-import { MdAccountCircle, MdEventAvailable, MdPendingActions, MdReviews} from "react-icons/md";
+import Support from "../../assets/images/support.png";
+import {
+  MdAccountCircle,
+  MdEventAvailable,
+  MdPendingActions,
+  MdReviews,
+} from "react-icons/md";
 import { FaRegFileLines, FaUserLock } from "react-icons/fa6";
 import ManagePuja from "../../assets/images/Manage-Pujas.png";
 import Completed from "../../assets/images/completed-puja.png";
 import AddPuja from "../../assets/images/add-puja.png";
-import Transactions from "../../assets/images/Transactions.png"
+import Transactions from "../../assets/images/Transactions.png";
 import "../../assets/CSS/TopInfo.css";
 function PanditLeftNav() {
   const { clearAuth } = useAuth();
   const [isNavClosed, setIsNavClosed] = useState(false);
-  const [userName,] = useState("Loading...");
+  const [userName] = useState("Loading...");
   const [activePath, setActivePath] = useState("");
 
   const [openSubMenu, setOpenSubMenu] = useState(null); // Track which submenu is open
@@ -50,7 +60,7 @@ function PanditLeftNav() {
     const fetchProfile = async () => {
       try {
         setLoading(true);
-        const userId = uniqueId
+        const userId = uniqueId;
         const response = await axios.get(
           `https://mahadevaaya.com/backend/api/get-pandit/?pandit_id=${userId}`
         );
@@ -71,7 +81,6 @@ function PanditLeftNav() {
 
     fetchProfile();
   }, [uniqueId]);
-
 
   const handleDownload = (fileUrl, fileName) => {
     const a = document.createElement("a");
@@ -110,9 +119,12 @@ function PanditLeftNav() {
     }
   };
 
-
   const navigationOptions = [
-    { icon: <RiDashboard3Line />, label: "Dashboard", path: "/Pandit_DashBoard" },
+    {
+      icon: <RiDashboard3Line />,
+      label: "Dashboard",
+      path: "/Pandit_DashBoard",
+    },
 
     // { icon: <BiDonateHeart />, label: "Online", path: "#" },
 
@@ -125,14 +137,20 @@ function PanditLeftNav() {
         {
           icon: <img src={AddPuja} alt="Support" className="left-nav-icon" />,
           label: "Add New Puja ",
-          path: "/AddPuja"
+          path: "/AddPuja",
         },
         {
-          icon: <img src={Completed} alt="Completed Pujas" className="left-nav-icon" />,
+          icon: (
+            <img
+              src={Completed}
+              alt="Completed Pujas"
+              className="left-nav-icon"
+            />
+          ),
           label: "Completed Pujas",
-          path: "/CompletedPuja"
+          path: "/CompletedPuja",
         },
-      ]
+      ],
     },
 
     {
@@ -144,57 +162,42 @@ function PanditLeftNav() {
         {
           icon: <MdPendingActions />,
           label: "Pending ",
-          path: "/PendingRequests"
+          path: "/PendingRequests",
         },
         {
           icon: <LuCircleCheck />,
           label: "Confirmed",
-          path: "/ConfirmedRequests"
+          path: "/ConfirmedRequests",
         },
         {
           icon: <IoCloseCircleOutline />,
           label: "Cancelled",
-          path: "/CancelledRequests"
+          path: "/CancelledRequests",
         },
-
-
-
-
-      ]
+      ],
     },
-
-
-
 
     {
       icon: <IoCalendarSharp />,
       label: "Puja Calendar",
       path: "/PujaCalendar",
-
     },
     {
       icon: <img src={Transactions} alt="Support" className="left-nav-icon" />,
       label: "Earnings & Transactions",
       path: "/EarnAndTrans",
-
     },
 
     {
       icon: <FaRegFileLines />,
       label: "Reports & Analytics",
       path: "/ReportAnalytics",
-
     },
     {
       icon: <MdReviews />,
       label: "Reviews & Feedback",
       path: "/ReviewsFeedback",
-
     },
-
-
-
-
 
     {
       icon: <MdAccountCircle />,
@@ -205,21 +208,20 @@ function PanditLeftNav() {
         {
           icon: <ImProfile />,
           label: "My Profile",
-          path: "/PanditProfile"
+          path: "/PanditProfile",
         },
         {
           icon: <FaUserLock />,
           label: "Change Password",
-          path: "/PanditChangePassword"
+          path: "/PanditChangePassword",
         },
-      ]
+      ],
     },
 
     {
       path: "/PanditSupport",
       icon: <img src={Support} alt="Support" className="left-nav-icon" />,
       label: "Support",
-
     },
 
     // {
@@ -277,12 +279,14 @@ function PanditLeftNav() {
             onClick={toggleNav}
           />
           <Link to="#" className="logo-page">
-            <img src={CompanyLogo} alt="Manadavaaya" title="MAHADAVAAYA" className="logo" />
+            <img
+              src={CompanyLogo}
+              alt="Manadavaaya"
+              title="MAHADAVAAYA"
+              className="logo"
+            />
           </Link>
-
-
         </div>
-
 
         <div className="message">
           <ModifyAlert
@@ -297,13 +301,15 @@ function PanditLeftNav() {
               <Dropdown.Toggle
                 variant=""
                 id="user-dropdown"
-                className="border-0 bg-transparent"
+                className="border-0 bg-transparent logout-toggle"
                 title="Account Menu"
               >
                 <img
                   src={
                     profile.pandit_image
-                      ? `https://mahadevaaya.com/backend/media/pandit_images/${profile.pandit_image.split("/").pop()}`
+                      ? `https://mahadevaaya.com/backend/media/pandit_images/${profile.pandit_image
+                          .split("/")
+                          .pop()}`
                       : "https://mahadevaaya.com/backend/media/pandit_images/default.png"
                   }
                   alt={profile.displayName || ""}
@@ -326,8 +332,6 @@ function PanditLeftNav() {
               </Dropdown.Menu>
             </Dropdown>
           </div>
-
-
         </div>
       </header>
 
@@ -337,16 +341,18 @@ function PanditLeftNav() {
           <div className="nav-upper-options">
             <div className="nd-menu">
               <FaAlignLeft className="icn menuicn" onClick={toggleNav} />
-              <div className="nd-user">User: {profile.displayName }</div>
-                <img
-                  src={
-                    profile.pandit_image
-                      ? `https://mahadevaaya.com/backend/media/pandit_images/${profile.pandit_image.split("/").pop()}`
-                      : "https://mahadevaaya.com/backend/media/pandit_images/default.png"
-                  }
-                  alt={profile.displayName || ""}
-                  className="nav-profile-photo"
-                />
+              <div className="nd-user">User: {profile.displayName}</div>
+              <img
+                src={
+                  profile.pandit_image
+                    ? `https://mahadevaaya.com/backend/media/pandit_images/${profile.pandit_image
+                        .split("/")
+                        .pop()}`
+                    : "https://mahadevaaya.com/backend/media/pandit_images/default.png"
+                }
+                alt={profile.displayName || ""}
+                className="nav-profile-photo"
+              />
               <Dropdown align="end" className="user-dp">
                 <Dropdown.Toggle
                   variant=""
@@ -354,9 +360,7 @@ function PanditLeftNav() {
                   className="border-0 bg-transparent"
                   title="Account Menu"
                 >
-                  <div className="nd-log-icon-pandit">
-                    <LuLogOut />
-                  </div>
+                  <LuLogOut />
                 </Dropdown.Toggle>
 
                 {/* Dropdown menu */}
@@ -364,10 +368,10 @@ function PanditLeftNav() {
                   <Dropdown.Item as={Link} to="/PanditProfile">
                     My Profile
                   </Dropdown.Item>
-                   <Dropdown.Item as={Link} to="/PanditChangePassword">
-                    My Profile
+                  <Dropdown.Item as={Link} to="/PanditChangePassword">
+                    Change Password
                   </Dropdown.Item>
-                 
+
                   <Dropdown.Divider />
                   <Dropdown.Item onClick={logout} className="text-danger">
                     Logout
@@ -380,8 +384,9 @@ function PanditLeftNav() {
               <React.Fragment key={index}>
                 {option.download ? (
                   <div
-                    className={`pandit-option option${index + 1} ${activePath === option.fileUrl ? "active-nav" : ""
-                      } ${hoveredMenu === index ? "hovered-nav" : ""}`}
+                    className={`pandit-option option${index + 1} ${
+                      activePath === option.fileUrl ? "active-nav" : ""
+                    } ${hoveredMenu === index ? "hovered-nav" : ""}`}
                     onClick={() => {
                       setActivePath(option.fileUrl);
                       handleDownload(option.fileUrl, option.fileName);
@@ -397,8 +402,11 @@ function PanditLeftNav() {
                 ) : option.hasSubmenu ? (
                   <>
                     <div
-                      className={`pandit-option option${index + 1} ${activePath === option.path || openSubMenu === index ? "active-nav" : ""
-                        } ${hoveredMenu === index ? "hovered-nav" : ""}`}
+                      className={`pandit-option option${index + 1} ${
+                        activePath === option.path || openSubMenu === index
+                          ? "active-nav"
+                          : ""
+                      } ${hoveredMenu === index ? "hovered-nav" : ""}`}
                       onClick={() => toggleSubMenu(index)}
                       onMouseEnter={() => handleMenuHover(index)}
                       onMouseLeave={handleMenuLeave}
@@ -409,23 +417,30 @@ function PanditLeftNav() {
                           <span className="nav-label">{option.label}</span>
                         </div>
                         <span className="nav-arrow">
-                          {openSubMenu === index ? <FaChevronUp /> : <FaChevronDown />}
+                          {openSubMenu === index ? (
+                            <FaChevronUp />
+                          ) : (
+                            <FaChevronDown />
+                          )}
                         </span>
                       </div>
                     </div>
-                    <div className={`pandit-sub-menu ${openSubMenu === index ? 'open' : ''}`}>
+                    <div
+                      className={`pandit-sub-menu ${
+                        openSubMenu === index ? "open" : ""
+                      }`}
+                    >
                       {option.subItems.map((subItem, subIndex) => (
                         <Link
                           key={subIndex}
                           to={subItem.path}
-                          className={`pandit-option sub-pandit-option ${activePath === subItem.path ? "active-nav" : ""
-                            }`}
+                          className={`pandit-option sub-pandit-option ${
+                            activePath === subItem.path ? "active-nav" : ""
+                          }`}
                           onClick={() => setActivePath(subItem.path)}
                         >
                           <div className="sub-item-label d-flex">
-                            <span className="nav-icon">
-                              {subItem.icon}
-                            </span>
+                            <span className="nav-icon">{subItem.icon}</span>
                             <span className="sub-label">{subItem.label}</span>
                           </div>
                         </Link>
@@ -435,7 +450,9 @@ function PanditLeftNav() {
                 ) : (
                   <Link
                     to={option.path}
-                    className={`pandit-option option${index + 1} ${activePath === option.path ? "active-nav" : ""}
+                    className={`pandit-option option${index + 1} ${
+                      activePath === option.path ? "active-nav" : ""
+                    }
     ${hoveredMenu === index ? "hovered-nav" : ""}`}
                     onClick={() => {
                       if (option.isLogout) {
@@ -452,8 +469,6 @@ function PanditLeftNav() {
                       <span className="nav-label">{option.label}</span>
                     </div>
                   </Link>
-
-
                 )}
               </React.Fragment>
             ))}

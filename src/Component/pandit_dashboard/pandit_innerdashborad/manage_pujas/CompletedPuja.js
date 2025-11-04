@@ -108,12 +108,13 @@ const CompletedPuja = () => {
                         ))}
 
                         <tr className="fw-bold">
-                          <td colSpan="3" className="text-end">
-                            Total Amount:
-                          </td>
-                          <td>₹{totalAmount}</td>
-                          <td></td>
-                        </tr>
+  <td colSpan="3" className="text-end text-center text-md-end">
+    Total Amount:
+  </td>
+  <td className="text-end text-md-start">₹{totalAmount}</td>
+ 
+</tr>
+
                       </>
                     ) : (
                       <tr>
