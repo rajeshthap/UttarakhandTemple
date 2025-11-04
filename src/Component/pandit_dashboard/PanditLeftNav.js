@@ -55,6 +55,31 @@ function PanditLeftNav() {
   });
   const [, setLoading] = useState(false);
 
+  // Helper to safely compute the pandit image URL from different shapes
+  const getNavImageUrl = (img) => {
+    const defaultUrl =
+      "https://mahadevaaya.com/backend/media/pandit_images/default.png";
+    if (!img) return defaultUrl;
+    if (typeof img === "string") {
+      try {
+        const filename = img.split("/").pop();
+        return `https://mahadevaaya.com/backend/media/pandit_images/${filename}`;
+      } catch (e) {
+        return defaultUrl;
+      }
+    }
+    if (typeof img === "object") {
+      if (img.url && typeof img.url === "string") return img.url;
+      if (img.path && typeof img.path === "string") {
+        const filename = img.path.split("/").pop();
+        return `https://mahadevaaya.com/backend/media/pandit_images/${filename}`;
+      }
+      if (img.name && typeof img.name === "string")
+        return `https://mahadevaaya.com/backend/media/pandit_images/${img.name}`;
+    }
+    return defaultUrl;
+  };
+
   const { uniqueId } = useAuth(); // if you have AuthContext
   useEffect(() => {
     const fetchProfile = async () => {
@@ -81,6 +106,24 @@ function PanditLeftNav() {
 
     fetchProfile();
   }, [uniqueId]);
+
+  // Listen to profile updates dispatched from PanditProfile so nav updates immediately
+  useEffect(() => {
+    const handler = (e) => {
+      const data = (e && e.detail) || {};
+      setProfile((p) => ({
+        displayName: data.displayName || data.first_name || p.displayName,
+        // PanditProfile sends back various keys; check common ones
+        pandit_image:
+          data.pandit_image ||
+          data.pandit_photo ||
+          data.devotee_photo ||
+          p.pandit_image,
+      }));
+    };
+    window.addEventListener("profileUpdated", handler);
+    return () => window.removeEventListener("profileUpdated", handler);
+  }, []);
 
   const handleDownload = (fileUrl, fileName) => {
     const a = document.createElement("a");
@@ -305,13 +348,7 @@ function PanditLeftNav() {
                 title="Account Menu"
               >
                 <img
-                  src={
-                    profile.pandit_image
-                      ? `https://mahadevaaya.com/backend/media/pandit_images/${profile.pandit_image
-                          .split("/")
-                          .pop()}`
-                      : "https://mahadevaaya.com/backend/media/pandit_images/default.png"
-                  }
+                  src={getNavImageUrl(profile.pandit_image)}
                   alt={profile.displayName || ""}
                   className="nav-profile-photo"
                 />
@@ -343,13 +380,7 @@ function PanditLeftNav() {
               <FaAlignLeft className="icn menuicn" onClick={toggleNav} />
               <div className="nd-user">User: {profile.displayName}</div>
               <img
-                src={
-                  profile.pandit_image
-                    ? `https://mahadevaaya.com/backend/media/pandit_images/${profile.pandit_image
-                        .split("/")
-                        .pop()}`
-                    : "https://mahadevaaya.com/backend/media/pandit_images/default.png"
-                }
+                src={getNavImageUrl(profile.pandit_image)}
                 alt={profile.displayName || ""}
                 className="nav-profile-photo"
               />

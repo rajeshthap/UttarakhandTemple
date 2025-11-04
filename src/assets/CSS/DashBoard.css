@@ -564,14 +564,10 @@
     content: attr(data-th) " ";
 
     width: 120px;
-    display: inline-block;
     color: #000;
 }
 
-.rwd-table th,
-.rwd-table td {
-    text-align: left;
-}
+
 
 .rwd-table {
     color: #333;
@@ -665,7 +661,7 @@
     }
 
     .rwd-table td:before {
-        display: none;
+        display: block !important;
     }
 
     .rwd-table th,

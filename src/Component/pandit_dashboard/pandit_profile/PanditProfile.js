@@ -23,10 +23,10 @@ const PanditProfile = () => {
   const [alertMsg, setAlertMsg] = useState("");
   const [dragging, setDragging] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
-  
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageVersion, setImageVersion] = useState(Date.now());
-  
+
   const [preview, setPreview] = useState({
     aadhar_document: "",
   });
@@ -94,33 +94,33 @@ const PanditProfile = () => {
   // New function to handle profile image upload
   const handleProfileImageUpload = async (file) => {
     if (!file) return;
-    
+
     setImageUploading(true);
-    
+
     try {
       const fd = new FormData();
       fd.append("pandit_image", file);
-      
+
       await axios.put(
         `https://mahadevaaya.com/backend/api/get-pandit/?pandit_id=${uniqueId}`,
         fd,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
-      
+
       setAlertMsg("Profile picture updated successfully!");
       setShowAlert(true);
-      
+
       // Update the image version to force refresh
       setImageVersion(Date.now());
-      
+
       // Fetch updated profile data
       const fresh = await axios.get(
         `https://mahadevaaya.com/backend/api/get-pandit/?pandit_id=${uniqueId}`
       );
-      
+
       setProfile(fresh.data || {});
       setOriginalProfile(JSON.parse(JSON.stringify(fresh.data || {})));
-      
+
       // Update sidebar with new image
       window.dispatchEvent(
         new CustomEvent("profileUpdated", {
@@ -148,17 +148,17 @@ const PanditProfile = () => {
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    
+
     // Check file size
     const sizeKB = file.size / 1024;
     if (sizeKB < 10 || sizeKB > 2048) {
       alert("File size must be between 10KB and 2MB.");
       return;
     }
-    
+
     // Set the selected file for preview
     setSelectedFile(file);
-    
+
     // Immediately upload the profile image
     handleProfileImageUpload(file);
   };
@@ -166,7 +166,7 @@ const PanditProfile = () => {
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
     let newProfile;
-    
+
     if (files && files[0]) {
       const file = files[0];
       const sizeKB = file.size / 1024;
@@ -179,7 +179,7 @@ const PanditProfile = () => {
     } else {
       newProfile = { ...profile, [name]: value };
     }
-    
+
     setProfile(newProfile);
     checkForChanges(newProfile, originalProfile);
   };
@@ -199,19 +199,19 @@ const PanditProfile = () => {
 
   const removeSelectedFile = (field) => {
     let newProfile;
-    
+
     if (field === "pandit_image") {
-      setSelectedFile(null); 
+      setSelectedFile(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
       newProfile = { ...profile, pandit_image: "" };
     } else {
       newProfile = { ...profile, [field]: "" };
     }
-    
+
     setPreview((p) => ({ ...p, [field]: "" }));
     setProfile(newProfile);
     checkForChanges(newProfile, originalProfile);
-    
+
     if (field === "aadhar_document" && docInputRef.current)
       docInputRef.current.value = "";
   };
@@ -221,16 +221,16 @@ const PanditProfile = () => {
     if (!docSource) return;
 
     let url;
-    
-    if (docSource.startsWith('blob:')) {
+
+    if (docSource.startsWith("blob:")) {
       url = docSource;
     } else {
-      const filename = docSource.split('/').pop();
+      const filename = docSource.split("/").pop();
       url = `https://mahadevaaya.com/backend/media/pandit_docs/${filename}`;
     }
-    
+
     // Open the URL in a new tab
-    window.open(url, '_blank', 'noopener,noreferrer');
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   const handleSubmit = async (e) => {
@@ -240,9 +240,18 @@ const PanditProfile = () => {
     try {
       const fd = new FormData();
       const keys = [
-        "first_name", "last_name", "father_name", "aadhar_number",
-        "permanent_address", "country", "state", "city", "zipcode",
-        "temple_association", "phone", "email",
+        "first_name",
+        "last_name",
+        "father_name",
+        "aadhar_number",
+        "permanent_address",
+        "country",
+        "state",
+        "city",
+        "zipcode",
+        "temple_association",
+        "phone",
+        "email",
       ];
       keys.forEach((k) => fd.append(k, profile[k] ?? ""));
 
@@ -267,15 +276,33 @@ const PanditProfile = () => {
       const fresh = await axios.get(
         `https://mahadevaaya.com/backend/api/get-pandit/?pandit_id=${uniqueId}`
       );
-      
+
       setProfile(fresh.data || {});
       setOriginalProfile(JSON.parse(JSON.stringify(fresh.data || {})));
       setHasChanges(false);
-      
+
       setPreview({
         pandit_image: "",
         aadhar_document: fresh.data?.aadhar_document || "",
       });
+      // Notify left nav (and other listeners) that profile fields updated
+      try {
+        window.dispatchEvent(
+          new CustomEvent("profileUpdated", {
+            detail: {
+              displayName: fresh.data?.first_name || "",
+              // include a canonical image URL if available so left nav can update
+              pandit_image: fresh.data?.pandit_image
+                ? `https://mahadevaaya.com/backend/media/pandit_images/${fresh.data.pandit_image
+                    .split("/")
+                    .pop()}?v=${Date.now()}`
+                : DefaultProfile,
+            },
+          })
+        );
+      } catch (e) {
+        /* ignore */
+      }
     } catch (err) {
       console.error("Update error:", err);
       setAlertMsg("Error updating profile. Please try again.");
@@ -288,7 +315,8 @@ const PanditProfile = () => {
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       if (hasChanges) {
-        const message = "You have unsaved changes. Are you sure you want to leave?";
+        const message =
+          "You have unsaved changes. Are you sure you want to leave?";
         e.returnValue = message;
         return message;
       }
@@ -323,16 +351,27 @@ const PanditProfile = () => {
               </div>
             )}
           </div>
-          <ModifyAlert message={alertMsg} show={showAlert} setShow={setShowAlert} />
+          <ModifyAlert
+            message={alertMsg}
+            show={showAlert}
+            setShow={setShowAlert}
+          />
 
           {loading ? (
-            <div className="mt-4"><Spinner animation="border" /> Loading profile...</div>
+            <div className="mt-4">
+              <Spinner animation="border" /> Loading profile...
+            </div>
           ) : (
             <Form onSubmit={handleSubmit} className="profile-form mt-4">
               <Row>
                 <Col lg={2} md={4} sm={12} className="text-center">
-                  <div className="profile-photo-wrapper position-relative mx-auto">
-                    <img src={displayImageUrl} alt={profile.first_name || "Pandit"} className="profile-photo" key={displayImageUrl} />
+                  <div className="card-image-wrapper-temple position-relative">
+                    <img
+                      src={displayImageUrl}
+                      alt={profile.first_name || "Pandit"}
+                      className="card-image"
+                      key={displayImageUrl}
+                    />
                     <div className="edit-overlay" onClick={handleEditPhoto}>
                       {imageUploading ? (
                         <Spinner animation="border" size="sm" />
@@ -340,7 +379,13 @@ const PanditProfile = () => {
                         <FaCamera className="edit-icon" />
                       )}
                     </div>
-                    <input type="file" accept="image/*" ref={fileInputRef} style={{ display: "none" }} onChange={handleFileChange} />
+                    <input
+                      type="file"
+                      accept="image/*"
+                      ref={fileInputRef}
+                      style={{ display: "none" }}
+                      onChange={handleFileChange}
+                    />
                   </div>
                 </Col>
 
@@ -349,67 +394,149 @@ const PanditProfile = () => {
                     {/* All form fields remain the same... */}
                     <Col lg={4}>
                       <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">First Name</Form.Label>
-                        <Form.Control name="first_name" value={profile.first_name || ""} onChange={handleInputChange} className="temp-form-control" />
+                        <Form.Label className="temp-label">
+                          First Name
+                        </Form.Label>
+                        <Form.Control
+                          name="first_name"
+                          value={profile.first_name || ""}
+                          onChange={handleInputChange}
+                          className="temp-form-control"
+                        />
                       </Form.Group>
                     </Col>
                     <Col lg={4}>
                       <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">Last Name</Form.Label>
-                        <Form.Control name="last_name" value={profile.last_name || ""} onChange={handleInputChange} className="temp-form-control" />
+                        <Form.Label className="temp-label">
+                          Last Name
+                        </Form.Label>
+                        <Form.Control
+                          name="last_name"
+                          value={profile.last_name || ""}
+                          onChange={handleInputChange}
+                          className="temp-form-control"
+                        />
                       </Form.Group>
                     </Col>
                     <Col lg={4}>
                       <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">Father's Name</Form.Label>
-                        <Form.Control name="father_name" value={profile.father_name || ""} onChange={handleInputChange} className="temp-form-control" />
+                        <Form.Label className="temp-label">
+                          Father's Name
+                        </Form.Label>
+                        <Form.Control
+                          name="father_name"
+                          value={profile.father_name || ""}
+                          onChange={handleInputChange}
+                          className="temp-form-control"
+                        />
                       </Form.Group>
                     </Col>
                     <Col lg={4}>
                       <Form.Group className="mb-3">
                         <Form.Label className="temp-label">Email</Form.Label>
-                        <Form.Control type="email" name="email" value={profile.email || ""} disabled className="temp-form-control" />
+                        <Form.Control
+                          type="email"
+                          name="email"
+                          value={profile.email || ""}
+                          disabled
+                          className="temp-form-control"
+                        />
                       </Form.Group>
                     </Col>
                     <Col lg={4}>
                       <Form.Group className="mb-3">
                         <Form.Label className="temp-label">Phone</Form.Label>
-                        <Form.Control name="phone" value={profile.phone || ""} disabled className="temp-form-control" />
+                        <Form.Control
+                          name="phone"
+                          value={profile.phone || ""}
+                          disabled
+                          className="temp-form-control"
+                        />
                       </Form.Group>
                     </Col>
                     <Col lg={4}>
                       <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">Aadhar Number</Form.Label>
-                        <Form.Control name="aadhar_number" value={profile.aadhar_number || ""} onChange={handleInputChange} className="temp-form-control" />
+                        <Form.Label className="temp-label">
+                          Aadhar Number
+                        </Form.Label>
+                        <Form.Control
+                          name="aadhar_number"
+                          value={profile.aadhar_number || ""}
+                          onChange={handleInputChange}
+                          className="temp-form-control"
+                        />
                       </Form.Group>
                     </Col>
                     <Col lg={12}>
                       <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">Permanent Address</Form.Label>
-                        <Form.Control as="textarea" rows={2} name="permanent_address" value={profile.permanent_address || ""} onChange={handleInputChange} className="temp-form-control" />
+                        <Form.Label className="temp-label">
+                          Permanent Address
+                        </Form.Label>
+                        <Form.Control
+                          as="textarea"
+                          rows={2}
+                          name="permanent_address"
+                          value={profile.permanent_address || ""}
+                          onChange={handleInputChange}
+                          className="temp-form-control"
+                        />
                       </Form.Group>
                     </Col>
-                    <LocationState formData={profile} handleInputChange={handleInputChangeCity} formErrors={{}} />
+                    <LocationState
+                      formData={profile}
+                      handleInputChange={handleInputChangeCity}
+                      formErrors={{}}
+                    />
                     <Col lg={4}>
                       <Form.Group className="mb-3">
                         <Form.Label className="temp-label">Pin Code</Form.Label>
-                        <Form.Control name="zipcode" value={profile.zipcode || ""} onChange={handleInputChange} className="temp-form-control" />
+                        <Form.Control
+                          name="zipcode"
+                          value={profile.zipcode || ""}
+                          onChange={handleInputChange}
+                          className="temp-form-control"
+                        />
                       </Form.Group>
                     </Col>
                     <Col lg={4}>
                       <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">Pandit Role</Form.Label>
-                        <Select isMulti options={roleOptions} value={roleOptions.filter((o) => profile.pandit_role?.includes(o.value))} onChange={handleRoleChange} className="temp-form-control-input basic-multi-select" classNamePrefix="basic-multi-select" closeMenuOnSelect={false} />
+                        <Form.Label className="temp-label">
+                          Pandit Role
+                        </Form.Label>
+                        <Select
+                          isMulti
+                          options={roleOptions}
+                          value={roleOptions.filter((o) =>
+                            profile.pandit_role?.includes(o.value)
+                          )}
+                          onChange={handleRoleChange}
+                          className="temp-form-control-input basic-multi-select"
+                          classNamePrefix="basic-multi-select"
+                          closeMenuOnSelect={false}
+                        />
                       </Form.Group>
                     </Col>
                     <Col lg={4}>
                       <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">Temple Association</Form.Label>
-                        <Form.Select name="temple_association" value={profile.temple_association || ""} onChange={handleInputChange} className="temp-form-control-option">
+                        <Form.Label className="temp-label">
+                          Temple Association
+                        </Form.Label>
+                        <Form.Select
+                          name="temple_association"
+                          value={profile.temple_association || ""}
+                          onChange={handleInputChange}
+                          className="temp-form-control-option"
+                        >
                           <option value="">Select a Temple Association</option>
-                          <option value="Local Temple Association">Local Temple Association</option>
-                          <option value="State Temple Association">State Temple Association</option>
-                          <option value="National Temple Association">National Temple Association</option>
+                          <option value="Local Temple Association">
+                            Local Temple Association
+                          </option>
+                          <option value="State Temple Association">
+                            State Temple Association
+                          </option>
+                          <option value="National Temple Association">
+                            National Temple Association
+                          </option>
                           <option value="Independent">Independent</option>
                         </Form.Select>
                       </Form.Group>
@@ -417,13 +544,59 @@ const PanditProfile = () => {
 
                     {/* Aadhar Document Upload */}
                     <Col lg={6} md={6} sm={12} className="add-event-f-mob">
-                      <fieldset className={`upload_dropZone text-center ${dragging === "aadhar_document" ? "drag-over" : ""}`} onDragOver={(e) => { e.preventDefault(); setDragging("aadhar_document"); }} onDragLeave={() => setDragging(null)} onDrop={(e) => { e.preventDefault(); setDragging(null); const file = e.dataTransfer.files[0]; if (file) { const sizeKB = file.size / 1024; if (sizeKB < 10 || sizeKB > 2048) { alert("File size must be between 10KB and 2MB."); return; } handleInputChange({ target: { name: "aadhar_document", files: [file] } }); } }}>
-                        <legend className="visually-hidden">Upload Adhar Document</legend>
+                      <fieldset
+                        className={`upload_dropZone text-center ${
+                          dragging === "aadhar_document" ? "drag-over" : ""
+                        }`}
+                        onDragOver={(e) => {
+                          e.preventDefault();
+                          setDragging("aadhar_document");
+                        }}
+                        onDragLeave={() => setDragging(null)}
+                        onDrop={(e) => {
+                          e.preventDefault();
+                          setDragging(null);
+                          const file = e.dataTransfer.files[0];
+                          if (file) {
+                            const sizeKB = file.size / 1024;
+                            if (sizeKB < 10 || sizeKB > 2048) {
+                              alert("File size must be between 10KB and 2MB.");
+                              return;
+                            }
+                            handleInputChange({
+                              target: {
+                                name: "aadhar_document",
+                                files: [file],
+                              },
+                            });
+                          }
+                        }}
+                      >
+                        <legend className="visually-hidden">
+                          Upload Adhar Document
+                        </legend>
                         <img src={UploadFile} alt="upload-file" />
-                        <p className="temp-drop-txt my-2">Aadhar Document <br /> <i>or drag & drop here</i></p>
-                        <input id="aadhar_document" name="aadhar_document" type="file" accept="image/jpeg, image/png, application/pdf" className="invisible" onChange={handleInputChange} ref={docInputRef} />
-                        <label className="btn temp-primary-btn mb-1" htmlFor="aadhar_document">Choose file</label>
-                        <p className="temp-upload-file">Upload size 10KB–2MB (jpg, png, jpeg, pdf)</p>
+                        <p className="temp-drop-txt my-2">
+                          Aadhar Document <br /> <i>or drag & drop here</i>
+                        </p>
+                        <input
+                          id="aadhar_document"
+                          name="aadhar_document"
+                          type="file"
+                          accept="image/jpeg, image/png, application/pdf"
+                          className="invisible"
+                          onChange={handleInputChange}
+                          ref={docInputRef}
+                        />
+                        <label
+                          className="btn temp-primary-btn mb-1"
+                          htmlFor="aadhar_document"
+                        >
+                          Choose file
+                        </label>
+                        <p className="temp-upload-file">
+                          Upload size 10KB–2MB (jpg, png, jpeg, pdf)
+                        </p>
                       </fieldset>
 
                       {/* Uploaded Preview / Delete / View */}
@@ -437,13 +610,26 @@ const PanditProfile = () => {
                             <Col lg={3} className="text-end">
                               {/* View Button - Now opens in a new tab */}
                               <FaEye />
-                              <Button className="view-icon" variant="link" size="sm" onClick={handleViewInNewTab}>
+                              <Button
+                                className="view-icon"
+                                variant="link"
+                                size="sm"
+                                onClick={handleViewInNewTab}
+                              >
                                 View
                               </Button>
                             </Col>
                           </div>
-                          <div className="col temp-delete-icon" onClick={() => removeSelectedFile("aadhar_document")}>
-                            <h3><RiDeleteBin6Line className="mx-1" /> Click here to Remove</h3>
+                          <div
+                            className="col temp-delete-icon"
+                            onClick={() =>
+                              removeSelectedFile("aadhar_document")
+                            }
+                          >
+                            <h3>
+                              <RiDeleteBin6Line className="mx-1" /> Click here
+                              to Remove
+                            </h3>
                           </div>
                         </div>
                       )}
@@ -452,8 +638,18 @@ const PanditProfile = () => {
                 </Col>
               </Row>
               <div className="gap-3 mt-3 Temp-btn-submit">
-                <Button className="btn-save mt-3" type="submit" disabled={!hasChanges || saving}>
-                  {saving ? <><Spinner animation="border" size="sm" /> Saving...</> : "Update Profile"}
+                <Button
+                  className="btn-save mt-3"
+                  type="submit"
+                  disabled={!hasChanges || saving}
+                >
+                  {saving ? (
+                    <>
+                      <Spinner animation="border" size="sm" /> Saving...
+                    </>
+                  ) : (
+                    "Update Profile"
+                  )}
                 </Button>
               </div>
             </Form>

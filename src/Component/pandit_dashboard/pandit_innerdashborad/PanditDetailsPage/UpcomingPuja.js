@@ -200,15 +200,16 @@ const UpcomingPuja = () => {
                         );
                       })
                     ) : (
-                      <tr>
-                        <td colSpan="8" className="text-center">
-                          {loading ? (
-                            <Spinner animation="border" />
-                          ) : (
-                            "No upcoming poojas (7 days after start date) found."
-                          )}
-                        </td>
-                      </tr>
+                     <tr>
+  <td colSpan="8" className="text-center no-pooja-text">
+    {loading ? (
+      <Spinner animation="border" />
+    ) : (
+      "No upcoming poojas (7 days after start date) found."
+    )}
+  </td>
+</tr>
+
                     )}
                   </tbody>
                 </table>

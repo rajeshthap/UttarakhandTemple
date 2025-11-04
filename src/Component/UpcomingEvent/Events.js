@@ -166,7 +166,7 @@ const Events = () => {
 
         <Row className="mb-3">
           <Col md={6} className="mb-2">
-            <Form.Control
+            <Form.Control className="temp-form-control-option"
               placeholder="Search by temple, festival or description..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -176,7 +176,7 @@ const Events = () => {
           <Col md={3} className="mb-2">
             <Form.Select
               value={filterTemple}
-              onChange={(e) => setFilterTemple(e.target.value)}
+              onChange={(e) => setFilterTemple(e.target.value)} className="temp-form-control-option"
             >
               <option value="">All Temples</option>
               {uniqueTemples.map((t, i) => (

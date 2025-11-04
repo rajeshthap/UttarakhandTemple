@@ -433,6 +433,14 @@ input[type=number] {
 .edit-overlay:hover {
   opacity: 0.8;
 }
+.user-mobile-view-center{
+    text-align: center;
+
+}
+.view-icon.btn.btn-link.btn-sm{
+    text-decoration: none;
+    padding: 2px;
+}
 @media screen and (min-width: 768px) and (max-width: 1024px) {
 
     /* .menubar {
@@ -554,6 +562,10 @@ input[type=number] {
     .mob-view-style-total{
     padding-right: 0px !important;
     
+}
+.user-mobile-view-center{
+    text-align: start !important;
+
 }
 
 }
