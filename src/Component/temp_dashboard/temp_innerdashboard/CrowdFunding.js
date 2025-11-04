@@ -322,8 +322,8 @@ const CrowdFunding = () => {
                   </Col>
 
                   {/* ================== DOCUMENT UPLOAD ================== */}
-                  <Row className="mt-3">
-                  <Col lg={6} sm={12} md={6}>
+                  <Row className="mt-3 temp-hide-show-mob">
+                  <Col lg={6} sm={12} md={6} className="">
                     <fieldset
                       className={`upload_dropZone text-center ${
                         dragging === "documents" ? "drag-over" : ""
@@ -351,6 +351,7 @@ const CrowdFunding = () => {
                       <p className="temp-drop-txt my-2">
                         Drag & drop document <br /> <i>or</i>
                       </p>
+                      <p>
                       <input
                         id="documents"
                         name="documents"
@@ -372,6 +373,7 @@ const CrowdFunding = () => {
                       >
                         Choose file
                       </label>
+                      </p>
                       <p className="temp-upload-file">
                         Upload size 2KB-2MB (PDF, JPG, PNG)
                       </p>

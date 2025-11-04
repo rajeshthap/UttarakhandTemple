@@ -394,9 +394,7 @@ function TempleLeftNav() {
                   className="border-0 bg-transparent"
                   title="Account Menu"
                 >
-                  <div className="nd-log-icon-pandit">
-                    <LuLogOut />
-                  </div>
+                <LuLogOut />
                 </Dropdown.Toggle>
                 {/* Dropdown menu */}
                 <Dropdown.Menu>

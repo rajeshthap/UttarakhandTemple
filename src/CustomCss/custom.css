@@ -425,7 +425,14 @@ input[type=number] {
     max-height: 38px !important;
     overflow-y: auto !important;
 }
-
+.edit-overlay {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+ 
+.edit-overlay:hover {
+  opacity: 0.8;
+}
 @media screen and (min-width: 768px) and (max-width: 1024px) {
 
     /* .menubar {
@@ -544,6 +551,10 @@ input[type=number] {
     #user-dropdown {
         color: var(--temp-white);
     }
+    .mob-view-style-total{
+    padding-right: 0px !important;
+    
+}
 
 }
 
@@ -551,14 +562,12 @@ input[type=number] {
     .pagination {
         gap: 0.25rem;
     }
-.mob-view-style-total{
-    
-	display: flex;
-    align-items: baseline;
 
-}
     .page-link-data {
 
         font-size: 0.875rem;
+    }
+    .temp-hide-show-mob{
+        padding-right: var(--temp-space-00) !important;
     }
 }
