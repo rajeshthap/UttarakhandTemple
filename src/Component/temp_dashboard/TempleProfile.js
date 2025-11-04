@@ -278,9 +278,24 @@ const TempleProfile = () => {
     } finally {
       setImageUploading(false);
       setSelectedFile(null);
-      if (fileRefs.temple_image.current) fileRefs.temple_image.current.value = "";
+      if (fileRefs.temple_image.current)
+        fileRefs.temple_image.current.value = "";
     }
   };
+  useEffect(() => {
+      const handleBeforeUnload = (e) => {
+        if (hasChanges) {
+          const message = "You have unsaved changes. Are you sure you want to leave?";
+          e.returnValue = message;
+          return message;
+        }
+      };
+  
+      window.addEventListener("beforeunload", handleBeforeUnload);
+      return () => {
+        window.removeEventListener("beforeunload", handleBeforeUnload);
+      };
+    }, [hasChanges]);
   return (
     <div className="dashboard-wrapper">
       <aside className="temp-sidebar">
@@ -298,6 +313,11 @@ const TempleProfile = () => {
                 <Breadcrumb.Item active>Temple Profile</Breadcrumb.Item>
               </Breadcrumb>
             </h1>
+             {hasChanges && (
+              <div className="alert alert-warning py-2 px-3 mb-0">
+                You have unsaved changes
+              </div>
+            )}
           </div>
 
           <ModifyAlert
@@ -314,7 +334,7 @@ const TempleProfile = () => {
             <Form onSubmit={handleSubmit} className="profile-form mt-4">
               <Row>
                 {/* Temple Image */}
-                 <Col lg={3} md={4} sm={12} className="text-center mb-3">
+                <Col lg={3} md={4} sm={12} className="text-center mb-3">
                   <div className="card-image-wrapper-temple position-relative">
                     <img
                       src={getDisplayImageUrl()}
@@ -345,7 +365,8 @@ const TempleProfile = () => {
                 <Col lg={9} md={8} sm={12}>
                   <Row>
                     {/* Basic Info */}
-                    <Col lg={4}>
+                    <Col lg={4} md={4} sm={12}>
+                      {" "}
                       <Form.Group className="mb-3">
                         <Form.Label className="temp-label">
                           Temple Name
@@ -359,7 +380,8 @@ const TempleProfile = () => {
                       </Form.Group>
                     </Col>
 
-                    <Col lg={4}>
+                    <Col lg={4} md={4} sm={12}>
+                      {" "}
                       <Form.Group className="mb-3">
                         <Form.Label className="temp-label">
                           Year of Establishment
@@ -373,7 +395,8 @@ const TempleProfile = () => {
                       </Form.Group>
                     </Col>
 
-                    <Col lg={4}>
+                    <Col lg={4} md={4} sm={12}>
+                      {" "}
                       <Form.Group className="mb-3">
                         <Form.Label className="temp-label">
                           Ownership Type
@@ -392,9 +415,96 @@ const TempleProfile = () => {
                         </Form.Select>
                       </Form.Group>
                     </Col>
+                    <Col lg={4} md={4} sm={12}>
+                      {" "}
+                      <Form.Group className="mb-3">
+                        <Form.Label className="temp-label">Zip Code</Form.Label>
+                        <Form.Control
+                          name="zip_code"
+                          value={profile.zip_code || ""}
+                          onChange={handleInputChange}
+                          className="temp-form-control"
+                        />
+                      </Form.Group>
+                    </Col>
+
+                    {/* Trust Info */}
+                    <Col lg={4} md={4} sm={12}>
+                      <Form.Group
+                        className="mb-3"
+                        controlId="exampleForm.ControlInput1"
+                      >
+                        <Form.Label className="temp-label">
+                          Trust Committee Type{" "}
+                          <span className="temp-span-star">*</span>
+                        </Form.Label>
+                        <Form.Select
+                          className="temp-form-control-option"
+                          name="trust_committee_type"
+                          value={profile.trust_committee_type}
+                          onChange={handleInputChange}
+                        >
+                          <option value="">Select Trust Committee</option>
+                          <option value="mandal">Mandal</option>
+                          <option value="samiti">Samiti</option>
+                          <option value="trust">Trust</option>
+                          <option value="society">Society</option>
+                        </Form.Select>
+                      </Form.Group>
+                    </Col>
+                    <Col lg={4} md={4} sm={12}>
+                      <Form.Group
+                        className="mb-3"
+                        controlId="exampleForm.ControlInput1"
+                      >
+                        <Form.Label className="temp-label">
+                          Temple Type
+                        </Form.Label>
+                        <Form.Select
+                          className="temp-form-control-option"
+                          name="temple_type"
+                          value={profile.temple_type || ""}
+                          onChange={handleInputChange}
+                        >
+                          <option value="">Select Temple</option>
+                          <option value="shiv">Shiva Temple</option>
+                          <option value="vishnu">Vishnu Temple</option>
+                          <option value="durga">Durga Temple</option>
+                          <option value="ganesh">Ganesh Temple</option>
+                          <option value="hanuman">Hanuman Temple</option>
+                          <option value="other">Other</option>
+                        </Form.Select>
+                      </Form.Group>
+                    </Col>
+
+                    <Col lg={4} md={4} sm={12}>
+                      <Form.Group
+                        className="mb-3"
+                        controlId="exampleForm.ControlInput1"
+                      >
+                        <Form.Label className="temp-label">
+                          Trust/Managing Committee Details{" "}
+                        </Form.Label>
+                        <Form.Select
+                          className="temp-form-control-option"
+                          name="trust_committee_details"
+                          value={profile.trust_committee_details}
+                          onChange={handleInputChange}
+                        >
+                          <option value="">Select Details</option>
+                          <option value="public">Public Trust</option>
+                          <option value="private">Private Trust</option>
+                          <option value="committee">
+                            {" "}
+                            Managing Committee{" "}
+                          </option>
+                        </Form.Select>
+                      </Form.Group>
+                    </Col>
 
                     {/* Address */}
-                    <Col lg={12}>
+                    <Col lg={4} md={4} sm={12}>
+                      {" "}
                       <Form.Group className="mb-3">
                         <Form.Label className="temp-label">Address</Form.Label>
                         <Form.Control
@@ -414,65 +524,8 @@ const TempleProfile = () => {
                       formErrors={{}}
                     />
 
-                    <Col lg={4}>
-                      <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">Zip Code</Form.Label>
-                        <Form.Control
-                          name="zip_code"
-                          value={profile.zip_code || ""}
-                          onChange={handleInputChange}
-                          className="temp-form-control"
-                        />
-                      </Form.Group>
-                    </Col>
-
-                    {/* Trust Info */}
-                    <Col lg={4}>
-                      <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">
-                          Trust Committee Type
-                        </Form.Label>
-                        <Form.Control
-                          name="trust_committee_type"
-                          value={profile.trust_committee_type || ""}
-                          onChange={handleInputChange}
-                          className="temp-form-control"
-                        />
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg={8}>
-                      <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">
-                          Trust Committee Details
-                        </Form.Label>
-                        <Form.Control
-                          name="trust_committee_details"
-                          value={profile.trust_committee_details || ""}
-                          onChange={handleInputChange}
-                          className="temp-form-control"
-                        />
-                      </Form.Group>
-                    </Col>
-
-                    <Col lg={12}>
-                      <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">
-                          Description
-                        </Form.Label>
-                        <Form.Control
-                          as="textarea"
-                          rows={3}
-                          name="temple_description"
-                          value={profile.temple_description || ""}
-                          onChange={handleInputChange}
-                          className="temp-form-control"
-                        />
-                      </Form.Group>
-                    </Col>
-
                     {/* Contact */}
-                    <Col lg={6}>
+                    <Col lg={4} md={4} sm={12}>
                       <Form.Group className="mb-3">
                         <Form.Label className="temp-label">Email</Form.Label>
                         <Form.Control
@@ -484,7 +537,7 @@ const TempleProfile = () => {
                         />
                       </Form.Group>
                     </Col>
-                    <Col lg={6}>
+                    <Col lg={4} md={4} sm={12}>
                       <Form.Group className="mb-3">
                         <Form.Label className="temp-label">Phone</Form.Label>
                         <Form.Control
@@ -497,7 +550,7 @@ const TempleProfile = () => {
                     </Col>
 
                     {/* Bank Info */}
-                    <Col lg={6}>
+                    <Col lg={4} md={4} sm={12}>
                       <Form.Group className="mb-3">
                         <Form.Label className="temp-label">
                           Bank Name
@@ -510,7 +563,7 @@ const TempleProfile = () => {
                         />
                       </Form.Group>
                     </Col>
-                    <Col lg={6}>
+                    <Col lg={4} md={4} sm={12}>
                       <Form.Group className="mb-3">
                         <Form.Label className="temp-label">
                           Account Number
@@ -523,7 +576,7 @@ const TempleProfile = () => {
                         />
                       </Form.Group>
                     </Col>
-                    <Col lg={4}>
+                    <Col lg={4} md={4} sm={12}>
                       <Form.Group className="mb-3">
                         <Form.Label className="temp-label">
                           Account Name
@@ -536,7 +589,7 @@ const TempleProfile = () => {
                         />
                       </Form.Group>
                     </Col>
-                    <Col lg={4}>
+                    <Col lg={4} md={4} sm={12}>
                       <Form.Group className="mb-3">
                         <Form.Label className="temp-label">
                           Account Type
@@ -553,7 +606,7 @@ const TempleProfile = () => {
                         </Form.Select>
                       </Form.Group>
                     </Col>
-                    <Col lg={4}>
+                    <Col lg={4} md={4} sm={12}>
                       <Form.Group className="mb-3">
                         <Form.Label className="temp-label">
                           IFSC Code
@@ -567,86 +620,99 @@ const TempleProfile = () => {
                       </Form.Group>
                     </Col>
 
-                    {/* File Uploads */}
-                    {["land_doc", "noc_doc", "trust_cert"].map(
-                      (field) => (
-                        <Col lg={6} key={field} className="add-event-f-mob">
-                          <fieldset
-                            className={`upload_dropZone text-center ${
-                              dragging === field ? "drag-over" : ""
-                            }`}
-                            onDragOver={(e) => {
-                              e.preventDefault();
-                              setDragging(field);
-                            }}
-                            onDragLeave={() => setDragging(null)}
-                            onDrop={(e) => {
-                              e.preventDefault();
-                              setDragging(null);
-                              const file = e.dataTransfer.files[0];
-                              if (file) {
-                                const sizeKB = file.size / 1024;
-                                if (sizeKB < 10 || sizeKB > 2048) {
-                                  alert(
-                                    "File size must be between 10KB and 2MB."
-                                  );
-                                  return;
-                                }
-                                handleInputChange({
-                                  target: { name: field, files: [file] },
-                                });
-                              }
-                            }}
-                          >
-                            <img src={UploadFile} alt="upload-file" />
-                            <p className="temp-drop-txt my-2">
-                              {field.replace("_", " ").toUpperCase()} <br />
-                              <i>or drag & drop here</i>
-                            </p>
-                            <input
-                              id={field}
-                              name={field}
-                              type="file"
-                              accept="image/jpeg, image/png, application/pdf"
-                              className="invisible"
-                              onChange={handleInputChange}
-                              ref={fileRefs[field]}
-                            />
-                            <label
-                              className="btn temp-primary-btn mb-1"
-                              htmlFor={field}
-                            >
-                              Choose file
-                            </label>
-                            <p className="temp-upload-file">
-                              Upload size 10KB–2MB
-                            </p>
-                          </fieldset>
+                    <Col lg={6} md={6} sm={12}>
+                      <Form.Group className="mb-3">
+                        <Form.Label className="temp-label">
+                          Description
+                        </Form.Label>
+                        <Form.Control
+                          as="textarea"
+                          name="temple_description"
+                          value={profile.temple_description || ""}
+                          onChange={handleInputChange}
+                          className="temp-form-control"
+                        />
+                      </Form.Group>
+                    </Col>
 
-                          {preview[field] && (
-                            <div className="mt-2">
-                              <div className="d-flex temp-doc-info">
-                                <Col lg={3}>
-                                  {new Date().toLocaleDateString()}
-                                </Col>
-                                <Col lg={9} className="px-4 temp-success-doc">
-                                  <FaCheckCircle /> Uploaded Successfully
-                                </Col>
-                              </div>
-                              <div
-                                className="col temp-delete-icon"
-                                onClick={() => removeSelectedFile(field)}
-                              >
-                                <h3>
-                                  <RiDeleteBin6Line className="mx-1" /> Click
-                                  here to Remove
-                                </h3>
-                              </div>
+                    {/* File Uploads */}
+                    {["land_doc", "noc_doc", "trust_cert"].map((field) => (
+                      <Col lg={6} key={field} className="add-event-f-mob">
+                        <fieldset
+                          className={`upload_dropZone text-center ${
+                            dragging === field ? "drag-over" : ""
+                          }`}
+                          onDragOver={(e) => {
+                            e.preventDefault();
+                            setDragging(field);
+                          }}
+                          onDragLeave={() => setDragging(null)}
+                          onDrop={(e) => {
+                            e.preventDefault();
+                            setDragging(null);
+                            const file = e.dataTransfer.files[0];
+                            if (file) {
+                              const sizeKB = file.size / 1024;
+                              if (sizeKB < 10 || sizeKB > 2048) {
+                                alert(
+                                  "File size must be between 10KB and 2MB."
+                                );
+                                return;
+                              }
+                              handleInputChange({
+                                target: { name: field, files: [file] },
+                              });
+                            }
+                          }}
+                        >
+                          <img src={UploadFile} alt="upload-file" />
+                          <p className="temp-drop-txt my-2">
+                            {field.replace("_", " ").toUpperCase()} <br />
+                            <i>or drag & drop here</i>
+                          </p>
+                          <input
+                            id={field}
+                            name={field}
+                            type="file"
+                            accept="image/jpeg, image/png, application/pdf"
+                            className="invisible"
+                            onChange={handleInputChange}
+                            ref={fileRefs[field]}
+                          />
+                          <label
+                            className="btn temp-primary-btn mb-1"
+                            htmlFor={field}
+                          >
+                            Choose file
+                          </label>
+                          <p className="temp-upload-file">
+                            Upload size 10KB–2MB
+                          </p>
+                        </fieldset>
+
+                        {preview[field] && (
+                          <div className="mt-2">
+                            <div className="d-flex temp-doc-info">
+                              <Col lg={3}>
+                                {new Date().toLocaleDateString()}
+                              </Col>
+                              <Col lg={9} className="px-4 temp-success-doc">
+                                <FaCheckCircle /> Uploaded Successfully
+                              </Col>
                             </div>
-                          )}
-                        </Col>
-                      )
-                    )}
+                            <div
+                              className="col temp-delete-icon"
+                              onClick={() => removeSelectedFile(field)}
+                            >
+                              <h3>
+                                <RiDeleteBin6Line className="mx-1" /> Click here
+                                to Remove
+                              </h3>
+                            </div>
+                          </div>
+                        )}
+                      </Col>
+                    ))}
                   </Row>
                 </Col>
               </Row>
@@ -655,7 +721,7 @@ const TempleProfile = () => {
                 <Button
                   className="btn-save mt-3"
                   type="submit"
-                  disabled={saving || !hasChanges} 
+                  disabled={saving || !hasChanges}
                 >
                   {saving ? (
                     <>
