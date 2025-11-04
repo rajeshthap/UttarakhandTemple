@@ -1,23 +1,28 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import { Row, Col, Form, Button, Spinner, Breadcrumb } from "react-bootstrap";
 import axios from "axios";
 import TempleLeftNav from "./TempleLeftNav";
 import ModifyAlert from "../Alert/ModifyAlert";
 import UploadFile from "../../assets/images/upload-icon.png";
-import { FaCheckCircle } from "react-icons/fa";
+import DefaultProfile from "../../assets/images/Diya.png";
+import { FaCamera, FaCheckCircle } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import LocationState from "../userregistration/LocationState";
 import { useAuth } from "../GlobleAuth/AuthContext";
+import "../../assets/CSS/MyProfile.css"
 
 const TempleProfile = () => {
   const { uniqueId } = useAuth();
-
+  const [imageUploading, setImageUploading] = useState(false);
   const [profile, setProfile] = useState({});
+  const [originalProfile, setOriginalProfile] = useState({});
+  const [hasChanges, setHasChanges] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [dragging, setDragging] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const [preview, setPreview] = useState({
     temple_image: "",
@@ -25,6 +30,37 @@ const TempleProfile = () => {
     noc_doc: "",
     trust_cert: "",
   });
+  const [imageVersion, setImageVersion] = useState(Date.now());
+
+  // keep the last created object URL so we can revoke it later
+  const previewUrlRef = useRef(null);
+
+  function getDisplayImageUrl() {
+    if (selectedFile && preview.temple_image) return preview.temple_image;
+    if (preview.temple_image) return preview.temple_image;
+
+    const img = profile.temple_image;
+    if (!img) return DefaultProfile;
+
+    if (typeof img === "string") {
+      try {
+        const filename = img.split("/").pop();
+        if (filename)
+          return `https://mahadevaaya.com/backend/media/temple_images/${filename}?v=${imageVersion}`;
+      } catch (e) {}
+    }
+    if (typeof img === "object") {
+      if (img.url && typeof img.url === "string")
+        return `${img.url}?v=${imageVersion}`;
+      if (img.path && typeof img.path === "string") {
+        const filename = img.path.split("/").pop();
+        return `https://mahadevaaya.com/backend/media/temple_images/${filename}?v=${imageVersion}`;
+      }
+      if (img.name && typeof img.name === "string")
+        return `https://mahadevaaya.com/backend/media/temple_images/${img.name}?v=${imageVersion}`;
+    }
+    return DefaultProfile;
+  }
 
   const fileRefs = {
     temple_image: useRef(null),
@@ -34,12 +70,12 @@ const TempleProfile = () => {
   };
 
   const getImageUrl = (imgPath) => {
-    if (!imgPath) return "https://mahadevaaya.com/backend/media/temple_images/default.png";
+    if (!imgPath)
+      return "https://mahadevaaya.com/backend/media/temple_images/default.png";
     const filename = imgPath.split("/").pop();
     return `https://mahadevaaya.com/backend/media/temple_images/${filename}`;
   };
 
-  //  Fetch Temple Profile
   useEffect(() => {
     const fetchTemple = async () => {
       try {
@@ -47,6 +83,7 @@ const TempleProfile = () => {
           `https://mahadevaaya.com/backend/api/get-temple/?temple_id=${uniqueId}`
         );
         setProfile(res.data || {});
+        setOriginalProfile(res.data || {});
         setPreview({
           temple_image: "",
           land_doc: "",
@@ -62,9 +99,25 @@ const TempleProfile = () => {
       }
     };
     if (uniqueId) fetchTemple();
+    // revoke preview URL on unmount
+    return () => {
+      if (previewUrlRef.current) {
+        URL.revokeObjectURL(previewUrlRef.current);
+        previewUrlRef.current = null;
+      }
+    };
   }, [uniqueId]);
 
-  //  Handle Input Change
+  useEffect(() => {
+    const profileStr = JSON.stringify(profile);
+    const originalStr = JSON.stringify(originalProfile);
+    setHasChanges(profileStr !== originalStr);
+  }, [profile, originalProfile]);
+
+  useEffect(() => {
+    setImageVersion(Date.now());
+  }, [profile.temple_image]);
+
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
     if (files && files[0]) {
@@ -74,8 +127,30 @@ const TempleProfile = () => {
         alert("File size must be between 10KB and 2MB.");
         return;
       }
-      setPreview((p) => ({ ...p, [name]: URL.createObjectURL(file) }));
-      setProfile((p) => ({ ...p, [name]: file }));
+
+      if (name === "temple_image") {
+        // create object URL and keep ref to revoke later
+        if (previewUrlRef.current) {
+          URL.revokeObjectURL(previewUrlRef.current);
+          previewUrlRef.current = null;
+        }
+        const fileUrl = URL.createObjectURL(file);
+        previewUrlRef.current = fileUrl;
+
+        setPreview((p) => ({ ...p, [name]: fileUrl }));
+        setSelectedFile(file);
+
+        // AUTO UPLOAD: Immediately upload the temple image when selected
+        handleTempleImageUpload(file);
+      } else {
+        // For other documents
+        if (previewUrlRef.current && preview[name]) {
+          // do not revoke temple_image preview here
+        }
+        const fileUrl = URL.createObjectURL(file);
+        setPreview((p) => ({ ...p, [name]: fileUrl }));
+        setProfile((p) => ({ ...p, [name]: file }));
+      }
     } else {
       setProfile((p) => ({ ...p, [name]: value }));
     }
@@ -86,16 +161,19 @@ const TempleProfile = () => {
   };
 
   const removeSelectedFile = (field) => {
+    // revoke object URL if present for this preview
+    if (field === "temple_image" && previewUrlRef.current) {
+      URL.revokeObjectURL(previewUrlRef.current);
+      previewUrlRef.current = null;
+    }
     setPreview((p) => ({ ...p, [field]: "" }));
     setProfile((p) => ({ ...p, [field]: "" }));
     if (fileRefs[field]?.current) fileRefs[field].current.value = "";
   };
 
-  //  Submit Update
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
-
     try {
       const fd = new FormData();
       const fields = [
@@ -120,8 +198,6 @@ const TempleProfile = () => {
         "ifsc_code",
       ];
       fields.forEach((f) => fd.append(f, profile[f] ?? ""));
-
-      // Upload files
       ["temple_image", "land_doc", "noc_doc", "trust_cert"].forEach((key) => {
         if (profile[key] instanceof File) fd.append(key, profile[key]);
       });
@@ -135,17 +211,22 @@ const TempleProfile = () => {
       setAlertMsg("Temple profile updated successfully!");
       setShowAlert(true);
 
-      // Refresh
       const updated = await axios.get(
         `https://mahadevaaya.com/backend/api/get-temple/?temple_id=${uniqueId}`
       );
       setProfile(updated.data || {});
+      setOriginalProfile(updated.data || {});
+      setHasChanges(false);
       setPreview({
         temple_image: "",
         land_doc: "",
         noc_doc: "",
         trust_cert: "",
       });
+      setImageVersion(Date.now());
+      window.dispatchEvent(
+        new CustomEvent("temple_profile_updated", { detail: updated.data })
+      );
     } catch (err) {
       console.error("Update error:", err);
       setAlertMsg("Error updating temple profile.");
@@ -155,6 +236,52 @@ const TempleProfile = () => {
     }
   };
 
+  const handleEditPhoto = () => {
+    // ensure the input has a name so handleInputChange can detect it
+    fileRefs.temple_image.current?.click();
+  };
+
+  // Auto image upload function (called from handleInputChange)
+  const handleTempleImageUpload = async (file) => {
+    if (!file) return;
+    setImageUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append("temple_image", file);
+      await axios.put(
+        `https://mahadevaaya.com/backend/api/get-temple/?temple_id=${uniqueId}`,
+        fd,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+
+      setAlertMsg("Temple image uploaded successfully!");
+      setShowAlert(true);
+
+      const fresh = await axios.get(
+        `https://mahadevaaya.com/backend/api/get-temple/?temple_id=${uniqueId}`
+      );
+      setProfile(fresh.data || {});
+      setOriginalProfile(fresh.data || {});
+      // revoke old preview and clear
+      if (previewUrlRef.current) {
+        URL.revokeObjectURL(previewUrlRef.current);
+        previewUrlRef.current = null;
+      }
+      setPreview((p) => ({ ...p, temple_image: "" }));
+      setImageVersion(Date.now());
+      window.dispatchEvent(
+        new CustomEvent("temple_profile_updated", { detail: fresh.data })
+      );
+    } catch (err) {
+      console.error("Error uploading temple image:", err);
+      setAlertMsg("Error uploading temple image. Please try again.");
+      setShowAlert(true);
+    } finally {
+      setImageUploading(false);
+      setSelectedFile(null);
+      if (fileRefs.temple_image.current) fileRefs.temple_image.current.value = "";
+    }
+  };
   return (
     <div className="dashboard-wrapper">
       <aside className="temp-sidebar">
@@ -164,20 +291,26 @@ const TempleProfile = () => {
       <main className="main-container">
         <div className="content-box">
           <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
-                            <h1 className="fw500">
-                              <Breadcrumb>
-                                <Breadcrumb.Item href="/TempleDashBoard">
-                                  <span className="fw700h1">DashBoard</span>
-                                </Breadcrumb.Item>
-                                <Breadcrumb.Item active>Temple Profile</Breadcrumb.Item>
-                              </Breadcrumb>
-                            </h1>
-            
-                            
-                          </div>
-      
+            <h1 className="fw500">
+              <Breadcrumb>
+                <Breadcrumb.Item href="/TempleDashBoard">
+                  <span className="fw700h1">DashBoard</span>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item active>Temple Profile</Breadcrumb.Item>
+              </Breadcrumb>
+            </h1>
+            {hasChanges && (
+              <div className="alert alert-warning py-2 px-3 mb-0">
+                You have unsaved changes
+              </div>
+            )}
+          </div>
 
-          <ModifyAlert message={alertMsg} show={showAlert} setShow={setShowAlert} />
+          <ModifyAlert
+            message={alertMsg}
+            show={showAlert}
+            setShow={setShowAlert}
+          />
 
           {loading ? (
             <div className="mt-4">
@@ -187,16 +320,30 @@ const TempleProfile = () => {
             <Form onSubmit={handleSubmit} className="profile-form mt-4">
               <Row>
                 {/* Temple Image */}
-                <Col lg={3} md={4} sm={12} className="text-center mb-3">
-                  <div className="card-image-wrapper-temple">
+                 <Col lg={3} md={4} sm={12} className="text-center mb-3">
+                  <div className="card-image-wrapper-temple position-relative">
                     <img
-                      src={
-                        preview.temple_image
-                          ? preview.temple_image
-                          : getImageUrl(profile.temple_image)
-                      }
+                      src={getDisplayImageUrl()}
                       alt="Temple"
                       className="card-image"
+                      key={getDisplayImageUrl()}
+                    />
+                    <div className="edit-overlay" onClick={handleEditPhoto}>
+                      {imageUploading ? (
+                        <Spinner animation="border" size="sm" />
+                      ) : (
+                        <FaCamera className="edit-icon" />
+                      )}
+                    </div>
+
+                    {/* IMPORTANT: name="temple_image" added so handleInputChange detects it */}
+                    <input
+                      type="file"
+                      name="temple_image"
+                      accept="image/*"
+                      ref={fileRefs.temple_image}
+                      style={{ display: "none" }}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </Col>
@@ -206,36 +353,42 @@ const TempleProfile = () => {
                     {/* Basic Info */}
                     <Col lg={4}>
                       <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">Temple Name</Form.Label>
+                        <Form.Label className="temp-label">
+                          Temple Name
+                        </Form.Label>
                         <Form.Control
                           name="temple_name"
                           value={profile.temple_name || ""}
                           onChange={handleInputChange}
-                           className="temp-form-control"
+                          className="temp-form-control"
                         />
                       </Form.Group>
                     </Col>
 
                     <Col lg={4}>
                       <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">Year of Establishment</Form.Label>
+                        <Form.Label className="temp-label">
+                          Year of Establishment
+                        </Form.Label>
                         <Form.Control
                           name="year_of_establishment"
                           value={profile.year_of_establishment || ""}
                           onChange={handleInputChange}
-                           className="temp-form-control"
+                          className="temp-form-control"
                         />
                       </Form.Group>
                     </Col>
 
                     <Col lg={4}>
                       <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">Ownership Type</Form.Label>
+                        <Form.Label className="temp-label">
+                          Ownership Type
+                        </Form.Label>
                         <Form.Select
                           name="temple_ownership_type"
                           value={profile.temple_ownership_type || ""}
                           onChange={handleInputChange}
-                              className="temp-form-control"
+                          className="temp-form-control"
                         >
                           <option value="">Select Ownership</option>
                           <option value="private">Private</option>
@@ -256,7 +409,7 @@ const TempleProfile = () => {
                           name="temple_address"
                           value={profile.temple_address || ""}
                           onChange={handleInputChange}
-                              className="temp-form-control"
+                          className="temp-form-control"
                         />
                       </Form.Group>
                     </Col>
@@ -282,7 +435,9 @@ const TempleProfile = () => {
                     {/* Trust Info */}
                     <Col lg={4}>
                       <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">Trust Committee Type</Form.Label>
+                        <Form.Label className="temp-label">
+                          Trust Committee Type
+                        </Form.Label>
                         <Form.Control
                           name="trust_committee_type"
                           value={profile.trust_committee_type || ""}
@@ -294,7 +449,9 @@ const TempleProfile = () => {
 
                     <Col lg={8}>
                       <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">Trust Committee Details</Form.Label>
+                        <Form.Label className="temp-label">
+                          Trust Committee Details
+                        </Form.Label>
                         <Form.Control
                           name="trust_committee_details"
                           value={profile.trust_committee_details || ""}
@@ -306,7 +463,9 @@ const TempleProfile = () => {
 
                     <Col lg={12}>
                       <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">Description</Form.Label>
+                        <Form.Label className="temp-label">
+                          Description
+                        </Form.Label>
                         <Form.Control
                           as="textarea"
                           rows={3}
@@ -327,7 +486,7 @@ const TempleProfile = () => {
                           type="email"
                           value={profile.email || ""}
                           disabled
-                           className="temp-form-control"
+                          className="temp-form-control"
                         />
                       </Form.Group>
                     </Col>
@@ -338,7 +497,7 @@ const TempleProfile = () => {
                           name="phone"
                           value={profile.phone || ""}
                           disabled
-                           className="temp-form-control"
+                          className="temp-form-control"
                         />
                       </Form.Group>
                     </Col>
@@ -346,7 +505,9 @@ const TempleProfile = () => {
                     {/* Bank Info */}
                     <Col lg={6}>
                       <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">Bank Name</Form.Label>
+                        <Form.Label className="temp-label">
+                          Bank Name
+                        </Form.Label>
                         <Form.Control
                           name="bank_name"
                           value={profile.bank_name || ""}
@@ -357,7 +518,9 @@ const TempleProfile = () => {
                     </Col>
                     <Col lg={6}>
                       <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">Account Number</Form.Label>
+                        <Form.Label className="temp-label">
+                          Account Number
+                        </Form.Label>
                         <Form.Control
                           name="account_number"
                           value={profile.account_number || ""}
@@ -368,7 +531,9 @@ const TempleProfile = () => {
                     </Col>
                     <Col lg={4}>
                       <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">Account Name</Form.Label>
+                        <Form.Label className="temp-label">
+                          Account Name
+                        </Form.Label>
                         <Form.Control
                           name="account_name"
                           value={profile.account_name || ""}
@@ -379,7 +544,9 @@ const TempleProfile = () => {
                     </Col>
                     <Col lg={4}>
                       <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">Account Type</Form.Label>
+                        <Form.Label className="temp-label">
+                          Account Type
+                        </Form.Label>
                         <Form.Select
                           name="account_type"
                           value={profile.account_type || ""}
@@ -394,88 +561,108 @@ const TempleProfile = () => {
                     </Col>
                     <Col lg={4}>
                       <Form.Group className="mb-3">
-                        <Form.Label className="temp-label">IFSC Code</Form.Label>
+                        <Form.Label className="temp-label">
+                          IFSC Code
+                        </Form.Label>
                         <Form.Control
                           name="ifsc_code"
                           value={profile.ifsc_code || ""}
                           onChange={handleInputChange}
-                            className="temp-form-control"
+                          className="temp-form-control"
                         />
                       </Form.Group>
                     </Col>
 
                     {/* File Uploads */}
-                    {["temple_image", "land_doc", "noc_doc", "trust_cert"].map((field) => (
-                      <Col lg={6} key={field} className="add-event-f-mob">
-                        <fieldset
-                          className={`upload_dropZone text-center ${
-                            dragging === field ? "drag-over" : ""
-                          }`}
-                          onDragOver={(e) => {
-                            e.preventDefault();
-                            setDragging(field);
-                          }}
-                          onDragLeave={() => setDragging(null)}
-                          onDrop={(e) => {
-                            e.preventDefault();
-                            setDragging(null);
-                            const file = e.dataTransfer.files[0];
-                            if (file) {
-                              const sizeKB = file.size / 1024;
-                              if (sizeKB < 10 || sizeKB > 2048) {
-                                alert("File size must be between 10KB and 2MB.");
-                                return;
+                    {["land_doc", "noc_doc", "trust_cert"].map(
+                      (field) => (
+                        <Col lg={6} key={field} className="add-event-f-mob">
+                          <fieldset
+                            className={`upload_dropZone text-center ${
+                              dragging === field ? "drag-over" : ""
+                            }`}
+                            onDragOver={(e) => {
+                              e.preventDefault();
+                              setDragging(field);
+                            }}
+                            onDragLeave={() => setDragging(null)}
+                            onDrop={(e) => {
+                              e.preventDefault();
+                              setDragging(null);
+                              const file = e.dataTransfer.files[0];
+                              if (file) {
+                                const sizeKB = file.size / 1024;
+                                if (sizeKB < 10 || sizeKB > 2048) {
+                                  alert(
+                                    "File size must be between 10KB and 2MB."
+                                  );
+                                  return;
+                                }
+                                handleInputChange({
+                                  target: { name: field, files: [file] },
+                                });
                               }
-                              handleInputChange({ target: { name: field, files: [file] } });
-                            }
-                          }}
-                        >
-                          <img src={UploadFile} alt="upload-file" />
-                          <p className="temp-drop-txt my-2">
-                            {field.replace("_", " ").toUpperCase()} <br />
-                            <i>or drag & drop here</i>
-                          </p>
-                          <input
-                            id={field}
-                            name={field}
-                            type="file"
-                            accept="image/jpeg, image/png, application/pdf"
-                            className="invisible"
-                            onChange={handleInputChange}
-                            ref={fileRefs[field]}
-                          />
-                          <label className="btn temp-primary-btn mb-1" htmlFor={field}>
-                            Choose file
-                          </label>
-                          <p className="temp-upload-file">Upload size 10KB–2MB</p>
-                        </fieldset>
-
-                        {preview[field] && (
-                          <div className="mt-2">
-                            <div className="d-flex temp-doc-info">
-                              <Col lg={3}>{new Date().toLocaleDateString()}</Col>
-                              <Col lg={9} className="px-4 temp-success-doc">
-                                <FaCheckCircle /> Uploaded Successfully
-                              </Col>
-                            </div>
-                            <div
-                              className="col temp-delete-icon"
-                              onClick={() => removeSelectedFile(field)}
+                            }}
+                          >
+                            <img src={UploadFile} alt="upload-file" />
+                            <p className="temp-drop-txt my-2">
+                              {field.replace("_", " ").toUpperCase()} <br />
+                              <i>or drag & drop here</i>
+                            </p>
+                            <input
+                              id={field}
+                              name={field}
+                              type="file"
+                              accept="image/jpeg, image/png, application/pdf"
+                              className="invisible"
+                              onChange={handleInputChange}
+                              ref={fileRefs[field]}
+                            />
+                            <label
+                              className="btn temp-primary-btn mb-1"
+                              htmlFor={field}
                             >
-                              <h3>
-                                <RiDeleteBin6Line className="mx-1" /> Click here to Remove
-                              </h3>
+                              Choose file
+                            </label>
+                            <p className="temp-upload-file">
+                              Upload size 10KB–2MB
+                            </p>
+                          </fieldset>
+
+                          {preview[field] && (
+                            <div className="mt-2">
+                              <div className="d-flex temp-doc-info">
+                                <Col lg={3}>
+                                  {new Date().toLocaleDateString()}
+                                </Col>
+                                <Col lg={9} className="px-4 temp-success-doc">
+                                  <FaCheckCircle /> Uploaded Successfully
+                                </Col>
+                              </div>
+                              <div
+                                className="col temp-delete-icon"
+                                onClick={() => removeSelectedFile(field)}
+                              >
+                                <h3>
+                                  <RiDeleteBin6Line className="mx-1" /> Click
+                                  here to Remove
+                                </h3>
+                              </div>
                             </div>
-                          </div>
-                        )}
-                      </Col>
-                    ))}
+                          )}
+                        </Col>
+                      )
+                    )}
                   </Row>
                 </Col>
               </Row>
 
               <div className="gap-3 mt-3 Temp-btn-submit">
-                <Button className="btn-save mt-3" type="submit" disabled={saving}>
+                <Button
+                  className="btn-save mt-3"
+                  type="submit"
+                  disabled={saving || !hasChanges} 
+                >
                   {saving ? (
                     <>
                       <Spinner animation="border" size="sm" /> Saving...
