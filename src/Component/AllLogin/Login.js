@@ -56,7 +56,7 @@ export default function Login() {
       // Redirect and pass unique_id as route state (like a prop)
       switch (formData.role.toLowerCase()) {
         case "admin":
-          navigate("/DashBoard", { state: { unique_id } });
+          navigate("/AdminDashBoard", { state: { unique_id } });
           break;
         case "pandit":
           navigate("/Pandit_DashBoard", { state: { unique_id } });
