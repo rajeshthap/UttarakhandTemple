@@ -7,7 +7,7 @@ import PanditLeftNav from "../PanditLeftNav";
 import ModifyAlert from "../../Alert/ModifyAlert";
 import LocationState from "../../userregistration/LocationState";
 import UploadFile from "../../../assets/images/upload-icon.png";
-import { FaCheckCircle } from "react-icons/fa";
+import { FaCheckCircle, FaEye } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaCamera } from "react-icons/fa";
 import DefaultProfile from "../../../assets/images/Diya.png";
@@ -436,7 +436,8 @@ const PanditProfile = () => {
                             </Col>
                             <Col lg={3} className="text-end">
                               {/* View Button - Now opens in a new tab */}
-                              <Button variant="link" size="sm" onClick={handleViewInNewTab}>
+                              <FaEye />
+                              <Button className="view-icon" variant="link" size="sm" onClick={handleViewInNewTab}>
                                 View
                               </Button>
                             </Col>
