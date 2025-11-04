@@ -7,7 +7,7 @@ import AdminLeftnav from "../AdminLeftnav";
 import { useAuth } from "../../GlobleAuth/AuthContext";
 
 
-const AllRegistrationBooking = () => {
+const AllTempleBooking = () => {
   const navigate = useNavigate();
   const { uniqueId } = useAuth();
 
@@ -48,4 +48,4 @@ const AllRegistrationBooking = () => {
   );
 };
 
-export default AllRegistrationBooking;
+export default AllTempleBooking;

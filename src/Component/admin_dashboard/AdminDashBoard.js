@@ -46,28 +46,7 @@ const AdminDashBoard = () => {
 
             {/* Dashboard Cards */}
             <Row>
-              <Col lg={4} md={4} sm={12}>
-                <Card className="shadow-sm rounded dbcard-adminnew-puja-box-1 flex-fill mb-2">
-                  <Card.Body>
-                    <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
-                      <div>
-                        <span className=" d-block mb-1 text-nowrap user-sub-title">
-                          User
-                        </span>
-                        <h4 className="fw-medium mb-0">0</h4>
-                        <div>
-                          <span className="user-span">View Details</span>
-                        </div>
-                      </div>
-                      <div className="lh-1">
-                        <div className="avatar-md avatar-rounded ad-save-bg flex-shrink-0 d-flex align-items-center justify-content-center">
-                         <FaRegUserCircle/>
-                        </div>
-                      </div>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
+              
 
               <Col lg={4} md={4} sm={12}>
                 <Card className="shadow-sm dbcard-admin-accept-box-2 flex-fill">
@@ -112,6 +91,187 @@ const AdminDashBoard = () => {
                             alt="Pandit"
                             className="img-fluid"
                           />
+                        </div>
+                      </div>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+
+              <Col lg={4} md={4} sm={12}>
+                <Card className="shadow-sm rounded dbcard-adminnew-puja-box-1 flex-fill mb-2">
+                  <Card.Body>
+                    <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
+                      <div>
+                        <span className=" d-block mb-1 text-nowrap user-sub-title">
+                          Devotee
+                        </span>
+                        <h4 className="fw-medium mb-0">0</h4>
+                        <div>
+                          <span className="user-span">View Details</span>
+                        </div>
+                      </div>
+                      <div className="lh-1">
+                        <div className="avatar-md avatar-rounded ad-save-bg flex-shrink-0 d-flex align-items-center justify-content-center">
+                         <FaRegUserCircle/>
+                        </div>
+                      </div>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+
+             
+            </Row>
+
+             <Row>
+              
+
+              <Col lg={4} md={4} sm={12}>
+                <Card className="shadow-sm dbcard-admin-accept-box-2 flex-fill">
+                  <Card.Body>
+                    <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
+                      <div>
+                        <span className=" d-block mb-1 text-nowrap user-sub-title">
+                          Crowd Funding
+                        </span>
+                        <h4 className="fw-medium mb-0">0</h4>
+                        <div>
+                          <span className="user-span">View Details</span>
+                        </div>
+                      </div>
+                      <div className="lh-1">
+                        <div className="avatar-md avatar-rounded Darshan-bg flex-shrink-0 d-flex align-items-center justify-content-center">
+                          <GiByzantinTemple />
+                        </div>
+                      </div>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+
+              <Col lg={4} md={4} sm={12}>
+                <Card className="shadow-sm rounded flex-fill dbcard-admin-4">
+                  <Card.Body>
+                    <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
+                      <div>
+                        <span className=" d-block mb-1 text-nowrap user-sub-title">
+                         Darshan Booking
+                        </span>
+                        <h4 className="fw-medium mb-0">0</h4>
+                        <div>
+                          <span className="user-span">View Details</span>
+                        </div>
+                      </div>
+                      <div className="lh-1">
+                        <div className="avatar-md avatar-rounded pandit-bg flex-shrink-0 d-flex align-items-center justify-content-center">
+                          <img
+                            src={PanditImg}
+                            alt="Pandit"
+                            className="img-fluid"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+
+              <Col lg={4} md={4} sm={12}>
+                <Card className="shadow-sm rounded dbcard-adminnew-puja-box-1 flex-fill mb-2">
+                  <Card.Body>
+                    <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
+                      <div>
+                        <span className=" d-block mb-1 text-nowrap user-sub-title">
+                          Events
+                        </span>
+                        <h4 className="fw-medium mb-0">0</h4>
+                        <div>
+                          <span className="user-span">View Details</span>
+                        </div>
+                      </div>
+                      <div className="lh-1">
+                        <div className="avatar-md avatar-rounded ad-save-bg flex-shrink-0 d-flex align-items-center justify-content-center">
+                         <FaRegUserCircle/>
+                        </div>
+                      </div>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+
+             
+            </Row>
+
+             <Row>
+              
+
+              <Col lg={4} md={4} sm={12}>
+                <Card className="shadow-sm dbcard-admin-accept-box-2 flex-fill">
+                  <Card.Body>
+                    <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
+                      <div>
+                        <span className=" d-block mb-1 text-nowrap user-sub-title">
+                          Pending
+                        </span>
+                        <h4 className="fw-medium mb-0">0</h4>
+                        <div>
+                          <span className="user-span">View Details</span>
+                        </div>
+                      </div>
+                      <div className="lh-1">
+                        <div className="avatar-md avatar-rounded Darshan-bg flex-shrink-0 d-flex align-items-center justify-content-center">
+                          <GiByzantinTemple />
+                        </div>
+                      </div>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+
+              <Col lg={4} md={4} sm={12}>
+                <Card className="shadow-sm rounded flex-fill dbcard-admin-4">
+                  <Card.Body>
+                    <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
+                      <div>
+                        <span className=" d-block mb-1 text-nowrap user-sub-title">
+                         Accepted
+                        </span>
+                        <h4 className="fw-medium mb-0">0</h4>
+                        <div>
+                          <span className="user-span">View Details</span>
+                        </div>
+                      </div>
+                      <div className="lh-1">
+                        <div className="avatar-md avatar-rounded pandit-bg flex-shrink-0 d-flex align-items-center justify-content-center">
+                          <img
+                            src={PanditImg}
+                            alt="Pandit"
+                            className="img-fluid"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+
+              <Col lg={4} md={4} sm={12}>
+                <Card className="shadow-sm rounded dbcard-adminnew-puja-box-1 flex-fill mb-2">
+                  <Card.Body>
+                    <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
+                      <div>
+                        <span className=" d-block mb-1 text-nowrap user-sub-title">
+                          Rejected
+                        </span>
+                        <h4 className="fw-medium mb-0">0</h4>
+                        <div>
+                          <span className="user-span">View Details</span>
+                        </div>
+                      </div>
+                      <div className="lh-1">
+                        <div className="avatar-md avatar-rounded ad-save-bg flex-shrink-0 d-flex align-items-center justify-content-center">
+                         <FaRegUserCircle/>
                         </div>
                       </div>
                     </div>

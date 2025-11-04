@@ -114,7 +114,7 @@ function AdminLeftnav() {
 
     { icon: <RiDashboard3Line />, label: "All Darshan Booking", path: "/AllDarshanBooking" },
 
- { icon: <RiDashboard3Line />, label: "All Temple Booking", path: "/AllRegistrationBooking" },
+ { icon: <RiDashboard3Line />, label: "All Temple Booking", path: "/AllTempleBooking" },
  { icon: <RiDashboard3Line />, label: "All Pandit Booking", path: "/AllPanditBooking" },
 
     {

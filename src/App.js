@@ -143,7 +143,7 @@ import AdminLeftnav from "./Component/admin_dashboard/AdminLeftnav";
 import AdminDashBoard from "./Component/admin_dashboard/AdminDashBoard";
 import CrowdfundingCard from "./Component/CrowdfundingCard";
 import AllDarshanBooking from "./Component/admin_dashboard/admin_innerdashboard/AllDarshanBooking";
-import AllRegistrationBooking from "./Component/admin_dashboard/admin_innerdashboard/AllRegistrationBooking";
+import AllTempleBooking from "./Component/admin_dashboard/admin_innerdashboard/AllTempleBooking";
 import AllPanditBooking from "./Component/admin_dashboard/admin_innerdashboard/AllPanditBooking";
 
 
@@ -240,7 +240,7 @@ function App() {
     "/AdminLeftnav",
     "/AdminDashBoard",
     "/AllDarshanBooking",
-    "/AllRegistrationBooking",
+    "/AllTempleBooking",
     "/AllPanditBooking",
  
   
@@ -448,7 +448,7 @@ function App() {
           <Route path="/AdminLeftnav" element={<AdminLeftnav />} />
           <Route path="/AdminDashBoard" element={<AdminDashBoard />} />
           <Route path="/AllDarshanBooking" element={<AllDarshanBooking />} />
-          <Route path="/AllRegistrationBooking" element={<AllRegistrationBooking />} />
+          <Route path="/AllTempleBooking" element={<AllTempleBooking />} />
           <Route path="/AllPanditBooking" element={<AllPanditBooking />} />
           
          
