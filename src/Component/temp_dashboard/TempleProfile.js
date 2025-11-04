@@ -5,7 +5,7 @@ import TempleLeftNav from "./TempleLeftNav";
 import ModifyAlert from "../Alert/ModifyAlert";
 import UploadFile from "../../assets/images/upload-icon.png";
 import DefaultProfile from "../../assets/images/Diya.png";
-import { FaCamera, FaCheckCircle } from "react-icons/fa";
+import { FaCamera, FaCheckCircle, FaEye } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import LocationState from "../userregistration/LocationState";
 import { useAuth } from "../GlobleAuth/AuthContext";
@@ -60,6 +60,24 @@ const TempleProfile = () => {
     }
     return DefaultProfile;
   }
+
+  // Function to view document in a new tab
+  const handleViewInNewTab = (docType) => {
+    const docSource = preview[docType] || profile[docType];
+    if (!docSource) return;
+
+    let url;
+    
+    if (docSource.startsWith('blob:')) {
+      url = docSource;
+    } else {
+      const filename = docSource.split('/').pop();
+      url = `https://mahadevaaya.com/backend/media/temple_docs/${filename}`;
+    }
+    
+    // Open the URL in a new tab
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
 
   const fileRefs = {
     temple_image: useRef(null),
@@ -620,7 +638,7 @@ const TempleProfile = () => {
                       </Form.Group>
                     </Col>
 
-                    <Col lg={6} md={6} sm={12}>
+                    <Col lg={8} md={8} sm={12}>
                       <Form.Group className="mb-3">
                         <Form.Label className="temp-label">
                           Description
@@ -690,24 +708,26 @@ const TempleProfile = () => {
                           </p>
                         </fieldset>
 
-                        {preview[field] && (
+                        {(preview[field] || profile[field]) && (
                           <div className="mt-2">
-                            <div className="d-flex temp-doc-info">
-                              <Col lg={3}>
-                                {new Date().toLocaleDateString()}
-                              </Col>
-                              <Col lg={9} className="px-4 temp-success-doc">
+                            <div className="d-flex temp-doc-info align-items-center">
+                              <Col lg={3}>{new Date().toLocaleDateString()}</Col>
+                              <Col lg={6} className="px-4 temp-success-doc">
                                 <FaCheckCircle /> Uploaded Successfully
                               </Col>
+                              <Col lg={3} className="text-end">
+                                <FaEye /><Button 
+                                  variant="link" 
+                                  size="sm"
+                                  className="view-icon"
+                                  onClick={() => handleViewInNewTab(field)}
+                                >
+                                  View
+                                </Button>
+                              </Col>
                             </div>
-                            <div
-                              className="col temp-delete-icon"
-                              onClick={() => removeSelectedFile(field)}
-                            >
-                              <h3>
-                                <RiDeleteBin6Line className="mx-1" /> Click here
-                                to Remove
-                              </h3>
+                            <div className="col temp-delete-icon" onClick={() => removeSelectedFile(field)}>
+                              <h3><RiDeleteBin6Line className="mx-1" /> Click here to Remove</h3>
                             </div>
                           </div>
                         )}
