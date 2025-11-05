@@ -149,6 +149,8 @@ import AllDevoteeBooking from "./Component/admin_dashboard/admin_innerdashboard/
 import PendingRequest from "./Component/admin_dashboard/admin_innerdashboard/Requests/PendingRequest";
 import AcceptedRequest from "./Component/admin_dashboard/admin_innerdashboard/Requests/AcceptedRequest";
 import RejectedRequest from "./Component/admin_dashboard/admin_innerdashboard/Requests/RejectedRequest";
+import AdminUpcomingEvent from "./Component/admin_dashboard/admin_innerdashboard/allevent/AdminUpcomingEvent";
+import AdminPastEvent from "./Component/admin_dashboard/admin_innerdashboard/allevent/AdminPastEvent";
 
 
 // import BASE_URLL from "./Component/BaseURL";
@@ -250,7 +252,8 @@ function App() {
     "/PendingRequest",
     "/AcceptedRequest",
     "/RejectedRequest",
-
+"/AdminUpcomingEvent",
+"/AdminPastEvent"
  
   
   
@@ -463,10 +466,11 @@ function App() {
           <Route path="/PendingRequest" element={<PendingRequest />} />
           <Route path="/AcceptedRequest" element={<AcceptedRequest />} />
           <Route path="/RejectedRequest" element={<RejectedRequest />} />
+          <Route path="/AdminPastEvent" element={<AdminPastEvent />} />
+          <Route path="/AdminUpcomingEvent" element={<AdminUpcomingEvent />} />
+          <Route path="/AdminUpcomingEvent" element={<AdminUpcomingEvent />} />
           
-         
-      
-       
+     
           
         </Routes>
         {!hideFooter && <TempleFooter />}

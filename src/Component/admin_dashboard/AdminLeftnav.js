@@ -119,8 +119,6 @@ function AdminLeftnav() {
  { icon: <RiDashboard3Line />, label: "All Devotee Booking", path: "/AllDevoteeBooking" },
   { icon: <RiDashboard3Line />, label: "All Darshan Booking", path: "/AllDarshanBooking" },
 
-
-
  {
         icon: <MdAccountCircle />,
        label: "Requests",
@@ -147,25 +145,26 @@ function AdminLeftnav() {
        ]
      },
 
-    {
-      icon: <LuCalendarClock />,
-      label: "All Event",
-      path: "#",
-      hasSubmenu: true,
-      subItems: [
-        {
-          icon: <MdPendingActions />,
-          label: "UpComing Event ",
-          path: "#"
-        },
-        {
-          icon: <LuCircleCheck />,
-          label: "Past Event",
-          path: "#"
-        },
-
-      ]
-    },
+ {
+        icon: <MdAccountCircle />,
+       label: "All Event",
+       path: "#",
+       hasSubmenu: true,
+       subItems: [
+         {
+           icon: <MdAccountCircle />,
+           label: "UpComing Event", 
+           path: "/AdminUpcomingEvent"
+         },
+         {
+            icon: <MdAccountCircle />,
+           label: "Past Event",
+           path: "/AdminPastEvent"
+         },
+         
+ 
+       ]
+     },
 
     {
       icon: <IoCalendarSharp />,
