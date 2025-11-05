@@ -11,133 +11,85 @@ import ModifyAlert from "../Alert/ModifyAlert";
 import PoojaSeva from "../../../src/assets/images/Puja-Seva.png"
 import PanditBooking from ".././../assets/images/pandit.png"
 import { LiaCalendarCheck } from "react-icons/lia";
-import Support  from "../../assets/images/support.png"
+import Support from "../../assets/images/support.png"
 import { GrDocumentTime } from "react-icons/gr";
 import { Dropdown } from "react-bootstrap";
 import { useAuth } from "../GlobleAuth/AuthContext";
 import "../../assets/CSS/TopInfo.css";
 import { BiSolidDonateBlood } from "react-icons/bi";
-import { MdAccountCircle, MdEventAvailable} from "react-icons/md";
- import { IoDocumentTextOutline } from "react-icons/io5";
- import { FaUserLock } from "react-icons/fa6";
+import { MdAccountCircle, MdEventAvailable } from "react-icons/md";
+import { IoDocumentTextOutline } from "react-icons/io5";
+import { FaUserLock } from "react-icons/fa6";
 
 function LeftNav() {
   const { clearAuth } = useAuth();
-
   const [isNavClosed, setIsNavClosed] = useState(false);
   const [userName,] = useState("Loading...");
   const [activePath, setActivePath] = useState("");
-  const [openSubMenu, setOpenSubMenu] = useState(null); 
-  const [hoveredMenu, setHoveredMenu] = useState(null); 
-  
+  const [openSubMenu, setOpenSubMenu] = useState(null);
+  const [hoveredMenu, setHoveredMenu] = useState(null);
   const location = useLocation();
-
-  // alert state
   const [showModifyAlert, setShowModifyAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const navigate = useNavigate();
-
-  const toggleNav = () => {
-    setIsNavClosed(!isNavClosed);
-  };
   const [profile, setProfile] = useState({
     displayName: "",
     devotee_photo: "",
   });
   const [, setLoading] = useState(false);
+  const { uniqueId } = useAuth();
+  const [imageVersion, setImageVersion] = useState(Date.now());
 
-  const { uniqueId } = useAuth(); // if you have AuthContext
- useEffect(() => {
-  const fetchProfile = async () => {
-    try {
-      setLoading(true);
-      const userId = uniqueId;
-      const response = await axios.get(
-        `https://mahadevaaya.com/backend/api/get-user/?user_id=${userId}`
-      );
-      if (response.data) {
-        const user = response.data;
-        setProfile({
-          displayName: user.devotee_name || "",
-          devotee_photo: user.devotee_photo || "",
-        });
-      }
-    } catch (error) {
-      console.error("Error fetching profile data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Combined useEffect for profile fetching and event listening
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        setLoading(true);
+        const userId = uniqueId;
+        const response = await axios.get(
+          `https://mahadevaaya.com/backend/api/get-user/?user_id=${userId}`
+        );
 
-  fetchProfile();
-
-  // Listen for live updates from MyProfile
-  const handleProfileUpdate = (event) => {
-    const updated = event.detail;
-    if (updated) {
-      setProfile((prev) => ({
-        ...prev,
-        displayName: updated.displayName || prev.displayName,
-        devotee_photo: updated.devotee_photo || prev.devotee_photo,
-      }));
-    }
-  };
-
-  window.addEventListener("profileUpdated", handleProfileUpdate);
-
-  return () => {
-    window.removeEventListener("profileUpdated", handleProfileUpdate);
-  };
-}, [uniqueId]);
-
-useEffect(() => {
-  const fetchProfile = async () => {
-    try {
-      setLoading(true);
-      const userId = uniqueId;
-      const response = await axios.get(
-        `https://mahadevaaya.com/backend/api/get-user/?user_id=${userId}`
-      );
-
-      if (response.data) {
-        const user = response.data;
-        setProfile({
-          displayName: user.devotee_name || "",
-          devotee_photo: user.devotee_photo
-            ? `https://mahadevaaya.com/backend/media/devotee_photos/${user.devotee_photo
+        if (response.data) {
+          const user = response.data;
+          setProfile({
+            displayName: user.devotee_name || "",
+            devotee_photo: user.devotee_photo
+              ? `https://mahadevaaya.com/backend/media/devotee_photos/${user.devotee_photo
                 .split("/")
-                .pop()}?v=${Date.now()}`
-            : "",
-        });
+                .pop()}?v=${imageVersion}`
+              : "",
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error fetching profile data:", error);
-    } finally {
-      setLoading(false);
-    }
+    };
+
+    fetchProfile();
+
+    const handleProfileUpdate = (event) => {
+      const updated = event.detail;
+      if (updated) {
+        setImageVersion(Date.now()); // Force image refresh
+        setProfile((prev) => ({
+          ...prev,
+          displayName: updated.displayName || prev.displayName,
+          devotee_photo: updated.devotee_photo || prev.devotee_photo,
+        }));
+      }
+    };
+
+    window.addEventListener("profileUpdated", handleProfileUpdate);
+    return () => window.removeEventListener("profileUpdated", handleProfileUpdate);
+  }, [uniqueId, imageVersion]);
+
+  const toggleNav = () => {
+    setIsNavClosed(!isNavClosed);
   };
 
-  fetchProfile();
-
-  //  Listen for live updates from MyProfile
-  const handleProfileUpdate = (event) => {
-    const updated = event.detail;
-    if (updated) {
-      setProfile((prev) => ({
-        ...prev,
-        displayName: updated.displayName || prev.displayName,
-        devotee_photo: updated.devotee_photo
-          ? `https://mahadevaaya.com/backend/media/devotee_photos/${updated.devotee_photo
-              .split("/")
-              .pop()}?v=${Date.now()}` //  forces new image fetch immediately
-          : prev.devotee_photo,
-      }));
-    }
-  };
-
-  window.addEventListener("profileUpdated", handleProfileUpdate);
-  return () => window.removeEventListener("profileUpdated", handleProfileUpdate);
-}, [uniqueId]);
   const handleDownload = (fileUrl, fileName) => {
     const a = document.createElement("a");
     a.href = fileUrl;
@@ -175,30 +127,23 @@ useEffect(() => {
     }
   };
 
-
   const navigationOptions = [
     { icon: <RiDashboard3Line />, label: "Dashboard", path: "/MainDashBoard" },
-    // { icon: <BiDonateHeart />, label: "Online", path: "#" },
-
     {
       icon: <GrDocumentTime />,
       label: "Booking History",
       path: "/BookingHistory",
-
     },
     {
       icon: <BiSolidDonateBlood />,
       label: "Donate",
       path: "/DonateDashBoard",
-
     },
     {
       icon: <FaRegCalendarCheck />,
       label: "Darshan & Puja Booking",
       path: "/MandirBookingInfoDashBoard",
-
     },
-
     {
       icon: <img src={PoojaSeva} alt="Puja & Seva" className="left-nav-icon" />,
       label: "Puja & Seva",
@@ -215,14 +160,12 @@ useEffect(() => {
           label: "Event Participation",
           path: "/EventDashBoard"
         },
-
       ]
     },
     {
       icon: <img src={PanditBooking} alt="Pandit booking" className="left-nav-icon" />,
       label: "Pandit Booking",
       path: "/PoojaBookingDashBoard",
-
     },
     {
       icon: <MdEventAvailable />,
@@ -235,7 +178,6 @@ useEffect(() => {
           label: "Upcoming Event",
           path: "/UserUpcomingEvent"
         },
-
       ]
     },
     {
@@ -249,65 +191,23 @@ useEffect(() => {
           label: "My Profile",
           path: "/MyProfile"
         },
-
       ]
     },
-
     {
       path: "/UserSupport",
       icon: <img src={Support} alt="Support" className="left-nav-icon" />,
       label: "Support",
-
     },
-
-    // {
-    //   icon: <LiaCalendarCheck />,
-    //   label: "Overview",
-    //   path: "#",
-    //   hasSubmenu: true,
-    //   subItems: [
-    //     {
-    //       icon: <LiaCalendarCheck />,
-    //       label: "About Us",
-    //       path: "/AboutDashBoard"
-    //     },
-
-    //     {
-    //       icon: <LiaCalendarCheck />,
-    //       label: "Platform Info",
-    //       path: "/PlatformInfoDashBoard"
-    //     },
-
-    //     {
-    //       icon: <LiaCalendarCheck />,
-    //       label: "Mission & Vision",
-    //       path: "/MissionDashBoard"
-    //     },
-
-    //     {
-    //       icon: <LiaCalendarCheck />,
-    //       label: "Mandir Platform",
-    //       path: "/MandirPlatformDashBoard"
-    //     },
-    //     {
-    //       icon: <LiaCalendarCheck />,
-    //       label: "Special announcement",
-    //       path: "/SpecialAnnouncementDashBoard"
-    //     },
-
-    //   ]
-    // },
     {
       icon: <LuLogOut />,
       label: "Logout",
-      path: "#", // will trigger logout
-      isLogout: true, // custom flag to detect logout
+      path: "#",
+      isLogout: true,
     },
   ];
 
   return (
     <>
-      {/* Header */}
       <header className="user-nd-header" expand="lg">
         <div className="me-auto my-2 my-lg-0 px-2" navbarScroll>
           <img
@@ -319,10 +219,7 @@ useEffect(() => {
           <Link to="#" className="logo-page">
             <img src={CompanyLogo} alt="Manadavaaya" title="MAHADAVAAYA" className="logo" />
           </Link>
-
-
         </div>
-
 
         <div className="message">
           <ModifyAlert
@@ -341,19 +238,16 @@ useEffect(() => {
                 title="Account Menu"
               >
                 <img
-  key={profile.devotee_photo} // 👈 ensures React re-renders image
-  src={
-    profile.devotee_photo
-      ? profile.devotee_photo
-      : "https://mahadevaaya.com/backend/media/devotee_photos/default.png"
-  }
-  
-  className="nav-profile-photo"
-/>
-
+                  key={`${profile.devotee_photo}-${imageVersion}`} // Force re-render
+                  src={
+                    profile.devotee_photo
+                      ? profile.devotee_photo
+                      : "https://mahadevaaya.com/backend/media/devotee_photos/default.png"
+                  }
+                  className="nav-profile-photo"
+                />
               </Dropdown.Toggle>
 
-              {/* Dropdown menu */}
               <Dropdown.Menu>
                 <Dropdown.Item as={Link} to="/MyProfile">
                   My Profile
@@ -368,18 +262,16 @@ useEffect(() => {
               </Dropdown.Menu>
             </Dropdown>
           </div>
-
-
         </div>
       </header>
-      {/* Sidebar Navigation */}
+
       <div className={`navcontainer ${isNavClosed ? "navclose" : ""}`}>
         <nav className="nav">
           <div className="nav-upper-options">
             <div className="nd-menu">
               <FaAlignLeft className="icn menuicn" onClick={toggleNav} />
               <div className="nd-user">{profile.displayName || "User"}</div>
-              
+
               <Dropdown align="end" className="user-dp">
                 <Dropdown.Toggle
                   variant=""
@@ -387,22 +279,18 @@ useEffect(() => {
                   className="border-0 bg-transparent"
                   title="Account Menu"
                 >
-                <img
-  src={
-    profile.devotee_photo
-      ? profile.devotee_photo.includes("http")
-        ? profile.devotee_photo
-        : `https://mahadevaaya.com/backend/media/devotee_photos/${profile.devotee_photo
-            .split("/")
-            .pop()}?t=${Date.now()}`
-      : "https://mahadevaaya.com/backend/media/devotee_photos/default.png"
-  }
-  alt={profile.displayName || ""}
-  className="nav-profile-photo"
-/>
+                  <img
+                    key={`${profile.devotee_photo}-${imageVersion}`} // Force re-render
+                    src={
+                      profile.devotee_photo
+                        ? profile.devotee_photo
+                        : "https://mahadevaaya.com/backend/media/devotee_photos/default.png"
+                    }
+                    alt={profile.displayName || ""}
+                    className="nav-profile-photo"
+                  />
                 </Dropdown.Toggle>
 
-                {/* Dropdown menu */}
                 <Dropdown.Menu>
                   <Dropdown.Item as={Link} to="/MyProfile">
                     My Profile
@@ -431,7 +319,6 @@ useEffect(() => {
                     onMouseEnter={() => handleMenuHover(index)}
                     onMouseLeave={handleMenuLeave}
                   >
-
                     <div className="nav-item d-flex">
                       <span className="nav-icon">{option.icon}</span>
                       <span className="nav-label">{option.label}</span>
@@ -482,7 +369,7 @@ useEffect(() => {
     ${hoveredMenu === index ? "hovered-nav" : ""}`}
                     onClick={() => {
                       if (option.isLogout) {
-                        logout(); // use the new logout handler
+                        logout();
                       } else {
                         setActivePath(option.path);
                       }
@@ -495,8 +382,6 @@ useEffect(() => {
                       <span className="nav-label">{option.label}</span>
                     </div>
                   </Link>
-
-
                 )}
               </React.Fragment>
             ))}

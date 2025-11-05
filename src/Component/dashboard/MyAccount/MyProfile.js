@@ -7,7 +7,6 @@ import LeftNav from "../LeftNav";
 import { useAuth } from "../../GlobleAuth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../../../assets/CSS/MyProfile.css";
 import { FaCamera } from "react-icons/fa";
 import DefaultProfile from "../../../assets/images/Diya.png";
 import { BASE_URLL } from "../../BaseURL";
@@ -33,19 +32,22 @@ const MyProfile = () => {
   });
   const [originalProfile, setOriginalProfile] = useState({});
   const [imageVersion, setImageVersion] = useState(Date.now());
-  
+
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
 
+  // This is the key fix - properly handle the image URL
   const displayImageUrl = useMemo(() => {
-    //   Check if there's a selected file (local preview)
     if (selectedFile) {
       return URL.createObjectURL(selectedFile);
     }
-    //   Otherwise, use the server image with cache-busting
     if (profile.devotee_photo) {
-      const filename = profile.devotee_photo.split("/").pop();
-      return `https://mahadevaaya.com/backend/media/devotee_photos/${filename}?v=${imageVersion}`;
+      // If it's already a full URL with cache-busting, use it directly
+      if (profile.devotee_photo.startsWith('http')) {
+        return profile.devotee_photo;
+      }
+      // Otherwise, construct the URL with cache-busting
+      return `https://mahadevaaya.com/backend/media/devotee_photos/${profile.devotee_photo}?v=${imageVersion}`;
     }
     return DefaultProfile;
   }, [selectedFile, profile.devotee_photo, imageVersion]);
@@ -66,39 +68,39 @@ const MyProfile = () => {
 
   const handleProfileImageUpload = async (file) => {
     if (!file) return;
-    
+
     setImageUploading(true);
-    
+
     try {
       const formData = new FormData();
       formData.append("user_id", uniqueId || "");
       formData.append("devotee_photo", file);
-      
+
       const res = await axios.put(
         `${BASE_URLL}api/get-user/?user_id=${uniqueId}`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
-      
+
       if (res.status >= 200 && res.status < 300) {
         const updated = res.data || {};
-        
-        //   Update the image version to force refresh
-        setImageVersion(Date.now());
-        
-        //   Update profile state with the new image path
-        setProfile((prev) => ({
-          ...prev,
-          devotee_photo: updated.devotee_photo || prev.devotee_photo,
-        }));
-        
-        //   Emit event for LeftNav with cache-busted URL
+        const newImageVersion = Date.now();
+        setImageVersion(newImageVersion);
+
+        // Create the full URL with cache-busting
         const photoUrl = updated.devotee_photo
           ? `https://mahadevaaya.com/backend/media/devotee_photos/${updated.devotee_photo
-              .split("/")
-              .pop()}?v=${Date.now()}`
+            .split("/")
+            .pop()}?v=${newImageVersion}`
           : DefaultProfile;
-        
+
+        // Update profile state with the full URL
+        setProfile((prev) => ({
+          ...prev,
+          devotee_photo: photoUrl,
+        }));
+
+        // Emit event with the full URL
         window.dispatchEvent(
           new CustomEvent("profileUpdated", {
             detail: {
@@ -107,7 +109,7 @@ const MyProfile = () => {
             },
           })
         );
-        
+
         setAlertMsg("Profile picture updated successfully!");
         setShowAlert(true);
       } else {
@@ -120,13 +122,11 @@ const MyProfile = () => {
       setShowAlert(true);
     } finally {
       setImageUploading(false);
-      //   Clear the selected file state to show the server image
       setSelectedFile(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
-  // Function to check for changes
   const checkForChanges = (currentProfile, original) => {
     const hasChanged = JSON.stringify(currentProfile) !== JSON.stringify(original);
     setHasChanges(hasChanged);
@@ -143,15 +143,22 @@ const MyProfile = () => {
 
         if (response.data) {
           const user = response.data;
+          // Create the full URL with cache-busting
+          const photoUrl = user.devotee_photo
+            ? `https://mahadevaaya.com/backend/media/devotee_photos/${user.devotee_photo
+              .split("/")
+              .pop()}?v=${imageVersion}`
+            : "";
+
           const profileData = {
             displayName: user.devotee_name || "",
             mobile: user.phone || "",
             email: user.email || "",
             dob: user.dob || "",
             gender: user.gender || "",
-            devotee_photo: user.devotee_photo || "",
+            devotee_photo: photoUrl,
           };
-          
+
           setProfile(profileData);
           setOriginalProfile(JSON.parse(JSON.stringify(profileData)));
         }
@@ -165,7 +172,7 @@ const MyProfile = () => {
     };
 
     fetchProfile();
-  }, [uniqueId]);
+  }, [uniqueId, imageVersion]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -173,22 +180,22 @@ const MyProfile = () => {
     setProfile(newProfile);
     checkForChanges(newProfile, originalProfile);
   };
-  
+
   const handleEditPhoto = () => {
     fileInputRef.current?.click();
   };
-  
+
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    
+
     const sizeKB = file.size / 1024;
     if (sizeKB < 10 || sizeKB > 2048) {
       setAlertMsg("File size must be between 10KB and 2MB.");
       setShowAlert(true);
       return;
     }
-    
+
     setSelectedFile(file);
     handleProfileImageUpload(file);
   };
@@ -206,26 +213,29 @@ const MyProfile = () => {
 
       if (res.status >= 200 && res.status < 300) {
         const updated = res.data || {};
+        const newImageVersion = Date.now();
+        setImageVersion(newImageVersion);
+
+        // Create the full URL with cache-busting
+        const photoUrl = updated.devotee_photo
+          ? `https://mahadevaaya.com/backend/media/devotee_photos/${updated.devotee_photo
+            .split("/")
+            .pop()}?v=${newImageVersion}`
+          : DefaultProfile;
+
         const profileData = {
           displayName: updated.devotee_name || profile.displayName,
           mobile: updated.phone || profile.mobile,
           email: updated.email || profile.email,
           dob: updated.dob || profile.dob,
           gender: updated.gender || profile.gender,
-          devotee_photo: updated.devotee_photo || profile.devotee_photo,
+          devotee_photo: photoUrl,
         };
 
         setProfile(profileData);
         setOriginalProfile(JSON.parse(JSON.stringify(profileData)));
         setHasChanges(false);
 
-        //   Create a proper URL for the event
-        const photoUrl = updated.devotee_photo
-          ? `https://mahadevaaya.com/backend/media/devotee_photos/${updated.devotee_photo
-              .split("/")
-              .pop()}?t=${Date.now()}`
-          : DefaultProfile;
-        
         window.dispatchEvent(
           new CustomEvent("profileUpdated", {
             detail: {
@@ -288,7 +298,7 @@ const MyProfile = () => {
               </div>
             )}
           </div>
-          
+
           <ModifyAlert message={alertMsg} show={showAlert} setShow={setShowAlert} />
 
           {loading ? (
@@ -302,7 +312,7 @@ const MyProfile = () => {
                       src={displayImageUrl}
                       alt={profile.displayName || "Devotee"}
                       className="profile-photo"
-                      key={displayImageUrl}
+                      key={`${displayImageUrl}-${imageVersion}`}
                     />
                     <div className="edit-overlay" onClick={handleEditPhoto}>
                       {imageUploading ? (
