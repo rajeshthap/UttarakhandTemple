@@ -28,9 +28,29 @@ import { BsInfoCircleFill } from "react-icons/bs";
 import { BASE_URLL } from "./BaseURL";
 import axios from "axios";
 import { FaCalendar } from "react-icons/fa";
+import Vehicle from "../../src/assets/images/vahana-pooja.webp";
+import Mumndan from "../../src/assets/images/Mundan-Sanskar.jpg";
+import DurgaPooja from "../../src/assets/images/durga-pooja.jpg";
+import Brihaspati from "../../src/assets/images/Brihaspati.png";
+import Ekadashi from "../../src/assets/images/ekadashi-vrat.webp";
+import GodhBharai from "../../src/assets/images/maxresdefault.jpg";
+import Haldi from "../../src/assets/images/Haldi-Ceremony.webp";
+import Birthday from "../../src/assets/images/birthday-janamdin-puja.jpeg"
+import Mahalakshmi from "../../src/assets/images/Mahalakshmi.jpg";
+import Vastu from "../../src/assets/images/Vishnu-Sahasranamam.webp";
+import Vishnu from "../../src/assets/images/Vishnu-Sahasranamam-Pooja.webp"
+import KaalSarpDosh from "../../src/assets/images/kaal-sarp-dosh.webp";
+import Namakarana from "../../src/assets/images/Namakarana.jpg";
+import hartalika from "../../src/assets/images/hartalika.webp";
+import Karwachat from "../../src/assets/images/KarwaChauth.jpg";
+import DiwaliLakshmi from "../../src/assets/images/DiwaliLakshmi.jpg";
+import Dhantrayodashi from "../../src/assets/images/Dhantrayodashi.webp";
+import Dhanteras from "../../src/assets/images/laxmi.avif"
+
 
 const cardData = [
   // ------------------ Puja / Sanskar ------------------
+  
   {
     id: "0",
     title: "Annaprashan Sanskar Puja",
@@ -83,86 +103,86 @@ const cardData = [
     text: "गणेश चतुर्थी पूजा",
     img: Ganesh,
   },
-  { id: "12", title: "Vehicle / Vahan Puja", text: "वाहन पूजा", img: "" },
+  { id: "12", title: "Vehicle / Vahan Puja", text: "वाहन पूजा", img: Vehicle, },
   {
     id: "13",
     title: "Mundan Sanskar Puja",
     text: "मुण्डन संस्कार पूजा",
-    img: "",
+    img: Mumndan,
   },
   {
     id: "14",
     title: "Navratri Durga Puja",
     text: "नवरात्रि दुर्गा पूजा",
-    img: "",
+    img: DurgaPooja,
   },
   {
     id: "15",
     title: "Brihaspati Vrat Udyapan Puja",
     text: "बृहस्पति व्रत उद्यापन पूजा",
-    img: "",
+    img: Brihaspati,
   },
   {
     id: "16",
     title: "Ekadashi Vrat Udyapan Puja",
     text: "एकादशी व्रत उद्यापन पूजा",
-    img: "",
+    img: Ekadashi,
   },
   {
     id: "17",
     title: "Godh Bharai Puja (Baby Shower)",
     text: "गोद भराई पूजा",
-    img: "",
+    img: GodhBharai,
   },
-  { id: "18", title: "Haldi Ceremony", text: "हल्दी समारोह", img: "" },
+  { id: "18", title: "Haldi Ceremony", text: "हल्दी समारोह", img: Haldi, },
   {
     id: "19",
     title: "Janamdin / Birthday Puja",
     text: "जन्मदिन पूजा",
-    img: "",
+    img: Birthday,
   },
-  { id: "20", title: "Mahalakshmi Puja", text: "महालक्ष्मी पूजा", img: "" },
-  { id: "21", title: "Vastu Shanti Puja", text: "वास्तु शांति पूजा", img: "" },
+  { id: "20", title: "Mahalakshmi Puja", text: "महालक्ष्मी पूजा", img: Mahalakshmi, },
+  { id: "21", title: "Vastu Shanti Puja", text: "वास्तु शांति पूजा", img: Vastu, },
   {
     id: "22",
     title: "Vishnu Sahastranam Path Puja",
     text: "विष्णु सहस्रनाम पाठ पूजा",
-    img: "",
+    img: Vishnu,
   },
   {
     id: "23",
     title: "Kaal Sarp Dosh Nivaran Puja",
     text: "कालसर्प दोष निवारण पूजा",
-    img: "",
+    img: KaalSarpDosh,
   },
   {
     id: "24",
     title: "Office / Business Puja",
     text: "कार्यालय / व्यापार पूजा",
-    img: "",
+    img: NewOffice,
   },
-  { id: "25", title: "Namakarana Puja", text: "नामकरण पूजा", img: "" },
+  { id: "25", title: "Namakarana Puja", text: "नामकरण पूजा", img: Namakarana, },
   {
     id: "26",
     title: "Hartalika Teej Puja",
     text: "हरतालिका तीज पूजा",
-    img: "",
+    img: hartalika,
   },
-  { id: "27", title: "Karwa Chauth Puja", text: "करवा चौथ पूजा", img: "" },
+  { id: "27", title: "Karwa Chauth Puja", text: "करवा चौथ पूजा", img: Karwachat, },
   {
     id: "28",
     title: "Diwali Lakshmi Puja",
     text: "दीवाली लक्ष्मी पूजा",
-    img: "",
+    img: DiwaliLakshmi,
   },
-  { id: "29", title: "Dhanteras Puja", text: "धनतेरस पूजा", img: "" },
+  { id: "29", title: "Dhanteras Puja", text: "धनतेरस पूजा", img: Dhanteras, },
   {
     id: "30",
     title: "Vara Mahalakshmi Puja",
     text: "वरा महालक्ष्मी पूजा",
-    img: "",
+    img: Dhantrayodashi,
   },
-  { id: "31", title: "Devi Poojan", text: "देवी पूजन", img: "" },
+  { id: "31", title: "Devi Poojan", text: "देवी पूजन", img: "OnlineVarahi"},
   { id: "32", title: "Kuber Puja", text: "कुबेर पूजा", img: "" },
   {
     id: "33",
@@ -331,6 +351,8 @@ const CustomDatePickerInput = forwardRef(
   )
 );
 const PanditBooking = () => {
+ 
+
   // Move selectedDateTime useState to the top before any logic uses it
   const [selectedDateTime, setSelectedDateTime] = useState(null);
   // Helper to round up to next 30 min interval
@@ -398,6 +420,8 @@ const PanditBooking = () => {
       setSelectedCard(cardData[0]);
     }
   }, []);
+
+  
   const buildPanditOptionsForPooja = (poojaName, source = apiPandits) => {
     if (!poojaName || !Array.isArray(source)) return [];
     const n = normalize(poojaName);
@@ -449,6 +473,8 @@ const PanditBooking = () => {
           0
         )
       : 0;
+
+   
 
   return (
     <>
