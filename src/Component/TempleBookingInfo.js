@@ -221,12 +221,10 @@ const CustomDatePickerInput = forwardRef(
                               <Button
                                 className="click-btn btn btn-primary"
                                 onClick={(e) => {
-                                  e.preventDefault();
-                                  if (!uniqueId) {
-                                    setShowModal(true);
-                                  } else {
+                                 e.stopPropagation();
+               
                                     navigate("/KedarnathInfo");
-                                  }
+                                  
                                 }}
                               >
                                 Read More..
@@ -237,12 +235,10 @@ const CustomDatePickerInput = forwardRef(
                               <Button
                                 className="click-btn btn btn-primary"
                                 onClick={(e) => {
-                                  e.preventDefault();
-                                  if (!uniqueId) {
-                                    setShowModal(true);
-                                  } else {
+                                  e.stopPropagation();
+                                  
                                     navigate("/BadrinathInfo");
-                                  }
+                                  
                                 }}
                               >
                                 Read More..
@@ -253,12 +249,11 @@ const CustomDatePickerInput = forwardRef(
                               <Button
                                 className="click-btn btn btn-primary"
                                 onClick={(e) => {
-                                  e.preventDefault();
-                                  if (!uniqueId) {
-                                    setShowModal(true);
-                                  } else {
+                                  e.stopPropagation();
+                                 
+                            
                                     navigate("/YamunotriInfo");
-                                  }
+                                  
                                 }}
                               >
                                 Read More..
@@ -269,12 +264,9 @@ const CustomDatePickerInput = forwardRef(
                               <Button
                                 className="click-btn btn btn-primary"
                                 onClick={(e) => {
-                                  e.preventDefault();
-                                  if (!uniqueId) {
-                                    setShowModal(true);
-                                  } else {
+                                 e.stopPropagation();
                                     navigate("/GangotriInfo");
-                                  }
+                                  
                                 }}
                               >
                                 Read More..
@@ -525,7 +517,6 @@ const CustomDatePickerInput = forwardRef(
             <h1>{selectedCard?.temple_name || "Temple Booking"}</h1>
           </Modal.Title>
         </Modal.Header>
-
         <Modal.Body>
           {/* Step 1: Show list of poojas if none selected */}
           {!selectedPooja ? (
