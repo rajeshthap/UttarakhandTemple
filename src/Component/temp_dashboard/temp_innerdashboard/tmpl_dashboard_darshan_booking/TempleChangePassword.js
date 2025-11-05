@@ -223,7 +223,7 @@ const TempleChangePassword = () => {
                 </Col>
               </Row>
 
-              <div className="project-btn mt-3">
+              <div className="project-btn text-center mt-3">
                 <Button
                   type="submit"
                   className="user-btn-edit"

@@ -109,12 +109,12 @@ const EarnAndTrans = () => {
                           </tr>
                         ))}
 
-                        <tr className="fw-bold">
-                          <td colSpan="3" className="text-end">
+                        <tr className="fw-bold ">
+                          <td colSpan="3" className="text-end fw-bold">
                             Total Amount:
                           </td>
-                          <td>₹{totalAmount}</td>
-                          <td></td>
+                          <td className="total-amount" colSpan="2">₹{totalAmount}</td>
+                        
                         </tr>
                       </>
                     ) : (

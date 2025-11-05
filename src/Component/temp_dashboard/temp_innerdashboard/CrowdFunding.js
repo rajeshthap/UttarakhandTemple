@@ -442,6 +442,7 @@ const CrowdFunding = () => {
                       <p className="temp-drop-txt my-2">
                         Drag & drop Fund Image <br /> <i>or</i>
                       </p>
+                    <p>
                       <input
                         id="fund_image"
                         name="fund_image"
@@ -460,9 +461,12 @@ const CrowdFunding = () => {
                           maxWidth: "200px",
                           textAlign: "center",
                         }}
+                        
                       >
+                        
                         Choose file
                       </label>
+                      </p>
                       <p className="temp-upload-file">
                         Upload size 2KB-2MB (JPG, JPEG, PNG)
                       </p>

@@ -473,7 +473,9 @@ input[type=number] {
         /* padding: var(--temp-space-200) !important; */
         padding: 4px !important
     }
-
+.total-amount{
+    text-align: end !important;
+}
     .mob-view-bt {
         margin-bottom: 12px;
     }
@@ -553,7 +555,7 @@ input[type=number] {
     }
 
     .data-mob-view {
-        font-size: var(--temp-space-300);
+        font-size: var(--temp-space-200);
     }
 
     #user-dropdown {

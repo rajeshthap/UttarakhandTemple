@@ -7,7 +7,7 @@
 
 .pandit-rwd-table tr:first-child {
     border-top: none;
-     background-color: #7c4654;
+    background-color: #7c4654;
     color: #fff;
 }
 
@@ -46,7 +46,7 @@
     content: attr(data-th) " ";
 
     width: 120px;
-    display: inline-block;
+
     color: #000;
 }
 
@@ -106,6 +106,7 @@
 .pandit-rwd-table td {
     padding: .5em 1em;
 }
+
 .dbcard-adminnew-puja-box-1 {
     border: 2px solid #17a2b8;
     border-radius: 10px;
@@ -113,10 +114,11 @@
     color: #fff !important;
     box-shadow: 0px 6px 16px 2px rgba(0, 0, 0, 0.05) !important;
 }
- .dbcard-admin-accept-box-2 {
+
+.dbcard-admin-accept-box-2 {
     border: 2px solid #28a745;
     border-radius: 10px;
-     background-color: #28a745 !important;
+    background-color: #28a745 !important;
     color: #fff !important;
     box-shadow: 0px 6px 16px 2px rgba(0, 0, 0, 0.05) !important;
 }
@@ -129,12 +131,14 @@
     box-shadow: 0px 6px 16px 2px rgba(0, 0, 0, 0.05) !important;
 }
 
-.ad-save-bg{
-    background-color:  #b6dfe6;
+.ad-save-bg {
+    background-color: #b6dfe6;
 }
-.admin-heading h1{
+
+.admin-heading h1 {
     color: #343a40 !important;
 }
+
 @media screen and (max-width: 601px) {
     .pandit-rwd-table tr:nth-child(2) {
         border-top: none;

@@ -191,6 +191,12 @@ function LeftNav() {
           label: "My Profile",
           path: "/MyProfile"
         },
+        {
+          icon: <FaUserLock />,
+          label: "Change Password",
+          path: "/ChangePassword"
+        },
+ 
       ]
     },
     {

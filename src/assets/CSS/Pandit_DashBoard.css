@@ -46,7 +46,7 @@
     content: attr(data-th) " ";
 
     width: 120px;
-    display: inline-block;
+
     color: #000;
 }
 

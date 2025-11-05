@@ -366,9 +366,9 @@ const SupportPage = () => {
                 </Row>
 
                 {/* Submit Button */}
-                <div className="mt-3">
+                <div className="mt-3 text-center">
                   <Button
-                    type="submit"
+                    type="submit "
                     className="btn-save py-2 px-4"
                     disabled={submitting}
                   >

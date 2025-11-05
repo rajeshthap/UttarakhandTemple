@@ -401,6 +401,7 @@ const AddFestival = () => {
                       <p className="temp-drop-txt my-2">
                         Drag & drop image <br /> <i>or</i>
                       </p>
+                      <p>
                       <input
                         id="image"
                         name="image"
@@ -422,6 +423,7 @@ const AddFestival = () => {
                       >
                         Choose file
                       </label>
+                      </p>
                       <p className="temp-upload-file">
                         Upload size 10KB-2MB (jpg, png, jpeg)
                       </p>
