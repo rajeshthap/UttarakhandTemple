@@ -45,7 +45,10 @@ import hartalika from "../../src/assets/images/hartalika.webp";
 import Karwachat from "../../src/assets/images/KarwaChauth.jpg";
 import DiwaliLakshmi from "../../src/assets/images/DiwaliLakshmi.jpg";
 import Dhantrayodashi from "../../src/assets/images/Dhantrayodashi.webp";
-import Dhanteras from "../../src/assets/images/laxmi.avif"
+import Dhanteras from "../../src/assets/images/laxmi.avif";
+import Loard from "../../src/assets/images/lord-kuber.webp"
+import VarahiDeviPujadevi from "../../src/assets/images/Varahi-Devi-Puja-devi.webp";
+import ChhotiDiwali from "../../src/assets/images/ChhotiDiwali.avif"
 
 
 const cardData = [
@@ -182,13 +185,13 @@ const cardData = [
     text: "वरा महालक्ष्मी पूजा",
     img: Dhantrayodashi,
   },
-  { id: "31", title: "Devi Poojan", text: "देवी पूजन", img: "OnlineVarahi"},
-  { id: "32", title: "Kuber Puja", text: "कुबेर पूजा", img: "" },
+  { id: "31", title: "Devi Poojan", text: "देवी पूजन", img: VarahiDeviPujadevi},
+  { id: "32", title: "Kuber Puja", text: "कुबेर पूजा", img: Loard, },
   {
     id: "33",
     title: "Narak Chaturdashi Puja",
     text: "नरक चतुर्दशी पूजा",
-    img: "",
+    img: ChhotiDiwali,
   },
   { id: "34", title: "Kali Puja", text: "काली पूजा", img: "" },
   {

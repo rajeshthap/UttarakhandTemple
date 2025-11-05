@@ -313,7 +313,7 @@ const SupportPage = () => {
                           <p className="temp-drop-txt my-2">
                             Drag & drop photo <br /> <i>or</i>
                           </p>
-                          <p>   <input
+                          <p className="file-grid">   <input
                             id="devotee_photo"
                             name="devotee_photo"
                             type="file"
@@ -339,7 +339,6 @@ const SupportPage = () => {
                           </div>
                         )}
                       </Col>
-
                       <Col lg={4} md={4} sm={12} className="temp-doc-subinfo mt-2">
                         {formData.devotee_photo && (
                           <>
