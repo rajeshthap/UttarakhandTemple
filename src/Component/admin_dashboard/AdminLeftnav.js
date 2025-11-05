@@ -112,10 +112,40 @@ function AdminLeftnav() {
 
     // { icon: <BiDonateHeart />, label: "Online", path: "#" },
 
-    { icon: <RiDashboard3Line />, label: "All Darshan Booking", path: "/AllDarshanBooking" },
+   
 
  { icon: <RiDashboard3Line />, label: "All Temple Booking", path: "/AllTempleBooking" },
  { icon: <RiDashboard3Line />, label: "All Pandit Booking", path: "/AllPanditBooking" },
+ { icon: <RiDashboard3Line />, label: "All Devotee Booking", path: "/AllDevoteeBooking" },
+  { icon: <RiDashboard3Line />, label: "All Darshan Booking", path: "/AllDarshanBooking" },
+
+
+
+ {
+        icon: <MdAccountCircle />,
+       label: "Requests",
+       path: "#",
+       hasSubmenu: true,
+       subItems: [
+         {
+           icon: <MdAccountCircle />,
+           label: "Pending Request", 
+           path: "/PendingRequest"
+         },
+         {
+            icon: <MdAccountCircle />,
+           label: "Accepted Request",
+           path: "/AcceptedRequest"
+         },
+         {
+           icon: <MdAccountCircle />,
+           label: "Rejected Request",
+           path: "/RejectedRequest"
+         },
+        
+ 
+       ]
+     },
 
     {
       icon: <LuCalendarClock />,

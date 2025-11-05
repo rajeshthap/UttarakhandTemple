@@ -145,6 +145,10 @@ import CrowdfundingCard from "./Component/CrowdfundingCard";
 import AllDarshanBooking from "./Component/admin_dashboard/admin_innerdashboard/AllDarshanBooking";
 import AllTempleBooking from "./Component/admin_dashboard/admin_innerdashboard/AllTempleBooking";
 import AllPanditBooking from "./Component/admin_dashboard/admin_innerdashboard/AllPanditBooking";
+import AllDevoteeBooking from "./Component/admin_dashboard/admin_innerdashboard/AllDevoteeBooking";
+import PendingRequest from "./Component/admin_dashboard/admin_innerdashboard/Requests/PendingRequest";
+import AcceptedRequest from "./Component/admin_dashboard/admin_innerdashboard/Requests/AcceptedRequest";
+import RejectedRequest from "./Component/admin_dashboard/admin_innerdashboard/Requests/RejectedRequest";
 
 
 // import BASE_URLL from "./Component/BaseURL";
@@ -242,6 +246,11 @@ function App() {
     "/AllDarshanBooking",
     "/AllTempleBooking",
     "/AllPanditBooking",
+    "/AllDevoteeBooking",
+    "/PendingRequest",
+    "/AcceptedRequest",
+    "/RejectedRequest",
+
  
   
   
@@ -450,6 +459,10 @@ function App() {
           <Route path="/AllDarshanBooking" element={<AllDarshanBooking />} />
           <Route path="/AllTempleBooking" element={<AllTempleBooking />} />
           <Route path="/AllPanditBooking" element={<AllPanditBooking />} />
+           <Route path="/AllDevoteeBooking" element={<AllDevoteeBooking />} />
+          <Route path="/PendingRequest" element={<PendingRequest />} />
+          <Route path="/AcceptedRequest" element={<AcceptedRequest />} />
+          <Route path="/RejectedRequest" element={<RejectedRequest />} />
           
          
       
