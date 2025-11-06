@@ -39,7 +39,7 @@
 .admin-sub-menu.open {
   max-height: 500px;
   display: block;
-  background-color:#3f474e !important;
+  background-color: #3f474e !important;
 }
 
 .sub-admin-option {
@@ -72,7 +72,7 @@
 
 /* Hover effects */
 .admin-option:hover {
-  background-color:  #007bff !important;
+  background-color: #007bff !important;
   cursor: pointer;
 }
 
@@ -83,7 +83,8 @@
 
 .sub-admin-option:hover {
   background-color: #007bff;
-  border-left: 3px solid #56606a;;
+  border-left: 3px solid #56606a;
+  ;
   padding-left: 0px;
 }
 
@@ -112,12 +113,12 @@
 .dashboard-wrapper {
   display: flex;
   min-height: 100vh;
-  
+
 }
 
 .admin-sidebar {
   background-color: #343a40 !important;
-  
+
 }
 
 
@@ -552,10 +553,79 @@ span.sub-label {
 /********************Event card-End*******************/
 
 
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
 
 
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
 
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
 
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
 
 /* Responsive CSS Here */
 @media only screen and (min-width: 992px) {
@@ -592,11 +662,7 @@ span.sub-label {
 
 }
 
-@media (min-width: 850px) and (max-width: 991px) {
-
-
-
-}
+@media (min-width: 850px) and (max-width: 991px) {}
 
 @media screen and (max-width: 850px) {
 
@@ -665,13 +731,15 @@ span.sub-label {
 
 
 }
+
 @media screen and (max-width: 850px) {
-    .admin-nav {
-        width: 100%;
-        position: absolute;
-        z-index: 999;
-    }
+  .admin-nav {
+    width: 100%;
+    position: absolute;
+    z-index: 999;
+  }
 }
+
 @media screen and (max-width: 768px) {
   .nd-log-icon-mob {
     background-color: var(--nd-blue-hover);
