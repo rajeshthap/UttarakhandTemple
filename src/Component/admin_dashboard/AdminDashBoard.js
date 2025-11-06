@@ -23,7 +23,38 @@ const AdminDashBoard = () => {
     rejected: 0,
   });
 
+    const [darshanCounts, setDarshanCounts] = useState({
+    total: 0,
+    pending: 0,
+    accepted: 0,
+    rejected: 0,
+  });
+
+
   const [loading, setLoading] = useState(false);
+
+    // ===================== FETCH DARSHAN DATA =====================
+  const fetchDarshanCounts = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        `https://mahadevaaya.com/backend/api/get-all-darshan-and-pooja-bookings/`
+      );
+      const list = res.data?.darshans || [];
+
+      const total = res.data?.count || list.length;
+      const pending = list.filter((d) => d.status === "pending").length;
+      const accepted = list.filter((d) => d.status === "accepted").length;
+      const rejected = list.filter((d) => d.status === "rejected").length;
+
+      setDarshanCounts({ total, pending, accepted, rejected });
+    } catch (err) {
+      console.error("Error fetching darshan counts:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   // ===================== FETCH TEMPLE DATA =====================
   const fetchTempleCounts = async () => {
@@ -47,6 +78,7 @@ const AdminDashBoard = () => {
 
   useEffect(() => {
     fetchTempleCounts();
+    fetchDarshanCounts();
   }, []);
 
   return (
@@ -197,7 +229,9 @@ const AdminDashBoard = () => {
                         <span className=" d-block mb-1 text-nowrap user-sub-title">
                          Darshan Booking
                         </span>
-                        <h4 className="fw-medium mb-0">0</h4>
+                        <h4 className="fw-medium mb-0">0
+                            {loading ? "..." : darshanCounts.total} {/*  Changed */}
+                        </h4>
                         <div>
                           <span className="user-span">View Details</span>
                         </div>

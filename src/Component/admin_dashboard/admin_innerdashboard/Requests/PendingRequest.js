@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Form, Button, Modal, Breadcrumb, Spinner } from "react-bootstrap";
+import { Row, Col, Form, Button, Modal, Breadcrumb, Tabs, Tab } from "react-bootstrap";
 import "../../../../assets/CSS/AdminLeftNav.css";
+import "../../../../assets/CSS/PendingRequest.css";
 import AdminLeftnav from "../../AdminLeftnav";
 import axios from "axios";
 import { useAuth } from "../../../GlobleAuth/AuthContext";
 import ModifyAlert from "../../../Alert/ModifyAlert";
 import { BASE_URLL } from "../../../BaseURL";
 import LocationState from "../../../userregistration/LocationState";
-import UploadFile from "../../../../assets/images/upload-icon.png";
 
 const PendingRequest = () => {
   const { uniqueId } = useAuth();
@@ -18,9 +18,9 @@ const PendingRequest = () => {
   const [showModal, setShowModal] = useState(false);
   const [remarks, setRemarks] = useState("");
   const [alert, setAlert] = useState({ show: false, message: "", variant: "" });
-  const [formData, setFormData] = useState({ country: "", state: "", city: "" });
+  const [activeTab, setActiveTab] = useState("temple"); //  Track active tab
 
-  // ===== FETCH PENDING REQUESTS =====
+  // ===== FETCH PENDING REQUESTS (Temple) =====
   const fetchRequests = async () => {
     try {
       setLoading(true);
@@ -31,8 +31,8 @@ const PendingRequest = () => {
       const data = Array.isArray(res.data?.results)
         ? res.data.results
         : Array.isArray(res.data)
-          ? res.data
-          : [];
+        ? res.data
+        : [];
 
       setRequests(data);
       setFilteredRequests(data);
@@ -46,15 +46,17 @@ const PendingRequest = () => {
   };
 
   useEffect(() => {
-    fetchRequests();
-  }, []);
+    if (activeTab === "temple") {
+      fetchRequests();
+    }
+  }, [activeTab]);
 
   const getFileUrl = (path) => {
     if (!path) return null;
-    // Ensure single slash between base and path
-    return `https://mahadevaaya.com/backend${path.startsWith('/') ? path : '/' + path}`;
+    return `https://mahadevaaya.com/backend${
+      path.startsWith("/") ? path : "/" + path
+    }`;
   };
-
 
   // ===== SEARCH =====
   const handleSearch = (query) => {
@@ -76,19 +78,11 @@ const PendingRequest = () => {
     setShowModal(true);
   };
 
-  // ===== HANDLE CHANGE =====
   const handleChange = (e) => {
     const { name, value } = e.target;
     setSelectedRequest((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ===== LOCATION CHANGE =====
-  const handleInputChangeCity = (name, value) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    setSelectedRequest((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // ===== UPDATE STATUS =====
   const handleRequestUpdate = async () => {
     if (!selectedRequest) return;
     try {
@@ -122,7 +116,7 @@ const PendingRequest = () => {
     }
   };
 
-  // ===== DELETE TEMPLE (Dummy) =====
+   // ===== DELETE TEMPLE (Dummy) =====
   const handleDelete = async () => {
     try {
       await axios.delete(`${BASE_URLL}api/delete-temple/${selectedRequest?.temple_id}/`);
@@ -143,6 +137,7 @@ const PendingRequest = () => {
     }
   };
 
+
   return (
     <div className="dashboard-wrapper">
       {/* Sidebar */}
@@ -162,21 +157,8 @@ const PendingRequest = () => {
                 <Breadcrumb.Item active>Pending Requests</Breadcrumb.Item>
               </Breadcrumb>
             </h1>
+           
 
-            {/* Search */}
-            <div className="d-flex justify-content-center h-100">
-              <div className="search">
-                <input
-                  className="search_input"
-                  type="text"
-                  placeholder="Search here..."
-                  onChange={(e) => handleSearch(e.target.value)}
-                />
-                <button type="submit" className="search_icon">
-                  <i className="fa fa-search"></i>
-                </button>
-              </div>
-            </div>
           </div>
 
           {/* Alert */}
@@ -188,10 +170,32 @@ const PendingRequest = () => {
             />
           )}
 
-          {/* ===== TABLE ===== */}
-          <Row className="mt-3">
+          {/* ===== TABS ===== */}
+          <Tabs
+            activeKey={activeTab}
+            onSelect={(k) => setActiveTab(k)}
+            className="mb-3 fw-bold"
+          >
+            {/* ================= TEMPLE TAB ================= */}
+            <Tab eventKey="temple" title="Temple">
+              <div className="d-flex justify-content-center h-100 mb-3">
+                <div className="search">
+                  <input
+                    className="search_input"
+                    type="text"
+                    placeholder="Search temple..."
+                    onChange={(e) => handleSearch(e.target.value)}
+                  />
+                  <button type="submit" className="search_icon">
+                    <i className="fa fa-search"></i>
+                  </button>
+                </div>
+              </div>
+
+              {/* ===== TABLE ===== */}
+              <Row className="mt-3">
             <div className="col-md-12">
-              <table className="rwd-table">
+              <table className="admin-rwd-table">
                 <tbody>
                   <tr>
                     <th>S.No</th>
@@ -239,8 +243,25 @@ const PendingRequest = () => {
             </div>
           </Row>
 
-          {/* ===== MODAL ===== */}
-          <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered>
+            </Tab>
+
+            {/* ================= PANDIT TAB ================= */}
+            <Tab eventKey="pandit" title="Pandit">
+              <div className="text-center py-5 text-muted">
+                <h5>Pending Pandit requests will appear here.</h5>
+              </div>
+            </Tab>
+
+            {/* ================= DEVOTEE TAB ================= */}
+            <Tab eventKey="devotee" title="Devotee">
+              <div className="text-center py-5 text-muted">
+                <h5>Pending Devotee requests will appear here.</h5>
+              </div>
+            </Tab>
+          </Tabs>
+
+          {/* ===== TEMPLE MODAL ===== */}
+            <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered>
             <Modal.Header closeButton>
               <Modal.Title>Edit Temple Request</Modal.Title>
             </Modal.Header>

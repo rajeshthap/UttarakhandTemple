@@ -133,7 +133,7 @@ const AcceptedRequest = () => {
           {/* ===== TABLE SECTION ===== */}
           <Row className="mt-3">
             <div className="col-md-12">
-              <table className="rwd-table">
+              <table className="admin-rwd-table">
                 <tbody>
                   <tr>
                     <th>S.No</th>

@@ -250,7 +250,7 @@ const ManageTemple = () => {
 
           <Row className="mt-3">
             <div className="col-md-12">
-              <table className="rwd-table">
+              <table className="temp-rwd-table">
                 <tbody>
                   <tr>
                     <th>S.No</th>

@@ -116,7 +116,7 @@ const Donations = () => {
                     {error}
                   </div>
                 ) : (
-                  <table className="rwd-table">
+                  <table className="temp-rwd-table">
                     <tbody>
                       <tr>
                         <th>Donation ID</th>
