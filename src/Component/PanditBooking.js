@@ -54,7 +54,14 @@ import Ganeshpuja from "../../src/assets/images/ganeshpuja.webp";
 import Govardhan from "../../src/assets/images/ganeshpuja.webp";
 import AnnakutPuja from "../../src/assets/images/Annakut.webp";
 import BhaiDuj from "../../src/assets/images/bhai-dooj.webp";
-import ChhopdaPuja from "../../src/assets/images/chhopdapuja.jpg"
+import ChhopdaPuja from "../../src/assets/images/chhopdapuja.jpg";
+import PindDaan from "../assets/images/PindDaan.jpeg";
+import TarpanShradh from "../assets/images/TarpanShradh.jpeg";
+import GarudPuran from "../assets/images/GarudPuran.jpeg"
+import TripindiShradha from "../assets/images/TripindiShradha.jpeg";
+import BharaniShradh from "../assets/images/BharaniShradh.jpeg";
+import ShradhPujaKarma from "../assets/images/ShradhPujaKarma.jpeg";
+import PitruDoshNivaranPuja from "../assets/images/PitruDoshNivaranPuja.jpeg";
 
 
 const cardData = [
@@ -306,40 +313,40 @@ const cardData = [
     id: "66",
     title: "Pitru Dosh Nivaran Puja",
     text: "पितृ दोष निवारण पूजा",
-    img: "",
+    img: PitruDoshNivaranPuja,
   },
   {
     id: "67",
     title: "Shradh Puja & Karma for Ancestors Peace",
     text: "श्राद्ध पूजा एवं कर्म",
-    img: "",
+    img: ShradhPujaKarma,
   },
   { id: "68", title: "Barsi Puja", text: "बरसी पूजा", img: "" },
   {
     id: "69",
     title: "Bharani Shradh Pitru Paksha",
     text: "भरनी श्राद्ध पितृ पक्ष",
-    img: "",
+    img: BharaniShradh,
   },
   {
     id: "70",
     title: "Tripindi Shradha Puja",
     text: "त्रिपिंडी श्राद्ध पूजा",
-    img: "",
+    img: TripindiShradha,
   },
-  { id: "71", title: "Garud Puran Path", text: "गरुड़ पुराण पाठ", img: "" },
+  { id: "71", title: "Garud Puran Path", text: "गरुड़ पुराण पाठ", img: GarudPuran, },
   {
     id: "72",
     title: "Tarpan Shradh Puja",
     text: "तर्पण श्राद्ध पूजा",
-    img: "",
+    img: TarpanShradh,
   },
 
   {
     id: "73",
     title: "Pind Daan Shradh Puja",
     text: "पिंड दान श्राद्ध पूजा",
-    img: "",
+    img: PindDaan,
   },
 ];
 const CustomDatePickerInput = forwardRef(
