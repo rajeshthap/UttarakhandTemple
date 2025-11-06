@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 //import Kedarnath from "../assets/images/Kedarnath-Temple.png";
 //import Gangotri from "../assets/images/Gangotri-Temple.png";
 //import Yamunotri from "../assets/images/yamunotri-temple.jpg";
+import MahaGanapatiHoma from "../assets/images/MahaGanapatiHoma.jpeg";
 import Ceremony from "../assets/images/Ceremony_image.png";
 import Engagement from "../assets/images/Engagement.png";
 import Ganesh from "../assets/images/Ganesh.png";
@@ -51,7 +52,7 @@ import VarahiDeviPujadevi from "../../src/assets/images/Varahi-Devi-Puja-devi.we
 import ChhotiDiwali from "../../src/assets/images/ChhotiDiwali.avif";
 import KaliPuja from "../../src/assets/images/kalipuja.webp";
 import Ganeshpuja from "../../src/assets/images/ganeshpuja.webp";
-import Govardhan from "../../src/assets/images/ganeshpuja.webp";
+import BarsiPuja from "../../src/assets/images/BarsiPuja.jpeg";
 import AnnakutPuja from "../../src/assets/images/Annakut.webp";
 import BhaiDuj from "../../src/assets/images/bhai-dooj.webp";
 import ChhopdaPuja from "../../src/assets/images/chhopdapuja.jpg";
@@ -73,6 +74,23 @@ import Ayush from "../../src/assets/images/ayushhavan.jpg";
 import ChandiHavan from "../../src/assets/images/Sat-Chandi.jpg";
 import LakshmiHavan from "../../src/assets/images/lakshmi_kuber_havan_pujabooking.png";
 import Shuddhikaran from "../../src/assets/images/Shuddhikaran-Puja-Pujabooking.webp"
+import DhanvantariHoma from "../assets/images/DhanvantariHoma.jpeg";
+import BhagavathiHoma from "../assets/images/BhagavathiHoma.jpeg";
+import NavmiHavan from "../assets/images/NavmiHavan.jpeg";
+import DrishtiDurgaHoma from "../assets/images/DrishtiDurgaHoma.jpeg";
+import MahalaxmiHavan from "../assets/images/MahalaxmiHavan.jpeg";
+import MahaMrityunjayaJaapPuja from "../assets/images/MahaMrityunjayaJaapPuja.jpeg";
+import GayatriMantraJaapPuja from "../assets/images/GayatriMantraJaapPuja.jpeg";
+import SantanGopalMantraJaap from "../assets/images/SantanGopalMantraJaap.jpeg";
+import ShaniDoshNivaranJaap from "../assets/images/DrishtiDurgaHoma.jpeg";
+import RahuGrahaShanti from "../assets/images/RahuGrahaShanti.jpeg";
+import SampoornaSunderkandPaath from "../assets/images/SampoornaSunderkandPaath.jpeg";
+import AkhandRamayana from "../assets/images/AkhandRamayana.jpeg";
+import HanumanChalisaPaath from "../assets/images/HanumanChalisaPaath.jpeg";
+import VishnuSahastranamPathPuja from "../assets/images/VishnuSahastranamPathPuja.jpeg";
+import NavagrahaHavan from "../assets/images/NavagrahaHavan.jpeg";
+import GovardhanPuja from "../assets/images/GovardhanPuja.jpeg";
+
 
 const cardData = [
   // ------------------ Puja / Sanskar ------------------
@@ -173,7 +191,7 @@ const cardData = [
     id: "22",
     title: "Vishnu Sahastranam Path Puja",
     text: "विष्णु सहस्रनाम पाठ पूजा",
-    img: Vishnu,
+    img: VishnuSahastranamPathPuja,
   },
   {
     id: "23",
@@ -223,7 +241,7 @@ const cardData = [
     text: "गणेश लक्ष्मी पूजा",
     img: Ganeshpuja,
   },
-  { id: "36", title: "Govardhan Puja", text: "गोवर्धन पूजा", img: Govardhan, },
+  { id: "36", title: "Govardhan Puja", text: "गोवर्धन पूजा", img: GovardhanPuja, },
   { id: "37", title: "Annakut Puja", text: "अन्नकूट पूजा", img: AnnakutPuja, },
   { id: "38", title: "Bhai Dooj Puja", text: "भाई दूज पूजा", img: BhaiDuj, },
   { id: "39", title: "Chopda Pooja", text: "चोपड़ा पूजा", img: ChhopdaPuja, },
@@ -237,63 +255,63 @@ const cardData = [
     text: "लक्ष्मी कुबेर हवन",
     img: LakshmiHavan,
   },
-  { id: "43", title: "Navagraha Havan", text: "नवग्रह हवन", img: "" },
+  { id: "43", title: "Navagraha Havan", text: "नवग्रह हवन", img: NavagrahaHavan },
   {
     id: "44",
     title: "Shuddhikaran Puja and Havan",
     text: "शुद्धिकरण पूजा एवं हवन",
     img: Shuddhikaran,
   },
-  { id: "45", title: "Maha Ganapati Homa", text: "महागणपति होम", img: "" },
-  { id: "46", title: "Dhanvantari Homa", text: "धन्वंतरि होम", img: "" },
-  { id: "47", title: "Bhagavathi Homa", text: "भगवती होम", img: "" },
-  { id: "48", title: "Navmi Havan", text: "नवमी हवन", img: "" },
-  { id: "49", title: "Drishti Durga Homa", text: "दृष्टि दुर्गा होम", img: "" },
-  { id: "50", title: "Mahalaxmi Havan", text: "महालक्ष्मी हवन", img: "" },
+  { id: "45", title: "Maha Ganapati Homa", text: "महागणपति होम", img: MahaGanapatiHoma },
+  { id: "46", title: "Dhanvantari Homa", text: "धन्वंतरि होम", img: DhanvantariHoma },
+  { id: "47", title: "Bhagavathi Homa", text: "भगवती होम", img: BhagavathiHoma },
+  { id: "48", title: "Navmi Havan", text: "नवमी हवन", img: NavmiHavan },
+  { id: "49", title: "Drishti Durga Homa", text: "दृष्टि दुर्गा होम", img: DrishtiDurgaHoma },
+  { id: "50", title: "Mahalaxmi Havan", text: "महालक्ष्मी हवन", img: MahalaxmiHavan },
 
   // ------------------ Jaaps / Paths ------------------
   {
     id: "51",
     title: "Maha Mrityunjaya Jaap Puja",
     text: "महामृत्युंजय जाप पूजा",
-    img: "",
+    img: MahaMrityunjayaJaapPuja,
   },
   {
     id: "52",
     title: "Gayatri Mantra Jaap Puja",
     text: "गायत्री मंत्र जाप पूजा",
-    img: "",
+    img: GayatriMantraJaapPuja,
   },
   {
     id: "53",
     title: "Santan Gopal Mantra Jaap",
     text: "संतान गोपाल मंत्र जाप",
-    img: "",
+    img: SantanGopalMantraJaap,
   },
   {
     id: "54",
     title: "Shani Dosh Nivaran Jaap",
     text: "शनि दोष निवारण जाप",
-    img: "",
+    img: ShaniDoshNivaranJaap,
   },
   {
     id: "55",
     title: "Rahu Graha Shanti Mantra Jaap",
     text: "राहु ग्रह शांति मंत्र जाप",
-    img: "",
+    img: RahuGrahaShanti,
   },
   {
     id: "56",
     title: "Sampoorna Sunderkand Paath",
     text: "सम्पूर्ण सुंदरकांड पाठ",
-    img: "",
+    img: SampoornaSunderkandPaath,
   },
-  { id: "57", title: "Akhand Ramayana Path", text: "अखंड रामायण पाठ", img: "" },
+  { id: "57", title: "Akhand Ramayana Path", text: "अखंड रामायण पाठ", img: AkhandRamayana },
 {
     id: "58",
     title: "Hanuman Chalisa Paath",
     text: "हनुमान चालीसा पाठ",
-    img: "",
+    img: HanumanChalisaPaath,
   },
   { id: "59", title: "Bajrang Baan Path", text: "बजरंग बाण पाठ", img: BajrangBaanPath,},
   { id: "60", title: "Navchandi Paath", text: "नवचंडी पाठ", img: NavchandiPaath, },
@@ -301,7 +319,7 @@ const cardData = [
     id: "61",
     title: "Durga Saptashati Path",
     text: "दुर्गा सप्तशती पाठ",
-    img: "DurgaSaptashati",
+    img: DurgaSaptashati,
   },
   { id: "62", title: "Kanak Dhara Path", text: "कनकधारा पाठ", img: KanakDharaPath, },
   { id: "63", title: "Shri Sukt Paath", text: "श्री सूक्त पाठ", img: ShriSukt, },
@@ -331,7 +349,7 @@ const cardData = [
     text: "श्राद्ध पूजा एवं कर्म",
     img: ShradhPujaKarma,
   },
-  { id: "68", title: "Barsi Puja", text: "बरसी पूजा", img: "" },
+  { id: "68", title: "Barsi Puja", text: "बरसी पूजा", img: BarsiPuja },
   {
     id: "69",
     title: "Bharani Shradh Pitru Paksha",
