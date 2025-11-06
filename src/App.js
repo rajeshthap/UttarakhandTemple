@@ -151,6 +151,9 @@ import AcceptedRequest from "./Component/admin_dashboard/admin_innerdashboard/Re
 import RejectedRequest from "./Component/admin_dashboard/admin_innerdashboard/Requests/RejectedRequest";
 import AdminUpcomingEvent from "./Component/admin_dashboard/admin_innerdashboard/allevent/AdminUpcomingEvent";
 import AdminPastEvent from "./Component/admin_dashboard/admin_innerdashboard/allevent/AdminPastEvent";
+import DonateAmount from "./Component/admin_dashboard/admin_innerdashboard/DonateAmount";
+import DonateCrowdFunding from "./Component/admin_dashboard/admin_innerdashboard/DonateCrowdFunding";
+import TemplePending from "./Component/admin_dashboard/TemplePending";
 
 
 // import BASE_URLL from "./Component/BaseURL";
@@ -253,7 +256,9 @@ function App() {
     "/AcceptedRequest",
     "/RejectedRequest",
 "/AdminUpcomingEvent",
-"/AdminPastEvent"
+"/AdminPastEvent",
+"/DonateAmount",
+"/DonateCrowdFunding"
  
   
   
@@ -468,7 +473,9 @@ function App() {
           <Route path="/RejectedRequest" element={<RejectedRequest />} />
           <Route path="/AdminPastEvent" element={<AdminPastEvent />} />
           <Route path="/AdminUpcomingEvent" element={<AdminUpcomingEvent />} />
-          <Route path="/AdminUpcomingEvent" element={<AdminUpcomingEvent />} />
+          <Route path="/DonateAmount" element={<DonateAmount/>} />
+          <Route path="/DonateCrowdFunding" element={<DonateCrowdFunding/>} />
+          <Route path="/TemplePending" element={<TemplePending/>} />
           
      
           

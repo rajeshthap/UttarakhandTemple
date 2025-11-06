@@ -169,13 +169,13 @@ function AdminLeftnav() {
     {
       icon: <IoCalendarSharp />,
       label: "Donate Amount",
-      path: "#",
+      path: "/DonateAmount",
 
     },
     {
       icon: <img src={Transactions} alt="Support" className="left-nav-icon" />,
       label: "Crowdfunding",
-      path: "#",
+      path: "/DonateCrowdFunding",
 
     },
 

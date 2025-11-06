@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import "../../../assets/CSS/AdminLeftNav.css";
-import { Row, Breadcrumb, Button, Modal, Table, Spinner } from "react-bootstrap";
+import { Form,Row, Breadcrumb, Button, Modal, Table, Spinner,Col } from "react-bootstrap";
 import AdminLeftnav from "../AdminLeftnav";
 import { useAuth } from "../../GlobleAuth/AuthContext";
 import axios from "axios";
@@ -148,81 +148,140 @@ const AllDarshanBooking = () => {
         </div>
       </main>
 
-      {/* ===================== MODAL ===================== */}
+    {/* ===================== MODAL ===================== */}
       <Modal show={showModal} onHide={handleClose} size="lg" centered>
         <Modal.Header closeButton>
           <Modal.Title>Darshan Booking Details</Modal.Title>
         </Modal.Header>
+
         <Modal.Body>
           {selectedBooking ? (
-            <div>
-              <p>
-                <strong>Darshan ID:</strong> {selectedBooking.darshan_pooja_id}
-              </p>
-              <p>
-                <strong>Full Name:</strong> {selectedBooking.full_name}
-              </p>
-              <p>
-                <strong>Gender:</strong> {selectedBooking.gender}
-              </p>
-              <p>
-                <strong>Age:</strong> {selectedBooking.age}
-              </p>
-              <p>
-                <strong>Mobile:</strong> {selectedBooking.mobile_number}
-              </p>
-              <p>
-                <strong>Email:</strong> {selectedBooking.email}
-              </p>
-              <p>
-                <strong>Temple:</strong> {selectedBooking.temple_name}
-              </p>
-              <p>
-                <strong>Address:</strong> {selectedBooking.address}, {selectedBooking.city},{" "}
-                {selectedBooking.state}, {selectedBooking.country} -{" "}
-                {selectedBooking.pin_code}
-              </p>
-              <p>
-                <strong>Payment Mode:</strong> {selectedBooking.payment_mode}
-              </p>
-              <p>
-                <strong>Total Amount:</strong> ₹{selectedBooking.grand_total}
-              </p>
-              <p>
-                <strong>No. of Persons:</strong> {selectedBooking.no_of_persons}
-              </p>
+            <Form>
+              <Row>
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label>Darshan ID</Form.Label>
+                    <Form.Control value={selectedBooking.darshan_pooja_id || ""} disabled />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label>Full Name</Form.Label>
+                    <Form.Control value={selectedBooking.full_name || ""} disabled />
+                  </Form.Group>
+                </Col>
+              </Row>
 
-              {/* Pooja Details */}
-              {selectedBooking.pooja_details?.length > 0 && (
-                <>
-                  <h5 className="mt-3">Pooja Details</h5>
-                  <Table bordered>
-                    <thead>
-                      <tr>
-                        <th>Pooja ID</th>
-                        <th>Pooja Name</th>
-                        <th>Price</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {selectedBooking.pooja_details.map((p) => (
-                        <tr key={p.pooja_id}>
-                          <td>{p.pooja_id}</td>
-                          <td>{p.pooja_name}</td>
-                          <td>₹{p.pooja_price}</td>
+              <Row className="mt-2">
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label>Gender</Form.Label>
+                    <Form.Control value={selectedBooking.gender || ""} disabled />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label>Age</Form.Label>
+                    <Form.Control value={selectedBooking.age || ""} disabled />
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <Row className="mt-2">
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label>Mobile</Form.Label>
+                    <Form.Control value={selectedBooking.mobile_number || ""} disabled />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control value={selectedBooking.email || ""} disabled />
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <Row className="mt-2">
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label>Temple</Form.Label>
+                    <Form.Control value={selectedBooking.temple_name || ""} disabled />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label>Payment Mode</Form.Label>
+                    <Form.Control value={selectedBooking.payment_mode || ""} disabled />
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <Row className="mt-2">
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label>Total Amount (₹)</Form.Label>
+                    <Form.Control value={selectedBooking.grand_total || ""} disabled />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label>No. of Persons</Form.Label>
+                    <Form.Control value={selectedBooking.no_of_persons || ""} disabled />
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <Row className="mt-2">
+                <Col md={12}>
+                  <Form.Group>
+                    <Form.Label>Address</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={2}
+                      value={`${selectedBooking.address || ""}, ${selectedBooking.city || ""}, ${
+                        selectedBooking.state || ""
+                      }, ${selectedBooking.country || ""} - ${selectedBooking.pin_code || ""}`}
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              {/* ============= Pooja Details Table ============= */}
+              <Row className="mt-4">
+                <Col>
+                  <h5>Pooja Details</h5>
+                  {selectedBooking.pooja_details?.length ? (
+                    <table className="admin-rwd-table">
+                      <tbody>
+                        <tr>
+                          <th>Pooja ID</th>
+                          <th>Pooja Name</th>
+                          <th>Price (₹)</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                </>
-              )}
-            </div>
+                        {selectedBooking.pooja_details.map((p, i) => (
+                          <tr key={i}>
+                            <td>{p.pooja_id}</td>
+                            <td>{p.pooja_name}</td>
+                            <td>{p.pooja_price}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  ) : (
+                    <p className="text-muted">No pooja details available.</p>
+                  )}
+                </Col>
+              </Row>
+            </Form>
           ) : (
-            <p>No details available.</p>
+            <div className="text-center text-muted py-3">No booking selected.</div>
           )}
         </Modal.Body>
+
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button className="event-click-cancel" onClick={handleClose}>
             Close
           </Button>
         </Modal.Footer>

@@ -30,6 +30,30 @@ const AdminDashBoard = () => {
     rejected: 0,
   });
 
+   const [panditCounts, setPanditCounts] = useState({
+    total: 0,
+    pending: 0,
+    accepted: 0,
+    rejected: 0,
+  });
+
+
+   const [devoteeCounts, setDevoteeCounts] = useState({
+    total: 0,
+    pending: 0,
+    accepted: 0,
+    rejected: 0,
+  });
+
+  const [donateCounts, setDonateCounts] = useState({
+    total: 0,
+    pending: 0,
+    accepted: 0,
+    rejected: 0,
+  });
+
+
+
 
   const [loading, setLoading] = useState(false);
 
@@ -76,9 +100,69 @@ const AdminDashBoard = () => {
     }
   };
 
+
+  const fetchPanditCounts = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`${BASE_URLL}api/get-all-registered/?role=pandit`);
+      const panditList = res.data?.results || [];
+
+      const total = panditList.filter((p) => p.pandit_status === "accepted").length;
+      const pending = panditList.filter((p) => p.pandit_status === "pending").length;
+      const accepted = panditList.filter((p) => p.pandit_status === "accepted").length;
+      const rejected = panditList.filter((p) => p.pandit_status === "rejected").length;
+
+      setPanditCounts({ total, pending, accepted, rejected });
+    } catch (err) {
+      console.error("Error fetching temple data:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+   const fetchDevoteeCounts = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`${BASE_URLL}api/get-all-registered/?role=user`);
+      const devoteeList = res.data?.results || [];
+
+      const total = devoteeList.filter((de) => de.user_status === "active").length;
+     
+
+      setDevoteeCounts({ total});
+    } catch (err) {
+      console.error("Error fetching temple data:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+const fetchDonateCounts = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`${BASE_URLL}api/get-all-crowd-donations/`);
+      const donateList = res.data?.donations || [];
+
+     const total = donateList.filter(
+  (dn) => dn.donation_status === true || dn.donation_status === "true"
+).length;
+
+      setDonateCounts({ total});
+    } catch (err) {
+      console.error("Error fetching temple data:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   useEffect(() => {
     fetchTempleCounts();
     fetchDarshanCounts();
+    fetchPanditCounts();
+    fetchDevoteeCounts();
+    fetchDonateCounts();
   }, []);
 
   return (
@@ -140,7 +224,7 @@ const AdminDashBoard = () => {
                 </Card>
               </Col>
 
-              {/* Pandit Card (Static for now) */}
+          
               <Col lg={4} md={4} sm={12}>
                 <Card
                   className="shadow-sm rounded flex-fill dbcard-admin-4"
@@ -153,7 +237,10 @@ const AdminDashBoard = () => {
                         <span className="d-block mb-1 text-nowrap user-sub-title">
                           Pandit
                         </span>
-                        <h4 className="fw-medium mb-0">0</h4>
+                        <h4 className="fw-medium mb-0">
+
+                           {loading ? "..." : panditCounts.total}
+                        </h4>
                         <span className="user-span">View Details</span>
                       </div>
                       <div className="avatar-md avatar-rounded pandit-bg d-flex align-items-center justify-content-center">
@@ -164,7 +251,7 @@ const AdminDashBoard = () => {
                 </Card>
               </Col>
 
-              {/* Devotee Card (Static for now) */}
+        
               <Col lg={4} md={4} sm={12}>
                 <Card
                   className="shadow-sm rounded dbcard-adminnew-puja-box-1 flex-fill mb-2"
@@ -177,7 +264,9 @@ const AdminDashBoard = () => {
                         <span className="d-block mb-1 text-nowrap user-sub-title">
                           Devotee
                         </span>
-                        <h4 className="fw-medium mb-0">0</h4>
+                        <h4 className="fw-medium mb-0">
+                            {loading ? "..." : devoteeCounts.total}
+                        </h4>
                         <span className="user-span">View Details</span>
                       </div>
                       <div className="avatar-md avatar-rounded ad-save-bg d-flex align-items-center justify-content-center">
@@ -195,7 +284,7 @@ const AdminDashBoard = () => {
               <Col lg={4} md={4} sm={12}>
                 <Card 
                 className="shadow-sm dbcard-admin-accept-box-2 flex-fill"
-                 onClick={() => navigate("/CrowdFunding")}
+                 onClick={() => navigate("/DonateCrowdFunding")}
                 style={{ cursor: "pointer" }}>
                   <Card.Body>
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
@@ -203,7 +292,9 @@ const AdminDashBoard = () => {
                         <span className=" d-block mb-1 text-nowrap user-sub-title">
                           Crowd Funding
                         </span>
-                        <h4 className="fw-medium mb-0">0</h4>
+                        <h4 className="fw-medium mb-0">
+                          {loading ? "..." : donateCounts.total}
+                        </h4>
                         <div>
                           <span className="user-span">View Details</span>
                         </div>
@@ -253,7 +344,7 @@ const AdminDashBoard = () => {
               <Col lg={4} md={4} sm={12}>
                 <Card 
                 className="shadow-sm rounded dbcard-adminnew-puja-box-1 flex-fill mb-2"
-                 onClick={() => navigate("/Events")}
+                 onClick={() => navigate("/AdminPastEvent")}
                 style={{ cursor: "pointer" }}>
                   <Card.Body>
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
