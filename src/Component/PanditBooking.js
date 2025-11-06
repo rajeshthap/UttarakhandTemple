@@ -48,7 +48,13 @@ import Dhantrayodashi from "../../src/assets/images/Dhantrayodashi.webp";
 import Dhanteras from "../../src/assets/images/laxmi.avif";
 import Loard from "../../src/assets/images/lord-kuber.webp"
 import VarahiDeviPujadevi from "../../src/assets/images/Varahi-Devi-Puja-devi.webp";
-import ChhotiDiwali from "../../src/assets/images/ChhotiDiwali.avif"
+import ChhotiDiwali from "../../src/assets/images/ChhotiDiwali.avif";
+import KaliPuja from "../../src/assets/images/kalipuja.webp";
+import Ganeshpuja from "../../src/assets/images/ganeshpuja.webp";
+import Govardhan from "../../src/assets/images/ganeshpuja.webp";
+import AnnakutPuja from "../../src/assets/images/Annakut.webp";
+import BhaiDuj from "../../src/assets/images/bhai-dooj.webp";
+import ChhopdaPuja from "../../src/assets/images/chhopdapuja.jpg"
 
 
 const cardData = [
@@ -193,17 +199,17 @@ const cardData = [
     text: "नरक चतुर्दशी पूजा",
     img: ChhotiDiwali,
   },
-  { id: "34", title: "Kali Puja", text: "काली पूजा", img: "" },
+  { id: "34", title: "Kali Puja", text: "काली पूजा", img: KaliPuja, },
   {
     id: "35",
     title: "Ganesh Lakshmi Puja",
     text: "गणेश लक्ष्मी पूजा",
-    img: "",
+    img: Ganeshpuja,
   },
-  { id: "36", title: "Govardhan Puja", text: "गोवर्धन पूजा", img: "" },
-  { id: "37", title: "Annakut Puja", text: "अन्नकूट पूजा", img: "" },
-  { id: "38", title: "Bhai Dooj Puja", text: "भाई दूज पूजा", img: "" },
-  { id: "39", title: "Chopda Pooja", text: "चोपड़ा पूजा", img: "" },
+  { id: "36", title: "Govardhan Puja", text: "गोवर्धन पूजा", img: Govardhan, },
+  { id: "37", title: "Annakut Puja", text: "अन्नकूट पूजा", img: AnnakutPuja, },
+  { id: "38", title: "Bhai Dooj Puja", text: "भाई दूज पूजा", img: BhaiDuj, },
+  { id: "39", title: "Chopda Pooja", text: "चोपड़ा पूजा", img: ChhopdaPuja, },
 
   // ------------------ Havans ------------------
   { id: "40", title: "Ayush Havan", text: "आयुष हवन", img: "" },
