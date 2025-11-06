@@ -62,7 +62,17 @@ import TripindiShradha from "../assets/images/TripindiShradha.jpeg";
 import BharaniShradh from "../assets/images/BharaniShradh.jpeg";
 import ShradhPujaKarma from "../assets/images/ShradhPujaKarma.jpeg";
 import PitruDoshNivaranPuja from "../assets/images/PitruDoshNivaranPuja.jpeg";
-
+import LalitaSahasranama from "../assets/images/LalitaSahasranama.jpeg";
+import ShriSukt from "../assets/images/Shrishiv.webp";
+import KanakadharaStotramPath from "../assets/images/KanakadharaStotramPath.jpeg";
+import KanakDharaPath from "../assets/images/KanakDharaPath.jpeg";
+import DurgaSaptashati from "../assets/images/DurgaSaptashati.jpeg";
+import NavchandiPaath from "../assets/images/NavchandiPaath.jpeg";
+import BajrangBaanPath from "../assets/images/BajrangBaanPath.jpeg";
+import Ayush from "../../src/assets/images/ayushhavan.jpg";
+import ChandiHavan from "../../src/assets/images/Sat-Chandi.jpg";
+import LakshmiHavan from "../../src/assets/images/lakshmi_kuber_havan_pujabooking.png";
+import Shuddhikaran from "../../src/assets/images/Shuddhikaran-Puja-Pujabooking.webp"
 
 const cardData = [
   // ------------------ Puja / Sanskar ------------------
@@ -219,20 +229,20 @@ const cardData = [
   { id: "39", title: "Chopda Pooja", text: "चोपड़ा पूजा", img: ChhopdaPuja, },
 
   // ------------------ Havans ------------------
-  { id: "40", title: "Ayush Havan", text: "आयुष हवन", img: "" },
-  { id: "41", title: "Chandi Path Havan", text: "चंडी पाठ हवन", img: "" },
+  { id: "40", title: "Ayush Havan", text: "आयुष हवन", img: Ayush, },
+  { id: "41", title: "Chandi Path Havan", text: "चंडी पाठ हवन", img: ChandiHavan, },
   {
     id: "42",
     title: "Lakshmi Kubera Havan",
     text: "लक्ष्मी कुबेर हवन",
-    img: "",
+    img: LakshmiHavan,
   },
   { id: "43", title: "Navagraha Havan", text: "नवग्रह हवन", img: "" },
   {
     id: "44",
     title: "Shuddhikaran Puja and Havan",
     text: "शुद्धिकरण पूजा एवं हवन",
-    img: "",
+    img: Shuddhikaran,
   },
   { id: "45", title: "Maha Ganapati Homa", text: "महागणपति होम", img: "" },
   { id: "46", title: "Dhanvantari Homa", text: "धन्वंतरि होम", img: "" },
@@ -279,33 +289,33 @@ const cardData = [
     img: "",
   },
   { id: "57", title: "Akhand Ramayana Path", text: "अखंड रामायण पाठ", img: "" },
-  {
+{
     id: "58",
     title: "Hanuman Chalisa Paath",
     text: "हनुमान चालीसा पाठ",
     img: "",
   },
-  { id: "59", title: "Bajrang Baan Path", text: "बजरंग बाण पाठ", img: "" },
-  { id: "60", title: "Navchandi Paath", text: "नवचंडी पाठ", img: "" },
+  { id: "59", title: "Bajrang Baan Path", text: "बजरंग बाण पाठ", img: BajrangBaanPath,},
+  { id: "60", title: "Navchandi Paath", text: "नवचंडी पाठ", img: NavchandiPaath, },
   {
     id: "61",
     title: "Durga Saptashati Path",
     text: "दुर्गा सप्तशती पाठ",
-    img: "",
+    img: "DurgaSaptashati",
   },
-  { id: "62", title: "Kanak Dhara Path", text: "कनकधारा पाठ", img: "" },
-  { id: "63", title: "Shri Sukt Paath", text: "श्री सूक्त पाठ", img: "" },
+  { id: "62", title: "Kanak Dhara Path", text: "कनकधारा पाठ", img: KanakDharaPath, },
+  { id: "63", title: "Shri Sukt Paath", text: "श्री सूक्त पाठ", img: ShriSukt, },
   {
     id: "64",
     title: "Lalita Sahasranama Path",
     text: "ललिता सहस्रनाम पाठ",
-    img: "",
+    img: LalitaSahasranama,
   },
   {
     id: "65",
     title: "Kanakadhara Stotram Path",
     text: "कनकधारा स्तोत्र पाठ",
-    img: "",
+    img: KanakadharaStotramPath,
   },
 
   // ------------------ Pitru Paksha / Shradh ------------------
