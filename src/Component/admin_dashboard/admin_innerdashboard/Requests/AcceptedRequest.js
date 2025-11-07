@@ -23,7 +23,7 @@ const AcceptedRequest = () => {
       </aside>
 
       {/* Main Section */}
-      <main className="main-container">
+      <main className="admin-container">
         <div className="content-box">
           {/* Breadcrumb */}
           <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
@@ -53,13 +53,13 @@ const AcceptedRequest = () => {
               </div>
 
               {/* Tab Content */}
-              <div className="tabcontent mt-3">
+              <div className="tabcontent ">
                 {activeTab === "Pandit" && (
-                  <PanditAccepted/>
+                  <PanditAccepted />
                 )}
 
                 {activeTab === "Temple" && (
-                  <TempleAccepted /> 
+                  <TempleAccepted />
                 )}
 
                 {activeTab === "Devotee" && (

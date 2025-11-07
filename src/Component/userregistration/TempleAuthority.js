@@ -25,7 +25,7 @@ function TempleAuthority() {
   const [,] = useState(false);
   const [phone, setPhone] = useState("");
   const [otpSent, setOtpSent] = useState(false);
-   const { uniqueId } = useAuth();
+  const { uniqueId } = useAuth();
   const [otpVerified, setOtpVerified] = useState(false);
   // const [banks, setBanks] = useState([]);
   const [formErrors, setFormErrors] = useState({});
@@ -395,59 +395,59 @@ function TempleAuthority() {
 
   // Updated file handler to work with both drag-drop and file input
   const handleFileChange = (e, field) => {
-  let file;
+    let file;
 
-  // Handle both file input and drag-drop events
-  if (e.target && e.target.files) {
-    file = e.target.files[0];
-    // Reset the file input value to allow selecting the same file again
-    if (fileInputRefs[field]?.current) {
-      fileInputRefs[field].current.value = "";
+    // Handle both file input and drag-drop events
+    if (e.target && e.target.files) {
+      file = e.target.files[0];
+      // Reset the file input value to allow selecting the same file again
+      if (fileInputRefs[field]?.current) {
+        fileInputRefs[field].current.value = "";
+      }
+    } else if (e.dataTransfer && e.dataTransfer.files) {
+      file = e.dataTransfer.files[0];
     }
-  } else if (e.dataTransfer && e.dataTransfer.files) {
-    file = e.dataTransfer.files[0];
-  }
 
-  if (!file) return;
+    if (!file) return;
 
-  //  Fixed: Correct MIME type for PDF
-  const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "application/pdf"];
+    //  Fixed: Correct MIME type for PDF
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "application/pdf"];
 
-  // Reset previous errors
-  setFileErrors((prev) => ({
-    ...prev,
-    [field]: "",
-  }));
-
-  setDocumentErrors((prev) => ({
-    ...prev,
-    [field]: "",
-  }));
-
-  // Type check
-  if (!allowedTypes.includes(file.type)) {
+    // Reset previous errors
     setFileErrors((prev) => ({
       ...prev,
-      [field]: "Only JPG, PNG, or PDF files are allowed.",
+      [field]: "",
     }));
-    return;
-  }
 
-  // Size check (100KB)
-  if (file.size > 2 * 1024 * 1024) {
-    setFileErrors((prev) => ({
+    setDocumentErrors((prev) => ({
       ...prev,
-      [field]: "File size must be less than or equal to 2MB.",
+      [field]: "",
     }));
-    return;
-  }
 
-  // If valid, save file
-  setDocuments({
-    ...documents,
-    [field]: file,
-  });
-};
+    // Type check
+    if (!allowedTypes.includes(file.type)) {
+      setFileErrors((prev) => ({
+        ...prev,
+        [field]: "Only JPG, PNG, or PDF files are allowed.",
+      }));
+      return;
+    }
+
+    // Size check (100KB)
+    if (file.size > 2 * 1024 * 1024) {
+      setFileErrors((prev) => ({
+        ...prev,
+        [field]: "File size must be less than or equal to 2MB.",
+      }));
+      return;
+    }
+
+    // If valid, save file
+    setDocuments({
+      ...documents,
+      [field]: file,
+    });
+  };
 
 
   const removeFile = (field) => {
@@ -488,83 +488,83 @@ function TempleAuthority() {
     return payload;
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (!validateForm()) {
-    setAlertMessage("Please fix validation errors before submitting");
-    setShowAlert(true);
-    return;
-  }
+    if (!validateForm()) {
+      setAlertMessage("Please fix validation errors before submitting");
+      setShowAlert(true);
+      return;
+    }
 
-  setLoading(true);
+    setLoading(true);
 
-  const payload = buildPayload();
+    const payload = buildPayload();
 
-  //  Filter valid poojas and append to payload
-  const filteredPoojas = temple_poojas.filter(
-    (p) => p.temple_pooja_name && p.temple_pooja_price
-  );
-  payload.append("temple_poojas", JSON.stringify(filteredPoojas));
+    //  Filter valid poojas and append to payload
+    const filteredPoojas = temple_poojas.filter(
+      (p) => p.temple_pooja_name && p.temple_pooja_price
+    );
+    payload.append("temple_poojas", JSON.stringify(filteredPoojas));
 
-  //  If uniqueId exists, use it — else send blank string
-  const creatorId = uniqueId || "";
+    //  If uniqueId exists, use it — else send blank string
+    const creatorId = uniqueId || "";
 
-  try {
-    //  Pass creator_id in params
-    const registerResult = await Globaleapi(payload, {
-      params: { creator_id: creatorId },
-    });
+    try {
+      //  Pass creator_id in params
+      const registerResult = await Globaleapi(payload, {
+        params: { creator_id: creatorId },
+      });
 
       //  Print full API response for debugging
-  console.log("Temple Registration API Response:", registerResult);
-  console.log("Creator ID Sent:", creatorId);
+      console.log("Temple Registration API Response:", registerResult);
+      console.log("Creator ID Sent:", creatorId);
 
-    if (registerResult || registerResult?.status === 201) {
-      setAlertMessage("Temple Registered Successfully!");
-      setShowAlert(true);
+      if (registerResult || registerResult?.status === 201) {
+        setAlertMessage("Temple Registered Successfully!");
+        setShowAlert(true);
 
-      setTimeout(() => {
-        setShowAlert(false);
-        navigate("/Login");
-      }, 2000);
-    } else {
-      setAlertMessage(
-        "Registration failed: " +
-          (registerResult?.data?.message || "Unknown error")
-      );
-      setShowAlert(true);
-    }
-  } catch (error) {
-    if (error.response && error.response.data) {
-      const errorData = error.response.data;
-
-      if (
-        errorData.error &&
-        errorData.error.toLowerCase().includes("email")
-      ) {
-        setFormErrors((prev) => ({ ...prev, email: errorData.error }));
-        document.getElementsByName("email")[0]?.focus();
-      } else if (
-        errorData.error &&
-        errorData.error.toLowerCase().includes("phone")
-      ) {
-        setFormErrors((prev) => ({ ...prev, phone: errorData.error }));
-        document.getElementsByName("phone")[0]?.focus();
+        setTimeout(() => {
+          setShowAlert(false);
+          navigate("/Login");
+        }, 2000);
       } else {
         setAlertMessage(
-          "Error: " + (errorData.message || "Something went wrong")
+          "Registration failed: " +
+          (registerResult?.data?.message || "Unknown error")
         );
         setShowAlert(true);
       }
-    } else {
-      setAlertMessage("Error: " + error.message);
-      setShowAlert(true);
+    } catch (error) {
+      if (error.response && error.response.data) {
+        const errorData = error.response.data;
+
+        if (
+          errorData.error &&
+          errorData.error.toLowerCase().includes("email")
+        ) {
+          setFormErrors((prev) => ({ ...prev, email: errorData.error }));
+          document.getElementsByName("email")[0]?.focus();
+        } else if (
+          errorData.error &&
+          errorData.error.toLowerCase().includes("phone")
+        ) {
+          setFormErrors((prev) => ({ ...prev, phone: errorData.error }));
+          document.getElementsByName("phone")[0]?.focus();
+        } else {
+          setAlertMessage(
+            "Error: " + (errorData.message || "Something went wrong")
+          );
+          setShowAlert(true);
+        }
+      } else {
+        setAlertMessage("Error: " + error.message);
+        setShowAlert(true);
+      }
+    } finally {
+      setLoading(false);
     }
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
 
   return (
@@ -644,7 +644,7 @@ function TempleAuthority() {
                               value={formData.temple_name}
                               onChange={handleChange}
                               placeholder="Temple Name"
-                              className="temp-form-control"
+                              className="temp-form-control-option"
                             />
                             {formErrors.temple_name && (
                               <p className="text-danger">
@@ -668,7 +668,7 @@ function TempleAuthority() {
                               value={formData.temple_description}
                               onChange={handleChange}
                               placeholder="Temple Description"
-                              className="temp-form-control"
+                              className="temp-form-control-option"
                             />
                             {formErrors.temple_description && (
                               <p className="text-danger">
@@ -692,7 +692,7 @@ function TempleAuthority() {
                                 value={formData.password}
                                 onChange={handleChange}
                                 placeholder="Your Password"
-                                className="temp-form-control"
+                                className="temp-form-control-option"
                               />
                               <span
                                 className="toggle-eye"
@@ -724,7 +724,7 @@ function TempleAuthority() {
                                 value={formData.confirm_password}
                                 onChange={handleChange}
                                 placeholder=" Your Confirm Password"
-                                className="temp-form-control"
+                                className="temp-form-control-option"
                               />
                               <span
                                 className="toggle-eye"
@@ -756,7 +756,7 @@ function TempleAuthority() {
                               <span className="temp-span-star">*</span>
                             </Form.Label>
                             <Form.Select
-                              className="temp-form-control-option"
+                              className="temp-form-control-option-option"
                               name="temple_type"
                               value={formData.temple_type}
                               onChange={handleChange}
@@ -793,7 +793,7 @@ function TempleAuthority() {
                               onChange={handleChange}
                               rows={3}
                               placeholder="Address"
-                              className="temp-form-control"
+                              className="temp-form-control-option"
                             />
                             {formErrors.temple_address && (
                               <p className="text-danger">
@@ -821,7 +821,7 @@ function TempleAuthority() {
                               value={formData.zip_code}
                               onChange={handleChange}
                               placeholder="Enter Pin Code"
-                              className="temp-form-control"
+                              className="temp-form-control-option"
                             />
                             {formErrors.zip_code && (
                               <p className="text-danger">
@@ -842,7 +842,7 @@ function TempleAuthority() {
                             <Form.Control
                               type="number"
                               placeholder="Enter year"
-                              className="temp-form-control-option"
+                              className="temp-form-control-option-option"
                               name="year_of_establishment"
                               value={formData.year_of_establishment}
                               onChange={handleChange}
@@ -867,7 +867,7 @@ function TempleAuthority() {
                               <span className="temp-span-star">*</span>
                             </Form.Label>
                             <Form.Select
-                              className="temp-form-control-option"
+                              className="temp-form-control-option-option"
                               name="temple_ownership_type"
                               value={formData.temple_ownership_type}
                               onChange={handleChange}
@@ -910,7 +910,7 @@ function TempleAuthority() {
                               value={formData.phone}
                               onChange={handleChange}
                               maxLength={10}
-                              className="temp-form-control"
+                              className="temp-form-control-option"
                               placeholder="Enter Mobile Number"
                               disabled={otpVerified}
                             />
@@ -930,7 +930,7 @@ function TempleAuthority() {
                             <Form.Control
                               type="email"
                               name="email"
-                              className="temp-form-control"
+                              className="temp-form-control-option"
                               placeholder="Enter Email ID"
                               value={formData.email || ""}
                               onChange={handleChange}
@@ -953,7 +953,7 @@ function TempleAuthority() {
                               <span className="temp-span-star">*</span>
                             </Form.Label>
                             <Form.Select
-                              className="temp-form-control-option"
+                              className="temp-form-control-option-option"
                               name="trust_committee_details"
                               value={formData.trust_committee_details}
                               onChange={handleChange}
@@ -983,7 +983,7 @@ function TempleAuthority() {
                               <span className="temp-span-star">*</span>
                             </Form.Label>
                             <Form.Select
-                              className="temp-form-control-option"
+                              className="temp-form-control-option-option"
                               name="trust_committee_type"
                               value={formData.trust_committee_type}
                               onChange={handleChange}
@@ -1028,7 +1028,7 @@ function TempleAuthority() {
                                 {pooja.isCustom ? (
                                   <Form.Control
                                     type="text"
-                                    className="temp-form-control"
+                                    className="temp-form-control-option"
                                     placeholder="Enter Puja name"
                                     value={pooja.temple_pooja_name}
                                     onChange={(e) =>
@@ -1041,7 +1041,7 @@ function TempleAuthority() {
                                   />
                                 ) : (
                                   <Form.Select
-                                    className="temp-form-control"
+                                    className="temp-form-control-option"
                                     value={pooja.temple_pooja_name}
                                     onChange={(e) => {
                                       const val = e.target.value;
@@ -1081,7 +1081,7 @@ function TempleAuthority() {
                               <Col lg={4} md={4} sm={4}>
                                 <Form.Control
                                   type="number"
-                                  className="temp-form-control"
+                                  className="temp-form-control-option"
                                   placeholder="Puja Price"
                                   value={pooja.temple_pooja_price}
                                   onChange={(e) =>
@@ -1155,7 +1155,7 @@ function TempleAuthority() {
                               value={formData.ifsc_code}
                               onChange={handleChange}
                               placeholder="Enter IFSC Code"
-                              className="temp-form-control"
+                              className="temp-form-control-option"
                               maxLength={11}
                             />
                             {formErrors.ifsc_code && (
@@ -1180,7 +1180,7 @@ function TempleAuthority() {
                               placeholder={
                                 loading ? "Fetching bank name..." : "Bank Name"
                               }
-                              className="temp-form-control"
+                              className="temp-form-control-option"
                             />
                             {loading && (
                               <Spinner
@@ -1207,7 +1207,7 @@ function TempleAuthority() {
                               value={formData.account_number}
                               onChange={handleChange}
                               maxLength={16}
-                              className="temp-form-control"
+                              className="temp-form-control-option"
                             />
                             {formErrors.account_number && (
                               <p className="text-danger">
@@ -1231,7 +1231,7 @@ function TempleAuthority() {
                               name="confirm_account_number"
                               value={formData.confirm_account_number}
                               onChange={handleChange}
-                              className="temp-form-control"
+                              className="temp-form-control-option"
                             />
                             {formErrors.confirm_account_number && (
                               <p className="text-danger">
@@ -1250,7 +1250,7 @@ function TempleAuthority() {
                               <span className="temp-span-star">*</span>
                             </Form.Label>
                             <Form.Select
-                              className="temp-form-control-option"
+                              className="temp-form-control-option-option"
                               name="account_type"
                               value={formData.account_type}
                               onChange={handleChange}
@@ -1281,7 +1281,7 @@ function TempleAuthority() {
                               value={formData.account_name}
                               onChange={handleChange}
                               placeholder="Account Name "
-                              className="temp-form-control"
+                              className="temp-form-control-option"
                             />
                             {formErrors.account_name && (
                               <p className="text-danger">
@@ -1335,7 +1335,7 @@ function TempleAuthority() {
                                     id={`${doc.key}_upload`}
                                     className="invisible"
                                     type="file"
-                                     accept="image/jpeg, image/png, image/svg+xml, application/pdf"
+                                    accept="image/jpeg, image/png, image/svg+xml, application/pdf"
                                     onChange={(e) =>
                                       handleFileChange(e, doc.key)
                                     }

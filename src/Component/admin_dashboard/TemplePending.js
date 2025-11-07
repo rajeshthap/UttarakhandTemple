@@ -174,10 +174,10 @@ const TemplePending = () => {
             });
         }
 
-        
+
     };
 
-     // ===== DELETE TEMPLE (Dummy) =====
+    // ===== DELETE TEMPLE (Dummy) =====
     const handleDelete = async () => {
         try {
             await axios.delete(`${BASE_URLL}api/delete-temple/${selectedRequest?.temple_id}/`);
@@ -202,7 +202,7 @@ const TemplePending = () => {
 
     return (
         <div className="dashboard-wrapper">
-            <main className="main-container">
+            <main className="admin-container">
                 <div className="content-box">
                     {alert.show && (
                         <ModifyAlert
@@ -213,19 +213,19 @@ const TemplePending = () => {
                     )}
 
                     {/* Search Bar */}
-                    
-                        <div className="search">
-                            <input
-                                className="search_input"
-                                type="text"
-                                placeholder="Search temple..."
-                                onChange={(e) => handleSearch(e.target.value)}
-                            />
-                            <button type="submit" className="search_icon">
-                                <i className="fa fa-search"></i>
-                            </button>
-                        </div>
-                    
+
+                    <div className="search">
+                        <input
+                            className="search_input"
+                            type="text"
+                            placeholder="Search temple..."
+                            onChange={(e) => handleSearch(e.target.value)}
+                        />
+                        <button type="submit" className="search_icon">
+                            <i className="fa fa-search"></i>
+                        </button>
+                    </div>
+
 
                     {/* Bulk Buttons */}
                     <div className="d-flex justify-content-end mb-2">

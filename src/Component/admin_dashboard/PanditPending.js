@@ -42,9 +42,8 @@ const PanditPending = () => {
 
   const getFileUrl = (path) => {
     if (!path) return null;
-    return `https://mahadevaaya.com/backend${
-      path.startsWith("/") ? path : "/" + path
-    }`;
+    return `https://mahadevaaya.com/backend${path.startsWith("/") ? path : "/" + path
+      }`;
   };
 
   // ====== SEARCH ======
@@ -147,22 +146,22 @@ const PanditPending = () => {
 
   return (
     <div className="dashboard-wrapper">
-      <main className="main-container">
+      <main className="admin-container">
         <div className="content-box">
           {/* ===== Search ===== */}
-          
-            <div className="search">
-              <input
-                className="search_input"
-                type="text"
-                placeholder="Search here..."
-                onChange={(e) => handleSearch(e.target.value)}
-              />
-              <button type="submit" className="search_icon">
-                <i className="fa fa-search"></i>
-              </button>
-            </div>
-         
+
+          <div className="search">
+            <input
+              className="search_input"
+              type="text"
+              placeholder="Search here..."
+              onChange={(e) => handleSearch(e.target.value)}
+            />
+            <button type="submit" className="search_icon">
+              <i className="fa fa-search"></i>
+            </button>
+          </div>
+
 
           {/* ===== Bulk Action Buttons ===== */}
           <div className="d-flex justify-content-end mb-2 gap-2">
@@ -279,16 +278,15 @@ const PanditPending = () => {
                         <Form.Label className="temp-label">Name</Form.Label>
                         <Form.Control
                           className="temp-form-control-option"
-                          value={`${selectedPandit.first_name || ""} ${
-                            selectedPandit.last_name || ""
-                          }`}
+                          value={`${selectedPandit.first_name || ""} ${selectedPandit.last_name || ""
+                            }`}
                           disabled
                         />
                       </Form.Group>
                     </Col>
                   </Row>
 
-                                   <Row className="mt-2">
+                  <Row className="mt-2">
                     <Col md={6}>
                       <Form.Group>
                         <Form.Label className="temp-label">Father Name</Form.Label>
@@ -355,9 +353,8 @@ const PanditPending = () => {
                         <Form.Label className="temp-label">City / State</Form.Label>
                         <Form.Control
                           className="temp-form-control-option"
-                          value={`${selectedPandit.city || ""}, ${
-                            selectedPandit.state || ""
-                          }`}
+                          value={`${selectedPandit.city || ""}, ${selectedPandit.state || ""
+                            }`}
                           disabled
                         />
                       </Form.Group>
@@ -389,32 +386,32 @@ const PanditPending = () => {
                   </Row>
 
                   {/* Pooja Details */}
-                                    <Row className="mt-4">
-                                      <Col>
-                                        <h5>Pooja Details</h5>
-                                        {selectedPandit.pandit_pooja_details?.length ? (
-                                          <table className="admin-rwd-table">
-                                            <tbody>
-                                              <tr>
-                                                <th>Pooja ID</th>
-                                                <th>Pooja Name</th>
-                                                <th>Price (₹)</th>
-                                              </tr>
-                                              {selectedPandit.pandit_pooja_details.map((pooja, i) => (
-                                                <tr key={i}>
-                                                  <td>{pooja.pandit_pooja_id}</td>
-                                                  <td>{pooja.pooja_name}</td>
-                                                  <td>{pooja.pooja_price}</td>
-                                                </tr>
-                                              ))}
-                                            </tbody>
-                                          </table>
-                                        ) : (
-                                          <p className="text-muted">No pooja details available.</p>
-                                        )}
-                                      </Col>
-                                    </Row>
-                  
+                  <Row className="mt-4">
+                    <Col>
+                      <h5>Pooja Details</h5>
+                      {selectedPandit.pandit_pooja_details?.length ? (
+                        <table className="admin-rwd-table">
+                          <tbody>
+                            <tr>
+                              <th>Pooja ID</th>
+                              <th>Pooja Name</th>
+                              <th>Price (₹)</th>
+                            </tr>
+                            {selectedPandit.pandit_pooja_details.map((pooja, i) => (
+                              <tr key={i}>
+                                <td>{pooja.pandit_pooja_id}</td>
+                                <td>{pooja.pooja_name}</td>
+                                <td>{pooja.pooja_price}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      ) : (
+                        <p className="text-muted">No pooja details available.</p>
+                      )}
+                    </Col>
+                  </Row>
+
 
                   {/* Image + Document */}
                   <Row className="mt-4 gy-4">

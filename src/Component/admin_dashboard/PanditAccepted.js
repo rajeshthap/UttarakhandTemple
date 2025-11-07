@@ -95,7 +95,7 @@ const PanditAccepted = () => {
     return (
         <div className="dashboard-wrapper">
             {/* Main Section */}
-            <main className="main-container">
+            <main className="admin-container">
                 <div className="content-box">
                     {/* Header */}
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
@@ -121,7 +121,7 @@ const PanditAccepted = () => {
                             <table className="admin-rwd-table">
                                 <tbody>
                                     <tr>
-                                        
+
                                         <th>S.No</th>
                                         <th>Pandit Name</th>
                                         <th>Email</th>

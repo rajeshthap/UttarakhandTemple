@@ -98,17 +98,20 @@ export default function Login() {
               <Col lg={6} md={6}>
                 {/* Role Selection */}
                 <Form.Group className="mb-3">
-                  <Form.Label className="temp-label-lg-bg">
+                  <Form.Label className="temp-label ">
                     Login As <span className="temp-span-star">*</span>
                   </Form.Label>
                   <Form.Select
                     name="role"
+                    className="temp-form-control-option-bg"
                     value={formData.role}
                     onChange={(e) =>
                       setFormData({
                         ...formData,
                         role: e.target.value.toLowerCase(),
+
                       })
+
                     }
                   >
                     <option value="admin">Admin</option>
@@ -120,7 +123,7 @@ export default function Login() {
 
                 {/* Email / Mobile */}
                 <Form.Group className="mb-3">
-                  <Form.Label className="temp-label-lg-bg">
+                  <Form.Label className="temp-label">
                     Email or Mobile Number{" "}
                     <span className="temp-span-star">*</span>
                   </Form.Label>

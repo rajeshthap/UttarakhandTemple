@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../../../../assets/CSS/AdminLeftNav.css";
 import AdminLeftnav from "../../AdminLeftnav";
 import { Breadcrumb } from "react-bootstrap";
-import TemplePending from "../../TemplePending"; 
+import TemplePending from "../../TemplePending";
 import PanditPending from "../../PanditPending";
 
 const PendingRequest = () => {
@@ -52,13 +52,13 @@ const PendingRequest = () => {
               </div>
 
               {/* Tab Content */}
-              <div className="tabcontent mt-3">
+              <div className="tabcontent ">
                 {activeTab === "Pandit" && (
-                  <PanditPending/>
+                  <PanditPending />
                 )}
 
                 {activeTab === "Temple" && (
-                  <TemplePending /> 
+                  <TemplePending />
                 )}
 
                 {activeTab === "Devotee" && (
