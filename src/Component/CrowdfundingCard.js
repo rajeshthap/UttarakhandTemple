@@ -155,6 +155,7 @@ const CrowdfundingCard = () => {
         <Row className="mb-3">
           <Col md={6} className="mb-2">
             <Form.Control
+              className="temp-form-control-option"
               placeholder="Search by temple, fund name or description..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -162,6 +163,7 @@ const CrowdfundingCard = () => {
           </Col>
           <Col md={3} className="mb-2">
             <Form.Select
+              className="temp-form-control-option"
               value={filterTemple}
               onChange={(e) => setFilterTemple(e.target.value)}
             >
