@@ -112,12 +112,12 @@
 .dashboard-wrapper {
   display: flex;
   min-height: 100vh;
-  
+
 }
 
 .pandit-sidebar {
-  background-color: #410c23  !important;
-  
+  background-color: #410c23 !important;
+
 }
 
 
@@ -509,7 +509,6 @@ span.sub-label {
   color: var(--temp-black);
   border-radius: var(--temp-space-100);
   font-size: var(--temp-space-250);
-  margin-top: var(--temp-space-200);
   display: inline-block;
   transition: all 0.3s ease;
   border: #c8c2c2 1px solid;
@@ -531,7 +530,6 @@ span.sub-label {
   color: var(--temp-white);
   border-radius: var(--temp-space-100);
   font-size: var(--temp-space-250);
-  margin-top: var(--temp-space-200);
   display: inline-block;
   transition: all 0.3s ease;
   border: #c8c2c2 1px solid;
@@ -592,16 +590,13 @@ span.sub-label {
 
 }
 
-@media (min-width: 850px) and (max-width: 991px) {
-
-
-
-}
+@media (min-width: 850px) and (max-width: 991px) {}
 
 @media screen and (max-width: 850px) {
-#user-dropdown{
-color: var(--temp-white) !important;
-}
+  #user-dropdown {
+    color: var(--temp-white) !important;
+  }
+
   .nd-menu {
     font-size: 22px;
     padding: 18px 0px 10px 35px;
@@ -667,13 +662,15 @@ color: var(--temp-white) !important;
 
 
 }
+
 @media screen and (max-width: 850px) {
-    .pandit-nav {
-        width: 100%;
-        position: absolute;
-        z-index: 999;
-    }
+  .pandit-nav {
+    width: 100%;
+    position: absolute;
+    z-index: 999;
+  }
 }
+
 @media screen and (max-width: 768px) {
   .nd-log-icon-mob {
     background-color: var(--nd-blue-hover);

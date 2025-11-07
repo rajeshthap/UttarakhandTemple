@@ -510,7 +510,6 @@ span.sub-label {
   color: var(--temp-black);
   border-radius: var(--temp-space-100);
   font-size: var(--temp-space-250);
-  margin-top: var(--temp-space-200);
   display: inline-block;
   transition: all 0.3s ease;
   border: #c8c2c2 1px solid;
@@ -532,7 +531,6 @@ span.sub-label {
   color: var(--temp-white);
   border-radius: var(--temp-space-100);
   font-size: var(--temp-space-250);
-  margin-top: var(--temp-space-200);
   display: inline-block;
   transition: all 0.3s ease;
   border: #c8c2c2 1px solid;
