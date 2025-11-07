@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Row,  Button } from "react-bootstrap";
+import { Row, Button } from "react-bootstrap";
 import axios from "axios";
 import { useAuth } from "../GlobleAuth/AuthContext";
 
 const BASE_URLL = "https://mahadevaaya.com/backend/";
 
-const TempleRejected = () => {
+const PanditRejected = () => {
   const { uniqueId } = useAuth();
   const [requests, setRequests] = useState([]);
   const [filteredRequests, setFilteredRequests] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // ====== FETCH REJECTED REQUESTS ======
+  // ====== FETCH REJECTED PANDIT REQUESTS ======
   const fetchRequests = async () => {
     try {
       setLoading(true);
       const res = await axios.get(`${BASE_URLL}api/get-all-registered/`, {
         params: {
-          role: "temple",
+          role: "pandit",
           status: "rejected",
         },
       });
@@ -26,7 +26,7 @@ const TempleRejected = () => {
       setRequests(data);
       setFilteredRequests(data);
     } catch (err) {
-      console.error("Error fetching rejected requests:", err);
+      console.error("Error fetching rejected pandit requests:", err);
       setRequests([]);
       setFilteredRequests([]);
     } finally {
@@ -38,22 +38,22 @@ const TempleRejected = () => {
     fetchRequests();
   }, []);
 
-  // ====== UPDATE STATUS ======
-  const handleStatusChange = async (temple_id, newStatus) => {
+  // ====== UPDATE PANDIT STATUS ======
+  const handleStatusChange = async (pandit_id, newStatus) => {
     const confirmAction = window.confirm(
       `Are you sure you want to change status to "${newStatus}"?`
     );
     if (!confirmAction) return;
 
     const payload = {
-      temple_id: temple_id,
-      temple_status: newStatus.toLowerCase(),
-      admin_id: uniqueId, //  required by API
+      pandit_id: pandit_id,
+      pandit_status: newStatus.toLowerCase(),
+      admin_id: uniqueId, // required by API
     };
 
     try {
       const res = await axios.patch(
-        "https://mahadevaaya.com/backend/api/update-temple-status/",
+        "https://mahadevaaya.com/backend/api/update-pandit-status/",
         payload,
         {
           headers: { "Content-Type": "application/json" },
@@ -61,16 +61,15 @@ const TempleRejected = () => {
       );
 
       if (res.status === 200) {
-        alert(`Temple status updated to ${newStatus}`);
-        // Refresh data after successful update
+        alert(`Pandit status updated to ${newStatus}`);
         fetchRequests();
       } else {
         alert("Failed to update status.");
       }
     } catch (err) {
-      console.error("Error updating status:", err);
+      console.error("Error updating pandit status:", err);
       console.error("Backend response:", err.response?.data);
-      alert("Error updating temple status.");
+      alert("Error updating pandit status.");
     }
   };
 
@@ -83,8 +82,9 @@ const TempleRejected = () => {
     const lowerQuery = query.toLowerCase();
     const filtered = requests.filter(
       (req) =>
-        req.temple_name?.toLowerCase().includes(lowerQuery) ||
-        req.temple_id?.toLowerCase().includes(lowerQuery) ||
+        req.first_name?.toLowerCase().includes(lowerQuery) ||
+        req.last_name?.toLowerCase().includes(lowerQuery) ||
+        req.pandit_id?.toLowerCase().includes(lowerQuery) ||
         req.email?.toLowerCase().includes(lowerQuery)
     );
     setFilteredRequests(filtered);
@@ -92,13 +92,10 @@ const TempleRejected = () => {
 
   return (
     <div className="dashboard-wrapper">
-      
-
       <main className="main-container">
         <div className="content-box">
+          {/* Header */}
           <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
-          
-
             {/* Search */}
             <div className="d-flex justify-content-center h-100">
               <div className="search">
@@ -122,8 +119,9 @@ const TempleRejected = () => {
                 <tbody>
                   <tr>
                     <th>S.No</th>
-                    <th>Temple ID</th>
-                    <th>Temple Name</th>
+                    <th>Pandit ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
                     <th>Email</th>
                     <th>Phone</th>
                     <th>Status</th>
@@ -134,17 +132,18 @@ const TempleRejected = () => {
                     filteredRequests.map((req, index) => (
                       <tr key={index}>
                         <td data-th="S. No">{index + 1}</td>
-                        <td data-th="Temple ID">{req.temple_id}</td>
-                        <td data-th="Temple Name">{req.temple_name}</td>
+                        <td data-th="Pandit ID">{req.pandit_id}</td>
+                        <td data-th="First Name">{req.first_name}</td>
+                        <td data-th="Last Name">{req.last_name}</td>
                         <td data-th="Email">{req.email || "N/A"}</td>
                         <td data-th="Phone">{req.phone || "N/A"}</td>
-                        <td data-th="Status">{req.temple_status || "rejected"}</td>
+                        <td data-th="Status">{req.pandit_status || "rejected"}</td>
                         <td>
                           <Button
                             className="event-click-btn me-2"
                             size="sm"
                             onClick={() =>
-                              handleStatusChange(req.temple_id, "pending")
+                              handleStatusChange(req.pandit_id, "pending")
                             }
                           >
                             Pending
@@ -153,7 +152,7 @@ const TempleRejected = () => {
                             className="event-click-cancel"
                             size="sm"
                             onClick={() =>
-                              handleStatusChange(req.temple_id, "accepted")
+                              handleStatusChange(req.pandit_id, "accepted")
                             }
                           >
                             Accepted
@@ -164,7 +163,7 @@ const TempleRejected = () => {
                   ) : (
                     <tr>
                       <td colSpan="8" className="text-center">
-                        {loading ? "Loading..." : "No rejected requests found."}
+                        {loading ? "Loading..." : "No rejected pandits found."}
                       </td>
                     </tr>
                   )}
@@ -178,4 +177,4 @@ const TempleRejected = () => {
   );
 };
 
-export default TempleRejected;
+export default PanditRejected;

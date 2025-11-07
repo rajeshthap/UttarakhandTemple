@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Form, Button, Modal, Breadcrumb,  } from "react-bootstrap";
+import { Row, Col, Form, Button, Modal } from "react-bootstrap";
 import axios from "axios";
 import { useAuth } from "../GlobleAuth/AuthContext";
 import ModifyAlert from "../Alert/ModifyAlert";
@@ -15,7 +15,8 @@ const TemplePending = () => {
     const [showModal, setShowModal] = useState(false);
     const [remarks, setRemarks] = useState("");
     const [alert, setAlert] = useState({ show: false, message: "", variant: "" });
-
+    const [selectedRows, setSelectedRows] = useState([]);
+    const [selectAll, setSelectAll] = useState(false);
 
     // ===== FETCH PENDING REQUESTS (Temple) =====
     const fetchRequests = async () => {
@@ -43,9 +44,7 @@ const TemplePending = () => {
     };
 
     useEffect(() => {
-
         fetchRequests();
-
     }, []);
 
     const getFileUrl = (path) => {
@@ -65,6 +64,70 @@ const TemplePending = () => {
                 req.email?.toLowerCase().includes(lowerQuery)
         );
         setFilteredRequests(filtered);
+    };
+
+    // ===== SELECT CHECKBOX =====
+    const handleSelectRow = (temple_id) => {
+        setSelectedRows((prev) =>
+            prev.includes(temple_id)
+                ? prev.filter((id) => id !== temple_id)
+                : [...prev, temple_id]
+        );
+    };
+
+    // ===== SELECT ALL =====
+    const handleSelectAll = () => {
+        if (selectAll) {
+            setSelectedRows([]);
+        } else {
+            const allIds = filteredRequests.map((r) => r.temple_id);
+            setSelectedRows(allIds);
+        }
+        setSelectAll(!selectAll);
+    };
+
+    // ===== BULK ACTION =====
+    const handleBulkUpdate = async (status) => {
+        if (selectedRows.length === 0) {
+            setAlert({
+                show: true,
+                message: "Please select at least one temple.",
+                variant: "warning",
+            });
+            return;
+        }
+
+        try {
+            for (const temple_id of selectedRows) {
+                const payload = {
+                    temple_id,
+                    temple_status: status,
+                    admin_id: uniqueId,
+                    remarks: `Bulk ${status} action`,
+                };
+
+                await axios.patch(`${BASE_URLL}api/update-temple-status/`, payload, {
+                    headers: { "Content-Type": "application/json" },
+                });
+            }
+
+            setAlert({
+                show: true,
+                message: `Selected temples ${status === "accepted" ? "accepted" : "rejected"} successfully!`,
+                variant: status === "accepted" ? "success" : "danger",
+            });
+
+            setSelectedRows([]);
+            setSelectAll(false);
+            fetchRequests();
+        } catch (error) {
+            console.error("Bulk update failed:", error);
+            setAlert({
+                show: true,
+                message: "Failed to update selected temples.",
+                variant: "danger",
+            });
+        }
     };
 
     // ===== OPEN MODAL =====
@@ -110,9 +173,11 @@ const TemplePending = () => {
                 variant: "danger",
             });
         }
+
+        
     };
 
-    // ===== DELETE TEMPLE (Dummy) =====
+     // ===== DELETE TEMPLE (Dummy) =====
     const handleDelete = async () => {
         try {
             await axios.delete(`${BASE_URLL}api/delete-temple/${selectedRequest?.temple_id}/`);
@@ -134,16 +199,11 @@ const TemplePending = () => {
     };
 
 
+
     return (
         <div className="dashboard-wrapper">
-
-
-            {/* Main Section */}
             <main className="main-container">
                 <div className="content-box">
-                   
-
-                    {/* Alert */}
                     {alert.show && (
                         <ModifyAlert
                             variant={alert.variant}
@@ -152,10 +212,8 @@ const TemplePending = () => {
                         />
                     )}
 
-
-
-
-                    <div className="d-flex justify-content-center h-100 mb-3">
+                    {/* Search Bar */}
+                    
                         <div className="search">
                             <input
                                 className="search_input"
@@ -167,14 +225,39 @@ const TemplePending = () => {
                                 <i className="fa fa-search"></i>
                             </button>
                         </div>
+                    
+
+                    {/* Bulk Buttons */}
+                    <div className="d-flex justify-content-end mb-2">
+                        <Button
+                            className="event-click-btn me-2"
+                            onClick={() => handleBulkUpdate("accepted")}
+                            disabled={selectedRows.length === 0}
+                        >
+                            Accept Selected
+                        </Button>
+                        <Button
+                            className="event-click-cancel"
+                            onClick={() => handleBulkUpdate("rejected")}
+                            disabled={selectedRows.length === 0}
+                        >
+                            Reject Selected
+                        </Button>
                     </div>
 
-
+                    {/* Table */}
                     <Row className="mt-3">
                         <div className="col-md-12">
                             <table className="admin-rwd-table">
                                 <tbody>
                                     <tr>
+                                        <th>
+                                            <input
+                                                type="checkbox"
+                                                checked={selectAll}
+                                                onChange={handleSelectAll}
+                                            />
+                                        </th>
                                         <th>S.No</th>
                                         <th>Temple Name</th>
                                         <th>City</th>
@@ -186,18 +269,21 @@ const TemplePending = () => {
 
                                     {filteredRequests.length > 0 ? (
                                         filteredRequests.map((req, index) => (
-                                            <tr key={index}>
+                                            <tr key={req.temple_id}>
+                                                <td>
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={selectedRows.includes(req.temple_id)}
+                                                        onChange={() => handleSelectRow(req.temple_id)}
+                                                    />
+                                                </td>
                                                 <td data-th="S.No">{index + 1}</td>
                                                 <td data-th="Temple Name">{req.temple_name}</td>
-
                                                 <td data-th="City">{req.city}</td>
                                                 <td data-th="State">{req.state}</td>
                                                 <td data-th="Country">{req.country}</td>
-                                                <td data-th="Status">
-                                                    {req.temple_status || "pending"}
-                                                </td>
+                                                <td data-th="Status">{req.temple_status || "pending"}</td>
                                                 <td>
-
                                                     <Button
                                                         className="event-click-btn"
                                                         size="sm"
@@ -211,7 +297,9 @@ const TemplePending = () => {
                                     ) : (
                                         <tr>
                                             <td colSpan="8" className="text-center">
-                                                {loading ? "Loading..." : "No pending requests found."}
+                                                {loading
+                                                    ? "Loading..."
+                                                    : "No pending temple requests found."}
                                             </td>
                                         </tr>
                                     )}
@@ -219,8 +307,6 @@ const TemplePending = () => {
                             </table>
                         </div>
                     </Row>
-
-
 
 
 

@@ -23,14 +23,14 @@ const AdminDashBoard = () => {
     rejected: 0,
   });
 
-    const [darshanCounts, setDarshanCounts] = useState({
+  const [darshanCounts, setDarshanCounts] = useState({
     total: 0,
     pending: 0,
     accepted: 0,
     rejected: 0,
   });
 
-   const [panditCounts, setPanditCounts] = useState({
+  const [panditCounts, setPanditCounts] = useState({
     total: 0,
     pending: 0,
     accepted: 0,
@@ -38,7 +38,7 @@ const AdminDashBoard = () => {
   });
 
 
-   const [devoteeCounts, setDevoteeCounts] = useState({
+  const [devoteeCounts, setDevoteeCounts] = useState({
     total: 0,
     pending: 0,
     accepted: 0,
@@ -57,7 +57,7 @@ const AdminDashBoard = () => {
 
   const [loading, setLoading] = useState(false);
 
-    // ===================== FETCH DARSHAN DATA =====================
+  // ===================== FETCH DARSHAN DATA =====================
   const fetchDarshanCounts = async () => {
     try {
       setLoading(true);
@@ -121,16 +121,16 @@ const AdminDashBoard = () => {
   };
 
 
-   const fetchDevoteeCounts = async () => {
+  const fetchDevoteeCounts = async () => {
     try {
       setLoading(true);
       const res = await axios.get(`${BASE_URLL}api/get-all-registered/?role=user`);
       const devoteeList = res.data?.results || [];
 
       const total = devoteeList.filter((de) => de.user_status === "active").length;
-     
 
-      setDevoteeCounts({ total});
+
+      setDevoteeCounts({ total });
     } catch (err) {
       console.error("Error fetching temple data:", err);
     } finally {
@@ -138,17 +138,17 @@ const AdminDashBoard = () => {
     }
   };
 
-const fetchDonateCounts = async () => {
+  const fetchDonateCounts = async () => {
     try {
       setLoading(true);
       const res = await axios.get(`${BASE_URLL}api/get-all-crowd-donations/`);
       const donateList = res.data?.donations || [];
 
-     const total = donateList.filter(
-  (dn) => dn.donation_status === true || dn.donation_status === "true"
-).length;
+      const total = donateList.filter(
+        (dn) => dn.donation_status === true || dn.donation_status === "true"
+      ).length;
 
-      setDonateCounts({ total});
+      setDonateCounts({ total });
     } catch (err) {
       console.error("Error fetching temple data:", err);
     } finally {
@@ -207,7 +207,7 @@ const fetchDonateCounts = async () => {
                     <div className="d-flex align-items-start justify-content-between flex-wrap">
                       <div>
                         <span className="d-block mb-1 text-nowrap user-sub-title">
-                          Total Temples
+                           Temples
                         </span>
                         <h4 className="fw-medium mb-0">
                           {loading ? "..." : templeCounts.total}
@@ -224,7 +224,7 @@ const fetchDonateCounts = async () => {
                 </Card>
               </Col>
 
-          
+
               <Col lg={4} md={4} sm={12}>
                 <Card
                   className="shadow-sm rounded flex-fill dbcard-admin-4"
@@ -239,7 +239,7 @@ const fetchDonateCounts = async () => {
                         </span>
                         <h4 className="fw-medium mb-0">
 
-                           {loading ? "..." : panditCounts.total}
+                          {loading ? "..." : panditCounts.total}
                         </h4>
                         <span className="user-span">View Details</span>
                       </div>
@@ -251,7 +251,7 @@ const fetchDonateCounts = async () => {
                 </Card>
               </Col>
 
-        
+
               <Col lg={4} md={4} sm={12}>
                 <Card
                   className="shadow-sm rounded dbcard-adminnew-puja-box-1 flex-fill mb-2"
@@ -265,7 +265,7 @@ const fetchDonateCounts = async () => {
                           Devotee
                         </span>
                         <h4 className="fw-medium mb-0">
-                            {loading ? "..." : devoteeCounts.total}
+                          {loading ? "..." : devoteeCounts.total}
                         </h4>
                         <span className="user-span">View Details</span>
                       </div>
@@ -278,14 +278,14 @@ const fetchDonateCounts = async () => {
               </Col>
             </Row>
 
-              <Row>
-              
+            <Row>
+
 
               <Col lg={4} md={4} sm={12}>
-                <Card 
-                className="shadow-sm dbcard-admin-accept-box-2 flex-fill"
-                 onClick={() => navigate("/DonateCrowdFunding")}
-                style={{ cursor: "pointer" }}>
+                <Card
+                  className="shadow-sm dbcard-admin-accept-box-2 flex-fill"
+                  onClick={() => navigate("/DonateCrowdFunding")}
+                  style={{ cursor: "pointer" }}>
                   <Card.Body>
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
                       <div>
@@ -310,18 +310,18 @@ const fetchDonateCounts = async () => {
               </Col>
 
               <Col lg={4} md={4} sm={12}>
-                <Card 
-                className="shadow-sm rounded flex-fill dbcard-admin-4"
-                 onClick={() => navigate("/AllDarshanBooking")}
-                style={{ cursor: "pointer" }}>
+                <Card
+                  className="shadow-sm rounded flex-fill dbcard-admin-4"
+                  onClick={() => navigate("/AllDarshanBooking")}
+                  style={{ cursor: "pointer" }}>
                   <Card.Body>
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
                       <div>
                         <span className=" d-block mb-1 text-nowrap user-sub-title">
-                         Darshan Booking
+                          Darshan Booking
                         </span>
                         <h4 className="fw-medium mb-0">0
-                            {loading ? "..." : darshanCounts.total} {/*  Changed */}
+                          {loading ? "..." : darshanCounts.total} {/*  Changed */}
                         </h4>
                         <div>
                           <span className="user-span">View Details</span>
@@ -342,10 +342,10 @@ const fetchDonateCounts = async () => {
               </Col>
 
               <Col lg={4} md={4} sm={12}>
-                <Card 
-                className="shadow-sm rounded dbcard-adminnew-puja-box-1 flex-fill mb-2"
-                 onClick={() => navigate("/AdminPastEvent")}
-                style={{ cursor: "pointer" }}>
+                <Card
+                  className="shadow-sm rounded dbcard-adminnew-puja-box-1 flex-fill mb-2"
+                  onClick={() => navigate("/AdminPastEvent")}
+                  style={{ cursor: "pointer" }}>
                   <Card.Body>
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
                       <div>
@@ -359,7 +359,7 @@ const fetchDonateCounts = async () => {
                       </div>
                       <div className="lh-1">
                         <div className="avatar-md avatar-rounded ad-save-bg flex-shrink-0 d-flex align-items-center justify-content-center">
-                         <FaRegUserCircle/>
+                          <FaRegUserCircle />
                         </div>
                       </div>
                     </div>
@@ -367,7 +367,7 @@ const fetchDonateCounts = async () => {
                 </Card>
               </Col>
 
-             
+
             </Row>
 
             {/* ================= STATUS CARDS ================= */}
@@ -381,10 +381,26 @@ const fetchDonateCounts = async () => {
                   <Card.Body>
                     <div className="d-flex align-items-start justify-content-between flex-wrap">
                       <div>
-                        <span className="d-block mb-1 user-sub-title">Pending</span>
-                        <h4 className="fw-medium mb-0">
-                          {loading ? "..." : templeCounts.pending}
+                        <span className="d-block mb-1 user-sub-title">Pending Requests</span>
+                        
+                        {/* Total Pending */}
+                        <h4 className="fw-medium mb-1">
+                          {loading
+                            ? "..."
+                            : templeCounts.pending + panditCounts.pending}
                         </h4>
+
+                        {/* Sub-counts */}
+                        <div className="small text-muted">
+                          Temple:{" "}
+                          <strong>
+                            {loading ? "..." : templeCounts.pending}
+                          </strong>{" "}
+                          | Pandit:{" "}
+                          <strong>
+                            {loading ? "..." : panditCounts.pending}
+                          </strong>
+                        </div>
                         <span className="user-span">View Details</span>
                       </div>
                       <div className="avatar-md avatar-rounded Darshan-bg d-flex align-items-center justify-content-center">
@@ -404,10 +420,26 @@ const fetchDonateCounts = async () => {
                   <Card.Body>
                     <div className="d-flex align-items-start justify-content-between flex-wrap">
                       <div>
-                        <span className="d-block mb-1 user-sub-title">Accepted</span>
-                        <h4 className="fw-medium mb-0">
-                          {loading ? "..." : templeCounts.accepted}
+                        <span className="d-block mb-1 user-sub-title">Accepted Requests</span>
+                        
+                        {/* Total Pending */}
+                        <h4 className="fw-medium mb-1">
+                          {loading
+                            ? "..."
+                            : templeCounts.accepted + panditCounts.accepted}
                         </h4>
+
+                        {/* Sub-counts */}
+                        <div className="small text-muted">
+                          Temple:{" "}
+                          <strong>
+                            {loading ? "..." : templeCounts.accepted}
+                          </strong>{" "}
+                          | Pandit:{" "}
+                          <strong>
+                            {loading ? "..." : panditCounts.accepted}
+                          </strong>
+                        </div>
                         <span className="user-span">View Details</span>
                       </div>
                       <div className="avatar-md avatar-rounded pandit-bg d-flex align-items-center justify-content-center">
@@ -427,10 +459,25 @@ const fetchDonateCounts = async () => {
                   <Card.Body>
                     <div className="d-flex align-items-start justify-content-between flex-wrap">
                       <div>
-                        <span className="d-block mb-1 user-sub-title">Rejected</span>
-                        <h4 className="fw-medium mb-0">
-                          {loading ? "..." : templeCounts.rejected}
+                        <span className="d-block mb-1 user-sub-title">Rejected Requests</span>
+                        {/* Total Pending */}
+                        <h4 className="fw-medium mb-1">
+                          {loading
+                            ? "..."
+                            : templeCounts.rejected + panditCounts.rejected}
                         </h4>
+
+                        {/* Sub-counts */}
+                        <div className="small text-muted">
+                          Temple:{" "}
+                          <strong>
+                            {loading ? "..." : templeCounts.rejected}
+                          </strong>{" "}
+                          | Pandit:{" "}
+                          <strong>
+                            {loading ? "..." : panditCounts.rejected}
+                          </strong>
+                        </div>
                         <span className="user-span">View Details</span>
                       </div>
                       <div className="avatar-md avatar-rounded ad-save-bg d-flex align-items-center justify-content-center">

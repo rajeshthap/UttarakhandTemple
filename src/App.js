@@ -154,6 +154,12 @@ import AdminPastEvent from "./Component/admin_dashboard/admin_innerdashboard/all
 import DonateAmount from "./Component/admin_dashboard/admin_innerdashboard/DonateAmount";
 import DonateCrowdFunding from "./Component/admin_dashboard/admin_innerdashboard/DonateCrowdFunding";
 import TemplePending from "./Component/admin_dashboard/TemplePending";
+import TempleAccepted from "./Component/admin_dashboard/TempleAccepted";
+import TempleRejected from "./Component/admin_dashboard/TempleRejected";
+import PanditPending from "./Component/admin_dashboard/PanditPending";
+import PanditAccepted from "./Component/admin_dashboard/PanditAccepted";
+import PanditRejected from "./Component/admin_dashboard/PanditRejected";
+
 
 
 // import BASE_URLL from "./Component/BaseURL";
@@ -258,7 +264,14 @@ function App() {
 "/AdminUpcomingEvent",
 "/AdminPastEvent",
 "/DonateAmount",
-"/DonateCrowdFunding"
+"/DonateCrowdFunding",
+"/TemplePending",
+"/TempleAccepted",
+"/TempleRejected",
+"/PanditPending",
+"/PanditAcepted",
+"/PanditRejected"
+
  
   
   
@@ -476,6 +489,11 @@ function App() {
           <Route path="/DonateAmount" element={<DonateAmount/>} />
           <Route path="/DonateCrowdFunding" element={<DonateCrowdFunding/>} />
           <Route path="/TemplePending" element={<TemplePending/>} />
+          <Route path="/TempleAccepted" element={<TempleAccepted/>} />
+          <Route path="/TempleRejected" element={<TempleRejected/>} />
+           <Route path="/PanditPending" element={<PanditPending/>} />
+            <Route path="/PanditAccepted" element={<PanditAccepted/>} />
+            <Route path="/PanditRejected" element={<PanditRejected/>} />
           
      
           

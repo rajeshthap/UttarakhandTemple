@@ -95,7 +95,7 @@ const AllPanditBooking = () => {
             <h1 className="fw500">
               <Breadcrumb>
                 <Breadcrumb.Item href="/AdminDashboard">
-                  <span className="fw700h1">Dashboard</span>
+                  <span className="fw700h1">DashBoard</span>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item active>Pandit Booking</Breadcrumb.Item>
               </Breadcrumb>
@@ -180,14 +180,17 @@ const AllPanditBooking = () => {
                   <Row>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Pandit ID</Form.Label>
-                        <Form.Control value={selectedPandit.pandit_id || ""} disabled />
+                        <Form.Label className="temp-label">Pandit ID</Form.Label>
+                        <Form.Control 
+                        className="temp-form-control-option"
+                        value={selectedPandit.pandit_id || ""} disabled />
                       </Form.Group>
                     </Col>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Pandit Name</Form.Label>
+                        <Form.Label className="temp-label">Pandit Name</Form.Label>
                         <Form.Control
+                        className="temp-form-control-option"
                           value={`${selectedPandit.first_name || ""} ${
                             selectedPandit.last_name || ""
                           }`}
@@ -200,8 +203,9 @@ const AllPanditBooking = () => {
                   <Row className="mt-2">
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Father's Name</Form.Label>
+                        <Form.Label className="temp-label">Father's Name</Form.Label>
                         <Form.Control
+                        className="temp-form-control-option"
                           value={selectedPandit.father_name || ""}
                           disabled
                         />
@@ -209,8 +213,10 @@ const AllPanditBooking = () => {
                     </Col>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Phone</Form.Label>
-                        <Form.Control value={selectedPandit.phone || ""} disabled />
+                        <Form.Label className="temp-label">Phone</Form.Label>
+                        <Form.Control 
+                        className="temp-form-control-option"
+                        value={selectedPandit.phone || ""} disabled />
                       </Form.Group>
                     </Col>
                   </Row>
@@ -218,14 +224,17 @@ const AllPanditBooking = () => {
                   <Row className="mt-2">
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control value={selectedPandit.email || ""} disabled />
+                        <Form.Label className="temp-label">Email</Form.Label>
+                        <Form.Control 
+                        className="temp-form-control-option"
+                        value={selectedPandit.email || ""} disabled />
                       </Form.Group>
                     </Col>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Aadhar Number</Form.Label>
+                        <Form.Label className="temp-label">Aadhar Number</Form.Label>
                         <Form.Control
+                         className="temp-form-control-option"
                           value={selectedPandit.aadhar_number || ""}
                           disabled
                         />
@@ -236,8 +245,9 @@ const AllPanditBooking = () => {
                   <Row className="mt-2">
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Address</Form.Label>
+                        <Form.Label className="temp-label">Address</Form.Label>
                         <Form.Control
+                          className="temp-form-control-option"
                           as="textarea"
                           rows={2}
                           value={selectedPandit.permanent_address || ""}
@@ -247,8 +257,9 @@ const AllPanditBooking = () => {
                     </Col>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Location</Form.Label>
+                        <Form.Label className="temp-label">Location</Form.Label>
                         <Form.Control
+                        className="temp-form-control-option"
                           value={`${selectedPandit.city || ""}, ${
                             selectedPandit.state || ""
                           }, ${selectedPandit.country || ""}`}
@@ -261,14 +272,17 @@ const AllPanditBooking = () => {
                   <Row className="mt-2">
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Zip Code</Form.Label>
-                        <Form.Control value={selectedPandit.zipcode || ""} disabled />
+                        <Form.Label className="temp-label">Zip Code</Form.Label>
+                        <Form.Control 
+                        className="temp-form-control-option"
+                        value={selectedPandit.zipcode || ""} disabled />
                       </Form.Group>
                     </Col>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Temple Association</Form.Label>
+                        <Form.Label className="temp-label">Temple Association</Form.Label>
                         <Form.Control
+                        className="temp-form-control-option"
                           value={selectedPandit.temple_association || ""}
                           disabled
                         />
