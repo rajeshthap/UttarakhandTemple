@@ -92,7 +92,7 @@ const PanditRejected = () => {
 
   return (
     <div className="dashboard-wrapper">
-      <main className="main-container">
+      <main className="admin-container">
         <div className="content-box">
           {/* Header */}
           <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">

@@ -498,6 +498,7 @@ const PanditPending = () => {
                       <Form.Group>
                         <Form.Label className="temp-label">Remarks</Form.Label>
                         <Form.Control
+                        className="temp-form-control-option"
                           as="textarea"
                           rows={2}
                           placeholder="Leave a remark"

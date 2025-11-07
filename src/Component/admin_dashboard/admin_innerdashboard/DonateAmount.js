@@ -156,8 +156,10 @@ const DonateAmount = () => {
                   <Row>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Donation ID</Form.Label>
+                        <Form.Label  className="temp-label">Donation ID</Form.Label>
                         <Form.Control
+                        className="temp-form-control-option"
+
                           value={selectedDonation.donation_id || ""}
                           disabled
                         />
@@ -165,8 +167,9 @@ const DonateAmount = () => {
                     </Col>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Pilgrim Name</Form.Label>
+                        <Form.Label className="temp-label">Pilgrim Name</Form.Label>
                         <Form.Control
+                        className="temp-form-control-option"
                           value={selectedDonation.pilgrim_name || ""}
                           disabled
                         />
@@ -177,8 +180,9 @@ const DonateAmount = () => {
                   <Row className="mt-2">
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Email ID</Form.Label>
+                        <Form.Label className="temp-label">Email ID</Form.Label>
                         <Form.Control
+                        className="temp-form-control-option"
                           value={selectedDonation.email_id || ""}
                           disabled
                         />
@@ -186,8 +190,9 @@ const DonateAmount = () => {
                     </Col>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Mobile Number</Form.Label>
+                        <Form.Label className="temp-label">Mobile Number</Form.Label>
                         <Form.Control
+                        className="temp-form-control-option"
                           value={selectedDonation.mobile_number || ""}
                           disabled
                         />
@@ -198,8 +203,9 @@ const DonateAmount = () => {
                   <Row className="mt-2">
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Temple Name</Form.Label>
+                        <Form.Label className="temp-label">Temple Name</Form.Label>
                         <Form.Control
+                        className="temp-form-control-option"
                           value={selectedDonation.temple_name || ""}
                           disabled
                         />
@@ -207,8 +213,9 @@ const DonateAmount = () => {
                     </Col>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Amount (₹)</Form.Label>
+                        <Form.Label className="temp-label">Amount (₹)</Form.Label>
                         <Form.Control
+                        className="temp-form-control-option"
                           value={selectedDonation.amount || ""}
                           disabled
                         />
@@ -219,8 +226,9 @@ const DonateAmount = () => {
                   <Row className="mt-2">
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Status</Form.Label>
+                        <Form.Label className="temp-label">Status</Form.Label>
                         <Form.Control
+                        className="temp-form-control-option"
                           value={
                             selectedDonation.donation_status
                               ? "Completed"
@@ -232,8 +240,9 @@ const DonateAmount = () => {
                     </Col>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Donation Date</Form.Label>
+                        <Form.Label className="temp-label">Donation Date</Form.Label>
                         <Form.Control
+                        className="temp-form-control-option"
                           value={
                             selectedDonation.created_at
                               ? new Date(
@@ -250,8 +259,9 @@ const DonateAmount = () => {
                   <Row className="mt-2">
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Created By</Form.Label>
+                        <Form.Label className="temp-label">Created By</Form.Label>
                         <Form.Control
+                        className="temp-form-control-option"
                           value={selectedDonation.created_by_name || ""}
                           disabled
                         />
@@ -259,8 +269,9 @@ const DonateAmount = () => {
                     </Col>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Updated By</Form.Label>
+                        <Form.Label className="temp-label">Updated By</Form.Label>
                         <Form.Control
+                        className="temp-form-control-option"
                           value={selectedDonation.updated_by_name || ""}
                           disabled
                         />

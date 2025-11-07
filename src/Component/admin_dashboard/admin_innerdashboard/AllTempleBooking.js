@@ -182,14 +182,18 @@ const AllTempleBooking = () => {
                   <Row>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Temple Name</Form.Label>
-                        <Form.Control value={selectedTemple.temple_name || ""} disabled />
+                        <Form.Label  className="temp-label">Temple Name</Form.Label>
+                        <Form.Control
+                        className="temp-form-control-option"
+                        value={selectedTemple.temple_name || ""} disabled />
                       </Form.Group>
                     </Col>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Phone</Form.Label>
-                        <Form.Control value={selectedTemple.phone || ""} disabled />
+                        <Form.Label className="temp-label">Phone</Form.Label>
+                        <Form.Control 
+                        className="temp-form-control-option"
+                        value={selectedTemple.phone || ""} disabled />
                       </Form.Group>
                     </Col>
                   </Row>
@@ -209,14 +213,17 @@ const AllTempleBooking = () => {
                   <Row className="mt-2">
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control value={selectedTemple.email || ""} disabled />
+                        <Form.Label className="temp-label">Email</Form.Label>
+                        <Form.Control 
+                         className="temp-form-control-option"
+                        value={selectedTemple.email || ""} disabled />
                       </Form.Group>
                     </Col>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Temple Address</Form.Label>
+                        <Form.Label className="temp-label">Temple Address</Form.Label>
                         <Form.Control
+                         className="temp-form-control-option"
                           as="textarea"
                           rows={2}
                           value={selectedTemple.temple_address || ""}
@@ -229,14 +236,17 @@ const AllTempleBooking = () => {
                   <Row className="mt-2">
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Temple Type</Form.Label>
-                        <Form.Control value={selectedTemple.temple_type || ""} disabled />
+                        <Form.Label className="temp-label">Temple Type</Form.Label>
+                        <Form.Control 
+                        className="temp-form-control-option"
+                        value={selectedTemple.temple_type || ""} disabled />
                       </Form.Group>
                     </Col>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Year Of Establishment</Form.Label>
+                        <Form.Label className="temp-label">Year Of Establishment</Form.Label>
                         <Form.Control
+                          className="temp-form-control-option"
                           value={selectedTemple.year_of_establishment || ""}
                           disabled
                         />
@@ -247,8 +257,9 @@ const AllTempleBooking = () => {
                   <Row className="mt-2">
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Temple Ownership Type</Form.Label>
+                        <Form.Label className="temp-label">Temple Ownership Type</Form.Label>
                         <Form.Control
+                        className="temp-form-control-option"
                           value={selectedTemple.temple_ownership_type || ""}
                           disabled
                         />
@@ -256,8 +267,9 @@ const AllTempleBooking = () => {
                     </Col>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Trust Committee Type</Form.Label>
+                        <Form.Label className="temp-label">Trust Committee Type</Form.Label>
                         <Form.Control
+                        className="temp-form-control-option"
                           value={selectedTemple.trust_committee_type || ""}
                           disabled
                         />
@@ -268,8 +280,9 @@ const AllTempleBooking = () => {
                   <Row className="mt-2">
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Trust Committee Details</Form.Label>
+                        <Form.Label className="temp-label">Trust Committee Details</Form.Label>
                         <Form.Control
+                        className="temp-form-control-option"
                           value={selectedTemple.trust_committee_details || ""}
                           disabled
                         />
@@ -277,8 +290,9 @@ const AllTempleBooking = () => {
                     </Col>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Temple Description</Form.Label>
+                        <Form.Label  className="temp-label">Temple Description</Form.Label>
                         <Form.Control
+                        className="temp-form-control-option"
                           value={selectedTemple.temple_description || ""}
                           disabled
                         />
@@ -289,8 +303,10 @@ const AllTempleBooking = () => {
                   <Row className="mt-2">
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Zip Code</Form.Label>
-                        <Form.Control value={selectedTemple.zip_code || ""} disabled />
+                        <Form.Label  className="temp-label">Zip Code</Form.Label>
+                        <Form.Control 
+                        className="temp-form-control-option"
+                        value={selectedTemple.zip_code || ""} disabled />
                       </Form.Group>
                     </Col>
                   </Row>

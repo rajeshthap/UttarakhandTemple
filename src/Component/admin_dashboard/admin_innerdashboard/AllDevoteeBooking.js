@@ -179,8 +179,9 @@ const AllDevoteeBooking = () => {
                   <Row>
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>User ID</Form.Label>
+                        <Form.Label  className="temp-label">User ID</Form.Label>
                         <Form.Control
+                        className="temp-form-control-option"
                           value={selectedDevotee.user_id || ""}
                           disabled
                         />
@@ -189,8 +190,9 @@ const AllDevoteeBooking = () => {
 
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Devotee Name</Form.Label>
+                        <Form.Label className="temp-label">Devotee Name</Form.Label>
                         <Form.Control
+                          className="temp-form-control-option"
                           value={selectedDevotee.devotee_name || ""}
                           disabled
                         />
@@ -201,8 +203,9 @@ const AllDevoteeBooking = () => {
                   <Row className="mt-2">
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Gender</Form.Label>
+                        <Form.Label className="temp-label">Gender</Form.Label>
                         <Form.Control
+                             className="temp-form-control-option"
                           value={selectedDevotee.gender || ""}
                           disabled
                         />
@@ -211,8 +214,9 @@ const AllDevoteeBooking = () => {
 
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Email</Form.Label>
+                        <Form.Label className="temp-label">Email</Form.Label>
                         <Form.Control
+                          className="temp-form-control-option"
                           value={selectedDevotee.email || ""}
                           disabled
                         />
@@ -223,8 +227,9 @@ const AllDevoteeBooking = () => {
                   <Row className="mt-2">
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Phone</Form.Label>
+                        <Form.Label className="temp-label">Phone</Form.Label>
                         <Form.Control
+                        className="temp-form-control-option"
                           value={selectedDevotee.phone || ""}
                           disabled
                         />
@@ -233,8 +238,9 @@ const AllDevoteeBooking = () => {
 
                     <Col md={6}>
                       <Form.Group>
-                        <Form.Label>Status</Form.Label>
+                        <Form.Label className="temp-label">Status</Form.Label>
                         <Form.Control
+                        className="temp-form-control-option"
                           value={selectedDevotee.user_status || ""}
                           disabled
                         />

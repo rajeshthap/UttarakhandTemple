@@ -582,6 +582,7 @@ const TemplePending = () => {
                                             <Form.Group>
                                                 <Form.Label className="temp-label">Remarks</Form.Label>
                                                 <Form.Control
+                                                className="temp-form-control-option"
                                                     as="textarea"
                                                     rows={3}
                                                     placeholder="Leave a remark for the user"

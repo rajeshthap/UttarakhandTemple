@@ -160,29 +160,18 @@ const AllDarshanBooking = () => {
               <Row>
                 <Col md={6}>
                   <Form.Group>
-                    <Form.Label>Darshan ID</Form.Label>
-                    <Form.Control value={selectedBooking.darshan_pooja_id || ""} disabled />
+                    <Form.Label className="temp-label" >Darshan ID</Form.Label>
+                    <Form.Control 
+                   className="temp-form-control-option"
+                   value={selectedBooking.darshan_pooja_id || ""} disabled />
                   </Form.Group>
                 </Col>
                 <Col md={6}>
                   <Form.Group>
-                    <Form.Label>Full Name</Form.Label>
-                    <Form.Control value={selectedBooking.full_name || ""} disabled />
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <Row className="mt-2">
-                <Col md={6}>
-                  <Form.Group>
-                    <Form.Label>Gender</Form.Label>
-                    <Form.Control value={selectedBooking.gender || ""} disabled />
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                  <Form.Group>
-                    <Form.Label>Age</Form.Label>
-                    <Form.Control value={selectedBooking.age || ""} disabled />
+                    <Form.Label className="temp-label" >Full Name</Form.Label>
+                    <Form.Control 
+                     className="temp-form-control-option"
+                    value={selectedBooking.full_name || ""} disabled />
                   </Form.Group>
                 </Col>
               </Row>
@@ -190,29 +179,18 @@ const AllDarshanBooking = () => {
               <Row className="mt-2">
                 <Col md={6}>
                   <Form.Group>
-                    <Form.Label>Mobile</Form.Label>
-                    <Form.Control value={selectedBooking.mobile_number || ""} disabled />
+                    <Form.Label className="temp-label" >Gender</Form.Label>
+                    <Form.Control 
+                     className="temp-form-control-option"
+                    value={selectedBooking.gender || ""} disabled />
                   </Form.Group>
                 </Col>
                 <Col md={6}>
                   <Form.Group>
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control value={selectedBooking.email || ""} disabled />
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <Row className="mt-2">
-                <Col md={6}>
-                  <Form.Group>
-                    <Form.Label>Temple</Form.Label>
-                    <Form.Control value={selectedBooking.temple_name || ""} disabled />
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                  <Form.Group>
-                    <Form.Label>Payment Mode</Form.Label>
-                    <Form.Control value={selectedBooking.payment_mode || ""} disabled />
+                    <Form.Label className="temp-label" >Age</Form.Label>
+                    <Form.Control 
+                     className="temp-form-control-option"
+                    value={selectedBooking.age || ""} disabled />
                   </Form.Group>
                 </Col>
               </Row>
@@ -220,14 +198,56 @@ const AllDarshanBooking = () => {
               <Row className="mt-2">
                 <Col md={6}>
                   <Form.Group>
-                    <Form.Label>Total Amount (₹)</Form.Label>
-                    <Form.Control value={selectedBooking.grand_total || ""} disabled />
+                    <Form.Label className="temp-label" >Mobile</Form.Label>
+                    <Form.Control 
+                     className="temp-form-control-option"
+                    value={selectedBooking.mobile_number || ""} disabled />
                   </Form.Group>
                 </Col>
                 <Col md={6}>
                   <Form.Group>
-                    <Form.Label>No. of Persons</Form.Label>
-                    <Form.Control value={selectedBooking.no_of_persons || ""} disabled />
+                    <Form.Label className="temp-label" >Email</Form.Label>
+                    <Form.Control 
+                     className="temp-form-control-option"
+                    value={selectedBooking.email || ""} disabled />
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <Row className="mt-2">
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label className="temp-label" >Temple</Form.Label>
+                    <Form.Control
+                     className="temp-form-control-option" 
+                    value={selectedBooking.temple_name || ""} disabled />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label className="temp-label" >Payment Mode</Form.Label>
+                    <Form.Control 
+                     className="temp-form-control-option"
+                    value={selectedBooking.payment_mode || ""} disabled />
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <Row className="mt-2">
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label className="temp-label" >Total Amount (₹)</Form.Label>
+                    <Form.Control 
+                     className="temp-form-control-option"
+                    value={selectedBooking.grand_total || ""} disabled />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label className="temp-label" >No. of Persons</Form.Label>
+                    <Form.Control 
+                     className="temp-form-control-option"
+                    value={selectedBooking.no_of_persons || ""} disabled />
                   </Form.Group>
                 </Col>
               </Row>
@@ -235,8 +255,9 @@ const AllDarshanBooking = () => {
               <Row className="mt-2">
                 <Col md={12}>
                   <Form.Group>
-                    <Form.Label>Address</Form.Label>
+                    <Form.Label className="temp-label" >Address</Form.Label>
                     <Form.Control
+                     className="temp-form-control-option"
                       as="textarea"
                       rows={2}
                       value={`${selectedBooking.address || ""}, ${selectedBooking.city || ""}, ${

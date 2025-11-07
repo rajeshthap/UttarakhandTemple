@@ -5,6 +5,7 @@ import { Breadcrumb } from "react-bootstrap";
 import PanditRejected from "../../PanditRejected";
 import TempleRejected from "../../TempleRejected";
 
+
 const RejectedRequest = () => {
   const [activeTab, setActiveTab] = useState("Pandit");
 
@@ -15,14 +16,14 @@ const RejectedRequest = () => {
   ];
 
   return (
-    <main className="main-container">
-      <div className="dashboard-wrapper">
-        {/* Sidebar */}
-        <aside className="admin-sidebar">
-          <AdminLeftnav />
-        </aside>
+    <div className="dashboard-wrapper">
+      {/* Sidebar */}
+      <aside className="admin-sidebar">
+        <AdminLeftnav />
+      </aside>
 
-        {/* Main Section */}
+      {/* Main Section */}
+      <main className="admin-container">
         <div className="content-box">
           {/* Breadcrumb */}
           <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
@@ -37,7 +38,7 @@ const RejectedRequest = () => {
           </div>
 
           {/* Tabs */}
-          <div className="row">
+          <div className="mt-3 row">
             <div className="col-md-12">
               <div className="tab">
                 {tabs.map((tab) => (
@@ -50,29 +51,29 @@ const RejectedRequest = () => {
                   </button>
                 ))}
               </div>
+
+              {/* Tab Content */}
+              <div className="tabcontent ">
+                {activeTab === "Pandit" && (
+                  <PanditRejected />
+                )}
+
+                {activeTab === "Temple" && (
+                  <TempleRejected />
+                )}
+
+                {activeTab === "Devotee" && (
+                  <div>
+                    <h3>Devotee</h3>
+                    <p>Devotee pending requests will appear here...</p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
-
-      <div className="tabcontent">
-        {activeTab === "Pandit" && (
-          <PanditRejected />
-        )}
-
-        {activeTab === "Temple" && (
-          <TempleRejected />
-        )}
-
-        {activeTab === "Devotee" && (
-          <div>
-            <h3>Devotee</h3>
-            <p>Devotee pending requests will appear here...</p>
-          </div>
-        )}
-      </div>
-    </main>
+      </main>
+    </div>
   );
 };
 

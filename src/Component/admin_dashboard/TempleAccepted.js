@@ -135,12 +135,12 @@ const TempleAccepted = () => {
                   {filteredRequests.length > 0 ? (
                     filteredRequests.map((req, index) => (
                       <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{req.temple_id}</td>
-                        <td>{req.temple_name}</td>
-                        <td>{req.email || "N/A"}</td>
-                        <td>{req.phone || "N/A"}</td>
-                        <td>{req.temple_status || "accepted"}</td>
+                        <td data-th="S. No">{index + 1}</td>
+                        <td data-th="Temple ID">{req.temple_id}</td>
+                        <td data-th="Temple Name">{req.temple_name}</td>
+                        <td data-th="Email">{req.email || "N/A"}</td>
+                        <td data-th="Phone">{req.phone || "N/A"}</td>
+                        <td data-th="Status">{req.temple_status || "accepted"}</td>
                         <td>
                           <Button
                             className="event-click-btn me-2"
