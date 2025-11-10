@@ -605,6 +605,12 @@ span.sub-label {
   margin: 0px 0px 0px 0px;
 }
 
+.text-muted {
+
+  font-size: 10px;
+  color: #fff !important;
+}
+
 /* Responsive CSS Here */
 @media only screen and (min-width: 992px) {
 

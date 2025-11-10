@@ -113,6 +113,7 @@
     background-color: #17a2b8 !important;
     color: #fff !important;
     box-shadow: 0px 6px 16px 2px rgba(0, 0, 0, 0.05) !important;
+    min-height: 119px;
 }
 
 .dbcard-admin-accept-box-2 {
@@ -121,6 +122,7 @@
     background-color: #28a745 !important;
     color: #fff !important;
     box-shadow: 0px 6px 16px 2px rgba(0, 0, 0, 0.05) !important;
+    min-height: 119px;
 }
 
 .dbcard-admin-accept-box-4 {
@@ -129,48 +131,61 @@
     background-color: #96A78D !important;
     color: #fff !important;
     box-shadow: 0px 6px 16px 2px rgba(0, 0, 0, 0.05) !important;
+    min-height: 119px;
 }
+
 .dbcard-admin-accept-box-5 {
     border: 2px solid #D6D85D;
     border-radius: 10px;
     background-color: #D6D85D !important;
     color: #fff !important;
     box-shadow: 0px 6px 16px 2px rgba(0, 0, 0, 0.05) !important;
+    min-height: 119px;
 }
+
 .dbcard-admin-accept-box-6 {
     border: 2px solid #A3DC9A;
     border-radius: 10px;
     background-color: #8AA624 !important;
     color: #fff !important;
     box-shadow: 0px 6px 16px 2px rgba(0, 0, 0, 0.05) !important;
+    min-height: 119px;
 }
+
 .dbcard-admin-accept-box-7 {
     border: 2px solid #56DFCF;
     border-radius: 10px;
     background-color: #0ABAB5 !important;
     color: #fff !important;
     box-shadow: 0px 6px 16px 2px rgba(0, 0, 0, 0.05) !important;
+    min-height: 119px;
 }
+
 .dbcard-admin-accept-box-8 {
     border: 2px solid #FF8282;
     border-radius: 10px;
     background-color: #FF6363 !important;
     color: #fff !important;
     box-shadow: 0px 6px 16px 2px rgba(0, 0, 0, 0.05) !important;
+    min-height: 119px;
 }
+
 .dbcard-admin-accept-box-9 {
     border: 2px solid #C1BAA1;
     border-radius: 10px;
     background-color: #A59D84 !important;
     color: #fff !important;
     box-shadow: 0px 6px 16px 2px rgba(0, 0, 0, 0.05) !important;
+    min-height: 119px;
 }
+
 .dbcard-admin-4 {
     border: 2px solid #ffc107;
     border-radius: 10px;
     background-color: #ffc107 !important;
     color: #fff !important;
     box-shadow: 0px 6px 16px 2px rgba(0, 0, 0, 0.05) !important;
+    min-height: 119px;
 }
 
 .ad-save-bg {

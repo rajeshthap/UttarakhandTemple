@@ -2,6 +2,14 @@ import React, { useEffect, useState } from "react";
 import "../../assets/CSS/AdminLeftNav.css";
 import { Col, Row, Card } from "react-bootstrap";
 import PanditImg from "../../assets/images/pandit-img.png";
+import sava1 from "../../assets/images/seva.png";
+import tempIcon from "../../assets/images/hindu-temple-icon.png"
+import adminDovee from "../../assets/images/dovee.png"
+import crowdfund from "../../assets/images/Fund-PNG-Cutout.png"
+import eventAdmin from "../../assets/images/event-admin.png"
+import pendingreq from "../../assets/images/alarm-pending.png"
+import Accepted from "../../assets/images/Accepted.png"
+import RejectedIcon from "../../assets/images/Rejected-icon.png"
 import { GiByzantinTemple } from "react-icons/gi";
 import "../../assets/CSS/AdminDashBoard.css";
 import { useNavigate } from "react-router-dom";
@@ -164,7 +172,7 @@ const AdminDashBoard = () => {
     }
   };
 
-   const fetchEventCounts = async () => {
+  const fetchEventCounts = async () => {
     try {
       const [pastRes, upcomingRes, activeRes] = await Promise.all([
         axios.get("https://mahadevaaya.com/backend/api/get-all-festival/?status=past"),
@@ -194,7 +202,7 @@ const AdminDashBoard = () => {
       fetchEventCounts(),
     ]).finally(() => setLoading(false));
   }, []);
-  
+
   return (
     <>
       <div className="dashboard-wrapper">
@@ -237,7 +245,7 @@ const AdminDashBoard = () => {
                     <div className="d-flex align-items-start justify-content-between flex-wrap">
                       <div>
                         <span className="d-block mb-1 text-nowrap user-sub-title">
-                           Temples
+                          Temples
                         </span>
                         <h4 className="fw-medium mb-0">
                           {loading ? "..." : templeCounts.total}
@@ -246,9 +254,19 @@ const AdminDashBoard = () => {
                           <span className="user-span">View Details</span>
                         </div>
                       </div>
-                      <div className="avatar-md avatar-rounded Darshan-bg d-flex align-items-center justify-content-center">
-                        <GiByzantinTemple />
+
+                      <div className="avatar-md avatar-rounded pandit-bg flex-shrink-0 d-flex align-items-center justify-content-center">
+                        <img
+                          src={tempIcon}
+                          alt="tempIcon"
+                          className="img-fluid"
+                        />
                       </div>
+
+
+
+
+
                     </div>
                   </Card.Body>
                 </Card>
@@ -299,8 +317,12 @@ const AdminDashBoard = () => {
                         </h4>
                         <span className="user-span">View Details</span>
                       </div>
-                      <div className="avatar-md avatar-rounded ad-save-bg d-flex align-items-center justify-content-center">
-                        <FaRegUserCircle />
+                      <div className="avatar-md avatar-rounded pandit-bg flex-shrink-0 d-flex align-items-center justify-content-center">
+                        <img
+                          src={adminDovee}
+                          alt="adminDovee"
+                          className="img-fluid"
+                        />
                       </div>
                     </div>
                   </Card.Body>
@@ -329,10 +351,12 @@ const AdminDashBoard = () => {
                           <span className="user-span">View Details</span>
                         </div>
                       </div>
-                      <div className="lh-1">
-                        <div className="avatar-md avatar-rounded Darshan-bg flex-shrink-0 d-flex align-items-center justify-content-center">
-                          <GiByzantinTemple />
-                        </div>
+                      <div className="avatar-md avatar-rounded pandit-bg flex-shrink-0 d-flex align-items-center justify-content-center">
+                        <img
+                          src={crowdfund}
+                          alt="crowdfund"
+                          className="img-fluid"
+                        />
                       </div>
                     </div>
                   </Card.Body>
@@ -360,8 +384,8 @@ const AdminDashBoard = () => {
                       <div className="lh-1">
                         <div className="avatar-md avatar-rounded pandit-bg flex-shrink-0 d-flex align-items-center justify-content-center">
                           <img
-                            src={PanditImg}
-                            alt="Pandit"
+                            src={sava1}
+                            alt="sava"
                             className="img-fluid"
                           />
                         </div>
@@ -383,7 +407,7 @@ const AdminDashBoard = () => {
                           Events
                         </span>
                         <h4 className="fw-medium mb-0">
-                           {loading ? "..." : eventCounts.total}
+                          {loading ? "..." : eventCounts.total}
                         </h4>
                         <div className="small text-muted">
                           Past: <strong>{eventCounts.past}</strong> | Upcoming:{" "}
@@ -395,8 +419,12 @@ const AdminDashBoard = () => {
                         </div>
                       </div>
                       <div className="lh-1">
-                        <div className="avatar-md avatar-rounded ad-save-bg flex-shrink-0 d-flex align-items-center justify-content-center">
-                          <FaRegUserCircle />
+                        <div className="avatar-md avatar-rounded pandit-bg flex-shrink-0 d-flex align-items-center justify-content-center">
+                          <img
+                            src={eventAdmin}
+                            alt="eventAdmin"
+                            className="img-fluid"
+                          />
                         </div>
                       </div>
                     </div>
@@ -419,7 +447,7 @@ const AdminDashBoard = () => {
                     <div className="d-flex align-items-start justify-content-between flex-wrap">
                       <div>
                         <span className="d-block mb-1 user-sub-title">Pending Requests</span>
-                        
+
                         {/* Total Pending */}
                         <h4 className="fw-medium mb-1">
                           {loading
@@ -440,8 +468,12 @@ const AdminDashBoard = () => {
                         </div>
                         <span className="user-span">View Details</span>
                       </div>
-                      <div className="avatar-md avatar-rounded Darshan-bg d-flex align-items-center justify-content-center">
-                        <GiByzantinTemple />
+                      <div className="avatar-md avatar-rounded pandit-bg flex-shrink-0 d-flex align-items-center justify-content-center">
+                        <img
+                          src={pendingreq}
+                          alt="pendingreq"
+                          className="img-fluid"
+                        />
                       </div>
                     </div>
                   </Card.Body>
@@ -458,7 +490,7 @@ const AdminDashBoard = () => {
                     <div className="d-flex align-items-start justify-content-between flex-wrap">
                       <div>
                         <span className="d-block mb-1 user-sub-title">Accepted Requests</span>
-                        
+
                         {/* Total Pending */}
                         <h4 className="fw-medium mb-1">
                           {loading
@@ -479,8 +511,12 @@ const AdminDashBoard = () => {
                         </div>
                         <span className="user-span">View Details</span>
                       </div>
-                      <div className="avatar-md avatar-rounded pandit-bg d-flex align-items-center justify-content-center">
-                        <img src={PanditImg} alt="Pandit" className="img-fluid" />
+                      <div className="avatar-md avatar-rounded pandit-bg flex-shrink-0 d-flex align-items-center justify-content-center">
+                        <img
+                          src={Accepted}
+                          alt="Accepted"
+                          className="img-fluid"
+                        />
                       </div>
                     </div>
                   </Card.Body>
@@ -517,8 +553,12 @@ const AdminDashBoard = () => {
                         </div>
                         <span className="user-span">View Details</span>
                       </div>
-                      <div className="avatar-md avatar-rounded ad-save-bg d-flex align-items-center justify-content-center">
-                        <FaRegUserCircle />
+                      <div className="avatar-md avatar-rounded pandit-bg flex-shrink-0 d-flex align-items-center justify-content-center">
+                        <img
+                          src={RejectedIcon}
+                          alt="RejectedIcon"
+                          className="img-fluid"
+                        />
                       </div>
                     </div>
                   </Card.Body>
