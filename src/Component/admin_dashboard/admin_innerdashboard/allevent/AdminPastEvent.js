@@ -1,173 +1,139 @@
 import React, { useEffect, useState } from "react";
-import "../../../../assets/CSS/AdminLeftNav.css";
-import AdminLeftnav from "../../AdminLeftnav";
-import { Row, Breadcrumb, Button } from "react-bootstrap";
+import { Row, Button, Modal, Form, Col } from "react-bootstrap";
 import axios from "axios";
-import { useAuth } from "../../../GlobleAuth/AuthContext";
-
-const BASE_URLL = "https://mahadevaaya.com/backend/";
+import { BASE_URLL } from "../../../../Component/BaseURL";
+import SearchFeature from "../../../temp_dashboard/temp_innerdashboard/SearchFeature";
+import ModifyAlert from "../../../Alert/ModifyAlert";
 
 const AdminPastEvent = () => {
-  const { uniqueId } = useAuth();
-  const [requests, setRequests] = useState([]);
-  const [filteredRequests, setFilteredRequests] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [filteredEvents, setFilteredEvents] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [alert, setAlert] = useState({ show: false, message: "", variant: "" });
 
-  // ====== FETCH REJECTED REQUESTS ======
-  const fetchRequests = async () => {
+  // ===================== FETCH PAST EVENTS =====================
+  const fetchPastEvents = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`${BASE_URLL}api/get-all-registered/`, {
-        params: {
-          role: "temple",
-          status: "rejected",
-        },
-      });
+      const res = await axios.get(`${BASE_URLL}api/get-all-festival/?status=past`);
+      const eventList = res.data?.data || [];
 
-      const data = Array.isArray(res.data?.results) ? res.data.results : [];
-      setRequests(data);
-      setFilteredRequests(data);
+      if (Array.isArray(eventList)) {
+        const formatted = eventList.map((e) => ({
+          ...e,
+          image_url: e.image
+            ? `https://mahadevaaya.com/backend${e.image}`
+            : null,
+        }));
+        setEvents(formatted);
+        setFilteredEvents(formatted);
+      }
     } catch (err) {
-      console.error("Error fetching rejected requests:", err);
-      setRequests([]);
-      setFilteredRequests([]);
+      console.error("Error fetching past events:", err);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchRequests();
+    fetchPastEvents();
   }, []);
 
-  // ====== UPDATE STATUS ======
-  const handleStatusChange = async (temple_id, newStatus) => {
-    const confirmAction = window.confirm(
-      `Are you sure you want to change status to "${newStatus}"?`
-    );
-    if (!confirmAction) return;
-
-    const payload = {
-      temple_id: temple_id,
-      temple_status: newStatus.toLowerCase(),
-      admin_id: uniqueId, //  required by API
-    };
-
-    try {
-      const res = await axios.patch(
-        "https://mahadevaaya.com/backend/api/update-temple-status/",
-        payload,
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-
-      if (res.status === 200) {
-        alert(`Temple status updated to ${newStatus}`);
-        // Refresh data after successful update
-        fetchRequests();
-      } else {
-        alert("Failed to update status.");
-      }
-    } catch (err) {
-      console.error("Error updating status:", err);
-      console.error("Backend response:", err.response?.data);
-      alert("Error updating temple status.");
-    }
-  };
-
-  // ====== SEARCH FUNCTION ======
+  // ===================== SEARCH =====================
   const handleSearch = (query) => {
-    if (!query) {
-      setFilteredRequests(requests);
+    if (!query.trim()) {
+      setFilteredEvents(events);
       return;
     }
-    const lowerQuery = query.toLowerCase();
-    const filtered = requests.filter(
-      (req) =>
-        req.temple_name?.toLowerCase().includes(lowerQuery) ||
-        req.temple_id?.toLowerCase().includes(lowerQuery) ||
-        req.email?.toLowerCase().includes(lowerQuery)
+    const lower = query.toLowerCase();
+    const filtered = events.filter(
+      (e) =>
+        e.festival_name?.toLowerCase().includes(lower) ||
+        e.temple_name?.toLowerCase().includes(lower) ||
+        e.festival_id?.toLowerCase().includes(lower) ||
+        e.created_by_name?.toLowerCase().includes(lower) ||
+        e.festival_status?.toLowerCase().includes(lower)
     );
-    setFilteredRequests(filtered);
+    setFilteredEvents(filtered);
+  };
+
+  //  Helper for file URL
+  const getFileUrl = (path) => {
+    if (!path) return null;
+    return `https://mahadevaaya.com/backend${
+      path.startsWith("/") ? path : "/" + path
+    }`;
+  };
+
+  // Handle view click
+  const handleView = (event) => {
+    setSelectedEvent(event);
+    setShowModal(true);
   };
 
   return (
     <div className="dashboard-wrapper">
-      <aside className="admin-sidebar">
-        <AdminLeftnav />
-      </aside>
+      
 
-      <main className="main-container">
+      <main className="admin-container">
         <div className="content-box">
+          {/* ============== HEADER + SEARCH ============== */}
           <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
-            <h1 className="fw500">
-              <Breadcrumb>
-                <Breadcrumb.Item href="/AdminDashboard">
-                  <span className="fw700h1">Admin</span>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item active>Rejected Requests</Breadcrumb.Item>
-              </Breadcrumb>
-            </h1>
+            
 
-            {/* Search */}
-            <div className="d-flex justify-content-center h-100">
-              <div className="search">
-                <input
-                  className="search_input"
-                  type="text"
-                  placeholder="Search here..."
-                  onChange={(e) => handleSearch(e.target.value)}
-                />
-                <button type="submit" className="search_icon">
-                  <i className="fa fa-search"></i>
-                </button>
-              </div>
+            <div>
+              <SearchFeature onSearch={handleSearch} />
             </div>
           </div>
 
-          {/* ===== TABLE SECTION ===== */}
+          {/* Alert */}
+          {alert.show && (
+            <ModifyAlert
+              variant={alert.variant}
+              message={alert.message}
+              onClose={() => setAlert({ show: false })}
+            />
+          )}
+
+          {/* ============== TABLE ============== */}
           <Row className="mt-3">
             <div className="col-md-12">
-              <table className="rwd-table">
+              <table className="admin-rwd-table">
                 <tbody>
                   <tr>
                     <th>S.No</th>
-                    <th>Temple ID</th>
+                    <th>Festival ID</th>
+                    <th>Festival Name</th>
                     <th>Temple Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
                     <th>Status</th>
                     <th>Action</th>
                   </tr>
 
-                  {filteredRequests.length > 0 ? (
-                    filteredRequests.map((req, index) => (
-                      <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{req.temple_id}</td>
-                        <td>{req.temple_name}</td>
-                        <td>{req.email || "N/A"}</td>
-                        <td>{req.phone || "N/A"}</td>
-                        <td>{req.temple_status || "rejected"}</td>
+                  {filteredEvents.length > 0 ? (
+                    filteredEvents.map((event, index) => (
+                      <tr key={event.id}>
+                        <td data-th="S.No">{index + 1}</td>
+                        <td data-th="Festival ID">{event.festival_id}</td>
+                        <td data-th="Festival Name">{event.festival_name}</td>
+                        <td data-th="Temple Name">{event.temple_name}</td>
+                        <td data-th="Start Date">
+                          {new Date(event.start_date_time).toLocaleString()}
+                        </td>
+                        <td data-th="End Date">
+                          {new Date(event.end_date_time).toLocaleString()}
+                        </td>
+                        <td data-th="Status">{event.festival_status}</td>
                         <td>
                           <Button
-                            className="event-click-btn me-2"
+                            className="event-click-btn"
                             size="sm"
-                            onClick={() =>
-                              handleStatusChange(req.temple_id, "pending")
-                            }
+                            onClick={() => handleView(event)}
                           >
-                            Pending
-                          </Button>
-                          <Button
-                            className="event-click-cancel"
-                            size="sm"
-                            onClick={() =>
-                              handleStatusChange(req.temple_id, "accepted")
-                            }
-                          >
-                            Accepted
+                            View
                           </Button>
                         </td>
                       </tr>
@@ -175,7 +141,7 @@ const AdminPastEvent = () => {
                   ) : (
                     <tr>
                       <td colSpan="8" className="text-center">
-                        {loading ? "Loading..." : "No rejected requests found."}
+                        {loading ? "Loading..." : "No Past Events Found"}
                       </td>
                     </tr>
                   )}
@@ -183,6 +149,199 @@ const AdminPastEvent = () => {
               </table>
             </div>
           </Row>
+
+          {/* ============== MODAL ============== */}
+          <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered>
+            <Modal.Header closeButton>
+              <Modal.Title>Past Event Details</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+              {selectedEvent ? (
+                <Form>
+                  <Row>
+                    <Col md={6}>
+                      <Form.Group>
+                        <Form.Label className="temp-label">Festival ID</Form.Label>
+                        <Form.Control
+                          className="temp-form-control-option"
+                          value={selectedEvent.festival_id || ""}
+                          disabled
+                        />
+                      </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                      <Form.Group>
+                        <Form.Label className="temp-label">Festival Name</Form.Label>
+                        <Form.Control
+                          className="temp-form-control-option"
+                          value={selectedEvent.festival_name || ""}
+                          disabled
+                        />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <Row className="mt-2">
+                    <Col md={6}>
+                      <Form.Group>
+                        <Form.Label className="temp-label">Temple Name</Form.Label>
+                        <Form.Control
+                          className="temp-form-control-option"
+                          value={selectedEvent.temple_name || ""}
+                          disabled
+                        />
+                      </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                      <Form.Group>
+                        <Form.Label className="temp-label">Festival Status</Form.Label>
+                        <Form.Control
+                          className="temp-form-control-option"
+                          value={selectedEvent.festival_status || ""}
+                          disabled
+                        />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <Row className="mt-2">
+                    <Col md={6}>
+                      <Form.Group>
+                        <Form.Label className="temp-label">Start Date & Time</Form.Label>
+                        <Form.Control
+                          className="temp-form-control-option"
+                          value={
+                            selectedEvent.start_date_time
+                              ? new Date(selectedEvent.start_date_time).toLocaleString()
+                              : ""
+                          }
+                          disabled
+                        />
+                      </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                      <Form.Group>
+                        <Form.Label className="temp-label">End Date & Time</Form.Label>
+                        <Form.Control
+                          className="temp-form-control-option"
+                          value={
+                            selectedEvent.end_date_time
+                              ? new Date(selectedEvent.end_date_time).toLocaleString()
+                              : ""
+                          }
+                          disabled
+                        />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <Row className="mt-2">
+                    <Col md={6}>
+                      <Form.Group>
+                        <Form.Label className="temp-label">Created By</Form.Label>
+                        <Form.Control
+                          className="temp-form-control-option"
+                          value={selectedEvent.created_by_name || ""}
+                          disabled
+                        />
+                      </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                      <Form.Group>
+                        <Form.Label className="temp-label">Updated By</Form.Label>
+                        <Form.Control
+                          className="temp-form-control-option"
+                          value={selectedEvent.updated_by_name || ""}
+                          disabled
+                        />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <Row className="mt-2">
+                    <Col>
+                      <Form.Group>
+                        <Form.Label className="temp-label">Description</Form.Label>
+                        <Form.Control
+                          as="textarea"
+                          rows={3}
+                          className="temp-form-control-option"
+                          value={selectedEvent.description || ""}
+                          disabled
+                        />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  {/* Event Image Section */}
+                  <Row className="mt-4">
+                    <Col md={6}>
+                      <h6 style={{ fontSize: "14px", fontWeight: "600" }}>Festival Image</h6>
+                      {selectedEvent.image ? (
+                        <div className="my-2">
+                          {/\.(jpg|jpeg|png)$/i.test(selectedEvent.image) ? (
+                            <>
+                              <img
+                                src={getFileUrl(selectedEvent.image)}
+                                alt="Festival"
+                                style={{
+                                  width: "100%",
+                                  height: "150px",
+                                  objectFit: "contain",
+                                  borderRadius: "10px",
+                                  border: "1px solid #ccc",
+                                }}
+                              />
+                              <div className="mt-2">
+                                <a
+                                  href={getFileUrl(selectedEvent.image)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="event-click-btn"
+                                  style={{
+                                    fontSize: "12px",
+                                    padding: "3px 8px",
+                                    textDecoration: "none",
+                                  }}
+                                >
+                                  View Full Image
+                                </a>
+                              </div>
+                            </>
+                          ) : (
+                            <a
+                              href={getFileUrl(selectedEvent.image)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="event-click-btn"
+                              style={{
+                                fontSize: "12px",
+                                padding: "3px 8px",
+                                textDecoration: "none",
+                              }}
+                            >
+                              📄 View Full File
+                            </a>
+                          )}
+                        </div>
+                      ) : (
+                        <p className="text-muted">No image uploaded.</p>
+                      )}
+                    </Col>
+                  </Row>
+                </Form>
+              ) : (
+                <div className="text-center text-muted py-3">No event selected.</div>
+              )}
+            </Modal.Body>
+
+            <Modal.Footer>
+              <Button className="event-click-cancel" onClick={() => setShowModal(false)}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </div>
       </main>
     </div>

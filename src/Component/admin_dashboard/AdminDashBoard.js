@@ -52,6 +52,14 @@ const AdminDashBoard = () => {
     rejected: 0,
   });
 
+  const [eventCounts, setEventCounts] = useState({
+    total: 0,
+    past: 0,
+    upcoming: 0,
+    active: 0,
+  });
+
+
 
 
 
@@ -156,15 +164,37 @@ const AdminDashBoard = () => {
     }
   };
 
+   const fetchEventCounts = async () => {
+    try {
+      const [pastRes, upcomingRes, activeRes] = await Promise.all([
+        axios.get("https://mahadevaaya.com/backend/api/get-all-festival/?status=past"),
+        axios.get("https://mahadevaaya.com/backend/api/get-all-festival/?status=upcoming"),
+        axios.get("https://mahadevaaya.com/backend/api/get-all-festival/?status=active"),
+      ]);
+
+      const past = pastRes.data?.count || 0;
+      const upcoming = upcomingRes.data?.count || 0;
+      const active = activeRes.data?.count || 0;
+      const total = past + upcoming + active;
+
+      setEventCounts({ total, past, upcoming, active });
+    } catch (err) {
+      console.error("Error fetching event counts:", err);
+    }
+  };
 
   useEffect(() => {
-    fetchTempleCounts();
-    fetchDarshanCounts();
-    fetchPanditCounts();
-    fetchDevoteeCounts();
-    fetchDonateCounts();
+    setLoading(true);
+    Promise.all([
+      fetchTempleCounts(),
+      fetchDarshanCounts(),
+      fetchPanditCounts(),
+      fetchDevoteeCounts(),
+      fetchDonateCounts(),
+      fetchEventCounts(),
+    ]).finally(() => setLoading(false));
   }, []);
-
+  
   return (
     <>
       <div className="dashboard-wrapper">
@@ -283,7 +313,7 @@ const AdminDashBoard = () => {
 
               <Col lg={4} md={4} sm={12}>
                 <Card
-                  className="shadow-sm dbcard-admin-accept-box-2 flex-fill"
+                  className="shadow-sm dbcard-admin-accept-box-4 flex-fill"
                   onClick={() => navigate("/DonateCrowdFunding")}
                   style={{ cursor: "pointer" }}>
                   <Card.Body>
@@ -311,7 +341,7 @@ const AdminDashBoard = () => {
 
               <Col lg={4} md={4} sm={12}>
                 <Card
-                  className="shadow-sm rounded flex-fill dbcard-admin-4"
+                  className="shadow-sm rounded flex-fill dbcard-admin-accept-box-5 "
                   onClick={() => navigate("/AllDarshanBooking")}
                   style={{ cursor: "pointer" }}>
                   <Card.Body>
@@ -343,8 +373,8 @@ const AdminDashBoard = () => {
 
               <Col lg={4} md={4} sm={12}>
                 <Card
-                  className="shadow-sm rounded dbcard-adminnew-puja-box-1 flex-fill mb-2"
-                  onClick={() => navigate("/AdminPastEvent")}
+                  className="shadow-sm rounded dbcard-admin-accept-box-6  flex-fill mb-2"
+                  onClick={() => navigate("/AllEvents")}
                   style={{ cursor: "pointer" }}>
                   <Card.Body>
                     <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap">
@@ -352,7 +382,14 @@ const AdminDashBoard = () => {
                         <span className=" d-block mb-1 text-nowrap user-sub-title">
                           Events
                         </span>
-                        <h4 className="fw-medium mb-0">0</h4>
+                        <h4 className="fw-medium mb-0">
+                           {loading ? "..." : eventCounts.total}
+                        </h4>
+                        <div className="small text-muted">
+                          Past: <strong>{eventCounts.past}</strong> | Upcoming:{" "}
+                          <strong>{eventCounts.upcoming}</strong> | Active:{" "}
+                          <strong>{eventCounts.active}</strong>
+                        </div>
                         <div>
                           <span className="user-span">View Details</span>
                         </div>
@@ -374,7 +411,7 @@ const AdminDashBoard = () => {
             <Row>
               <Col lg={4} md={4} sm={12}>
                 <Card
-                  className="shadow-sm dbcard-admin-accept-box-2 flex-fill"
+                  className="shadow-sm dbcard-admin-accept-box-7  flex-fill"
                   onClick={() => navigate("/PendingRequest")}
                   style={{ cursor: "pointer" }}
                 >
@@ -413,7 +450,7 @@ const AdminDashBoard = () => {
 
               <Col lg={4} md={4} sm={12}>
                 <Card
-                  className="shadow-sm rounded flex-fill dbcard-admin-4"
+                  className="shadow-sm rounded flex-fill dbcard-admin-accept-box-8 "
                   onClick={() => navigate("/AcceptedRequest")}
                   style={{ cursor: "pointer" }}
                 >
@@ -452,7 +489,7 @@ const AdminDashBoard = () => {
 
               <Col lg={4} md={4} sm={12}>
                 <Card
-                  className="shadow-sm rounded dbcard-adminnew-puja-box-1 flex-fill mb-2"
+                  className="shadow-sm rounded dbcard-admin-accept-box-9  flex-fill mb-2"
                   onClick={() => navigate("/RejectedRequest")}
                   style={{ cursor: "pointer" }}
                 >

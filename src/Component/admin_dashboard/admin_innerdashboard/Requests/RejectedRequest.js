@@ -12,7 +12,7 @@ const RejectedRequest = () => {
   const tabs = [
     { id: "Pandit", label: "Pandit" },
     { id: "Temple", label: "Temple" },
-    { id: "Devotee", label: "Devotee" },
+  
   ];
 
   return (
@@ -23,13 +23,13 @@ const RejectedRequest = () => {
       </aside>
 
       {/* Main Section */}
-      <main className="admin-container">
+      <main className="main-container">
         <div className="content-box">
           {/* Breadcrumb */}
           <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
             <h1 className="fw500">
               <Breadcrumb>
-                <Breadcrumb.Item href="/AdminDashboard">
+                <Breadcrumb.Item href="/AdminDashBoard">
                   <span className="fw700h1">DashBoard</span>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item active>Rejected Requests</Breadcrumb.Item>
@@ -62,12 +62,7 @@ const RejectedRequest = () => {
                   <TempleRejected />
                 )}
 
-                {activeTab === "Devotee" && (
-                  <div>
-                    <h3>Devotee</h3>
-                    <p>Devotee pending requests will appear here...</p>
-                  </div>
-                )}
+               
               </div>
             </div>
           </div>

@@ -319,27 +319,28 @@ const AddFestival = () => {
                         <span className="temp-span-star"> *</span>
                       </Form.Label>
                       <DatePicker
-                        selected={selectedEndDateTime}
-                        onChange={handleEndDateChange}
-                        showTimeSelect
-                        timeFormat="hh:mm aa"
-                        timeIntervals={30}
-                        dateFormat="MMMM d, yyyy h:mm aa"
-                        placeholderText="Select End Date and Time"
-                        customInput={
-                          <CustomDatePickerInput placeholder="Select End Date and Time" />
-                        }
-                        minDate={selectedStartDateTime || today}
-                        minTime={
-                          selectedStartDateTime &&
-                          selectedEndDateTime &&
-                          selectedStartDateTime.toDateString() ===
-                            selectedEndDateTime.toDateString()
-                            ? selectedStartDateTime // same day → only show time after start
-                            : new Date().setHours(0, 0, 0, 0) // next days → show all times
-                        }
-                        maxTime={new Date().setHours(23, 59, 59, 999)}
-                      />
+  selected={selectedEndDateTime}
+  onChange={handleEndDateChange}
+  showTimeSelect
+  timeFormat="hh:mm aa"
+  timeIntervals={30}
+  dateFormat="MMMM d, yyyy h:mm aa"
+  placeholderText="Select End Date and Time"
+  customInput={
+    <CustomDatePickerInput placeholder="Select End Date and Time" />
+  }
+  minDate={selectedStartDateTime || today}
+  minTime={
+    selectedStartDateTime &&
+    selectedEndDateTime &&
+    selectedStartDateTime.toDateString() ===
+      selectedEndDateTime.toDateString()
+      ? new Date(selectedStartDateTime.getTime()) //  copy of start time
+      : new Date(new Date().setHours(6, 0, 0, 0)) //  earliest selectable time for later dates
+  }
+  maxTime={new Date(new Date().setHours(22, 0, 0, 0))} //  closing time
+/>
+
 
                       {formData.end_day && (
                         <small className="text-muted d-block mt-1">

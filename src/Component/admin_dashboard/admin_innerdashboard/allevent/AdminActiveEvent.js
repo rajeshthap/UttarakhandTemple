@@ -5,7 +5,7 @@ import { BASE_URLL } from "../../../../Component/BaseURL";
 import SearchFeature from "../../../temp_dashboard/temp_innerdashboard/SearchFeature";
 import ModifyAlert from "../../../Alert/ModifyAlert";
 
-const AdminUpcomingEvent = () => {
+const AdminActiveEvent = () => {
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -13,12 +13,12 @@ const AdminUpcomingEvent = () => {
   const [showModal, setShowModal] = useState(false);
   const [alert, setAlert] = useState({ show: false, message: "", variant: "" });
 
-  // ===================== FETCH UPCOMING EVENTS =====================
-  const fetchUpcomingEvents = async () => {
+  // ===================== FETCH ACTIVE EVENTS =====================
+  const fetchActiveEvents = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`${BASE_URLL}api/get-all-festival/?status=upcoming`);
-      const eventList = res.data?.data || [];
+      const res = await axios.get(`${BASE_URLL}api/get-all-festival/?status=active`);
+       const eventList = res.data?.data || [];
 
       if (Array.isArray(eventList)) {
         const formatted = eventList.map((e) => ({
@@ -29,14 +29,14 @@ const AdminUpcomingEvent = () => {
         setFilteredEvents(formatted);
       }
     } catch (err) {
-      console.error("Error fetching upcoming events:", err);
+      console.error("Error fetching active events:", err);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchUpcomingEvents();
+    fetchActiveEvents();
   }, []);
 
   // ===================== SEARCH =====================
@@ -57,7 +57,7 @@ const AdminUpcomingEvent = () => {
     setFilteredEvents(filtered);
   };
 
-  //  Helper for file URL
+  // ===================== FILE URL HELPER =====================
   const getFileUrl = (path) => {
     if (!path) return null;
     return `https://mahadevaaya.com/backend${
@@ -65,7 +65,7 @@ const AdminUpcomingEvent = () => {
     }`;
   };
 
-  // Handle view click
+  // ===================== HANDLE VIEW =====================
   const handleView = (event) => {
     setSelectedEvent(event);
     setShowModal(true);
@@ -135,7 +135,7 @@ const AdminUpcomingEvent = () => {
                   ) : (
                     <tr>
                       <td colSpan="8" className="text-center">
-                        {loading ? "Loading..." : "No Upcoming Events Found"}
+                        {loading ? "Loading..." : "No Active Events Found"}
                       </td>
                     </tr>
                   )}
@@ -147,7 +147,7 @@ const AdminUpcomingEvent = () => {
           {/* ============== MODAL ============== */}
           <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered>
             <Modal.Header closeButton>
-              <Modal.Title>Upcoming Event Details</Modal.Title>
+              <Modal.Title>Active Event Details</Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
@@ -342,4 +342,4 @@ const AdminUpcomingEvent = () => {
   );
 };
 
-export default AdminUpcomingEvent;
+export default AdminActiveEvent;

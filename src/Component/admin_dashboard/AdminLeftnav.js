@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RiDashboard3Line } from "react-icons/ri";
 import axios from "axios";
-import { FaAlignLeft, FaChevronDown, FaChevronUp, FaRegCheckCircle } from "react-icons/fa";
+import { FaAlignLeft, FaChevronDown, FaChevronUp, FaRegCalendarCheck, FaRegCheckCircle } from "react-icons/fa";
 import { LuCalendarClock, LuCircleCheck, LuLogOut } from "react-icons/lu";
 import CompanyLogo from "../../assets/images/company-logo.png";
 import MenuIcon from "../../assets/images/menu_icon.png";
@@ -16,6 +16,12 @@ import { ImProfile } from "react-icons/im";
 import { useAuth } from "../GlobleAuth/AuthContext";
 import Support from "../../assets/images/support.png"
 import { MdAccountCircle, MdEventAvailable, MdPendingActions, MdReviews} from "react-icons/md";
+import { RiAdminFill } from "react-icons/ri";
+import PanditBooking from ".././../assets/images/pandit.png"
+import { FaUserTie } from "react-icons/fa";
+ 
+
+
 
 import Transactions from "../../assets/images/Transactions.png"
 import "../../assets/CSS/TopInfo.css";
@@ -114,10 +120,10 @@ function AdminLeftnav() {
 
    
 
- { icon: <RiDashboard3Line />, label: "All Temple Booking", path: "/AllTempleBooking" },
- { icon: <RiDashboard3Line />, label: "All Pandit Booking", path: "/AllPanditBooking" },
- { icon: <RiDashboard3Line />, label: "All Devotee Booking", path: "/AllDevoteeBooking" },
-  { icon: <RiDashboard3Line />, label: "All Darshan Booking", path: "/AllDarshanBooking" },
+ { icon: <GiByzantinTemple />, label: "All Temple Booking", path: "/AllTempleBooking" },
+ { icon:  <img src={PanditBooking} alt="Pandit booking" className="left-nav-icon" />, label: "All Pandit Booking", path: "/AllPanditBooking" },
+ { icon: <FaUserTie />, label: "All Devotee Booking", path: "/AllDevoteeBooking" },
+  { icon: <FaRegCalendarCheck />, label: "All Darshan Booking", path: "/AllDarshanBooking" },
 
  {
         icon: <MdAccountCircle />,
@@ -126,17 +132,17 @@ function AdminLeftnav() {
        hasSubmenu: true,
        subItems: [
          {
-           icon: <MdAccountCircle />,
+           icon: <LiaCalendarCheck />,
            label: "Pending Request", 
            path: "/PendingRequest"
          },
          {
-            icon: <MdAccountCircle />,
+            icon: <LuCircleCheck />,
            label: "Accepted Request",
            path: "/AcceptedRequest"
          },
          {
-           icon: <MdAccountCircle />,
+           icon: <IoCloseCircleOutline />,
            label: "Rejected Request",
            path: "/RejectedRequest"
          },
@@ -145,29 +151,13 @@ function AdminLeftnav() {
        ]
      },
 
- {
-        icon: <MdAccountCircle />,
-       label: "All Event",
-       path: "#",
-       hasSubmenu: true,
-       subItems: [
-         {
+          {
            icon: <MdAccountCircle />,
-           label: "UpComing Event", 
-           path: "/AdminUpcomingEvent"
+           label: "All Events", 
+           path: "/AllEvents"
          },
-         {
-            icon: <MdAccountCircle />,
-           label: "Past Event",
-           path: "/AdminPastEvent"
-         },
-         
- 
-       ]
-     },
-
     {
-      icon: <IoCalendarSharp />,
+      icon: <img src={Transactions} alt="Support" className="left-nav-icon" />,
       label: "Donate Amount",
       path: "/DonateAmount",
 
@@ -225,15 +215,7 @@ function AdminLeftnav() {
                 className="border-0 bg-transparent"
                 title="Account Menu"
               >
-                <img
-                  src={
-                    profile.pandit_image
-                      ? `https://mahadevaaya.com/backend/media/pandit_images/${profile.pandit_image.split("/").pop()}`
-                      : "https://mahadevaaya.com/backend/media/pandit_images/default.png"
-                  }
-                  alt={profile.displayName || ""}
-                  className="nav-profile-photo"
-                />
+               <RiAdminFill />
               </Dropdown.Toggle>
 
               {/* Dropdown menu */}

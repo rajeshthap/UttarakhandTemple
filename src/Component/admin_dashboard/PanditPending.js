@@ -14,8 +14,8 @@ const PanditPending = () => {
   const [selectedPandit, setSelectedPandit] = useState(null);
   const [remarks, setRemarks] = useState("");
   const [status, setStatus] = useState("");
-  const [selectedRows, setSelectedRows] = useState([]); // ✅ selected IDs
-  const [selectAll, setSelectAll] = useState(false); // ✅ select all
+  const [selectedRows, setSelectedRows] = useState([]); // selected IDs
+  const [selectAll, setSelectAll] = useState(false); // select all
 
   // ====== FETCH PENDING PANDITS ======
   const fetchRequests = async () => {

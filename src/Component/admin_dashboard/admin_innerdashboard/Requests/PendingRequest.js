@@ -11,7 +11,7 @@ const PendingRequest = () => {
   const tabs = [
     { id: "Pandit", label: "Pandit" },
     { id: "Temple", label: "Temple" },
-    { id: "Devotee", label: "Devotee" },
+  
   ];
 
   return (
@@ -28,7 +28,7 @@ const PendingRequest = () => {
           <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
             <h1 className="fw500">
               <Breadcrumb>
-                <Breadcrumb.Item href="/AdminDashboard">
+                <Breadcrumb.Item href="/AdminDashBoard">
                   <span className="fw700h1">DashBoard</span>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item active>Pending Requests</Breadcrumb.Item>
@@ -61,12 +61,7 @@ const PendingRequest = () => {
                   <TemplePending />
                 )}
 
-                {activeTab === "Devotee" && (
-                  <div>
-                    <h3>Devotee</h3>
-                    <p>Devotee pending requests will appear here...</p>
-                  </div>
-                )}
+                
               </div>
             </div>
           </div>
