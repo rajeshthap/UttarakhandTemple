@@ -15,11 +15,12 @@ import { Dropdown, Nav } from "react-bootstrap";
 import { ImProfile } from "react-icons/im";
 import { useAuth } from "../GlobleAuth/AuthContext";
 import Support from "../../assets/images/support.png"
-import { MdAccountCircle, MdEventAvailable, MdPendingActions, MdReviews} from "react-icons/md";
+import { MdAccountCircle, MdEventAvailable, MdPendingActions, MdReviews } from "react-icons/md";
 import { RiAdminFill } from "react-icons/ri";
 import PanditBooking from ".././../assets/images/pandit.png"
+import RequestsICon from "../../assets/images/Requests-icon.png"
 import { FaUserTie } from "react-icons/fa";
- 
+
 
 
 
@@ -118,44 +119,44 @@ function AdminLeftnav() {
 
     // { icon: <BiDonateHeart />, label: "Online", path: "#" },
 
-   
 
- { icon: <GiByzantinTemple />, label: "All Temple Booking", path: "/AllTempleBooking" },
- { icon:  <img src={PanditBooking} alt="Pandit booking" className="left-nav-icon" />, label: "All Pandit Booking", path: "/AllPanditBooking" },
- { icon: <FaUserTie />, label: "All Devotee Booking", path: "/AllDevoteeBooking" },
-  { icon: <FaRegCalendarCheck />, label: "All Darshan Booking", path: "/AllDarshanBooking" },
 
- {
-        icon: <MdAccountCircle />,
-       label: "Requests",
-       path: "#",
-       hasSubmenu: true,
-       subItems: [
-         {
-           icon: <LiaCalendarCheck />,
-           label: "Pending Request", 
-           path: "/PendingRequest"
-         },
-         {
-            icon: <LuCircleCheck />,
-           label: "Accepted Request",
-           path: "/AcceptedRequest"
-         },
-         {
-           icon: <IoCloseCircleOutline />,
-           label: "Rejected Request",
-           path: "/RejectedRequest"
-         },
-        
- 
-       ]
-     },
+    { icon: <GiByzantinTemple />, label: "All Temple Booking", path: "/AllTempleBooking" },
+    { icon: <img src={PanditBooking} alt="Pandit booking" className="left-nav-icon" />, label: "All Pandit Booking", path: "/AllPanditBooking" },
+    { icon: <FaUserTie />, label: "All Devotee Booking", path: "/AllDevoteeBooking" },
+    { icon: <FaRegCalendarCheck />, label: "All Darshan Booking", path: "/AllDarshanBooking" },
 
-          {
-           icon: <MdAccountCircle />,
-           label: "All Events", 
-           path: "/AllEvents"
-         },
+    {
+      icon: <img src={RequestsICon} alt="Requests" className="left-nav-icon" />,
+      label: "Requests",
+      path: "#",
+      hasSubmenu: true,
+      subItems: [
+        {
+          icon: <LiaCalendarCheck />,
+          label: "Pending Request",
+          path: "/PendingRequest"
+        },
+        {
+          icon: <LuCircleCheck />,
+          label: "Accepted Request",
+          path: "/AcceptedRequest"
+        },
+        {
+          icon: <IoCloseCircleOutline />,
+          label: "Rejected Request",
+          path: "/RejectedRequest"
+        },
+
+
+      ]
+    },
+
+    {
+      icon: <MdAccountCircle />,
+      label: "All Events",
+      path: "/AllEvents"
+    },
     {
       icon: <img src={Transactions} alt="Support" className="left-nav-icon" />,
       label: "Donate Amount",
@@ -169,9 +170,9 @@ function AdminLeftnav() {
 
     },
 
-    
 
-    
+
+
     {
       icon: <LuLogOut />,
       label: "Logout",
@@ -215,7 +216,7 @@ function AdminLeftnav() {
                 className="border-0 bg-transparent"
                 title="Account Menu"
               >
-               <RiAdminFill />
+                <RiAdminFill />
               </Dropdown.Toggle>
 
               {/* Dropdown menu */}
@@ -244,16 +245,16 @@ function AdminLeftnav() {
           <div className="temp-upper-options">
             <div className="nd-menu">
               <FaAlignLeft className="icn menuicn" onClick={toggleNav} />
-              <div className="nd-user">Admin: {profile.displayName }</div>
-                <img
-                  src={
-                    profile.pandit_image
-                      ? `https://mahadevaaya.com/backend/media/pandit_images/${profile.pandit_image.split("/").pop()}`
-                      : "https://mahadevaaya.com/backend/media/pandit_images/default.png"
-                  }
-                  alt={profile.displayName || ""}
-                  className="nav-profile-photo"
-                />
+              <div className="nd-user">Admin: {profile.displayName}</div>
+              <img
+                src={
+                  profile.pandit_image
+                    ? `https://mahadevaaya.com/backend/media/pandit_images/${profile.pandit_image.split("/").pop()}`
+                    : "https://mahadevaaya.com/backend/media/pandit_images/default.png"
+                }
+                alt={profile.displayName || ""}
+                className="nav-profile-photo"
+              />
               <Dropdown align="end" className="user-dp">
                 <Dropdown.Toggle
                   variant=""
@@ -271,10 +272,10 @@ function AdminLeftnav() {
                   <Dropdown.Item as={Link} to="/PanditProfile">
                     My Profile
                   </Dropdown.Item>
-                   <Dropdown.Item as={Link} to="/PanditChangePassword">
+                  <Dropdown.Item as={Link} to="/PanditChangePassword">
                     My Profile
                   </Dropdown.Item>
-                 
+
                   <Dropdown.Divider />
                   <Dropdown.Item onClick={logout} className="text-danger">
                     Logout
