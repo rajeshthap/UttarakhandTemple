@@ -207,7 +207,7 @@ const AllPanditBooking = () => {
 
             <div>
               <SearchFeature onSearch={handleSearch} />
-              <div className="mt-2 vmb-2">
+              <div className="mt-2 vmb-2 text-end">
                              <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
                                Print
                              </Button>
