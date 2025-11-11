@@ -7,6 +7,7 @@ import axios from "axios";
 import { BASE_URLL } from "../../../Component/BaseURL";
 import SearchFeature from "../../temp_dashboard/temp_innerdashboard/SearchFeature";
 import ModifyAlert from "../../Alert/ModifyAlert";
+import * as XLSX from "xlsx";
 
 const AllPanditBooking = () => {
   const { uniqueId } = useAuth();
@@ -82,6 +83,109 @@ const AllPanditBooking = () => {
     setShowModal(true);
   };
 
+   const handlePrint = () => {
+    const printContent = document.getElementById("print-table");
+    const newWindow = window.open("", "_blank");
+    newWindow.document.write(`
+      <html>
+        <head>
+          <title>Pandit Booking</title>
+          <style>
+          body { font-family: Arial, sans-serif; margin: 20px; }
+            table { width: 100%; border-collapse: collapse; font-size: 20px; }
+            th, td { border: 1px solid #ccc; padding: 8px; text-align: left; font-size: 13px; }
+            th { background-color: #f4f4f4; font-weight: bold;}
+            tr:nth-child(even) { background-color:#fafafa; }
+            h2 { text-align: center;  }
+            @media print {
+              th:nth-last-child(1),
+              td:nth-last-child(1) {
+                display: none !important;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <h2>All Pandit Bookings</h2>
+          ${printContent.outerHTML}
+        </body>
+      </html>
+    `);
+    newWindow.document.close();
+    newWindow.print();
+  };
+
+   const handleDownload = () => {
+    if (!filteredPandits.length) return alert("No data to export!");
+
+    const exportData = filteredPandits.map((p, i) => ({
+      "S.No": i + 1,
+      "Pandit Name": `${p.first_name || ""} ${p.last_name || ""}`,
+      Email: p.email,
+      Phone: p.phone,
+      City: p.city,
+      State: p.state,
+      Country: p.country,
+      Status: p.pandit_status || "Accepted",
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(exportData);
+
+    const maxWidth = Object.keys(exportData[0]).map(
+      (key) =>
+        Math.max(
+          key.length,
+          ...exportData.map((row) => String(row[key] || "").length)
+        ) + 5
+    );
+    ws["!cols"] = maxWidth.map((w) => ({ wch: w }));
+
+    const range = XLSX.utils.decode_range(ws["!ref"]);
+
+    // Header style
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const cellRef = XLSX.utils.encode_cell({ r: 0, c: C });
+      if (ws[cellRef]) {
+        ws[cellRef].s = {
+          font: { bold: true, color: { rgb: "FFFFFF" } },
+          alignment: { horizontal: "center", vertical: "center" },
+          fill: { fgColor: { rgb: "4472C4" } },
+          border: {
+            top: { style: "thin", color: { rgb: "AAAAAA" } },
+            bottom: { style: "thin", color: { rgb: "AAAAAA" } },
+            left: { style: "thin", color: { rgb: "AAAAAA" } },
+            right: { style: "thin", color: { rgb: "AAAAAA" } },
+          },
+        };
+      }
+    }
+
+    // Row styling (zebra + border)
+    for (let R = 1; R <= range.e.r; ++R) {
+      for (let C = range.s.c; C <= range.e.c; ++C) {
+        const cellRef = XLSX.utils.encode_cell({ r: R, c: C });
+        if (ws[cellRef]) {
+          ws[cellRef].s = {
+            alignment: { vertical: "center" },
+            border: {
+              top: { style: "thin", color: { rgb: "DDDDDD" } },
+              bottom: { style: "thin", color: { rgb: "DDDDDD" } },
+              left: { style: "thin", color: { rgb: "DDDDDD" } },
+              right: { style: "thin", color: { rgb: "DDDDDD" } },
+            },
+            fill: R % 2 === 0 ? { fgColor: { rgb: "F9F9F9" } } : undefined,
+          };
+        }
+      }
+    }
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "PanditBookings");
+
+    XLSX.writeFile(wb, "All_Pandit_Bookings_Styled.xlsx");
+  };
+
+
   return (
     <div className="dashboard-wrapper">
       <aside className="admin-sidebar">
@@ -103,6 +207,16 @@ const AllPanditBooking = () => {
 
             <div>
               <SearchFeature onSearch={handleSearch} />
+              <div className="mt-2 vmb-2">
+                             <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
+                               Print
+                             </Button>
+             
+                             <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
+                               Download
+                             </Button>
+                             </div>
+          
             </div>
           </div>
 
@@ -117,8 +231,8 @@ const AllPanditBooking = () => {
 
           {/* ============== TABLE ============== */}
           <Row className="mt-3">
-            <div className="col-md-12">
-              <table className="admin-rwd-table">
+            <div className="col-md-12" id="print-table">
+              <table className="admin-rwd-table"  >
                 <tbody>
                   <tr>
                     <th>S.No</th>

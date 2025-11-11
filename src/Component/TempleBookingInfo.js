@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef } from "react";
+import React, { useState, useEffect, useMemo, forwardRef } from "react";
 import {
   Accordion,
   Button,
@@ -8,6 +8,7 @@ import {
   Form,
   Modal,
   InputGroup,
+  Badge,
 } from "react-bootstrap";
 import { FaCheck } from "react-icons/fa6";
 import { MdOutlineDateRange } from "react-icons/md";
@@ -29,9 +30,14 @@ const TempleBookingInfo = () => {
   const [activeAccordion, setActiveAccordion] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
+  
+  // Add search and filter states
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterLocation, setFilterLocation] = useState("");
 
   const navigate = useNavigate();
   const { uniqueId } = useAuth();
+  
   useEffect(() => {
     window.history.pushState(null, "", window.location.href);
 
@@ -45,6 +51,7 @@ const TempleBookingInfo = () => {
       window.removeEventListener("popstate", handlePopState);
     };
   }, [navigate]);
+  
   useEffect(() => {
     fetch("https://mahadevaaya.com/backend/api/temple-poojas-list/")
       .then((res) => res.json())
@@ -55,6 +62,46 @@ const TempleBookingInfo = () => {
       })
       .catch((error) => console.error("Error fetching temple data:", error));
   }, []);
+
+  // Filter temples based on search query and location filter
+  const filteredTemples = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    return templeData.filter((temple) => {
+      const name = (temple.temple_name || "").toString().toLowerCase();
+      const description = (temple.temple_description || "").toString().toLowerCase();
+      const location = (temple.temple_location || "").toString().toLowerCase();
+      
+      // Filter by location if selected
+      if (filterLocation && location !== filterLocation.toLowerCase()) return false;
+      
+      // If no search query, return all temples (with location filter applied if any)
+      if (!query) return true;
+      
+      // Search in name, description, and location
+      return name.includes(query) || description.includes(query) || location.includes(query);
+    });
+  }, [templeData, searchQuery, filterLocation]);
+
+  // Get unique locations for filter dropdown
+  const uniqueLocations = useMemo(() => {
+    const locations = new Set();
+    templeData.forEach((temple) => {
+      if (temple.temple_location) locations.add(temple.temple_location);
+    });
+    return Array.from(locations).sort();
+  }, [templeData]);
+
+  // Reset pagination when search or filter changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, filterLocation]);
+
+  // Pagination logic - now using filtered data
+  const itemsPerPage = 8;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentCards = filteredTemples.slice(indexOfFirstItem, indexOfLastItem);
+
 const CustomDatePickerInput = forwardRef(
   ({ value, onClick, placeholder }, ref) => (
     <InputGroup>
@@ -78,12 +125,6 @@ const CustomDatePickerInput = forwardRef(
     const filename = imgPath.split("/").pop();
     return `https://mahadevaaya.com/backend/media/temple_images/${filename}`;
   };
-
-  // Pagination logic
-  const itemsPerPage = 8;
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentCards = templeData.slice(indexOfFirstItem, indexOfLastItem);
 
   // Date/time logic
   const today = new Date();
@@ -154,6 +195,36 @@ const CustomDatePickerInput = forwardRef(
         <div className="temp-detail-btn">
           <h1>Temple Booking</h1>
         </div>
+        
+        {/* Add search and filter controls */}
+        <Row className="mb-3">
+          <Col md={6} className="mb-2">
+            <Form.Control 
+              className="temp-form-control-option"
+              placeholder="Search by temple name or description..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </Col>
+          <Col md={3} className="mb-2">
+            <Form.Select
+              value={filterLocation}
+              onChange={(e) => setFilterLocation(e.target.value)} 
+              className="temp-form-control-option"
+            >
+              <option value="">All Locations</option>
+              {uniqueLocations.map((location, i) => (
+                <option key={i} value={location}>
+                  {location}
+                </option>
+              ))}
+            </Form.Select>
+          </Col>
+          <Col md={3} className="d-flex justify-content-end align-items-center">
+            <small className="text-muted">{filteredTemples.length} temples</small>
+          </Col>
+        </Row>
+        
         <Row>
           {/* Left side temple cards */}
           <Col lg={7} md={7} sm={12}>
@@ -214,6 +285,14 @@ const CustomDatePickerInput = forwardRef(
                     <div className="card-text-temp flex-grow-1 d-flex flex-column">
                       <h5>{item.temple_name}</h5>
                       <h6 className="mb-3">{item.temple_description}</h6>
+                      {/* Add location badge if available */}
+                      {item.temple_location && (
+                        <div className="mb-2">
+                          <Badge bg="secondary" className="me-2">
+                            {item.temple_location}
+                          </Badge>
+                        </div>
+                      )}
                       <div className="mt-auto">
                         <Row className="mb-1">
                           <Col lg={12} md={6} className="mb-2 text-center">
@@ -280,8 +359,9 @@ const CustomDatePickerInput = forwardRef(
                 </Col>
               ))}
             </Row>
+            {/* Update PagingNation to use filtered data */}
             <PagingNation
-              totalItems={templeData.length}
+              totalItems={filteredTemples.length}
               itemsPerPage={itemsPerPage}
               onPageChange={setCurrentPage}
             />

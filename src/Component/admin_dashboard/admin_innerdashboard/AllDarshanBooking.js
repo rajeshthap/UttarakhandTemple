@@ -6,6 +6,7 @@ import AdminLeftnav from "../AdminLeftnav";
 import { useAuth } from "../../GlobleAuth/AuthContext";
 import axios from "axios";
 import SearchFeature from "../../temp_dashboard/temp_innerdashboard/SearchFeature";
+import * as XLSX from "xlsx";  
 
 const AllDarshanBooking = () => {
   const { uniqueId } = useAuth();
@@ -55,6 +56,122 @@ const AllDarshanBooking = () => {
     setFilteredBookings(filtered);
   };
 
+
+  const handlePrint = () => {
+  const table = document.getElementById("booking-table");
+  if (!table) {
+    alert("Table not found!");
+    return;
+  }
+
+  const printContent = table.outerHTML;
+  const newWin = window.open("", "_blank");
+
+  newWin.document.write(`
+    <html>
+      <head>
+        <title>Darshan Bookings</title>
+         <style>
+         body { font-family: Arial, sans-serif; margin: 20px; }
+          h2 { text-align: center; }
+          table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+          th, td { border: 1px solid #ccc; padding: 8px; text-align: left; font-size: 13px;  }
+          th {  background-color: #f4f4f4; font-weight: bold; }
+
+          /* Hide Action column */
+          th:nth-child(10), td:nth-child(10) { display: none; }
+        </style>
+      </head>
+      <body>
+        <h2>All Darshan & Pooja Bookings</h2>
+        ${printContent}
+      </body>
+    </html>
+  `);
+  newWin.document.close();
+  newWin.focus();
+  newWin.print();
+};
+
+
+ const handleDownload = () => {
+  if (!filteredBookings.length) return alert("No data to export!");
+
+  // Prepare the data
+  const exportData = filteredBookings.map((b, i) => ({
+    "S.No": i + 1,
+    "Darshan ID": b.darshan_pooja_id,
+    "Full Name": b.full_name,
+    "Temple": b.temple_name,
+    "Email": b.email,
+    "Phone": b.mobile_number,
+    "Booking Date": new Date(b.book_date_and_time).toLocaleString(),
+    "Grand Total (₹)": b.grand_total,
+    "Status": b.status,
+  }));
+
+  // Create worksheet
+  const ws = XLSX.utils.json_to_sheet(exportData);
+
+  // Set column widths automatically
+  const maxWidth = Object.keys(exportData[0]).map(
+    (key) => Math.max(key.length, ...exportData.map((row) => String(row[key] || "").length)) + 5
+  );
+  ws["!cols"] = maxWidth.map((w) => ({ wch: w }));
+
+  // Decode the range (rows & columns)
+  const range = XLSX.utils.decode_range(ws["!ref"]);
+
+  // Apply header styles (bold, center, background color)
+  for (let C = range.s.c; C <= range.e.c; ++C) {
+    const cellRef = XLSX.utils.encode_cell({ r: 0, c: C });
+    if (ws[cellRef]) {
+      ws[cellRef].s = {
+        font: { bold: true, color: { rgb: "FFFFFF" } },
+        alignment: { horizontal: "center", vertical: "center" },
+        fill: { fgColor: { rgb: "4472C4" } }, // Blue background
+        border: {
+          top: { style: "thin", color: { rgb: "AAAAAA" } },
+          bottom: { style: "thin", color: { rgb: "AAAAAA" } },
+          left: { style: "thin", color: { rgb: "AAAAAA" } },
+          right: { style: "thin", color: { rgb: "AAAAAA" } },
+        },
+      };
+    }
+  }
+
+  // Apply row styling (zebra striping)
+  for (let R = 1; R <= range.e.r; ++R) {
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const cellRef = XLSX.utils.encode_cell({ r: R, c: C });
+      if (ws[cellRef]) {
+        ws[cellRef].s = {
+          alignment: { vertical: "center" },
+          border: {
+            top: { style: "thin", color: { rgb: "DDDDDD" } },
+            bottom: { style: "thin", color: { rgb: "DDDDDD" } },
+            left: { style: "thin", color: { rgb: "DDDDDD" } },
+            right: { style: "thin", color: { rgb: "DDDDDD" } },
+          },
+          fill:
+            R % 2 === 0
+              ? { fgColor: { rgb: "F9F9F9" } } // light grey for even rows
+              : undefined,
+        };
+      }
+    }
+  }
+
+  // Create a new workbook and add the styled worksheet
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "DarshanBookings");
+
+  // Export to file
+  XLSX.writeFile(wb, "All_Darshan_Bookings_Styled.xlsx");
+};
+
+
+
   // ===================== MODAL HANDLERS =====================
   const handleShow = (booking) => {
     setSelectedBooking(booking);
@@ -86,13 +203,24 @@ const AllDarshanBooking = () => {
 
             <div>
               <SearchFeature onSearch={handleSearch} />
+              <div className="mt-2 vmb-2">
+                              <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
+                                Print
+                              </Button>
+              
+                              <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
+                                Download
+                              </Button>
+                              </div>
+
+              
             </div>
           </div>
 
           {/* ============== TABLE ============== */}
           <Row className="mt-3">
             <div className="col-md-12">
-              <table className="admin-rwd-table">
+              <table className="admin-rwd-table" id="booking-table">
                 <tbody>
                   <tr>
                     <th>S.No</th>

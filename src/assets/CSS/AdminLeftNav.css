@@ -611,6 +611,38 @@ span.sub-label {
   color: #fff !important;
 }
 
+
+.download-btn {
+    background-color: DodgerBlue;
+    color: var(--temp-white);
+    border-radius: var(--temp-space-100);
+    font-size: var(--temp-space-250);
+    margin-top: var(--temp-space-200);
+    display: inline-block;
+    transition: all 0.3s ease;
+    border: RoyalBlue 1px solid;
+}
+.download-btn:hover {
+  background-color: RoyalBlue;
+   color: var(--temp-white);
+}
+.print-btn {
+    background-color: #555555 !important;
+    color: var(--temp-white);
+    border-radius: var(--temp-space-100);
+    font-size: var(--temp-space-250);
+    margin-top: var(--temp-space-200);
+    display: inline-block;
+    transition: all 0.3s ease;
+    border: var(--temp-primary) 1px solid;
+}
+
+.print-btn:hover {
+  background-color: #9e9e9e !important;
+   color: var(--temp-white);
+}
+
+
 /* Responsive CSS Here */
 @media only screen and (min-width: 992px) {
 

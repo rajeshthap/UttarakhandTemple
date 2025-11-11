@@ -9,27 +9,27 @@ const CompletedPuja = () => {
 
   // Original full pooja list
   const poojas = [
-    {
-      id: 1,
-      pandit_name: "Ramesh Sharma",
-      pooja_name: "Rudrabhishek Puja",
-      pooja_price: 1500,
-      status: "Completed",
-    },
-    {
-      id: 2,
-      pandit_name: "Suresh Gupta",
-      pooja_name: "Maha Mrityunjaya Jaap",
-      pooja_price: 2500,
-      status: "Completed",
-    },
-    {
-      id: 3,
-      pandit_name: "Amit Verma",
-      pooja_name: "Satyanarayan Katha",
-      pooja_price: 1800,
-      status: "Completed",
-    },
+    // {
+    //   id: 1,
+    //   pandit_name: "Ramesh Sharma",
+    //   pooja_name: "Rudrabhishek Puja",
+    //   pooja_price: 1500,
+    //   status: "Completed",
+    // },
+    // {
+    //   id: 2,
+    //   pandit_name: "Suresh Gupta",
+    //   pooja_name: "Maha Mrityunjaya Jaap",
+    //   pooja_price: 2500,
+    //   status: "Completed",
+    // },
+    // {
+    //   id: 3,
+    //   pandit_name: "Amit Verma",
+    //   pooja_name: "Satyanarayan Katha",
+    //   pooja_price: 1800,
+    //   status: "Completed",
+    // },
   ];
 
   // Filtered list (for search results)

@@ -9,6 +9,7 @@ import { MdOutlineDeleteForever } from "react-icons/md";
 import { FiEdit } from "react-icons/fi";
 import { FaRegTimesCircle } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { useAuth } from "../../../GlobleAuth/AuthContext";
 
 
 const poojaOptions = [
@@ -89,9 +90,9 @@ const poojaOptions = [
 ];
 
 const AddPuja = () => {
-  const panditId = "PAN/2025/56779";
+  const { uniqueId } = useAuth();
+  const panditId = uniqueId;
   const BASE_API = "https://mahadevaaya.com/backend/api/get-pandit-pooja/";
-
   const [panditName, setPanditName] = useState("");
   const [poojas, setPoojas] = useState([]);
   const [filteredPoojas, setFilteredPoojas] = useState([]);

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, forwardRef } from "react";
-import { InputGroup, Modal } from "react-bootstrap";
+import React, { useState, useEffect, forwardRef, useMemo } from "react";
+import { InputGroup, Modal, Badge } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Accordion, Button, Col, Container, Row, Form } from "react-bootstrap";
@@ -35,7 +35,7 @@ import DurgaPooja from "../../src/assets/images/durga-pooja.jpg";
 import Brihaspati from "../../src/assets/images/Brihaspati.png";
 import Ekadashi from "../../src/assets/images/ekadashi-vrat.webp";
 import GodhBharai from "../../src/assets/images/maxresdefault.jpg";
-import Haldi from "../../src/assets/images/Haldi-Ceremony.webp";
+import Haldi from "../../src/assets/images/Haldi.jpg"
 import Birthday from "../../src/assets/images/birthday-janamdin-puja.jpeg"
 import Mahalakshmi from "../../src/assets/images/Mahalakshmi.jpg";
 import Vastu from "../../src/assets/images/Vishnu-Sahasranamam.webp";
@@ -52,10 +52,10 @@ import VarahiDeviPujadevi from "../../src/assets/images/Varahi-Devi-Puja-devi.we
 import ChhotiDiwali from "../../src/assets/images/ChhotiDiwali.avif";
 import KaliPuja from "../../src/assets/images/kalipuja.webp";
 import Ganeshpuja from "../../src/assets/images/ganeshpuja.webp";
-import BarsiPuja from "../../src/assets/images/BarsiPuja.jpeg";
-import AnnakutPuja from "../../src/assets/images/Annakut.webp";
-import BhaiDuj from "../../src/assets/images/bhai-dooj.webp";
-import ChhopdaPuja from "../../src/assets/images/chhopdapuja.jpg";
+import BarsiPuja from "../assets/images/BarsiPuja.jpeg";
+import AnnakutPuja from "../assets/images/Annakut.webp";
+import BhaiDuj from "../assets/images/bhai-dooj.webp";
+import ChhopdaPuja from "../assets/images/chhopdapuja.jpg";
 import PindDaan from "../assets/images/PindDaan.jpeg";
 import TarpanShradh from "../assets/images/TarpanShradh.jpeg";
 import GarudPuran from "../assets/images/GarudPuran.jpeg"
@@ -83,7 +83,7 @@ import MahaMrityunjayaJaapPuja from "../assets/images/MahaMrityunjayaJaapPuja.jp
 import GayatriMantraJaapPuja from "../assets/images/GayatriMantraJaapPuja.jpeg";
 import SantanGopalMantraJaap from "../assets/images/SantanGopalMantraJaap.jpeg";
 import ShaniDoshNivaranJaap from "../assets/images/DrishtiDurgaHoma.jpeg";
-import RahuGrahaShanti from "../assets/images/RahuGrahaShanti.jpeg";
+import RahuGrahaShanti from "../../src/assets/images/RahuGrahaShanti.jpeg";
 import SampoornaSunderkandPaath from "../assets/images/SampoornaSunderkandPaath.jpeg";
 import AkhandRamayana from "../assets/images/AkhandRamayana.jpeg";
 import HanumanChalisaPaath from "../assets/images/HanumanChalisaPaath.jpeg";
@@ -214,11 +214,7 @@ const cardData = [
   },
   { id: "27", title: "Karwa Chauth Puja", text: "करवा चौथ पूजा", img: Karwachat, },
   {
-    id: "28",
-    title: "Diwali Lakshmi Puja",
-    text: "दीवाली लक्ष्मी पूजा",
-    img: DiwaliLakshmi,
-  },
+    id: "28", title: "Diwali Lakshmi Puja", text: "दीवाली लक्ष्मी पूजा", img: DiwaliLakshmi, },
   { id: "29", title: "Dhanteras Puja", text: "धनतेरस पूजा", img: Dhanteras, },
   {
     id: "30",
@@ -451,10 +447,48 @@ const PanditBooking = () => {
   // pagination states
   const itemsPerPage = 8;
   const [currentPage, setCurrentPage] = useState(1);
+  
+  // Add search and filter states
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterCategory, setFilterCategory] = useState("");
+
+  // Helper function to get category based on ID
+  const getCategory = (id) => {
+    const idNum = parseInt(id);
+    if (idNum >= 0 && idNum <= 39) return "Puja / Sanskar";
+    if (idNum >= 40 && idNum <= 50) return "Havans";
+    if (idNum >= 51 && idNum <= 65) return "Jaaps / Paths";
+    if (idNum >= 66 && idNum <= 73) return "Pitru Paksha / Shradh";
+    return "Other";
+  };
+
+  // Filter poojas based on search query and category
+  const filteredCardData = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    return cardData.filter((item) => {
+      const title = (item.title || "").toString().toLowerCase();
+      const text = (item.text || "").toString().toLowerCase();
+      const category = getCategory(item.id);
+      
+      // Filter by category if selected
+      if (filterCategory && category !== filterCategory) return false;
+      
+      // If no search query, return all items (with category filter applied if any)
+      if (!query) return true;
+      
+      // Search in both title and text
+      return title.includes(query) || text.includes(query);
+    });
+  }, [cardData, searchQuery, filterCategory]);
+
+  // Reset pagination when search or filter changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, filterCategory]);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentCards = cardData.slice(indexOfFirstItem, indexOfLastItem);
+  const currentCards = filteredCardData.slice(indexOfFirstItem, indexOfLastItem);
 
   const handleShow = () => setShow(true);
   const handleLoginRegister = () => setIsLoggedIn(true);
@@ -526,6 +560,34 @@ const PanditBooking = () => {
         <Container className="temp-container temp-container-details">
           <h1>Pandit Booking</h1>
           <p>Experienced Pandit Ji for every Puja, just a click away</p>
+
+          {/* Add search and filter UI */}
+          <Row className="mb-3">
+            <Col md={6} className="mb-2">
+              <Form.Control 
+                className="temp-form-control-option"
+                placeholder="Search by pooja name or type (e.g., havan, path, puja)..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </Col>
+            <Col md={3} className="mb-2">
+              <Form.Select
+                value={filterCategory}
+                onChange={(e) => setFilterCategory(e.target.value)} 
+                className="temp-form-control-option"
+              >
+                <option value="">All Categories</option>
+                <option value="Puja / Sanskar">Puja / Sanskar</option>
+                <option value="Havans">Havans</option>
+                <option value="Jaaps / Paths">Jaaps / Paths</option>
+                <option value="Pitru Paksha / Shradh">Pitru Paksha / Shradh</option>
+              </Form.Select>
+            </Col>
+            <Col md={3} className="d-flex justify-content-end align-items-center">
+              <small className="text-muted">{filteredCardData.length} poojas</small>
+            </Col>
+          </Row>
 
           <Row>
             {/* Left Side Cards */}
@@ -611,6 +673,12 @@ const PanditBooking = () => {
                       <div className="card-text-temp">
                         <h5>{item.title}</h5>
                         <h6>{item.text}</h6>
+                        {/* Add category badge */}
+                        <div className="mb-2">
+                          {/* <Badge bg="secondary" className="me-2">
+                            {getCategory(item.id)}
+                          </Badge> */}
+                        </div>
                       </div>
                     </div>
                     {/* Popup Modal for Register/Login message */}
@@ -665,7 +733,7 @@ const PanditBooking = () => {
 
               {/* Pagination */}
               <PagingNation
-                totalItems={cardData.length}
+                totalItems={filteredCardData.length}
                 itemsPerPage={itemsPerPage}
                 onPageChange={setCurrentPage}
               />
