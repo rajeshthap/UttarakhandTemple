@@ -3,13 +3,17 @@ import "../../../assets/CSS/LeftNav.css";
 import TempleLeftNav from "../TempleLeftNav";
 import SearchFeature from "./SearchFeature";
 import { BASE_URLL } from "../../../Component/BaseURL";
-import { Button, Modal, Form, Row,Col, Breadcrumb } from "react-bootstrap";
+import { Button, Modal, Form, Row, Col, Breadcrumb } from "react-bootstrap";
 import axios from "axios";
 import { useAuth } from "../../GlobleAuth/AuthContext";
 import LocationState from "../../userregistration/LocationState";
 import UploadFile from "../../../assets/images/upload-icon.png";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import { FaPrint } from "react-icons/fa6";
+import { FaFileExcel } from "react-icons/fa";
 
 const ManageTemple = () => {
   const [temples, setTemples] = useState([]);
@@ -225,6 +229,87 @@ const ManageTemple = () => {
     }
   };
 
+  const handlePrint = () => {
+    const actionColIndex = 6; // "Action" column index (0-based)
+    const table = document.querySelector(".temp-rwd-table").cloneNode(true);
+
+    // Remove "Action" column from header and rows
+    table.querySelectorAll("tr").forEach((row) => {
+      const cells = row.querySelectorAll("th, td");
+      if (cells[actionColIndex]) cells[actionColIndex].remove();
+    });
+
+    const newWindow = window.open("", "_blank");
+    newWindow.document.write(`
+      <html>
+      <head>
+        <title>Temple List</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 20px; }
+          h2 { text-align: center; }
+          table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+          th, td { border: 1px solid #ccc; padding: 8px; text-align: left; font-size: 13px; }
+          th { background-color: #f4f4f4; font-weight: bold; }
+          tr:nth-child(even) { background-color: #fafafa; }
+        </style>
+      </head>
+      <body>
+        <h2>Temple List</h2>
+        ${table.outerHTML}
+      </body>
+      </html>
+    `);
+    newWindow.document.close();
+    newWindow.print();
+  };
+
+  const handleDownload = () => {
+    if (filteredTemples.length === 0) {
+      window.alert("No temple records to download!");
+      return;
+    }
+
+    const data = filteredTemples.map((temple, index) => ({
+      "S.No": index + 1,
+      "Temple Name": temple.temple_name,
+      "Temple Address": temple.temple_address,
+      City: temple.city,
+      State: temple.state,
+      Country: temple.country,
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(data);
+
+    // Style header (bold + blue)
+    const range = XLSX.utils.decode_range(ws["!ref"]);
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const cellRef = XLSX.utils.encode_cell({ r: 0, c: C });
+      if (!ws[cellRef]) continue;
+      ws[cellRef].s = {
+        font: { bold: true, color: { rgb: "FFFFFF" } },
+        fill: { fgColor: { rgb: "2B5797" } },
+        alignment: { horizontal: "center", vertical: "center" },
+      };
+    }
+
+    // Set column widths
+    ws["!cols"] = [
+      { wch: 6 },
+      { wch: 25 },
+      { wch: 30 },
+      { wch: 20 },
+      { wch: 20 },
+      { wch: 20 },
+    ];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Temple List");
+
+    const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    saveAs(new Blob([wbout], { type: "application/octet-stream" }), "Temple_List.xlsx");
+  };
+
+
   return (
     <div className="dashboard-wrapper">
       <aside className="temp-sidebar">
@@ -245,8 +330,20 @@ const ManageTemple = () => {
             <div>
               <SearchFeature onSearch={handleSearch} />
             </div>
+           
+
 
           </div>
+
+           <div className="mt-2 vmb-2 text-end">
+              <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
+                <FaPrint /> Print
+              </Button>
+
+              <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
+                <FaFileExcel />Download
+              </Button>
+            </div>
 
           <Row className="mt-3">
             <div className="col-md-12">
@@ -277,14 +374,14 @@ const ManageTemple = () => {
                             size="sm"
                             onClick={() => handleEdit(temple)}
                           >
-                          <FiEdit className="add-edit-icon" />  Edit
+                            <FiEdit className="add-edit-icon" />  Edit
                           </Button>{" "}
                           <Button
                             className="event-click-btn-danger"
                             size="sm"
                             onClick={() => handleDelete(temple.temple_id)}
                           >
-                          <RiDeleteBin6Line className="add-edit-icon" />   Delete
+                            <RiDeleteBin6Line className="add-edit-icon" />   Delete
                           </Button>
                         </td>
                       </tr>
@@ -301,7 +398,7 @@ const ManageTemple = () => {
             </div>
           </Row>
 
-         {/* Edit Modal */}
+          {/* Edit Modal */}
           <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered>
             <Modal.Header closeButton>
               <Modal.Title>Edit Temple</Modal.Title>

@@ -13,6 +13,10 @@ import SearchFeature from "../../../temp_dashboard/temp_innerdashboard/SearchFea
 import PanditLeftNav from "../../PanditLeftNav";
 import axios from "axios";
 import { useAuth } from "../../../GlobleAuth/AuthContext";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import { FaPrint } from "react-icons/fa6";
+import { FaFileExcel } from "react-icons/fa";
 
 const PendingRequests = () => {
   const { uniqueId } = useAuth();
@@ -114,6 +118,101 @@ const PendingRequests = () => {
     }
   };
 
+  const handlePrint = () => {
+    const actionColIndex = 7; // "Action" column index (0-based)
+    const table = document.querySelector(".pandit-rwd-table").cloneNode(true);
+
+    // remove Action column from header & rows
+    table.querySelectorAll("tr").forEach((row) => {
+      const cells = row.querySelectorAll("th, td");
+      if (cells[actionColIndex]) cells[actionColIndex].remove();
+    });
+
+    const newWindow = window.open("", "_blank");
+    newWindow.document.write(`
+      <html>
+      <head>
+        <title>Pending Booking List</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 20px; }
+          h2 { text-align: center; }
+          table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+          th, td { border: 1px solid #ccc; padding: 8px; text-align: left; font-size: 13px; }
+          th { background-color: #f4f4f4; font-weight: bold; }
+          tr:nth-child(even) { background-color: #fafafa; }
+        </style>
+      </head>
+      <body>
+        <h2>Pending Booking List</h2>
+        ${table.outerHTML}
+      </body>
+      </html>
+    `);
+    newWindow.document.close();
+    newWindow.print();
+  };
+
+  //  Styled Excel Download (no "Action" column)
+  const handleDownload = () => {
+    if (filteredRequests.length === 0) {
+      window.alert("No pending booking records to download!");
+      return;
+    }
+
+    const data = filteredRequests.map((req, index) => {
+      const pandit = req.number_of_pandits.find(
+        (p) => p.pandit_id === uniqueId
+      );
+      return {
+        "S.No": index + 1,
+        "Full Name": req.full_name,
+        "Mobile Number": req.mobile_number,
+        "Pooja Type": req.pooja_type,
+        Location: req.location,
+        "Date & Time": new Date(req.date_and_time).toLocaleString(),
+        Status: pandit?.status || "pending",
+      };
+    });
+
+    const ws = XLSX.utils.json_to_sheet(data);
+
+    const range = XLSX.utils.decode_range(ws["!ref"]);
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const cellRef = XLSX.utils.encode_cell({ r: 0, c: C });
+      if (!ws[cellRef]) continue;
+      ws[cellRef].s = {
+        font: { bold: true, color: { rgb: "FFFFFF" }, sz: 12 },
+        fill: { fgColor: { rgb: "2B5797" } },
+        alignment: { horizontal: "center", vertical: "center" },
+        border: {
+          top: { style: "thin", color: { rgb: "999999" } },
+          bottom: { style: "thin", color: { rgb: "999999" } },
+          left: { style: "thin", color: { rgb: "999999" } },
+          right: { style: "thin", color: { rgb: "999999" } },
+        },
+      };
+    }
+
+    ws["!cols"] = [
+      { wch: 6 },
+      { wch: 25 },
+      { wch: 20 },
+      { wch: 25 },
+      { wch: 25 },
+      { wch: 30 },
+      { wch: 15 },
+    ];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Pending Bookings");
+
+    const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    saveAs(
+      new Blob([wbout], { type: "application/octet-stream" }),
+      "Pending_Booking_List.xlsx"
+    );
+  };
+
   return (
     <>
       <div className="dashboard-wrapper">
@@ -136,7 +235,18 @@ const PendingRequests = () => {
               <div>
                 <SearchFeature onSearch={handleSearch} />
               </div>
+            
             </div>
+
+              <div className="mt-2 vmb-2 text-end">
+                <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
+                  <FaPrint /> Print
+                </Button>
+
+                <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
+                  <FaFileExcel />Download
+                </Button>
+              </div>
 
             {/*  Table Section */}
             <Row className="mt-3">
@@ -273,8 +383,8 @@ const PendingRequests = () => {
                             value={
                               selectedRequest.date_and_time
                                 ? new Date(
-                                    selectedRequest.date_and_time
-                                  ).toLocaleString()
+                                  selectedRequest.date_and_time
+                                ).toLocaleString()
                                 : ""
                             }
                             disabled

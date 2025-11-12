@@ -3,7 +3,7 @@ import "../../../assets/CSS/LeftNav.css";
 import TempleLeftNav from "../TempleLeftNav";
 import SearchFeature from "./SearchFeature";
 import { BASE_URLL } from "../../../Component/BaseURL";
-import { Button, Modal, Form, Row, Col, InputGroup,Breadcrumb } from "react-bootstrap";
+import { Button, Modal, Form, Row, Col, InputGroup, Breadcrumb } from "react-bootstrap";
 import axios from "axios";
 import { useAuth } from "../../GlobleAuth/AuthContext";
 import UploadFile from "../../../assets/images/upload-icon.png";
@@ -12,6 +12,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import { FaCalendar } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import { FaPrint } from "react-icons/fa6";
+import { FaFileExcel } from "react-icons/fa";
+
 
 // Custom date picker input with calendar icon
 const CustomDatePickerInput = forwardRef(({ value, onClick, placeholder }, ref) => (
@@ -33,7 +38,7 @@ const CustomDatePickerInput = forwardRef(({ value, onClick, placeholder }, ref) 
 const ManageFestival = () => {
   const [festivals, setFestivals] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [filteredFestivals, setFilteredFestivals] = useState([]); 
+  const [filteredFestivals, setFilteredFestivals] = useState([]);
   const [currentFestival, setCurrentFestival] = useState({});
   const [loading, setLoading] = useState(false);
   const [dragging, setDragging] = useState(false);
@@ -227,7 +232,86 @@ const ManageFestival = () => {
     }
   };
 
-  // ================= RENDER ==================
+  const handlePrint = () => {
+    const actionColIndex = 6; // "Action" column index (0-based)
+    const table = document.querySelector(".temp-rwd-table").cloneNode(true);
+
+    // Remove "Action" column from header and rows
+    table.querySelectorAll("tr").forEach((row) => {
+      const cells = row.querySelectorAll("th, td");
+      if (cells[actionColIndex]) cells[actionColIndex].remove();
+    });
+
+    const newWindow = window.open("", "_blank");
+    newWindow.document.write(`
+    <html>
+    <head>
+      <title>Festival List</title>
+      <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h2 { text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; font-size: 13px; }
+        th { background-color: #f4f4f4; font-weight: bold; }
+        tr:nth-child(even) { background-color: #fafafa; }
+      </style>
+    </head>
+    <body>
+      <h2>Festival List</h2>
+      ${table.outerHTML}
+    </body>
+    </html>
+  `);
+    newWindow.document.close();
+    newWindow.print();
+  };
+
+  const handleDownload = () => {
+    if (filteredFestivals.length === 0) {
+      window.alert("No festival records to download!");
+      return;
+    }
+
+    const data = filteredFestivals.map((festival, index) => ({
+      "S.No": index + 1,
+      "Festival Name": festival.festival_name,
+      "Temple Name": festival.temple_name,
+      "Start Date": new Date(festival.start_date_time).toLocaleString(),
+      "End Date": new Date(festival.end_date_time).toLocaleString(),
+      Description: festival.description,
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(data);
+
+    // Style header (bold + blue)
+    const range = XLSX.utils.decode_range(ws["!ref"]);
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const cellRef = XLSX.utils.encode_cell({ r: 0, c: C });
+      if (!ws[cellRef]) continue;
+      ws[cellRef].s = {
+        font: { bold: true, color: { rgb: "FFFFFF" } },
+        fill: { fgColor: { rgb: "2B5797" } },
+        alignment: { horizontal: "center", vertical: "center" },
+      };
+    }
+
+    // Set column widths
+    ws["!cols"] = [
+      { wch: 6 },
+      { wch: 25 },
+      { wch: 25 },
+      { wch: 25 },
+      { wch: 25 },
+      { wch: 40 },
+    ];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Festival List");
+
+    const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    saveAs(new Blob([wbout], { type: "application/octet-stream" }), "Festival_List.xlsx");
+  };
+
   return (
     <div className="dashboard-wrapper">
       <aside className="temp-sidebar">
@@ -237,20 +321,28 @@ const ManageFestival = () => {
       <main className="main-container-box">
         <div className="content-box">
           <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
-                                     <h1 className="fw500">
-                                       <Breadcrumb>
-                                         <Breadcrumb.Item href="/TempleDashBoard">
-                                           <span className="fw700h1">DashBoard</span>
-                                         </Breadcrumb.Item>
-                                         <Breadcrumb.Item active>Manage Festival</Breadcrumb.Item>
-                                       </Breadcrumb>
-                                     </h1>
-                                     <div>
-                <SearchFeature onSearch={handleSearch} />
-              </div>
-                     
-                                     
-                                   </div>
+            <h1 className="fw500">
+              <Breadcrumb>
+                <Breadcrumb.Item href="/TempleDashBoard">
+                  <span className="fw700h1">DashBoard</span>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item active>Manage Festival</Breadcrumb.Item>
+              </Breadcrumb>
+            </h1>
+            <div>
+              <SearchFeature onSearch={handleSearch} />
+            </div>
+           </div>
+
+           <div className="mt-2 vmb-2 text-end">
+              <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
+                <FaPrint /> Print
+              </Button>
+
+              <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
+                <FaFileExcel />Download
+              </Button>
+            </div>
           <Row className="mt-3">
 
             <div className="col-md-12">
@@ -285,14 +377,14 @@ const ManageFestival = () => {
                             size="sm"
                             onClick={() => handleEdit(festival)}
                           >
-                           <FiEdit className="add-edit-icon" /> Edit
+                            <FiEdit className="add-edit-icon" /> Edit
                           </Button>{" "}
                           <Button
                             className="event-click-btn-danger"
                             size="sm"
                             onClick={() => handleDelete(festival)}
                           >
-                           <RiDeleteBin6Line className="add-edit-icon" />   Delete
+                            <RiDeleteBin6Line className="add-edit-icon" />   Delete
                           </Button>
                         </td>
                       </tr>

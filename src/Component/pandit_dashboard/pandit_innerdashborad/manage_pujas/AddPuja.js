@@ -10,7 +10,10 @@ import { FiEdit } from "react-icons/fi";
 import { FaRegTimesCircle } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useAuth } from "../../../GlobleAuth/AuthContext";
-
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import { FaPrint } from "react-icons/fa6";
+import { FaFileExcel } from "react-icons/fa";
 
 const poojaOptions = [
   { pooja_name: "Annaprashan Sanskar Puja" },
@@ -141,7 +144,7 @@ const AddPuja = () => {
       setFilteredPoojas(filtered);
     }
   };
-  
+
 
   // ================== HANDLE FORM ==================
   const handleChange = (e) => {
@@ -228,7 +231,89 @@ const AddPuja = () => {
     }
   };
 
-  // ================== RENDER ==================
+
+  const handlePrint = () => {
+    const actionColIndex = 4; // "Action" column index (0-based)
+    const table = document.querySelector(".pandit-rwd-table").cloneNode(true);
+
+    table.querySelectorAll("tr").forEach((row) => {
+      const cells = row.querySelectorAll("th, td");
+      if (cells[actionColIndex]) cells[actionColIndex].remove();
+    });
+
+    const newWindow = window.open("", "_blank");
+    newWindow.document.write(`
+      <html>
+        <head>
+          <title>Pandit Pooja List</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            h2 { text-align: center; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { border: 1px solid #ccc; padding: 8px; text-align: left; font-size: 13px; }
+            th { background-color: #f4f4f4; font-weight: bold; }
+            tr:nth-child(even) { background-color: #fafafa; }
+          </style>
+        </head>
+        <body>
+          <h2>Pandit Pooja List</h2>
+          ${table.outerHTML}
+        </body>
+      </html>
+    `);
+    newWindow.document.close();
+    newWindow.print();
+  };
+
+
+  const handleDownload = () => {
+    if (filteredPoojas.length === 0) {
+      window.alert("No Pooja records to download!");
+      return;
+    }
+
+    const data = filteredPoojas.map((pooja, index) => ({
+      "S.No": index + 1,
+      "Pandit Name": panditName,
+      "Pooja Name": pooja.pooja_name,
+      "Pooja Price (₹)": pooja.pooja_price,
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(data);
+    const range = XLSX.utils.decode_range(ws["!ref"]);
+
+    // Style header
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const cellRef = XLSX.utils.encode_cell({ r: 0, c: C });
+      if (!ws[cellRef]) continue;
+      ws[cellRef].s = {
+        font: { bold: true, color: { rgb: "FFFFFF" }, sz: 12 },
+        fill: { fgColor: { rgb: "2B5797" } },
+        alignment: { horizontal: "center", vertical: "center" },
+        border: {
+          top: { style: "thin", color: { rgb: "999999" } },
+          bottom: { style: "thin", color: { rgb: "999999" } },
+          left: { style: "thin", color: { rgb: "999999" } },
+          right: { style: "thin", color: { rgb: "999999" } },
+        },
+      };
+    }
+
+    ws["!cols"] = [
+      { wch: 6 },
+      { wch: 25 },
+      { wch: 30 },
+      { wch: 20 },
+    ];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Pooja List");
+    const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    saveAs(new Blob([wbout], { type: "application/octet-stream" }), "Pandit_Pooja_List.xlsx");
+  };
+
+
+
   return (
     <>
       <div className="dashboard-wrapper">
@@ -252,18 +337,36 @@ const AddPuja = () => {
                 {/*  Connected Search Feature */}
                 <SearchFeature onSearch={handleSearch} />
               </div>
+
+
             </div>
 
-            {/* TABLE SECTION */}
-            <Row className="mt-3">
-              <div className="col-md-12">
-                <div className="d-flex justify-content-end mb-2">
-                  <Button className="event-click-btn" onClick={handleAdd}>
-                    Add New Pooja
-                  </Button>
-                </div>
 
-                <table className="pandit-rwd-table">
+
+
+            <Row className="d-flex ">
+              <Col className="">
+                <Button className="event-click-btn" onClick={handleAdd}>
+                  Add New Pooja
+                </Button>
+              </Col>
+              <Col className="mt-2 vmb-2 text-end">
+                <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
+                  <FaPrint /> Print
+                </Button>
+
+                <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
+                  <FaFileExcel />Download
+                </Button>
+              </Col>
+
+
+            </Row>
+            {/* TABLE SECTION */}
+            <Row className="mt-2">
+              <div className="col-md-12">
+
+                  <table className="pandit-rwd-table">
                   <tbody>
                     <tr>
                       <th>S.No</th>
@@ -286,16 +389,16 @@ const AddPuja = () => {
                               size="sm"
                               onClick={() => handleEdit(pooja)}
                             >
-                             <FiEdit className="add-edit-icon" />
-             Edit
+                              <FiEdit className="add-edit-icon" />
+                              Edit
                             </Button>{" "}
                             <Button
                               className="event-click-btn-danger"
                               size="sm"
                               onClick={() => handleDelete(pooja)}
                             >
-                            <RiDeleteBin6Line className="add-edit-icon" /> 
-                             Delete
+                              <RiDeleteBin6Line className="add-edit-icon" />
+                              Delete
                             </Button>
                           </td>
                         </tr>

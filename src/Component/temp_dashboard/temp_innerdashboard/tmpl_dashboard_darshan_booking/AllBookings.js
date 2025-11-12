@@ -5,6 +5,10 @@ import SearchFeature from "../SearchFeature";
 import { Form, Button, Modal, Row, Col, Breadcrumb } from "react-bootstrap";
 import axios from "axios";
 import { useAuth } from "../../../GlobleAuth/AuthContext";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import { FaPrint } from "react-icons/fa6";
+import { FaFileExcel } from "react-icons/fa";
 
 const AllBooking = () => {
   const { uniqueId } = useAuth();
@@ -108,6 +112,96 @@ const AllBooking = () => {
     }
   };
 
+  const handlePrint = () => {
+    const actionColIndex = 7; // Action column index
+    const table = document.querySelector(".temp-rwd-table").cloneNode(true);
+
+    table.querySelectorAll("tr").forEach((row) => {
+      const cells = row.querySelectorAll("th, td");
+      if (cells[actionColIndex]) cells[actionColIndex].remove();
+    });
+
+    const newWindow = window.open("", "_blank");
+    newWindow.document.write(`
+      <html>
+      <head>
+        <title>All Booking List</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 20px; }
+          h2 { text-align: center; }
+          table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+          th, td { border: 1px solid #ccc; padding: 8px; text-align: left; font-size: 13px; }
+          th { background-color: #f4f4f4; font-weight: bold; }
+          tr:nth-child(even) { background-color: #fafafa; }
+        </style>
+      </head>
+      <body>
+        <h2>All Booking List</h2>
+        ${table.outerHTML}
+      </body>
+      </html>
+    `);
+    newWindow.document.close();
+    newWindow.print();
+  };
+
+  //  EXCEL DOWNLOAD (Styled)
+  const handleDownload = () => {
+    if (filteredBookings.length === 0) {
+      window.alert("No booking records to download!");
+      return;
+    }
+
+    const data = filteredBookings.map((booking, index) => ({
+      "S.No": index + 1,
+      "Darshan & Pooja ID": booking.darshan_pooja_id,
+      "Temple Name": booking.temple_name,
+      "Devotee Name": booking.full_name,
+      "Devotee Email": booking.email,
+      "Devotee Mobile": booking.mobile_number,
+      Status: booking.status,
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(data);
+
+    // Style header
+    const range = XLSX.utils.decode_range(ws["!ref"]);
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const cellRef = XLSX.utils.encode_cell({ r: 0, c: C });
+      if (!ws[cellRef]) continue;
+      ws[cellRef].s = {
+        font: { bold: true, color: { rgb: "FFFFFF" }, sz: 12 },
+        fill: { fgColor: { rgb: "2B5797" } },
+        alignment: { horizontal: "center", vertical: "center" },
+        border: {
+          top: { style: "thin", color: { rgb: "999999" } },
+          bottom: { style: "thin", color: { rgb: "999999" } },
+          left: { style: "thin", color: { rgb: "999999" } },
+          right: { style: "thin", color: { rgb: "999999" } },
+        },
+      };
+    }
+
+    ws["!cols"] = [
+      { wch: 6 },
+      { wch: 25 },
+      { wch: 25 },
+      { wch: 25 },
+      { wch: 30 },
+      { wch: 20 },
+      { wch: 15 },
+    ];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "All Bookings");
+
+    const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    saveAs(
+      new Blob([wbout], { type: "application/octet-stream" }),
+      "All_Booking_List.xlsx"
+    );
+  };
+
   return (
     <div className="dashboard-wrapper">
       {/* Sidebar */}
@@ -130,9 +224,17 @@ const AllBooking = () => {
             <div>
               <SearchFeature onSearch={handleSearch} />
             </div>
+           </div>
 
+           <div className="mt-2 vmb-2 text-end">
+              <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
+                <FaPrint /> Print
+              </Button>
 
-          </div>
+              <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
+                <FaFileExcel />Download
+              </Button>
+            </div>
 
           {/* Table */}
           <Row className="mt-3">

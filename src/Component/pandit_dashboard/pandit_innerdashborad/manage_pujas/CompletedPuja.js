@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import "../../../../assets/CSS/PanditLeftNav.css";
-import { Breadcrumb, Row, Spinner } from "react-bootstrap";
+import { Breadcrumb, Row, Spinner,Button } from "react-bootstrap";
 import SearchFeature from "../../../temp_dashboard/temp_innerdashboard/SearchFeature";
 import PanditLeftNav from "../../PanditLeftNav";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import { FaPrint } from "react-icons/fa6";
+import { FaFileExcel } from "react-icons/fa";
 
 const CompletedPuja = () => {
   const [loading] = useState(false);
@@ -57,6 +61,95 @@ const CompletedPuja = () => {
     }
   };
 
+  const handlePrint = () => {
+    const table = document.querySelector(".pandit-rwd-table").cloneNode(true);
+
+    const newWindow = window.open("", "_blank");
+    newWindow.document.write(`
+      <html>
+      <head>
+        <title>Completed Puja List</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 20px; }
+          h2 { text-align: center; }
+          table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+          th, td { border: 1px solid #ccc; padding: 8px; text-align: left; font-size: 13px; }
+          th { background-color: #f4f4f4; font-weight: bold; }
+          tr:nth-child(even) { background-color: #fafafa; }
+          tfoot td { font-weight: bold; }
+        </style>
+      </head>
+      <body>
+        <h2>Completed Puja List</h2>
+        ${table.outerHTML}
+      </body>
+      </html>
+    `);
+    newWindow.document.close();
+    newWindow.print();
+  };
+
+  //  Styled Excel Download
+  const handleDownload = () => {
+    if (filteredPoojas.length === 0) {
+      window.alert("No completed pujas to download!");
+      return;
+    }
+
+    const data = filteredPoojas.map((pooja, index) => ({
+      "S.No": index + 1,
+      "Pandit Name": pooja.pandit_name,
+      "Puja Name": pooja.pooja_name,
+      "Puja Price (₹)": pooja.pooja_price,
+      Status: pooja.status,
+    }));
+
+    // Add Total row at bottom
+    data.push({
+      "S.No": "",
+      "Pandit Name": "",
+      "Puja Name": "Total Amount:",
+      "Puja Price (₹)": totalAmount,
+      Status: "",
+    });
+
+    const ws = XLSX.utils.json_to_sheet(data);
+
+    const range = XLSX.utils.decode_range(ws["!ref"]);
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const cellRef = XLSX.utils.encode_cell({ r: 0, c: C });
+      if (!ws[cellRef]) continue;
+      ws[cellRef].s = {
+        font: { bold: true, color: { rgb: "FFFFFF" }, sz: 12 },
+        fill: { fgColor: { rgb: "2B5797" } },
+        alignment: { horizontal: "center", vertical: "center" },
+        border: {
+          top: { style: "thin", color: { rgb: "999999" } },
+          bottom: { style: "thin", color: { rgb: "999999" } },
+          left: { style: "thin", color: { rgb: "999999" } },
+          right: { style: "thin", color: { rgb: "999999" } },
+        },
+      };
+    }
+
+    ws["!cols"] = [
+      { wch: 6 },
+      { wch: 25 },
+      { wch: 30 },
+      { wch: 20 },
+      { wch: 15 },
+    ];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Completed Pujas");
+
+    const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    saveAs(
+      new Blob([wbout], { type: "application/octet-stream" }),
+      "Completed_Puja_List.xlsx"
+    );
+  };
+
   return (
     <>
       <div className="dashboard-wrapper">
@@ -80,7 +173,18 @@ const CompletedPuja = () => {
               <div>
                 <SearchFeature onSearch={handleSearch} />
               </div>
+            
             </div>
+
+              <div className="mt-2 vmb-2 text-end">
+                <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
+                  <FaPrint /> Print
+                </Button>
+
+                <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
+                  <FaFileExcel />Download
+                </Button>
+              </div>
 
             {/* Table */}
             <Row className="mt-3">
@@ -108,12 +212,12 @@ const CompletedPuja = () => {
                         ))}
 
                         <tr className="fw-bold">
-    <td colSpan="3" className="text-end text-end text-md-end">
-    Total Amount:
-  </td>
-  <td className="text-end text-md-start">₹{totalAmount}</td>
- 
-</tr>
+                          <td colSpan="3" className="text-end text-end text-md-end">
+                            Total Amount:
+                          </td>
+                          <td className="text-end text-md-start">₹{totalAmount}</td>
+
+                        </tr>
 
                       </>
                     ) : (

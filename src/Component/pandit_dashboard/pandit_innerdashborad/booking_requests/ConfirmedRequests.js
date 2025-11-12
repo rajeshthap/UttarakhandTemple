@@ -14,6 +14,10 @@ import PanditLeftNav from "../../PanditLeftNav";
 import axios from "axios";
 import { useAuth } from "../../../GlobleAuth/AuthContext";
 import { PiArrowsCounterClockwiseBold } from "react-icons/pi";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import { FaPrint } from "react-icons/fa6";
+import { FaFileExcel } from "react-icons/fa";
 
 
 const ConfirmedRequests = () => {
@@ -117,6 +121,102 @@ const ConfirmedRequests = () => {
     }
   };
 
+  const handlePrint = () => {
+    const actionColIndex = 7; // "Action" column index (0-based)
+    const table = document.querySelector(".pandit-rwd-table").cloneNode(true);
+    table.querySelectorAll("tr").forEach((row) => {
+      const cells = row.querySelectorAll("th, td");
+      if (cells[actionColIndex]) cells[actionColIndex].remove();
+    });
+
+    const newWindow = window.open("", "_blank");
+    newWindow.document.write(`
+      <html>
+      <head>
+        <title>Confirmed Booking List</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 20px; }
+          h2 { text-align: center; }
+          table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+          th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+            font-size: 13px;
+          }
+          th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+          }
+          tr:nth-child(even) { background-color: #fafafa; }
+        </style>
+      </head>
+      <body>
+        <h2>Confirmed Booking List</h2>
+        ${table.outerHTML}
+      </body>
+      </html>
+    `);
+    newWindow.document.close();
+    newWindow.print();
+  };
+
+  //  STYLED EXCEL DOWNLOAD (Hide Action column)
+  const handleDownload = () => {
+    if (filteredBookings.length === 0) {
+      window.alert("No booking records to download!");
+      return;
+    }
+
+    const data = filteredBookings.map((booking, index) => ({
+      "S.No": index + 1,
+      "Full Name": booking.full_name,
+      "Mobile": booking.mobile_number,
+      "Pooja Type": booking.pooja_type,
+      "Location": booking.location,
+      "Date & Time": new Date(booking.date_and_time).toLocaleString(),
+      "Status": "Accepted",
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(data);
+
+    const range = XLSX.utils.decode_range(ws["!ref"]);
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const cellRef = XLSX.utils.encode_cell({ r: 0, c: C });
+      if (!ws[cellRef]) continue;
+      ws[cellRef].s = {
+        font: { bold: true, color: { rgb: "FFFFFF" }, sz: 12 },
+        fill: { fgColor: { rgb: "2B5797" } },
+        alignment: { horizontal: "center", vertical: "center" },
+        border: {
+          top: { style: "thin", color: { rgb: "999999" } },
+          bottom: { style: "thin", color: { rgb: "999999" } },
+          left: { style: "thin", color: { rgb: "999999" } },
+          right: { style: "thin", color: { rgb: "999999" } },
+        },
+      };
+    }
+
+    ws["!cols"] = [
+      { wch: 6 },
+      { wch: 25 },
+      { wch: 15 },
+      { wch: 20 },
+      { wch: 25 },
+      { wch: 25 },
+      { wch: 15 },
+    ];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Confirmed Requests");
+
+    const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    saveAs(
+      new Blob([wbout], { type: "application/octet-stream" }),
+      "Confirmed_Requests.xlsx"
+    );
+  };
+
   return (
     <>
       <div className="dashboard-wrapper">
@@ -141,7 +241,18 @@ const ConfirmedRequests = () => {
               <div>
                 <SearchFeature onSearch={handleSearch} />
               </div>
+
+              
             </div>
+            <div className="mt-2 vmb-2 text-end">
+                <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
+                  <FaPrint /> Print
+                </Button>
+
+                <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
+                  <FaFileExcel />Download
+                </Button>
+              </div>
 
             {/* Table Section */}
             <Row className="mt-3">
@@ -183,7 +294,7 @@ const ConfirmedRequests = () => {
                                 size="sm"
                                 onClick={() => handleView(booking)}
                               >
-                             <PiArrowsCounterClockwiseBold className="add-edit-icon" />   Change Status
+                                <PiArrowsCounterClockwiseBold className="add-edit-icon" />   Change Status
                               </Button>
                             </td>
                           </tr>
@@ -258,7 +369,7 @@ const ConfirmedRequests = () => {
                           />
                         </Form.Group>
                       </Col>
-                  
+
 
                       <Col md={6}>
                         <Form.Group>

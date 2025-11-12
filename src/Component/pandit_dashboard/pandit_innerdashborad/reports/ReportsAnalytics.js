@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import "../../../../assets/CSS/PanditLeftNav.css";
-import { Breadcrumb, Row, Spinner } from "react-bootstrap";
+import { Breadcrumb, Row, Spinner,Button } from "react-bootstrap";
 import SearchFeature from "../../../temp_dashboard/temp_innerdashboard/SearchFeature";
 import PanditLeftNav from "../../PanditLeftNav";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import { FaPrint } from "react-icons/fa6";
+import { FaFileExcel } from "react-icons/fa";
 
 const ReportAnalytics = () => {
   const [loading] = useState(false);
@@ -38,6 +42,106 @@ const ReportAnalytics = () => {
     0
   );
 
+   const handlePrint = () => {
+    const table = document.querySelector(".pandit-rwd-table").cloneNode(true);
+
+    // Add Total Revenue row if not in table clone
+    const totalRow = document.createElement("tr");
+    totalRow.innerHTML = `
+      <td colspan="3" style="text-align:right; font-weight:bold;">Total Revenue:</td>
+      <td colspan="2" style="font-weight:bold;">₹${totalRevenue.toLocaleString("en-IN")}</td>
+    `;
+    table.querySelector("tbody").appendChild(totalRow);
+
+    const newWindow = window.open("", "_blank");
+    newWindow.document.write(`
+      <html>
+        <head>
+          <title>Reports & Analytics</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            h2 { text-align: center; margin-bottom: 10px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+            th, td { border: 1px solid #ccc; padding: 8px; font-size: 13px; text-align: left; }
+            th { background-color: #f4f4f4; font-weight: bold; }
+            tr:nth-child(even) { background-color: #fafafa; }
+            .total-row { font-weight: bold; background-color: #f4f4f4; }
+          </style>
+        </head>
+        <body>
+          <h2>Reports & Analytics</h2>
+          ${table.outerHTML}
+        </body>
+      </html>
+    `);
+    newWindow.document.close();
+    newWindow.print();
+  };
+
+  //  STYLED EXCEL DOWNLOAD FUNCTION
+  const handleDownload = () => {
+    if (reports.length === 0) {
+      window.alert("No analytics records to download!");
+      return;
+    }
+
+    const data = reports.map((pooja, index) => ({
+      "S.No": index + 1,
+      "Pandit Name": pooja.pandit_name,
+      "Pooja Name": pooja.pooja_name,
+      "Pooja Price (₹)": pooja.pooja_price,
+      Status: pooja.status,
+    }));
+
+    // Add Total Row
+    data.push({
+      "S.No": "",
+      "Pandit Name": "",
+      "Pooja Name": "Total Revenue",
+      "Pooja Price (₹)": totalRevenue,
+      Status: "",
+    });
+
+    const ws = XLSX.utils.json_to_sheet(data);
+    const range = XLSX.utils.decode_range(ws["!ref"]);
+
+    // Header Styling (same as original)
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const cellRef = XLSX.utils.encode_cell({ r: 0, c: C });
+      if (!ws[cellRef]) continue;
+      ws[cellRef].s = {
+        font: { bold: true, color: { rgb: "FFFFFF" }, sz: 12 },
+        fill: { fgColor: { rgb: "2B5797" } },
+        alignment: { horizontal: "center", vertical: "center" },
+        border: {
+          top: { style: "thin", color: { rgb: "999999" } },
+          bottom: { style: "thin", color: { rgb: "999999" } },
+          left: { style: "thin", color: { rgb: "999999" } },
+          right: { style: "thin", color: { rgb: "999999" } },
+        },
+      };
+    }
+
+    // Set Column Widths
+    ws["!cols"] = [
+      { wch: 6 },
+      { wch: 25 },
+      { wch: 30 },
+      { wch: 20 },
+      { wch: 15 },
+    ];
+
+    // Create workbook and export
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Reports & Analytics");
+
+    const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    saveAs(
+      new Blob([wbout], { type: "application/octet-stream" }),
+      "Reports_Analytics.xlsx"
+    );
+  };
+
   return (
     <>
       <div className="dashboard-wrapper">
@@ -61,6 +165,16 @@ const ReportAnalytics = () => {
                 <SearchFeature />
               </div>
             </div>
+
+               <div className="mt-2 vmb-2 text-end">
+                            <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
+                              <FaPrint /> Print
+                            </Button>
+            
+                            <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
+                              <FaFileExcel />Download
+                            </Button>
+                          </div>
 
             {/* Table */}
             <Row className="mt-3">
