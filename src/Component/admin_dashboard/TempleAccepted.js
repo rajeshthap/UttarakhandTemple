@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Row, Button } from "react-bootstrap";
 import axios from "axios";
 import { useAuth } from "../GlobleAuth/AuthContext";
+import * as XLSX from "xlsx";
 
 const TempleAccepted = () => {
   const { uniqueId } = useAuth();
@@ -91,6 +92,97 @@ const TempleAccepted = () => {
     }
   };
 
+  const handlePrint = () => {
+    const table = document.querySelector(".admin-rwd-table").cloneNode(true);
+    table.querySelectorAll("th:last-child, td:last-child").forEach((el) => el.remove());
+    const newWin = window.open("");
+    newWin.document.write(`
+      <html>
+        <head>
+          <title>Accepted Temples</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            h2 { text-align: center; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { border: 1px solid #ccc; padding: 8px; text-align: left; font-size: 13px; }
+            th { background-color: #f4f4f4; font-weight: bold; }
+            tr:nth-child(even) { background-color: #fafafa; }
+          </style>
+        </head>
+        <body>
+          <h2>Accepted Temples List</h2>
+          ${table.outerHTML}
+        </body>
+      </html>
+    `);
+    newWin.print();
+    newWin.close();
+  };
+
+  const handleDownload = () => {
+    if (!filteredRequests.length) return alert("No data to export!");
+
+    const exportData = filteredRequests.map((r, i) => ({
+      "S.No": i + 1,
+      "Temple ID": r.temple_id,
+      "Temple Name": r.temple_name,
+      "Email": r.email,
+      "Phone": r.phone,
+      "Status": r.temple_status,
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(exportData);
+
+    // Column widths
+    const maxWidth = Object.keys(exportData[0]).map(
+      (key) => Math.max(key.length, ...exportData.map((row) => String(row[key] || "").length)) + 5
+    );
+    ws["!cols"] = maxWidth.map((w) => ({ wch: w }));
+
+    const range = XLSX.utils.decode_range(ws["!ref"]);
+
+    // Header styling
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const cellRef = XLSX.utils.encode_cell({ r: 0, c: C });
+      if (ws[cellRef]) {
+        ws[cellRef].s = {
+          font: { bold: true, color: { rgb: "FFFFFF" } },
+          alignment: { horizontal: "center", vertical: "center" },
+          fill: { fgColor: { rgb: "4472C4" } },
+          border: {
+            top: { style: "thin", color: { rgb: "AAAAAA" } },
+            bottom: { style: "thin", color: { rgb: "AAAAAA" } },
+            left: { style: "thin", color: { rgb: "AAAAAA" } },
+            right: { style: "thin", color: { rgb: "AAAAAA" } },
+          },
+        };
+      }
+    }
+
+    // Row styling (zebra effect)
+    for (let R = 1; R <= range.e.r; ++R) {
+      for (let C = range.s.c; C <= range.e.c; ++C) {
+        const cellRef = XLSX.utils.encode_cell({ r: R, c: C });
+        if (ws[cellRef]) {
+          ws[cellRef].s = {
+            alignment: { vertical: "center" },
+            border: {
+              top: { style: "thin", color: { rgb: "DDDDDD" } },
+              bottom: { style: "thin", color: { rgb: "DDDDDD" } },
+              left: { style: "thin", color: { rgb: "DDDDDD" } },
+              right: { style: "thin", color: { rgb: "DDDDDD" } },
+            },
+            fill: R % 2 === 0 ? { fgColor: { rgb: "F9F9F9" } } : undefined,
+          };
+        }
+      }
+    }
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "TempleAccepted");
+    XLSX.writeFile(wb, "Temple_Accepted_List_Styled.xlsx");
+  };
+
   return (
     <div className="dashboard-wrapper">
 
@@ -115,6 +207,16 @@ const TempleAccepted = () => {
                 </button>
               </div>
             </div>
+            <div className="mt-2 vmb-2 text-end">
+              <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
+                Print
+              </Button>
+
+              <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
+                Download
+              </Button>
+            </div>
+
           </div>
 
           {/* ===== TABLE SECTION ===== */}

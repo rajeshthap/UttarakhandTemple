@@ -6,6 +6,7 @@ import axios from "axios";
 import { BASE_URLL } from "../../../Component/BaseURL";
 import SearchFeature from "../../temp_dashboard/temp_innerdashboard/SearchFeature";
 import ModifyAlert from "../../Alert/ModifyAlert";
+import * as XLSX from "xlsx";
 
 const DonateCrowdFunding = () => {
   const [donations, setDonations] = useState([]);
@@ -59,6 +60,103 @@ const DonateCrowdFunding = () => {
     setShowModal(true);
   };
 
+  const handlePrint = () => {
+    const printContent = document.getElementById("donation-table").outerHTML;
+    const newWin = window.open("", "_blank");
+    newWin.document.write(`
+      <html>
+        <head>
+          <title>Crowd Funding Donations</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+             h2 { text-align: center; }
+            table { width: 100%; border-collapse: collapse;  margin-top: 20px;}
+            th, td { border: 1px solid #ccc; padding: 8px; text-align: left; font-size: 13px; }
+            th { background-color: #f4f4f4; font-weight: bold; }
+            /* Hide Action column */
+            th:nth-child(10), td:nth-child(10) { display: none; }
+          </style>
+        </head>
+        <body>
+          <h2>Crowd Funding Donations</h2>
+          ${printContent}
+        </body>
+      </html>
+    `);
+    newWin.document.close();
+    newWin.print();
+  };
+
+  const handleDownload = () => {
+    if (!filteredDonations.length) return alert("No data to export!");
+
+    const exportData = filteredDonations.map((d, i) => ({
+      "S.No": i + 1,
+      "Donation ID": d.donation_id,
+      "Pilgrim Name": d.pilgrim_name,
+      "Email": d.email_id,
+      "Mobile": d.mobile_number,
+      "Temple Name": d.temple_name,
+      "Fund Name": d.fund_name,
+      "Amount (₹)": d.amount,
+      "Status": d.donation_status ? "Completed" : "Pending",
+      "Donation Date": new Date(d.created_at).toLocaleString(),
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(exportData);
+
+    const maxWidth = Object.keys(exportData[0]).map(
+      (key) =>
+        Math.max(key.length, ...exportData.map((row) => String(row[key] || "").length)) + 5
+    );
+    ws["!cols"] = maxWidth.map((w) => ({ wch: w }));
+
+    const range = XLSX.utils.decode_range(ws["!ref"]);
+
+    // Header style
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const cellRef = XLSX.utils.encode_cell({ r: 0, c: C });
+      if (ws[cellRef]) {
+        ws[cellRef].s = {
+          font: { bold: true, color: { rgb: "FFFFFF" } },
+          alignment: { horizontal: "center", vertical: "center" },
+          fill: { fgColor: { rgb: "4472C4" } },
+          border: {
+            top: { style: "thin", color: { rgb: "AAAAAA" } },
+            bottom: { style: "thin", color: { rgb: "AAAAAA" } },
+            left: { style: "thin", color: { rgb: "AAAAAA" } },
+            right: { style: "thin", color: { rgb: "AAAAAA" } },
+          },
+        };
+      }
+    }
+
+    // Row style
+    for (let R = 1; R <= range.e.r; ++R) {
+      for (let C = range.s.c; C <= range.e.c; ++C) {
+        const cellRef = XLSX.utils.encode_cell({ r: R, c: C });
+        if (ws[cellRef]) {
+          ws[cellRef].s = {
+            alignment: { vertical: "center" },
+            border: {
+              top: { style: "thin", color: { rgb: "DDDDDD" } },
+              bottom: { style: "thin", color: { rgb: "DDDDDD" } },
+              left: { style: "thin", color: { rgb: "DDDDDD" } },
+              right: { style: "thin", color: { rgb: "DDDDDD" } },
+            },
+            fill: R % 2 === 0 ? { fgColor: { rgb: "F9F9F9" } } : undefined,
+          };
+        }
+      }
+    }
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "CrowdFundingDonations");
+
+    XLSX.writeFile(wb, "Crowd_Funding_Donations_Styled.xlsx");
+  };
+
+
   return (
     <div className="dashboard-wrapper">
       <aside className="admin-sidebar">
@@ -80,6 +178,16 @@ const DonateCrowdFunding = () => {
 
             <div>
               <SearchFeature onSearch={handleSearch} />
+
+                <div className="mt-2 vmb-2 text-end">
+                              <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
+                                Print
+                              </Button>
+              
+                              <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
+                                Download
+                              </Button>
+                            </div>
             </div>
           </div>
 
@@ -95,7 +203,7 @@ const DonateCrowdFunding = () => {
           {/* ============== TABLE ============== */}
           <Row className="mt-3">
             <div className="col-md-12">
-              <table className="admin-rwd-table">
+              <table className="admin-rwd-table"  id="donation-table">
                 <tbody>
                   <tr>
                     <th>S.No</th>

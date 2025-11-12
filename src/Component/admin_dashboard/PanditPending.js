@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Row, Button, Modal, Form, Spinner, Col } from "react-bootstrap";
 import axios from "axios";
 import { useAuth } from "../GlobleAuth/AuthContext";
+import * as XLSX from "xlsx";
 
 const BASE_URL = "https://mahadevaaya.com/backend/";
 
@@ -144,12 +145,105 @@ const PanditPending = () => {
     }
   };
 
+  const handlePrint = () => {
+    const table = document.querySelector(".admin-rwd-table").cloneNode(true);
+    // Remove the "Action" column
+    table.querySelectorAll("th:last-child, td:last-child").forEach((el) => el.remove());
+    const newWin = window.open("");
+    newWin.document.write(`
+      <html>
+        <head>
+          <title>Pandit Pending List</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            h2 { text-align: center; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { border: 1px solid #ccc; padding: 8px; text-align: left; font-size: 13px; }
+            th { background-color: #f4f4f4; font-weight: bold; }
+            tr:nth-child(even) { background-color: #fafafa; }
+          </style>
+        </head>
+        <body>
+          <h2>Pandit Pending List</h2>
+          ${table.outerHTML}
+        </body>
+      </html>
+    `);
+    newWin.print();
+    newWin.close();
+  };
+
+  const handleDownload = () => {
+    if (!filteredRequests.length) return alert("No data to export!");
+
+    const exportData = filteredRequests.map((r, i) => ({
+      "S.No": i + 1,
+      "Pandit ID": r.pandit_id,
+      "First Name": r.first_name,
+      "Last Name": r.last_name,
+      "Email": r.email,
+      "Phone": r.phone,
+      "Status": r.pandit_status,
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(exportData);
+
+    const maxWidth = Object.keys(exportData[0]).map(
+      (key) => Math.max(key.length, ...exportData.map((row) => String(row[key] || "").length)) + 5
+    );
+    ws["!cols"] = maxWidth.map((w) => ({ wch: w }));
+
+    const range = XLSX.utils.decode_range(ws["!ref"]);
+
+    // Header styling
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const cellRef = XLSX.utils.encode_cell({ r: 0, c: C });
+      if (ws[cellRef]) {
+        ws[cellRef].s = {
+          font: { bold: true, color: { rgb: "FFFFFF" } },
+          alignment: { horizontal: "center", vertical: "center" },
+          fill: { fgColor: { rgb: "4472C4" } },
+          border: {
+            top: { style: "thin", color: { rgb: "AAAAAA" } },
+            bottom: { style: "thin", color: { rgb: "AAAAAA" } },
+            left: { style: "thin", color: { rgb: "AAAAAA" } },
+            right: { style: "thin", color: { rgb: "AAAAAA" } },
+          },
+        };
+      }
+    }
+
+    // Row styling (zebra effect)
+    for (let R = 1; R <= range.e.r; ++R) {
+      for (let C = range.s.c; C <= range.e.c; ++C) {
+        const cellRef = XLSX.utils.encode_cell({ r: R, c: C });
+        if (ws[cellRef]) {
+          ws[cellRef].s = {
+            alignment: { vertical: "center" },
+            border: {
+              top: { style: "thin", color: { rgb: "DDDDDD" } },
+              bottom: { style: "thin", color: { rgb: "DDDDDD" } },
+              left: { style: "thin", color: { rgb: "DDDDDD" } },
+              right: { style: "thin", color: { rgb: "DDDDDD" } },
+            },
+            fill: R % 2 === 0 ? { fgColor: { rgb: "F9F9F9" } } : undefined,
+          };
+        }
+      }
+    }
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "PanditPending");
+    XLSX.writeFile(wb, "Pandit_Pending_List_Styled.xlsx");
+  };
+
   return (
     <div className="dashboard-wrapper">
       <main className="admin-container">
         <div className="content-box">
           {/* ===== Search ===== */}
-
+          <div className="d-flex align-items-start justify-content-between gap-1 flex-xxl-nowrap flex-wrap mb-3">
+             <div className="d-flex justify-content-center h-100">
           <div className="search">
             <input
               className="search_input"
@@ -161,6 +255,20 @@ const PanditPending = () => {
               <i className="fa fa-search"></i>
             </button>
           </div>
+         </div>
+         <div className="mt-2 vmb-2 text-end">
+            <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
+              Print
+            </Button>
+
+            <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
+              Download
+            </Button>
+          </div>
+          </div>
+        
+          
+          
 
 
           {/* ===== Bulk Action Buttons ===== */}
@@ -498,7 +606,7 @@ const PanditPending = () => {
                       <Form.Group>
                         <Form.Label className="temp-label">Remarks</Form.Label>
                         <Form.Control
-                        className="temp-form-control-option"
+                          className="temp-form-control-option"
                           as="textarea"
                           rows={2}
                           placeholder="Leave a remark"

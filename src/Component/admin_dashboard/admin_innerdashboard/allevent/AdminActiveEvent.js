@@ -4,6 +4,8 @@ import axios from "axios";
 import { BASE_URLL } from "../../../../Component/BaseURL";
 import SearchFeature from "../../../temp_dashboard/temp_innerdashboard/SearchFeature";
 import ModifyAlert from "../../../Alert/ModifyAlert";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 const AdminActiveEvent = () => {
   const [events, setEvents] = useState([]);
@@ -71,6 +73,89 @@ const AdminActiveEvent = () => {
     setShowModal(true);
   };
 
+  const handlePrint = () => {
+    const actionColIndex = 7; // "Action" column index
+    const table = document.querySelector(".admin-rwd-table").cloneNode(true);
+
+    // Remove "Action" column from header and rows
+    table.querySelectorAll("tr").forEach((row) => {
+      const cells = row.querySelectorAll("th, td");
+      if (cells[actionColIndex]) cells[actionColIndex].remove();
+    });
+
+    const newWindow = window.open("", "_blank");
+    newWindow.document.write(`
+      <html>
+      <head>
+        <title>Active Events List</title>
+        <style>
+         body { font-family: Arial, sans-serif; margin: 20px; }
+            h2 { text-align: center; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { border: 1px solid #ccc; padding: 8px; text-align: left; font-size: 13px; }
+            th { background-color: #f4f4f4; font-weight: bold; }
+            tr:nth-child(even) { background-color: #fafafa; }
+        </style>
+      </head>
+      <body>
+        <h2>Active Events List</h2>
+        ${table.outerHTML}
+      </body>
+      </html>
+    `);
+    newWindow.document.close();
+    newWindow.print();
+  };
+
+    const handleDownload = () => {
+    if (filteredEvents.length === 0) {
+      window.alert("No active events to download!");
+      return;
+    }
+
+    const data = filteredEvents.map((event, index) => ({
+      "S.No": index + 1,
+      "Festival ID": event.festival_id,
+      "Festival Name": event.festival_name,
+      "Temple Name": event.temple_name,
+      "Start Date": new Date(event.start_date_time).toLocaleString(),
+      "End Date": new Date(event.end_date_time).toLocaleString(),
+      Status: event.festival_status,
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(data);
+
+    // Style header (bold + blue)
+    const range = XLSX.utils.decode_range(ws["!ref"]);
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const cellRef = XLSX.utils.encode_cell({ r: 0, c: C });
+      if (!ws[cellRef]) continue;
+      ws[cellRef].s = {
+        font: { bold: true, color: { rgb: "FFFFFF" } },
+        fill: { fgColor: { rgb: "2B5797" } },
+        alignment: { horizontal: "center", vertical: "center" },
+      };
+    }
+
+    // Set column widths
+    ws["!cols"] = [
+      { wch: 6 },
+      { wch: 15 },
+      { wch: 25 },
+      { wch: 25 },
+      { wch: 22 },
+      { wch: 22 },
+      { wch: 15 },
+    ];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Active Events");
+
+    const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    saveAs(new Blob([wbout], { type: "application/octet-stream" }), "Active_Events_List.xlsx");
+  };
+
+
   return (
     <div className="dashboard-wrapper">
       <main className="admin-container">
@@ -80,6 +165,15 @@ const AdminActiveEvent = () => {
             <div>
               <SearchFeature onSearch={handleSearch} />
             </div>
+             <div className="mt-2 vmb-2 text-end">
+                                      <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
+                                        Print
+                                      </Button>
+                        
+                                      <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
+                                        Download
+                                      </Button>
+                                    </div>
           </div>
 
           {/* Alert */}
