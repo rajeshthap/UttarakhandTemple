@@ -5,6 +5,8 @@ import { BASE_URLL } from "../../../../Component/BaseURL";
 import SearchFeature from "../../../temp_dashboard/temp_innerdashboard/SearchFeature";
 import ModifyAlert from "../../../Alert/ModifyAlert";
 import * as XLSX from "xlsx";
+import { FaPrint } from "react-icons/fa6";
+import { FaFileExcel } from "react-icons/fa";
 
 const AdminPastEvent = () => {
   const [events, setEvents] = useState([]);
@@ -188,11 +190,11 @@ const AdminPastEvent = () => {
             </div>
              <div className="mt-2 vmb-2 text-end">
                           <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
-                            Print
+                           <FaPrint /> Print
                           </Button>
             
                           <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
-                            Download
+                            <FaFileExcel />Download
                           </Button>
                         </div>
           </div>

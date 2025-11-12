@@ -7,6 +7,8 @@ import { BASE_URLL } from "../../../Component/BaseURL";
 import SearchFeature from "../../temp_dashboard/temp_innerdashboard/SearchFeature";
 import ModifyAlert from "../../Alert/ModifyAlert";
 import * as XLSX from "xlsx";
+import { FaPrint } from "react-icons/fa6";
+import { FaFileExcel } from "react-icons/fa";
 
 const DonateAmount = () => {
   const [donations, setDonations] = useState([]);
@@ -184,15 +186,15 @@ const DonateAmount = () => {
               <SearchFeature onSearch={handleSearch} />
 
               
-                             <div className="mt-2 vmb-2 text-end">
-                              <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
-                                Print
-                              </Button>
-              
-                              <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
-                                Download
-                              </Button>
-                            </div>
+                            <div className="mt-2 vmb-2 text-end">
+                                                                 <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
+                                                                  <FaPrint /> Print
+                                                                 </Button>
+                                                   
+                                                                 <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
+                                                                   <FaFileExcel />Download
+                                                                 </Button>
+                                                               </div>
             </div>
           </div>
 

@@ -10,6 +10,8 @@ import LocationState from "../../userregistration/LocationState"; //  Added for 
 import ModifyAlert from "../../Alert/ModifyAlert"; //  Added for alert
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import { FaPrint } from "react-icons/fa6";
+import { FaFileExcel } from "react-icons/fa";
 
 const AllTempleBooking = () => {
   const { uniqueId } = useAuth();
@@ -226,14 +228,14 @@ const AllTempleBooking = () => {
             <div>
               <SearchFeature onSearch={handleSearch} />
               <div className="mt-2 vmb-2 text-end">
-                <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
-                  Print
-                </Button>
-
-                <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
-                  Download
-                </Button>
-                </div>
+                                                   <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
+                                                    <FaPrint /> Print
+                                                   </Button>
+                                     
+                                                   <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
+                                                     <FaFileExcel />Download
+                                                   </Button>
+                                                 </div>
 
             </div>
           </div>

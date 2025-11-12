@@ -6,7 +6,9 @@ import AdminLeftnav from "../AdminLeftnav";
 import { useAuth } from "../../GlobleAuth/AuthContext";
 import axios from "axios";
 import SearchFeature from "../../temp_dashboard/temp_innerdashboard/SearchFeature";
-import * as XLSX from "xlsx";  
+import * as XLSX from "xlsx"; 
+import { FaPrint } from "react-icons/fa6";
+import { FaFileExcel } from "react-icons/fa"; 
 
 const AllDarshanBooking = () => {
   const { uniqueId } = useAuth();
@@ -204,14 +206,14 @@ const AllDarshanBooking = () => {
             <div>
               <SearchFeature onSearch={handleSearch} />
               <div className="mt-2 vmb-2 text-end">
-                              <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
-                                Print
-                              </Button>
-              
-                              <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
-                                Download
-                              </Button>
-                              </div>
+                                                   <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
+                                                    <FaPrint /> Print
+                                                   </Button>
+                                     
+                                                   <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
+                                                     <FaFileExcel />Download
+                                                   </Button>
+                                                 </div>
 
               
             </div>

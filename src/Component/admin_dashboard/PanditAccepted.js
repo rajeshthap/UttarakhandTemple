@@ -3,6 +3,8 @@ import { Row, Button } from "react-bootstrap";
 import axios from "axios";
 import { useAuth } from "../GlobleAuth/AuthContext";
 import * as XLSX from "xlsx";
+import { FaPrint } from "react-icons/fa6";
+import { FaFileExcel } from "react-icons/fa";
 
 const PanditAccepted = () => {
     const { uniqueId } = useAuth();
@@ -213,14 +215,14 @@ const PanditAccepted = () => {
                             
                         </div>
                           <div className="mt-2 vmb-2 text-end">
-                                        <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
-                                          Print
-                                        </Button>
-                            
-                                        <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
-                                          Download
-                                        </Button>
-                                      </div>
+                                                   <Button variant="" size="sm" className="mx-2 print-btn" onClick={handlePrint}>
+                                                    <FaPrint /> Print
+                                                   </Button>
+                                     
+                                                   <Button variant="" size="sm" className="download-btn" onClick={handleDownload}>
+                                                     <FaFileExcel />Download
+                                                   </Button>
+                                                 </div>
                     </div>
 
                     {/* ===== TABLE SECTION ===== */}
