@@ -51,7 +51,8 @@ export default function Login() {
     try {
       const res = await axios.post(`${BASE_URLL}api/login/`, formData);
       const { unique_id } = res.data;
-      setAuth(unique_id);
+         //  Save both ID and role type in AuthContext + sessionStorage
+    setAuth(unique_id, formData.role.toLowerCase());
 
       // Redirect and pass unique_id as route state (like a prop)
       switch (formData.role.toLowerCase()) {

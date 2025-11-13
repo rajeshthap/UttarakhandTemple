@@ -280,7 +280,10 @@ function App() {
   
   
   ]);
-  const shouldHideBars = hiddenPaths.has(location.pathname);
+ const shouldHideBars = [...hiddenPaths].some(path =>
+  location.pathname.toLowerCase().startsWith(path.toLowerCase())
+);
+
   const hideFooter = location.pathname === "/";
   return (
     <AuthProvider>

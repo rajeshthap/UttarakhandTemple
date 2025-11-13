@@ -1,25 +1,31 @@
 import React, { createContext, useContext, useState } from "react";
 
-const STORAGE_KEY = "uniqueId";
+const STORAGE_KEY_ID = "uniqueId";
+const STORAGE_KEY_TYPE = "userType";
+
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [uniqueId, setUniqueId] = useState(() => {
-    return sessionStorage.getItem(STORAGE_KEY) ?? null;
-  });
+  const [uniqueId, setUniqueId] = useState(() => sessionStorage.getItem(STORAGE_KEY_ID) ?? null);
+  const [userType, setUserType] = useState(() => sessionStorage.getItem(STORAGE_KEY_TYPE) ?? null);
 
-  const setAuth = (id) => {
+  const setAuth = (id, type) => {
     setUniqueId(id);
-    if (id) sessionStorage.setItem(STORAGE_KEY, id);
+    setUserType(type);
+
+    if (id) sessionStorage.setItem(STORAGE_KEY_ID, id);
+    if (type) sessionStorage.setItem(STORAGE_KEY_TYPE, type);
   };
 
   const clearAuth = () => {
     setUniqueId(null);
-    sessionStorage.removeItem(STORAGE_KEY);
+    setUserType(null);
+    sessionStorage.removeItem(STORAGE_KEY_ID);
+    sessionStorage.removeItem(STORAGE_KEY_TYPE);
   };
 
   return (
-    <AuthContext.Provider value={{ uniqueId, setAuth, clearAuth }}>
+    <AuthContext.Provider value={{ uniqueId, userType, setAuth, clearAuth }}>
       {children}
     </AuthContext.Provider>
   );

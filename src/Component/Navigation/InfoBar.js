@@ -4,48 +4,138 @@ import "../../assets/CSS/TopInfo.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import { IoKeySharp } from "react-icons/io5";
 import { FaUserGroup } from "react-icons/fa6";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../GlobleAuth/AuthContext";
 import axios from "axios";
 import defaultAvatar from "../../assets/images/Diya.png";
 
 const InfoBar = () => {
-  const navigate = useNavigate();
-  const { uniqueId, setUniqueId } = useAuth();
+  const { uniqueId, userType } = useAuth();
   const [profile, setProfile] = useState({
     displayName: "",
-    devotee_photo: "",
+    photo: "",
   });
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (!uniqueId) return;
-      try {
-        const response = await axios.get(
-          `https://mahadevaaya.com/backend/api/get-user/?user_id=${uniqueId}`
-        );
+  // version for cache-busting like in DevoteeProfile
+  const [imageVersion, setImageVersion] = useState(Date.now());
 
-        if (response.data) {
-          const user = response.data;
-          setProfile({
-            displayName: user.devotee_name || "",
-            devotee_photo: user.devotee_photo || "",
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching profile data:", error);
+useEffect(() => {
+  const fetchProfile = async () => {
+    if (!uniqueId || !userType) return;
+
+    try {
+      let apiUrl = "";
+      let displayName = "User";
+      let photo = "";
+
+      //  Define API endpoint based on user type
+      switch (userType.toLowerCase()) {
+        case "devotee":
+        case "user": // handle if userType is stored as 'user'
+          apiUrl = `https://mahadevaaya.com/backend/api/get-user/?user_id=${uniqueId}`;
+          break;
+
+        case "temple":
+          apiUrl = `https://mahadevaaya.com/backend/api/get-temple/?temple_id=${uniqueId}`;
+          break;
+
+        case "pandit":
+          apiUrl = `https://mahadevaaya.com/backend/api/get-pandit/?pandit_id=${uniqueId}`;
+          break;
+
+        case "admin":
+          apiUrl = `https://mahadevaaya.com/backend/api/get-admin/?admin_id=${uniqueId}`;
+          break;
+
+        default:
+          console.warn("Unknown userType:", userType);
+          return;
       }
-    };
 
-    fetchProfile();
-  }, [uniqueId]);
+      //  Fetch profile data
+      const response = await axios.get(apiUrl);
+      const data = response.data;
+
+      console.log(" Fetched profile data:", data);
+
+      //  Handle Devotee / User
+      if (userType === "devotee" || userType === "user") {
+        displayName = data.devotee_name || "User";
+
+        if (data.devotee_photo) {
+          let photoUrl = data.devotee_photo;
+
+          // Fix missing /backend
+          if (photoUrl.includes("/media/") && !photoUrl.includes("/backend/")) {
+            photoUrl = photoUrl.replace(
+              "https://mahadevaaya.com/media/",
+              "https://mahadevaaya.com/backend/media/"
+            );
+          }
+
+          // Add cache-busting parameter
+          photo = `${photoUrl}?v=${Date.now()}`;
+        }
+      }
+
+      //  Handle Temple
+      else if (userType === "temple") {
+        displayName = data.temple_name || "Temple";
+        if (data.temple_image) {
+          const filename = data.temple_image.split("/").pop();
+          photo = `https://mahadevaaya.com/backend/media/temple_images/${filename}`;
+        }
+      }
+
+      //  Handle Pandit
+      else if (userType === "pandit") {
+        const fullName = [data.first_name, data.last_name].filter(Boolean).join(" ");
+        displayName = fullName || "Pandit";
+        if (data.pandit_image) {
+          const filename = data.pandit_image.split("/").pop();
+          photo = `https://mahadevaaya.com/backend/media/pandit_images/${filename}`;
+        }
+      }
+
+      //  Handle Admin
+      else if (userType === "admin") {
+        displayName = data.admin_name || "Admin";
+        if (data.admin_image) {
+          const filename = data.admin_image.split("/").pop();
+          photo = `https://mahadevaaya.com/backend/media/admin_images/${filename}`;
+        }
+      }
+
+      //  Normalize URLs (ensure HTTPS)
+      if (photo && photo.startsWith("http://")) {
+        photo = photo.replace("http://", "https://");
+      }
+
+      //  Update profile state
+      setProfile({ displayName, photo });
+      console.log(" Final profile state:", { displayName, photo });
+
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    }
+  };
+
+  fetchProfile();
+}, [uniqueId, userType]);
 
 
+
+  const getDashboardRoute = () => {
+    if (userType === "temple") return "/TempleDashboard";
+    if (userType === "pandit") return "/Pandit_Dashboard";
+    if (userType === "admin") return "/AdminDashboard";
+    return "/MainDashBoard";
+  };
 
   return (
     <div className="header-top container-fluid">
       <Row className="align-items-center">
-        {/* Left Side */}
+        {/* Left Info */}
         <Col
           xs={12}
           md={6}
@@ -60,10 +150,9 @@ const InfoBar = () => {
           </div>
         </Col>
 
-        {/* Right Side */}
+        {/* Right Info */}
         <Col xs={12} md={6} lg={6} className="text-center text-md-end">
           <div className="d-inline-flex align-items-center flex-wrap justify-content-center gap-2">
-
             {!uniqueId && (
               <>
                 <Dropdown className="px-2">
@@ -89,30 +178,24 @@ const InfoBar = () => {
 
             {uniqueId && (
               <div className="d-flex align-items-center gap-2 px-2">
-
-
-                <Link to="/MainDashBoard" className="btn btn-primary btn-sm">
+                <Link to={getDashboardRoute()} className="btn btn-primary btn-sm">
                   Dashboard
                 </Link>
-                <span className="text-white">{profile.displayName || "User"}</span>
+                <span className="text-white">{profile.displayName}</span>
                 <Image
-                  src={
-                    profile.devotee_photo
-                      ? `https://mahadevaaya.com/backend/media/devotee_photos/${profile.devotee_photo.split("/").pop()}`
-                      : defaultAvatar
-                  }
+                  src={profile.photo || defaultAvatar}
                   roundedCircle
                   width={35}
                   height={35}
                   alt="User Avatar"
+                  onError={(e) => (e.target.src = defaultAvatar)}
                 />
               </div>
             )}
 
-            {/* Social icons */}
             <div className="px-3 d-flex gap-2 social-icon">
               <i className="bi bi-facebook infoicon"></i>
-              <i class="bi bi-twitter-x"></i>
+              <i className="bi bi-twitter-x"></i>
               <i className="bi bi-instagram infoicon"></i>
               <i className="bi bi-linkedin infoicon"></i>
               <i className="bi bi-youtube infoicon"></i>
