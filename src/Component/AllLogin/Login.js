@@ -55,22 +55,23 @@ export default function Login() {
     setAuth(unique_id, formData.role.toLowerCase());
 
       // Redirect and pass unique_id as route state (like a prop)
-      switch (formData.role.toLowerCase()) {
-        case "admin":
-          navigate("/AdminDashBoard", { state: { unique_id } });
-          break;
-        case "pandit":
-          navigate("/Pandit_DashBoard", { state: { unique_id } });
-          break;
-        case "user":
-          navigate("/MainDashBoard", { state: { unique_id } });
-          break;
-        case "temple":
-          navigate("/TempleDashBoard", { state: { unique_id } });
-          break;
-        default:
-          navigate("/", { state: { unique_id } });
-      }
+     switch (formData.role.toLowerCase()) {
+  case "admin":
+    navigate("/AdminDashBoard", { state: { unique_id }, replace: true });
+    break;
+  case "pandit":
+    navigate("/Pandit_DashBoard", { state: { unique_id }, replace: true });
+    break;
+  case "user":
+    navigate("/MainDashBoard", { state: { unique_id }, replace: true });
+    break;
+  case "temple":
+    navigate("/TempleDashBoard", { state: { unique_id }, replace: true });
+    break;
+  default:
+    navigate("/", { state: { unique_id }, replace: true });
+}
+
 
       setAlertMessage("Login successful!");
       setShowModifyAlert(true);

@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import "./App.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./CustomCss/custom.css";
@@ -17,6 +18,8 @@ import "./CustomCss/custom.css";
 import "@fontsource/poppins";
 import TempleAuthority from "./Component/userregistration/TempleAuthority";
 import { Route, Routes, useLocation } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+
 import Home from "./Pages/Home";
 import InfoBar from "./Component/Navigation/InfoBar";
 import TopNavBar from "./Component/Navigation/TopNavBar";
@@ -24,6 +27,7 @@ import TopNavBar from "./Component/Navigation/TopNavBar";
 import PanditRegistration from "./Component/userregistration/PanditRegistration";
 import DevoteeRegistration from "./Component/userregistration/DevoteeRegistration";
 import NotFound from "./Component/notfound/NotFound";
+import { useAuth } from "./Component/GlobleAuth/AuthContext";
 
 import TempleFooter from "./Component/temple_footer/TempleFooter";
 import DonateTemples from "./Component/DonateToTemples/DonateTemples";
@@ -81,7 +85,7 @@ import TempSevaRegis from "./Component/temp_dashboard/temp_innerdashboard/TempSe
 import TempDarshnBooking from "./Component/temp_dashboard/temp_innerdashboard/TempDarshnBooking";
 import TempBookingDashBoard from "./Component/temp_dashboard/temp_innerdashboard/TempBookingDashBoard";
 import PanditProfile from "./Component/pandit_dashboard/pandit_profile/PanditProfile";
-import SendOtpModal from "./Component/OTPModel/SendOtpModal"; 
+import SendOtpModal from "./Component/OTPModel/SendOtpModal";
 import KedarnathInfo from "./Component/KedarnathInfo";
 import GangotriInfo from "./Component/GangotriInfo";
 import YamunotriInfo from "./Component/YamunotriInfo";
@@ -90,7 +94,6 @@ import MyProfile from "./Component/dashboard/MyAccount/MyProfile";
 import UserSupport from "./Component/dashboard/innerpage_dashboard/UserSupport";
 import EventDashBoard from "./Component/dashboard/innerpage_dashboard/EventDashBoard";
 import AboutDashBoard from "./Component/dashboard/AboutUsDashBoard/AboutDashBoard";
-import { AuthProvider } from "./Component/GlobleAuth/AuthContext";
 import PlatformInfoDashBoard from "./Component/dashboard/AboutUsDashBoard/PlatformInfoDashBoard";
 import MandirPlatformDashBoard from "./Component/dashboard/AboutUsDashBoard/MandirPlatformDashBoard";
 import MissionDashBoard from "./Component/dashboard/AboutUsDashBoard/MissionDashBoard";
@@ -170,7 +173,44 @@ import PanditRejected from "./Component/admin_dashboard/PanditRejected";
 
 // Importing necessary components and pages
 
+function ProtectedRoute({ children }) {
+  const { uniqueId, userType } = useAuth();
+  const location = useLocation();
+
+  //  If not logged in → send to Login
+  if (!uniqueId || !userType) {
+    return <Navigate to="/Login" replace />;
+  }
+
+  //  If logged in → block manual URL typing
+  // Define allowed dashboard per userType
+  const dashboardRoute = userType === "admin"
+    ? "/AdminDashboard"
+    : userType === "temple"
+    ? "/TempleDashboard"
+    : userType === "pandit"
+    ? "/Pandit_Dashboard"
+     : userType === "user"
+      ? "/MainDashBoard"
+    : "/Login";
+
+  // Example: temple user typing /AdminDashboard
+  if (!location.pathname.startsWith(dashboardRoute)) {
+    return <Navigate to={dashboardRoute} replace />;
+  }
+
+  return children;
+}
+
+
+
+
+
+
 function App() {
+  const auth = useAuth();
+  const { uniqueId,clearAuth } = auth || {};
+
   const location = useLocation();
   const hiddenPaths = new Set([
     "/PanditMandirMahadevaya",
@@ -239,7 +279,7 @@ function App() {
     "/RegDevotee",
     "/TempleProfile",
     "/TempleSupport",
-     "/SevaDetails",
+    "/SevaDetails",
     "/UserUpcomingEvent",
     "/AddPuja",
     "/CompletedPuja",
@@ -263,253 +303,417 @@ function App() {
     "/PendingRequest",
     "/AcceptedRequest",
     "/RejectedRequest",
-"/AdminUpcomingEvent",
-"/AdminPastEvent",
-"/AdminActiveEvent",
-"/AllEvents",
-"/DonateAmount",
-"/DonateCrowdFunding",
-"/TemplePending",
-"/TempleAccepted",
-"/TempleRejected",
-"/PanditPending",
-"/PanditAcepted",
-"/PanditRejected"
+    "/AdminUpcomingEvent",
+    "/AdminPastEvent",
+    "/AdminActiveEvent",
+    "/AllEvents",
+    "/DonateAmount",
+    "/DonateCrowdFunding",
+    "/TemplePending",
+    "/TempleAccepted",
+    "/TempleRejected",
+    "/PanditPending",
+    "/PanditAcepted",
+    "/PanditRejected"
 
- 
-  
-  
+
+
+
   ]);
- const shouldHideBars = [...hiddenPaths].some(path =>
-  location.pathname.toLowerCase().startsWith(path.toLowerCase())
-);
+  const shouldHideBars = [...hiddenPaths].some(path =>
+    location.pathname.toLowerCase().startsWith(path.toLowerCase())
+  );
 
   const hideFooter = location.pathname === "/";
+
+  useEffect(() => {
+    if (uniqueId) {
+      window.history.pushState(null, null, window.location.href);
+
+      const handlePopState = () => {
+        window.location.replace("/404");  //  Correct replacement
+      };
+
+      window.addEventListener("popstate", handlePopState);
+
+      return () => {
+        window.removeEventListener("popstate", handlePopState);
+      };
+    }
+  }, [uniqueId]);
+
+  useEffect(() => {
+    // Detect manual URL navigation
+    const isManualURL = location.key === "default";
+
+    if (uniqueId && isManualURL) {
+      console.warn("⚠ Manual URL detected → Logging out user");
+
+      // Clear sessionStorage & auth
+      clearAuth();                               
+
+      sessionStorage.removeItem("uniqueId");
+      sessionStorage.removeItem("userType");
+
+      // Redirect to Login
+       window.location.replace("/Login", { replace: true });
+    }
+  }, [location, uniqueId, ]);
+
+
   return (
-    <AuthProvider>
-      <div className="App">
-        {!shouldHideBars && <InfoBar />}
-        {!shouldHideBars && <TopNavBar />}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/TempleAuthority" element={<TempleAuthority />} />
 
-          <Route path="/PanditRegistration" element={<PanditRegistration />} />
-          <Route
-            path="/DevoteeRegistration"
-            element={<DevoteeRegistration />}
-          />
-          <Route path="/Login" element={<Login />} />
+    <div className="App">
+      {!shouldHideBars && <InfoBar />}
+      {!shouldHideBars && <TopNavBar />}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/TempleAuthority" element={<TempleAuthority />} />
 
-          <Route path="/ForgotPassword" element={<ForgotPassword />} />
-          <Route path="/DonateTemples" element={<DonateTemples />} />
-          <Route path="/ExtendYourDivine" element={<ExtendYourDivine />} />
-          <Route
-            path="/PaymentConfirmation"
-            element={<PaymentConfirmation />}
-          />
-          <Route path="/DarshanBooking" element={<DarshanBooking />} />
-          <Route path="/MandirBooking" element={<MandirBooking />} />
-          <Route path="/PoojaBooking" element={<PoojaBooking />} />
-          <Route path="/LocationState" element={<LocationState />} />
-          <Route
-            path="/TempleFacilityBooking"
-            element={<TempleFacilityBooking />}
-          />
-          <Route path="/SevaRegistration" element={<SevaRegistration />} />
-          <Route path="/EventParticipation" element={<EventParticipation />} />
-          <Route path="/OnlineHirePandit" element={<OnlineHirePandit />} />
-          <Route path="/PanditBooking" element={<PanditBooking />} />
-          <Route path="/UserVerifyOtp" element={<UserVerifyOtp />} />
-          <Route path="/ForgetPassword" element={<ForgetPassword />} />
-          <Route path="/MandirMahadevaya" element={<MandirMahadevaya />} />
-          <Route path="/ContactUs" element={<ContactUs />} />
-          <Route
-            path="/SpecialAnnouncements"
-            element={<SpecialAnnouncements />}
-          />
-          <Route path="/MissionVision" element={<MissionVision />} />
-          <Route path="/AboutUs" element={<AboutUs />} />
-          <Route path="/PlatFormInfo" element={<PlatFormInfo />} />
-          <Route
-            path="/MandirBookingDashBoard"
-            element={<MandirBookingDashBoard />}
-          />
-          <Route path="/TempDarshnBooking" element={<TempDarshnBooking />} />
-          <Route
-            path="/PlatformInfoDashBoard"
-            element={<PlatformInfoDashBoard />}
-          />
-          <Route
-            path="/MandirPlatformDashBoard"
-            element={<MandirPlatformDashBoard />}
-          />
-          <Route path="/MissionDashBoard" element={<MissionDashBoard />} />
-          <Route
-            path="/SpecialAnnouncementDashBoard"
-            element={<SpecialAnnouncementDashBoard />}
-          />
-          <Route
-            path="/MandirBookingInfoDashBoard"
-            element={<MandirBookingInfoDashBoard />}
-          />
+        <Route path="/PanditRegistration" element={<PanditRegistration />} />
+        <Route
+          path="/DevoteeRegistration"
+          element={<DevoteeRegistration />}
+        />
+        <Route path="/Login" element={<Login />} />
 
-          <Route path="/BaseURL" element={<BASE_URLL />} />
-          <Route path="*" element={<NotFound />} />
-          <Route path="/DashBoard" element={<DashBoard />} />
-          <Route path="/MainDashBoard" element={<MainDashBoard />} />
-          <Route path="/DonateDashBoard" element={<DonateDashBoard />} />
-          <Route path="/PanditDashBoard" element={<PanditDashBoard />} />
-          <Route
-            path="/PoojaBookingDashBoard"
-            element={<PoojaBookingDashBoard />}
-          />
-          <Route
-            path="/DarshanBookingDashBoard"
-            element={<DarshanBookingDashBoard />}
-          />
-          <Route
-            path="/SevaRegistrationDashBoard"
-            element={<SevaRegistrationDashBoard />}
-          />
-          <Route path="/ChangePassword" element={<ChangePassword />} />
-          <Route path="/TempleBookingInfo" element={<TempleBookingInfo />} />
-          <Route path="/BadrinathInfo" element={<BadrinathInfo />} />
-          <Route path="/KedarnathInfo" element={<KedarnathInfo />} />
-          <Route path="/GangotriInfo" element={<GangotriInfo />} />
-          <Route path="/YamunotriInfo" element={<YamunotriInfo />} />
+        <Route path="/ForgotPassword" element={<ForgotPassword />} />
+        <Route path="/DonateTemples" element={<DonateTemples />} />
+        <Route path="/ExtendYourDivine" element={<ExtendYourDivine />} />
+        <Route
+          path="/PaymentConfirmation"
+          element={<PaymentConfirmation />}
+        />
+        <Route path="/DarshanBooking" element={<DarshanBooking />} />
+        <Route path="/MandirBooking" element={<MandirBooking />} />
+        <Route path="/PoojaBooking" element={<PoojaBooking />} />
+        <Route path="/LocationState" element={<LocationState />} />
+        <Route
+          path="/TempleFacilityBooking"
+          element={<TempleFacilityBooking />}
+        />
+        <Route path="/SevaRegistration" element={<SevaRegistration />} />
+        <Route path="/EventParticipation" element={<EventParticipation />} />
+        <Route path="/OnlineHirePandit" element={<OnlineHirePandit />} />
+        <Route path="/PanditBooking" element={<PanditBooking />} />
+        <Route path="/UserVerifyOtp" element={<UserVerifyOtp />} />
+        <Route path="/ForgetPassword" element={<ForgetPassword />} />
+        <Route path="/MandirMahadevaya" element={<MandirMahadevaya />} />
+        <Route path="/ContactUs" element={<ContactUs />} />
+        <Route
+          path="/SpecialAnnouncements"
+          element={<SpecialAnnouncements />}
+        />
+        <Route path="/MissionVision" element={<MissionVision />} />
+        <Route path="/AboutUs" element={<AboutUs />} />
+        <Route path="/PlatFormInfo" element={<PlatFormInfo />} />
+        <Route
+          path="/MandirBookingDashBoard"
+          element={<MandirBookingDashBoard />}
+        />
+        <Route path="/TempDarshnBooking" element={<TempDarshnBooking />} />
+        <Route
+          path="/PlatformInfoDashBoard"
+          element={<PlatformInfoDashBoard />}
+        />
+        <Route
+          path="/MandirPlatformDashBoard"
+          element={<MandirPlatformDashBoard />}
+        />
+        <Route path="/MissionDashBoard" element={<MissionDashBoard />} />
+        <Route
+          path="/SpecialAnnouncementDashBoard"
+          element={<SpecialAnnouncementDashBoard />}
+        />
+        <Route
+          path="/MandirBookingInfoDashBoard"
+          element={<MandirBookingInfoDashBoard />}
+        />
 
-          <Route path="/TempleDashBoard" element={<TempleDashBoard />} />
-          <Route path="/TempleLeftNav" element={<TempleLeftNav />} />
-          <Route path="/Pandit_DashBoard" element={<Pandit_DashBoard />} />
-          <Route path="/PanditLeftNav" element={<PanditLeftNav />} />
-          <Route path="/AddPuja" element={<AddPuja />} />
-          <Route path="/CompletedPuja" element={<CompletedPuja />} />
-          <Route path="/PendingRequests" element={<PendingRequests />} />
-          <Route path="/ConfirmedRequests" element={<ConfirmedRequests />} />
-          <Route path="/CancelledRequests" element={<CancelledRequests />} />
-          <Route path="/PujaCalendar" element={<PujaCalendar />} />
-          <Route path="/EarnAndTrans" element={<EarnAndTrans />}/>
-          <Route path="/ReportAnalytics" element={<ReportAnalytics />} />
-                    <Route path="/ReviewsFeedback" element={<ReviewsFeedback />} />
-                    <Route path="/PanditSupport" element={<PanditSupport />} />
-                    <Route path="/DarshanDetails" element={<DarshanDetails />} />
+        <Route path="/BaseURL" element={<BASE_URLL />} />
+        <Route path="*" element={<NotFound />} />
+        <Route path="/DashBoard" element={<DashBoard />} />
+        <Route path="/DonateDashBoard" element={<DonateDashBoard />} />
+        <Route
+          path="/PoojaBookingDashBoard"
+          element={<PoojaBookingDashBoard />}
+        />
+        <Route
+          path="/DarshanBookingDashBoard"
+          element={<DarshanBookingDashBoard />}
+        />
+        <Route
+          path="/SevaRegistrationDashBoard"
+          element={<SevaRegistrationDashBoard />}
+        />
+        <Route path="/ChangePassword" element={<ChangePassword />} />
+        <Route path="/TempleBookingInfo" element={<TempleBookingInfo />} />
+        <Route path="/BadrinathInfo" element={<BadrinathInfo />} />
+        <Route path="/KedarnathInfo" element={<KedarnathInfo />} />
+        <Route path="/GangotriInfo" element={<GangotriInfo />} />
+        <Route path="/YamunotriInfo" element={<YamunotriInfo />} />
 
-          
+        <Route path="/TempleLeftNav" element={<TempleLeftNav />} />
+        <Route path="/Pandit_DashBoard" element={<Pandit_DashBoard />} />
+        <Route path="/PanditLeftNav" element={<PanditLeftNav />} />
+        <Route path="/AddPuja" element={<AddPuja />} />
+        <Route path="/CompletedPuja" element={<CompletedPuja />} />
+        <Route path="/PendingRequests" element={<PendingRequests />} />
+        <Route path="/ConfirmedRequests" element={<ConfirmedRequests />} />
+        <Route path="/CancelledRequests" element={<CancelledRequests />} />
+        <Route path="/PujaCalendar" element={<PujaCalendar />} />
+        <Route path="/EarnAndTrans" element={<EarnAndTrans />} />
+        <Route path="/ReportAnalytics" element={<ReportAnalytics />} />
+        <Route path="/ReviewsFeedback" element={<ReviewsFeedback />} />
+        <Route path="/PanditSupport" element={<PanditSupport />} />
+        <Route path="/DarshanDetails" element={<DarshanDetails />} />
 
-          <Route
-            path="/PanditDonateDashBoard"
-            element={<PanditDonateDashBoard />}
-          />
-          <Route
-            path="/PanditBookDashBoard"
-            element={<PanditBookDashBoard />}
-          />
-          <Route path="/PanditPoojaBooking" element={<PanditPoojaBooking />} />
-          <Route
-            path="/PanditBookingDashBoard"
-            element={<PanditBookingDashBoard />}
-          />
-          <Route
-            path="/PanditDarshanBooking"
-            element={<PanditDarshanBooking />}
-          />
-          <Route
-            path="/PanditDarshanBooking"
-            element={<PanditDarshanBooking />}
-          />
-          <Route
-            path="/PanditChangePassword"
-            element={<PanditChangePassword />}
-          />
-          <Route path="/PanditSevaRegis" element={<PanditSevaRegis />} />
-          <Route
-            path="/TempDonateDashBoard"
-            element={<TempDonateDashBoard />}
-          />
-          <Route path="/UpcomingPuja" element={<UpcomingPuja />} />
-          <Route path="/TempPanditBooking" element={<TempPanditBooking />} />
-          <Route path="/TempPoojaBooking" element={<TempPoojaBooking />} />
-          <Route path="/TempChangePassword" element={<TempChangePassword />} />
-          <Route path="/TempSevaRegis" element={<TempSevaRegis />} />
-          <Route
-            path="/TempBookingDashBoard"
-            element={<TempBookingDashBoard />}
-          />
-          <Route path="/PanditProfile" element={<PanditProfile />} />
-          <Route path="/BookingHistory" element={<BookingHistory />} />
-          <Route path="/AboutDashBoard" element={<AboutDashBoard />} />
 
-          {/* Temple Inner Dashboard Routes */}
-          <Route path="/AddTemple" element={<AddTemple />} />
-          <Route path="/ManageTemple" element={<ManageTemple />} />
-          <Route path="/SearchFeature" element={<SearchFeature />} />
-          <Route path="/AddFestival" element={<AddFestival />} />
-          <Route path="/ManageFestival" element={<ManageFestival />} />
-          <Route path="/NewBooking" element={<NewBooking />} />
-          <Route path="/AcceptedBooking" element={<AcceptedBooking />} />
-          <Route path="/RejectedBooking" element={<RejectedBooking />} />
-          <Route path="/AllBooking" element={<AllBooking />} />
-          <Route path="/Donations" element={<Donations />} />
-          <Route path="/CrowdFunding" element={<CrowdFunding />} />
-          <Route path="/DonateCrowd" element={<DonateCrowd />} />
-          <Route
-            path="/DarshanBookingReport"
-            element={<DarshanBookingReport />}
-          />
-          <Route path="/DonationReport" element={<DonationReport />} />
-          <Route path="/DonationCollected" element={<DonationCollected />} />
-          <Route path="/RegDevoteeReport" element={<RegDevoteeReport />} />
-          <Route path="RegDevotee" element={<RegDevotee />} />
-          <Route path="/TempleProfile" element={<TempleProfile />} />
-          <Route path="/TempleSupport" element={<TempleSupport />} />
 
-          <Route path="/LeftNav" element={<LeftNav />} />
-          <Route path="/SendOtpModal" element={<SendOtpModal />} />
-          <Route path="/MyProfile" element={<MyProfile />} />
-          <Route path="/UserSupport" element={<UserSupport />} />
-          <Route path="/EventDashBoard" element={<EventDashBoard />} />
-          <Route path="/Events" element={<Events />} />
-          <Route path="/UserUpcomingEvent" element={<UserUpcomingEvent />} />
-          <Route path="/SevaDetails" element={<SevaDetails />} />
-          <Route path="/DonationsDetails" element={<DonationsDetails />} />
-          <Route path="/PanditDetails" element={<PanditDetails />} />
-          <Route path="/PanditAboutUs" element={<PanditAboutUs />} />
-          <Route path="/Panditannouncement" element={<Panditannouncement />} />
-          <Route path="/PanditMandirMahadevaya" element={<PanditMandirMahadevaya />} />
-          <Route path="/PanditMissionVision" element={<PanditMissionVision />} />
-          <Route path="/PanditPlatformInfo" element={<PanditPlatformInfo />} />
-          <Route path="/TempleChangePassword" element={<TempleChangePassword />} />
-          <Route path="/NewPujaBooking" element={<NewPujaBooking />} />
-          <Route path="/CrowdfundingCard" element={<CrowdfundingCard />} />
-          <Route path="/AdminLeftnav" element={<AdminLeftnav />} />
-          <Route path="/AdminDashBoard" element={<AdminDashBoard />} />
-          <Route path="/AllDarshanBooking" element={<AllDarshanBooking />} />
-          <Route path="/AllTempleBooking" element={<AllTempleBooking />} />
-          <Route path="/AllPanditBooking" element={<AllPanditBooking />} />
-           <Route path="/AllDevoteeBooking" element={<AllDevoteeBooking />} />
-          <Route path="/PendingRequest" element={<PendingRequest />} />
-          <Route path="/AcceptedRequest" element={<AcceptedRequest />} />
-          <Route path="/RejectedRequest" element={<RejectedRequest />} />
-          <Route path="/AdminPastEvent" element={<AdminPastEvent />} />
-          <Route path="/AdminUpcomingEvent" element={<AdminUpcomingEvent />} />
-          <Route path="/AdminActiveEvent" element={<AdminActiveEvent />} />
-          <Route path="/AllEvents" element={<AllEvents />} />
-          <Route path="/DonateAmount" element={<DonateAmount/>} />
-          <Route path="/DonateCrowdFunding" element={<DonateCrowdFunding/>} />
-          <Route path="/TemplePending" element={<TemplePending/>} />
-          <Route path="/TempleAccepted" element={<TempleAccepted/>} />
-          <Route path="/TempleRejected" element={<TempleRejected/>} />
-           <Route path="/PanditPending" element={<PanditPending/>} />
-            <Route path="/PanditAccepted" element={<PanditAccepted/>} />
-            <Route path="/PanditRejected" element={<PanditRejected/>} />
-          
-     
-          
-        </Routes>
-        {!hideFooter && <TempleFooter />}
-      </div>
-    </AuthProvider>
+        <Route
+          path="/PanditDonateDashBoard"
+          element={<PanditDonateDashBoard />}
+        />
+        <Route
+          path="/PanditBookDashBoard"
+          element={<PanditBookDashBoard />}
+        />
+        <Route path="/PanditPoojaBooking" element={<PanditPoojaBooking />} />
+        <Route
+          path="/PanditBookingDashBoard"
+          element={<PanditBookingDashBoard />}
+        />
+        <Route
+          path="/PanditDarshanBooking"
+          element={<PanditDarshanBooking />}
+        />
+        <Route
+          path="/PanditDarshanBooking"
+          element={<PanditDarshanBooking />}
+        />
+        <Route
+          path="/PanditChangePassword"
+          element={<PanditChangePassword />}
+        />
+        <Route path="/PanditSevaRegis" element={<PanditSevaRegis />} />
+        <Route
+          path="/TempDonateDashBoard"
+          element={<TempDonateDashBoard />}
+        />
+        <Route path="/UpcomingPuja" element={<UpcomingPuja />} />
+        <Route path="/TempPanditBooking" element={<TempPanditBooking />} />
+        <Route path="/TempPoojaBooking" element={<TempPoojaBooking />} />
+        <Route path="/TempChangePassword" element={<TempChangePassword />} />
+        <Route path="/TempSevaRegis" element={<TempSevaRegis />} />
+        <Route
+          path="/TempBookingDashBoard"
+          element={<TempBookingDashBoard />}
+        />
+        <Route path="/PanditProfile" element={<PanditProfile />} />
+        <Route path="/BookingHistory" element={<BookingHistory />} />
+        <Route path="/AboutDashBoard" element={<AboutDashBoard />} />
+
+        {/* Temple Inner Dashboard Routes */}
+        <Route path="/AddTemple" element={<AddTemple />} />
+        <Route path="/ManageTemple" element={<ManageTemple />} />
+        <Route path="/SearchFeature" element={<SearchFeature />} />
+        <Route path="/AddFestival" element={<AddFestival />} />
+        <Route path="/ManageFestival" element={<ManageFestival />} />
+        <Route path="/NewBooking" element={<NewBooking />} />
+        <Route path="/AcceptedBooking" element={<AcceptedBooking />} />
+        <Route path="/RejectedBooking" element={<RejectedBooking />} />
+        <Route path="/AllBooking" element={<AllBooking />} />
+        <Route path="/Donations" element={<Donations />} />
+        <Route path="/CrowdFunding" element={<CrowdFunding />} />
+        <Route path="/DonateCrowd" element={<DonateCrowd />} />
+        <Route
+          path="/DarshanBookingReport"
+          element={<DarshanBookingReport />}
+        />
+        <Route path="/DonationReport" element={<DonationReport />} />
+        <Route path="/DonationCollected" element={<DonationCollected />} />
+        <Route path="/RegDevoteeReport" element={<RegDevoteeReport />} />
+        <Route path="RegDevotee" element={<RegDevotee />} />
+        <Route path="/TempleProfile" element={<TempleProfile />} />
+        <Route path="/TempleSupport" element={<TempleSupport />} />
+
+        <Route path="/LeftNav" element={<LeftNav />} />
+        <Route path="/SendOtpModal" element={<SendOtpModal />} />
+        <Route path="/MyProfile" element={<MyProfile />} />
+        <Route path="/UserSupport" element={<UserSupport />} />
+        <Route path="/EventDashBoard" element={<EventDashBoard />} />
+        <Route path="/Events" element={<Events />} />
+        <Route path="/UserUpcomingEvent" element={<UserUpcomingEvent />} />
+        <Route path="/SevaDetails" element={<SevaDetails />} />
+        <Route path="/DonationsDetails" element={<DonationsDetails />} />
+        <Route path="/PanditDetails" element={<PanditDetails />} />
+        <Route path="/PanditAboutUs" element={<PanditAboutUs />} />
+        <Route path="/Panditannouncement" element={<Panditannouncement />} />
+        <Route path="/PanditMandirMahadevaya" element={<PanditMandirMahadevaya />} />
+        <Route path="/PanditMissionVision" element={<PanditMissionVision />} />
+        <Route path="/PanditPlatformInfo" element={<PanditPlatformInfo />} />
+        <Route path="/TempleChangePassword" element={<TempleChangePassword />} />
+        <Route path="/NewPujaBooking" element={<NewPujaBooking />} />
+        <Route path="/CrowdfundingCard" element={<CrowdfundingCard />} />
+        <Route path="/AdminLeftnav" element={<AdminLeftnav />} />
+        <Route path="/AllDarshanBooking" element={<AllDarshanBooking />} />
+        <Route path="/AllTempleBooking" element={<AllTempleBooking />} />
+        <Route path="/AllPanditBooking" element={<AllPanditBooking />} />
+        <Route path="/AllDevoteeBooking" element={<AllDevoteeBooking />} />
+        <Route path="/PendingRequest" element={<PendingRequest />} />
+        <Route path="/AcceptedRequest" element={<AcceptedRequest />} />
+        <Route path="/RejectedRequest" element={<RejectedRequest />} />
+        <Route path="/AdminPastEvent" element={<AdminPastEvent />} />
+        <Route path="/AdminUpcomingEvent" element={<AdminUpcomingEvent />} />
+        <Route path="/AdminActiveEvent" element={<AdminActiveEvent />} />
+        <Route path="/AllEvents" element={<AllEvents />} />
+        <Route path="/DonateAmount" element={<DonateAmount />} />
+        <Route path="/DonateCrowdFunding" element={<DonateCrowdFunding />} />
+        <Route path="/TemplePending" element={<TemplePending />} />
+        <Route path="/TempleAccepted" element={<TempleAccepted />} />
+        <Route path="/TempleRejected" element={<TempleRejected />} />
+        <Route path="/PanditPending" element={<PanditPending />} />
+        <Route path="/PanditAccepted" element={<PanditAccepted />} />
+        <Route path="/PanditRejected" element={<PanditRejected />} />
+
+
+        {/* Protected routes (wrapped with ProtectedRoute) */}
+       
+
+        <Route
+          path="/DashBoard"
+          element={
+            <ProtectedRoute>
+              <DashBoard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/MainDashBoard"
+          element={
+            <ProtectedRoute>
+              <MainDashBoard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/DonateDashBoard"
+          element={
+            <ProtectedRoute>
+              <DonateDashBoard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/Pandit_DashBoard"
+          element={
+            <ProtectedRoute>
+              <Pandit_DashBoard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/TempleDashBoard"
+          element={
+            <ProtectedRoute>
+              <TempleDashBoard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/AdminDashBoard"
+          element={
+            <ProtectedRoute>
+              <AdminDashBoard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* User-specific pages to protect */}
+        <Route
+          path="/MyProfile"
+          element={
+            <ProtectedRoute>
+              <MyProfile />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/BookingHistory"
+          element={
+            <ProtectedRoute>
+              <BookingHistory />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/SevaDetails"
+          element={
+            <ProtectedRoute>
+              <SevaDetails />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/DonationsDetails"
+          element={
+            <ProtectedRoute>
+              <DonationsDetails />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/PanditDetails"
+          element={
+            <ProtectedRoute>
+              <PanditDetails />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Admin / Temple / Pandit internal routes (wrap similarly) */}
+        <Route
+          path="/TempleLeftNav"
+          element={
+            <ProtectedRoute>
+              <TempleLeftNav />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/PanditLeftNav"
+          element={
+            <ProtectedRoute>
+              <PanditLeftNav />
+            </ProtectedRoute>
+          }
+        />
+
+
+
+        {/* Explicit 404 route (used by back-blocker) */}
+        <Route path="/404" element={<NotFound />} />
+
+        {/* Keep wildcard fallback */}
+        <Route path="*" element={<NotFound />} />
+
+
+
+
+      </Routes>
+      {!hideFooter && <TempleFooter />}
+    </div>
+
   );
 }
 

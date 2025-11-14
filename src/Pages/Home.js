@@ -8,6 +8,7 @@ import Aboutus from '../Component/Aboutus';
 import AllTempleInfo from '../Component/AllTempleInfo';
 import Testimonials from '../Component/Testimonials';
 import Footer from '../Component/Footer';
+import AllPanditInfo from '../Component/AllPanditInfo';
 
 
 const Home = () => {
@@ -19,6 +20,7 @@ const Home = () => {
                 <OnlineBooking />
                 <Aboutus />
                 <AllTempleInfo />
+                <AllPanditInfo/>
                 <Testimonials />
                 <Footer />
             </div>
