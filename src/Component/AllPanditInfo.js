@@ -2,36 +2,38 @@ import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import "../assets/CSS/TempleInfo.css"; // you can keep same CSS
+import "../assets/CSS/TempleInfo.css";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const AllPanditInfo = () => {
-  const [slidesToShow, setSlidesToShow] = useState(getSlidesToShow());
   const [panditData, setPanditData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  function getSlidesToShow() {
-    if (window.innerWidth < 768) return 1;
-    if (window.innerWidth < 992) return 2;
-    return 3;
-  }
-
+  // Handle window resize
   useEffect(() => {
-    const handleResize = () => setSlidesToShow(getSlidesToShow());
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // Fetch Pandit Data
-// After fetching data, log it:
-useEffect(() => {
-  fetch("https://mahadevaaya.com/backend/api/get-pandit-poojas-list/")
-    .then((res) => res.json())
-    .then((data) => {
-      console.log("Fetched pandits:", data);
-      setPanditData(data || []);
-    })
-    .catch((error) => console.error("Error fetching pandit data:", error));
-}, []);
+  useEffect(() => {
+    setIsLoading(true);
+    fetch("https://mahadevaaya.com/backend/api/get-pandit-poojas-list/")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Fetched pandits:", data);
+        setPanditData(data || []);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching pandit data:", error);
+        setIsLoading(false);
+      });
+  }, []);
 
   const getImageUrl = (imgPath) => {
     if (!imgPath)
@@ -54,16 +56,22 @@ useEffect(() => {
     </div>
   );
 
+  // Calculate slidesToShow based on window width
+  const getSlidesToShow = () => {
+    if (windowWidth < 768) return 1;
+    if (windowWidth < 992) return 2;
+    return 3;
+  };
+
   const settings = {
     dots: true,
     infinite: true,
     autoplay: true,
     autoplaySpeed: 2500,
     speed: 600,
-    slidesToShow,
+    slidesToShow: getSlidesToShow(),
     slidesToScroll: 1,
     arrows: true,
-    adaptiveHeight: true,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     responsive: [
@@ -73,7 +81,7 @@ useEffect(() => {
   };
 
   return (
-    <div className="Alltemple-wrapper">
+    <div className="Allpandit-wrapper">
       <div className="container">
         <div className="text-center mb-4">
           <h2>Pandit Info</h2>
@@ -81,7 +89,11 @@ useEffect(() => {
         </div>
 
         <div className="carousel-container" style={{ position: "relative" }}>
-          {panditData.length > 0 ? (
+          {isLoading ? (
+            <div className="loading-container">
+              <p>Loading pandits...</p>
+            </div>
+          ) : panditData.length > 0 ? (
             <Slider {...settings}>
               {panditData.map((pandit, index) => (
                 <div
@@ -95,9 +107,10 @@ useEffect(() => {
                         src={getImageUrl(pandit.pandit_image)}
                         alt={pandit.pandit_name}
                         className="card-image"
+                        loading="lazy"
                         style={{
                           width: "100%",
-                          height: "100%",
+
                           objectFit: "cover",
                           borderRadius: "10px",
                         }}
@@ -116,10 +129,14 @@ useEffect(() => {
               ))}
             </Slider>
           ) : (
-            <p className="text-center">Loading pandits...</p>
+            <div className="no-data-container">
+              <p>No pandits available</p>
+            </div>
           )}
         </div>
       </div>
+
+
     </div>
   );
 };
